@@ -1,0 +1,67 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+.navbar {
+    margin-bottom: 20px;
+    z-index: 1030; /* Чтобы шапка была выше других элементов */
+    background-color: rgba(255, 255, 255, 0.9); /* Уменьшение прозрачности шапки */
+}
+
+.card {
+    transition: transform 0.2s;
+    height: 250px; /* Установите фиксированную высоту для карточек */
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+footer {
+    background-color: #f8f9fa;
+}
+
+.carousel-item img {
+    height: 100vh; /* Задать высоту слайдера на 100% высоты экрана */
+    object-fit: cover; /* Чтобы изображение заполняло всю область */
+}
+
+.carousel-caption {
+    bottom: 20%; /* Чтобы текст был более заметен */
+}
+
+.row.align-items-center {
+    display: flex;
+    justify-content: center; /* Центрируем по горизонтали */
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Центрируем содержимое карточек */
+}
+
+.modal-dialog-centered {
+    display: flex;
+    align-items: center; /* Центрируем модальное окно по вертикали */
+}
+
+.overflow-hidden {
+    overflow: hidden; /* Скрываем лишние элементы */
+}
+
+#popularParts {
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку */
+    white-space: nowrap; /* Убираем перенос строк */
+}
+
+@media (max-width: 768px) {
+    .card {
+        height: auto; /* Для мобильных устройств высота карточек может быть авто */
+    }
+}
