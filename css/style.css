@@ -1,67 +1,101 @@
-body {
+body 
+{
     font-family: 'Roboto', sans-serif;
 }
 
-h1, h2 {
+h1, h2 
+{
     color: #333;
 }
 
-.navbar {
+.navbar 
+{
     margin-bottom: 20px;
-    z-index: 1030; /* Чтобы шапка была выше других элементов */
-    background-color: rgba(255, 255, 255, 0.9); /* Уменьшение прозрачности шапки */
+    z-index: 1030;
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
-.card {
+.card 
+{
     transition: transform 0.2s;
-    height: 250px; /* Установите фиксированную высоту для карточек */
+    height: 250px;
 }
 
-.card:hover {
+.card:hover 
+{
     transform: scale(1.05);
 }
 
-footer {
+footer 
+{
     background-color: #f8f9fa;
 }
 
-.carousel-item img {
-    height: 100vh; /* Задать высоту слайдера на 100% высоты экрана */
-    object-fit: cover; /* Чтобы изображение заполняло всю область */
+.carousel-item img 
+{
+    height: 100vh;
+    object-fit: cover;
 }
 
-.carousel-caption {
-    bottom: 20%; /* Чтобы текст был более заметен */
+.carousel-caption 
+{
+    bottom: 20%;
 }
 
-.row.align-items-center {
+.row.align-items-center 
+{
     display: flex;
-    justify-content: center; /* Центрируем по горизонтали */
+    justify-content: center;
 }
 
-.card-body {
+.card-body 
+{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* Центрируем содержимое карточек */
+    align-items: center;
 }
 
-.modal-dialog-centered {
+.modal-dialog-centered 
+{
     display: flex;
-    align-items: center; /* Центрируем модальное окно по вертикали */
+    align-items: center;
 }
 
-.overflow-hidden {
-    overflow: hidden; /* Скрываем лишние элементы */
+.overflow-hidden 
+{
+    overflow: hidden;
 }
 
-#popularParts {
-    overflow-x: auto; /* Добавляем горизонтальную прокрутку */
-    white-space: nowrap; /* Убираем перенос строк */
+#popularParts 
+{
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
-@media (max-width: 768px) {
-    .card {
-        height: auto; /* Для мобильных устройств высота карточек может быть авто */
+@media (max-width: 768px) 
+{
+    .card 
+    {
+        height: auto;
     }
+}
+
+.row.align-items-center 
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#carBrandsList, #popularParts 
+{
+    scroll-behavior: smooth;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#carBrandsBlock, #partsContainer 
+{
+    display: flex;
 }
