@@ -1,66 +1,67 @@
 document.addEventListener('DOMContentLoaded', function() 
 {
-    let partsContainer = document.getElementById('partsContainer');
-    let carBrandsBlock = document.getElementById('carBrandsBlock');
+    let carBrandsList = document.getElementById('carBrandsList');
+    let popularPartsList = document.getElementById('popularParts');
+    
+    let scrollAmount = 265;
+    let isScrolling = false;
 
-    partsContainer.innerHTML += partsContainer.innerHTML;
-    carBrandsBlock.innerHTML += carBrandsBlock.innerHTML;
-
-    let carBrandsListLeft = document.getElementById('carBrandsListLeft');
-    let carBrandsListRight = document.getElementById('carBrandsListRight');
-    let popularPartsLeft = document.getElementById('popularPartsLeft');
-    let popularPartsRight = document.getElementById('popularPartsRight');
-
-    function scrollLeft(container) 
+    function cloneItems(container, count) 
     {
-        container.scrollBy({ left: -265, behavior: 'smooth' });
-    }
-
-    function scrollRight(container) 
-    {
-        container.scrollBy({ left: 265, behavior: 'smooth' });
-    }
-
-    function resetScroll(container) 
-    {
-        if (container.scrollLeft <= 0) 
+        let items = container.querySelectorAll('.scrollable-item');
+        for (let i = 0; i < count; i++) 
         {
-            container.scrollLeft = container.scrollWidth / 2 - container.clientWidth / 2;
-        }
-
-        else if (container.scrollLeft >= container.scrollWidth / 2) 
-        {
-            container.scrollLeft = 0;
+            items.forEach(item => {
+                let clone = item.cloneNode(true);
+                container.appendChild(clone);
+            });
         }
     }
 
-    carBrandsListLeft.addEventListener('click', function() 
+    cloneItems(carBrandsList.querySelector('#carBrandsBlock'), 3);
+    cloneItems(popularPartsList.querySelector('#partsContainer'), 3);
+
+    function scrollContainer(container, direction) 
     {
-        scrollLeft(document.getElementById('carBrandsList'));
+        if (isScrolling) 
+        {
+            return;
+        }
+
+        isScrolling = true;
+        container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+
+        setTimeout(() => {
+            if (direction < 0 && container.scrollLeft <= 0) 
+            {
+                container.scrollLeft = container.scrollWidth / 2 - container.clientWidth;
+            } 
+            else if (direction > 0 && container.scrollLeft >= container.scrollWidth / 5) 
+            {
+                container.scrollLeft = 0;
+            }
+
+            isScrolling = false;
+        }, 600);
+    }
+
+    document.getElementById('carBrandsListLeft').addEventListener('click', function() 
+    {
+        scrollContainer(carBrandsList, -4);
     });
 
-    carBrandsListRight.addEventListener('click', function() 
+    document.getElementById('carBrandsListRight').addEventListener('click', function() 
     {
-        scrollRight(document.getElementById('carBrandsList'));
+        scrollContainer(carBrandsList, 4);
     });
 
-    popularPartsLeft.addEventListener('click', function() 
+    document.getElementById('popularPartsLeft').addEventListener('click', function() 
     {
-        scrollLeft(document.getElementById('popularParts'));
+        scrollContainer(popularPartsList, -4);
     });
 
-    popularPartsRight.addEventListener('click', function()
+    document.getElementById('popularPartsRight').addEventListener('click', function() 
     {
-        scrollRight(document.getElementById('popularParts'));
-    });
-
-    document.getElementById('popularParts').addEventListener('scroll', function() 
-    {
-        resetScroll(this);
-    });
-
-    document.getElementById('carBrandsList').addEventListener('scroll', function() 
-    {
-        resetScroll(this);
+        scrollContainer(popularPartsList, 4);
     });
 });

@@ -90,12 +90,29 @@ footer
 
 #carBrandsList, #popularParts 
 {
-    scroll-behavior: smooth;
-    overflow-x: auto;
-    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.scrollable 
+{
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.scrollable-item 
+{
+    flex: 0 0 auto;
 }
 
 #carBrandsBlock, #partsContainer 
 {
     display: flex;
+}
+
+.card-img-top 
+{
+    width: 100%;
+    height: 50%;
+    object-fit: cover;
 }
