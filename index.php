@@ -93,11 +93,43 @@
         </a>
     </div>
 
+    <section class="container my-5 text-center" id="aboutUs">
+        <h2 class="text-center">О НАС</h2>
+        <p class="lead">Лал-Авто - это ведущий поставщик автозапчастей и услуг в области автомобильного сервиса. Мы стремимся предоставить нашим клиентам только качественные товары и услуги, соответствующие самым высоким стандартам.</p>
+        <p>Почему выбирают нас?</p>
+        <ul class="list-unstyled">
+            <li>✔️ Широкий ассортимент запчастей для различных марок автомобилей.</li>
+            <li>✔️ Конкурентоспособные цены.</li>
+            <li>✔️ Быстрая доставка и удобные способы оплаты.</li>
+            <li>✔️ Профессиональная консультация и поддержка клиентов.</li>
+            <li>✔️ Гарантия качества на все наши товары.</li>
+        </ul>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="img/no-image.png" alt="Качество" class="img-fluid rounded-circle mb-3">
+                <h5>Качество</h5>
+                <p>Мы работаем только с проверенными производителями.</p>
+            </div>
+            <div class="col-md-4">
+                <img src="img/no-image.png" alt="Доставка" class="img-fluid rounded-circle mb-3">
+                <h5>Доставка</h5>
+                <p>Быстрая и надежная доставка по всей территории.</p>
+            </div>
+            <div class="col-md-4">
+                <img src="img/no-image.png" alt="Поддержка" class="img-fluid rounded-circle mb-3">
+                <h5>Поддержка</h5>
+                <p>Наша команда готова помочь вам в любое время.</p>
+            </div>
+        </div>
+    </section>
+
     <section class="container my-5 text-center">
         <h2 class="text-center">Поиск по марке</h2>
+        <input type="text" id="brandSearch" placeholder="Поиск марки" class="form-control mb-4">
         <div class="row align-items-center">
             <button class="btn btn-secondary col-auto" id="carBrandsListLeft">◀</button>
             <div id="carBrandsList" class="col overflow-hidden">
+                <div id="no-results">Ничего не найдено!</div>
                 <div class="row flex-nowrap scrollable" id="carBrandsBlock">
                     <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
                         <div class="card shadow-sm h-100">
@@ -251,9 +283,11 @@
 
     <section class="container my-5 text-center">
         <h2 class="text-center">Поиск по запчастям</h2>
+        <input type="text" id="partsSearch" placeholder="Поиск запчасти" class="form-control mb-4">
         <div class="row align-items-center">
             <button class="btn btn-secondary col-auto" id="popularPartsLeft">◀</button>
             <div id="popularParts" class="col overflow-hidden">
+                <div id="no-results">Ничего не найдено!</div>
                 <div class="row flex-nowrap scrollable" id="partsContainer">
                     <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
                         <div class="card shadow-sm h-100">
