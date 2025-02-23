@@ -1,11 +1,12 @@
 body 
 {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 h1, h2 
 {
     color: #333;
+    font-weight: 600;
 }
 
 .navbar 
@@ -18,7 +19,11 @@ h1, h2
 .card 
 {
     transition: transform 0.2s;
+    width: 180px;
     height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card:hover 
@@ -28,7 +33,7 @@ h1, h2
 
 footer 
 {
-    background-color: #f8f9fa;
+    background-color: #f0f0f0;
 }
 
 .carousel-item img 
@@ -155,27 +160,49 @@ footer
     color: #007bff;
 }
 
-#no-results 
+#no-results-brands, #no-results-parts
 {
     margin-top: 20px;
     color: #dc3545;
     font-weight: bold;
     width: 100%;
-    display: none;
+    justify-content: center;
+    align-items: center;
 }
 
 #aboutUs 
 {
-    background-color: #f0f0f0;
-    padding: 40px 0;
-    width: 100%;
+    background-color: #f9f9f9;
+    padding: 60px;
+    position: relative;
+    z-index: 1;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#aboutUs h2 
+{
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+}
+
+#aboutUs p 
+{
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+#aboutUs .row div 
+{
+    padding: 20px;
 }
 
 #aboutUs img 
 {
     width: 80%;
-    max-width: 200px;
+    max-width: 250px;
     height: auto;
+    border-radius: 10px;
 }
 
 @media (max-width: 768px) 

@@ -5,22 +5,6 @@ document.addEventListener('DOMContentLoaded', function()
 
     let isScrolling = false;
 
-    function cloneItems(container, count) 
-    {
-        let items = container.querySelectorAll('.scrollable-item');
-
-        for (let i = 0; i < count; i++) 
-        {
-            items.forEach(item => {
-                let clone = item.cloneNode(true);
-                container.appendChild(clone);
-            });
-        }
-    }
-
-    cloneItems(carBrandsList.querySelector('#carBrandsBlock'), 3);
-    cloneItems(popularPartsList.querySelector('#partsContainer'), 3);
-
     function scrollContainer(container, direction) 
     {
         if (isScrolling) 
@@ -31,52 +15,47 @@ document.addEventListener('DOMContentLoaded', function()
         isScrolling = true;
 
         let itemWidth = container.querySelector('.scrollable-item').offsetWidth;
+        let newScrollLeft = container.scrollLeft + (direction * itemWidth);
+
+        if (newScrollLeft < 0 || newScrollLeft > container.scrollWidth - container.clientWidth) 
+        {
+            isScrolling = false;
+            return;
+        }
+
         container.scrollBy({ left: direction * itemWidth, behavior: 'smooth' });
 
         setTimeout(() => {
-            if (direction < 0 && container.scrollLeft <= 0) 
-            {
-                container.scrollLeft = container.scrollWidth - container.clientWidth;
-            } 
-            else if (direction > 0 && container.scrollLeft >= container.scrollWidth - container.clientWidth) 
-            {
-                container.scrollLeft = 0;
-            }
-
             isScrolling = false;
         }, 500);
     }
 
-    document.getElementById('carBrandsListLeft').addEventListener('click', () => 
-    {
+    document.getElementById('carBrandsListLeft').addEventListener('click', () => {
         scrollContainer(carBrandsList, -1);
     });
 
-    document.getElementById('carBrandsListRight').addEventListener('click', () => 
-    {
+    document.getElementById('carBrandsListRight').addEventListener('click', () => {
         scrollContainer(carBrandsList, 1);
     });
 
-    document.getElementById('popularPartsLeft').addEventListener('click', () => 
-    {
+    document.getElementById('popularPartsLeft').addEventListener('click', () => {
         scrollContainer(popularPartsList, -1);
     });
 
-    document.getElementById('popularPartsRight').addEventListener('click', () => 
-    {
+    document.getElementById('popularPartsRight').addEventListener('click', () => {
         scrollContainer(popularPartsList, 1);
     });
 
-    function filterItems(container, searchValue) 
+    function filterItems(container, searchValue, noResultsId) 
     {
         let items = container.querySelectorAll('.scrollable-item');
         let visibleCount = 0;
-    
+
         items.forEach(item => {
             let title = item.querySelector('.card-title') ? item.querySelector('.card-title').textContent.toLowerCase() : '';
-    
-            let isVisible = title.includes(searchValue.toLowerCase());
-    
+
+            let isVisible = title.includes(searchValue);
+
             if (isVisible) 
             {
                 item.style.display = 'block';
@@ -87,51 +66,40 @@ document.addEventListener('DOMContentLoaded', function()
                 item.style.display = 'none';
             }
         });
-    
-        let noResultsMessage = document.getElementById('no-results');
-    
+
+        let noResultsMessage = document.getElementById(noResultsId);
+
         if (noResultsMessage) 
         {
             if (visibleCount === 0) 
             {
                 noResultsMessage.style.display = 'flex';
             } 
-            else
+            else 
             {
                 noResultsMessage.style.display = 'none';
             }
         }
     }
-    
-    document.getElementById('brandSearch').addEventListener('input', function() 
+
+    document.getElementById('catalogSearchForm').addEventListener('submit', function(event) 
     {
-        if (this.value.trim() === "") 
-        {
-            carBrandsList.querySelectorAll('.scrollable-item').forEach(item => {
-                item.style.display = 'block';
-            });
-        }
-        filterItems(carBrandsList.querySelector('#carBrandsBlock'), this.value);
-    });
-    
-    document.getElementById('partsSearch').addEventListener('input', function() 
-    {
-        if (this.value.trim() === "") 
-        {
-            popularPartsList.querySelectorAll('.scrollable-item').forEach(item => {
-                item.style.display = 'block';
-            });
-        }
-        filterItems(popularPartsList.querySelector('#partsContainer'), this.value);
+        event.preventDefault();
+
+        let searchValue = document.getElementById('catalogSearchInput').value.toLowerCase();
+
+        filterItems(carBrandsList.querySelector('#carBrandsBlock'), searchValue, 'no-results-brands');
+
+        filterItems(popularPartsList.querySelector('#partsContainer'), searchValue, 'no-results-parts');
     });
 
     document.getElementById('brandSearch').addEventListener('input', function() 
     {
-        filterItems(carBrandsList.querySelector('#carBrandsBlock'), this.value);
+        filterItems(carBrandsList.querySelector('#carBrandsBlock'), this.value, 'no-results-brands');
     });
 
     document.getElementById('partsSearch').addEventListener('input', function() 
     {
-        filterItems(popularPartsList.querySelector('#partsContainer'), this.value);
+        filterItems(popularPartsList.querySelector('#partsContainer'), this.value, 'no-results-parts');
     });
 });
