@@ -181,15 +181,14 @@
         <h2 class="text-center">Поиск по марке</h2>
         <input type="text" id="brandSearch" placeholder="Поиск марки" class="form-control mb-4">
         <div class="row align-items-center">
-            <button class="btn btn-secondary col-auto" id="carBrandsListLeft">◀</button>
-            <div id="carBrandsList" class="col overflow-hidden">
+            <div id="carBrandsList" class="col overflow-hidden" style="max-height: 300px; overflow-y: auto;">
                 <div id="no-results-brands" style="display: none;">Ничего не найдено!</div>
                 <div class="row flex-nowrap scrollable" id="carBrandsBlock">
                     <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Acura.png" class="card-img-top" alt="Марка 1">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Acura</h5>
+                                <h6 class="card-title">Acura</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -198,7 +197,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Aixam.png" class="card-img-top" alt="Марка 2">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Aixam</h5>
+                                <h6 class="card-title">Aixam</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -207,7 +206,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Alfa Romeo.png" class="card-img-top" alt="Марка 3">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Alfa Romeo</h5>
+                                <h6 class="card-title">Alfa Romeo</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -216,7 +215,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Aston Martin.png" class="card-img-top" alt="Марка 4">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Aston Martin</h5>
+                                <h6 class="card-title">Aston Martin</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -225,7 +224,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Audi.png" class="card-img-top" alt="Марка 5">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Audi</h5>
+                                <h6 class="card-title">Audi</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -234,7 +233,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Bentley.png" class="card-img-top" alt="Марка 6">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Bentley</h5>
+                                <h6 class="card-title">Bentley</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -243,7 +242,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/BMW.png" class="card-img-top" alt="Марка 7">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">BMW</h5>
+                                <h6 class="card-title">BMW</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -252,7 +251,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Buick.png" class="card-img-top" alt="Марка 8">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Buick</h5>
+                                <h6 class="card-title">Buick</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -261,7 +260,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Cadillac.png" class="card-img-top" alt="Марка 9">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Cadillac</h5>
+                                <h6 class="card-title">Cadillac</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -270,7 +269,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Chevrolet.png" class="card-img-top" alt="Марка 10">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Chevrolet</h5>
+                                <h6 class="card-title">Chevrolet</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -279,7 +278,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Chrysler.png" class="card-img-top" alt="Марка 11">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Chrysler</h5>
+                                <h6 class="card-title">Chrysler</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -288,7 +287,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Dodge.png" class="card-img-top" alt="Марка 12">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Dodge</h5>
+                                <h6 class="card-title">Dodge</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -297,7 +296,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Fiat.png" class="card-img-top" alt="Марка 13">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Fiat</h5>
+                                <h6 class="card-title">Fiat</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -306,7 +305,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Ford.png" class="card-img-top" alt="Марка 14">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Ford</h5>
+                                <h6 class="card-title">Ford</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -315,7 +314,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Gaz.png" class="card-img-top" alt="Марка 15">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Gaz</h5>
+                                <h6 class="card-title">Gaz</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
@@ -324,14 +323,16 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/Stamps/Honda.png" class="card-img-top" alt="Марка 16">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Honda</h5>
+                                <h6 class="card-title">Honda</h6>
                                 <a href="#" class="btn btn-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="btn btn-secondary col-auto" id="carBrandsListRight">▶</button>
+        </div>
+        <div class="scrollbar" id="carBrandsScrollbar">
+            <div class="scrollbar-thumb"></div>
         </div>
     </section>
 
@@ -339,15 +340,14 @@
         <h2 class="text-center">Поиск по запчастям</h2>
         <input type="text" id="partsSearch" placeholder="Поиск запчасти" class="form-control mb-4">
         <div class="row align-items-center">
-            <button class="btn btn-secondary col-auto" id="popularPartsLeft">◀</button>
-            <div id="popularParts" class="col overflow-hidden">
+            <div id="popularParts" class="col overflow-hidden" style="max-height: 300px; overflow-y: auto;">
                 <div id="no-results-parts" style="display: none;">Ничего не найдено!</div>
                 <div class="row flex-nowrap scrollable" id="partsContainer">
                     <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
                         <div class="card shadow-sm h-100">
                             <img src="img/SpareParts/image1.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Коленчатый вал</h5>
+                                <h6 class="card-title">Коленчатый вал</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
@@ -356,7 +356,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/SpareParts/image2.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Прокладки двигателя</h5>
+                                <h6 class="card-title">Прокладки двигателя</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
@@ -365,7 +365,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/SpareParts/image3.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Топливный насос</h5>
+                                <h6 class="card-title">Топливный насос</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
@@ -374,7 +374,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/SpareParts/image4.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Распределительный вал</h5>
+                                <h6 class="card-title">Распределительный вал</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
@@ -383,7 +383,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/SpareParts/image5.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Тормозной цилиндр</h5>
+                                <h6 class="card-title">Тормозной цилиндр</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
@@ -392,7 +392,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/SpareParts/image6.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Тормозные колодки</h5>
+                                <h6 class="card-title">Тормозные колодки</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
@@ -401,7 +401,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/SpareParts/image7.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Стабилизатор</h5>
+                                <h6 class="card-title">Стабилизатор</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
@@ -410,7 +410,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/SpareParts/image8.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Тормозные суппорта</h5>
+                                <h6 class="card-title">Тормозные суппорта</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
@@ -419,7 +419,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/SpareParts/image9.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Топливный фильтр</h5>
+                                <h6 class="card-title">Топливный фильтр</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
@@ -428,7 +428,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/SpareParts/image10.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Тормозные диски</h5>
+                                <h6 class="card-title">Тормозные диски</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
@@ -437,7 +437,7 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/no-image.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Заполнитель</h5>
+                                <h6 class="card-title">Заполнитель</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
@@ -446,14 +446,16 @@
                         <div class="card shadow-sm h-100">
                             <img src="img/no-image.png" class="card-img-top" alt="Коленчатый вал">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Заполнитель</h5>
+                                <h6 class="card-title">Заполнитель</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="btn btn-secondary col-auto" id="popularPartsRight">▶</button>
+        </div>
+        <div class="scrollbar" id="popularPartsScrollbar">
+            <div class="scrollbar-thumb"></div>
         </div>
     </section>
 
@@ -468,6 +470,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="app.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

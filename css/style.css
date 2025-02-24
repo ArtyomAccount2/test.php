@@ -74,35 +74,7 @@ footer
 
 #popularParts 
 {
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-@media (max-width: 768px) 
-{
-    .card 
-    {
-        height: auto;
-    }
-}
-
-.row.align-items-center 
-{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#carBrandsList, #popularParts 
-{
-    position: relative;
-    overflow: hidden;
-}
-
-#popularParts 
-{
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow-x: hidden;
     white-space: nowrap;
 }
 
@@ -115,6 +87,7 @@ footer
 #carBrandsBlock, #partsContainer 
 {
     display: flex;
+    height: 300px;
 }
 
 .card-img-top 
@@ -160,14 +133,13 @@ footer
     color: #007bff;
 }
 
-#no-results-brands, #no-results-parts
+#no-results-brands, #no-results-parts 
 {
-    margin-top: 20px;
+    margin-top: 100px;
     color: #dc3545;
     font-weight: bold;
     width: 100%;
     justify-content: center;
-    align-items: center;
 }
 
 #aboutUs 
@@ -210,5 +182,61 @@ footer
     #aboutUs h5 
     {
         font-size: 1.2rem;
+    }
+}
+
+.scrollbar 
+{
+    position: relative;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    margin-top: 10px;
+    display: none;
+}
+
+.scrollbar-thumb 
+{
+    position: absolute;
+    background: #007bff;
+    border-radius: 4px;
+    height: 100%;
+}
+
+.scrollable 
+{
+    overflow-y: hidden;
+}
+
+#carBrandsList:has(.scrollable-item) > .scrollable, #popularParts:has(.scrollable-item) > .scrollable 
+{
+    display: flex;
+}
+
+@media (max-width: 1456px)
+{
+    .navbar 
+    {
+        padding: 10px 20px;
+    }
+
+    .navbar-nav .nav-item 
+    {
+        margin: 0 10px;
+    }
+
+    .form-inline 
+    {
+        width: 100%;
+    }
+
+    .form-control 
+    {
+        width: 70%;
+    }
+
+    .btn 
+    {
+        margin-left: 5px;
     }
 }
