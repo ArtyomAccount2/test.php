@@ -19,11 +19,16 @@ h1, h2
 .card 
 {
     transition: transform 0.2s;
-    width: 180px;
+    width: 190px;
     height: 250px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+#slider_body
+{
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .card:hover 
@@ -183,24 +188,6 @@ footer
     {
         font-size: 1.2rem;
     }
-}
-
-.scrollbar 
-{
-    position: relative;
-    height: 8px;
-    background: #f0f0f0;
-    border-radius: 4px;
-    margin-top: 10px;
-    display: none;
-}
-
-.scrollbar-thumb 
-{
-    position: absolute;
-    background: #007bff;
-    border-radius: 4px;
-    height: 100%;
 }
 
 .scrollable 
