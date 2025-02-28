@@ -1,3 +1,5 @@
+"use strict";
+
 document.addEventListener('DOMContentLoaded', function() 
 {
     let carBrandsList = document.getElementById('carBrandsList');
