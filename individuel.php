@@ -1,3 +1,7 @@
+<?php
+error_reporting(E_ALL);
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -10,15 +14,6 @@
 </head>
 <body>
 
-<?php
-error_reporting(E_ALL);
-session_start();
-
-require_once("config/link.php");
-
-if(empty($_POST))
-{
-?>
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
         <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="50"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,10 +22,10 @@ if(empty($_POST))
         <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#menuModal">Меню</button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Торговые марки</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Поддержка сайта</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Новости компании</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Оплата и доставка</a></li>
+                <li class="nav-item"><a class="nav-link" href="trademarks.php">Торговые марки</a></li>
+                <li class="nav-item"><a class="nav-link" href="siteSupport.php">Поддержка сайта</a></li>
+                <li class="nav-item"><a class="nav-link" href="companyNews.php">Новости компании</a></li>
+                <li class="nav-item"><a class="nav-link" href="paymentDelivery.php">Оплата и доставка</a></li>
             </ul>
             <a href="index.php" class="btn btn-secondary ml-3">Назад</a>
         </div>
@@ -66,26 +61,15 @@ if(empty($_POST))
     <div class="container my-5" style="padding-top: 60px;">
         <div class="row">
             <div class="col-md-6">
-                <h2 class="text-center" style="padding-bottom: 20px;">Регистрация для юридических лиц и ИП</h2>
+                <h2 class="text-center" style="padding-bottom: 20px;">Регистрация для физических лиц</h2>
                 <form action="/" method="POST">
                     <div class="form-group">
-                        <label for="organizationType">Наименование организации*</label>
+                        <label for="fullName">ФИО*</label>
                         <div class="d-flex">
-                            <select class="form-control w-25" style="margin-right: 10px;" id="organizationType" required>
-                                <option value="#" disabled selected></option>
-                                <option value="ООО">ООО</option>
-                                <option value="ОАО">ОАО</option>
-                                <option value="ЗАО">ЗАО</option>
-                                <option value="КПКО">КПКО</option>
-                                <option value="МУП">МУП</option>
-                                <option value="ИП">ИП</option>
-                            </select>
-                            <input type="text" class="form-control w-75" id="organizationName" placeholder="Введите название организации" required>
+                            <input type="text" class="form-control w-50" style="margin-right: 10px;" id="lastName" placeholder="Фамилия" required>
+                            <input type="text" class="form-control w-50" style="margin-right: 10px;" id="firstName" placeholder="Имя" required>
+                            <input type="text" class="form-control w-50" id="middleName" placeholder="Отчество" required>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inn">ИНН*</label>
-                        <input type="text" class="form-control w-100" id="inn" placeholder="Введите ИНН" required>
                     </div>
                     <div class="form-group">
                         <label for="email">E-mail*</label>
@@ -124,14 +108,6 @@ if(empty($_POST))
                         <input type="text" class="form-control w-100" id="address" placeholder="Введите адрес" required>
                     </div>
                     <div class="form-group">
-                        <label for="contactPerson">Имя контактного лица*</label>
-                        <input type="text" class="form-control w-100" id="contactPerson" placeholder="Введите имя контактного лица" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contactPhone">Телефон</label>
-                        <input type="tel" class="form-control w-100" id="contactPhone">
-                    </div>
-                    <div class="form-group">
                         <label for="phone">Мобильный телефон*</label>
                         <input type="tel" class="form-control w-100" id="phone" placeholder="+7 911 ___ __" required>
                     </div>
@@ -167,13 +143,10 @@ if(empty($_POST))
             <p><a href="#">Политика конфиденциальности</a> | <a href="#">Условия использования</a></p>
         </div>
     </footer>
-<?php
-}
-?>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="js/script1.js"></script>
+    <script src="files/app.js"></script>
 </body>
 </html>

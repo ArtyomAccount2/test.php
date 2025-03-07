@@ -10,6 +10,15 @@
 </head>
 <body>
 
+<?php
+error_reporting(E_ALL);
+session_start();
+
+require_once("config/link.php");
+
+if(empty($_POST))
+{
+?>
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
         <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="50"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,10 +27,10 @@
         <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#menuModal">Меню</button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Торговые марки</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Поддержка сайта</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Новости компании</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Оплата и доставка</a></li>
+                <li class="nav-item"><a class="nav-link" href="trademarks.php">Торговые марки</a></li>
+                <li class="nav-item"><a class="nav-link" href="siteSupport.php">Поддержка сайта</a></li>
+                <li class="nav-item"><a class="nav-link" href="companyNews.php">Новости компании</a></li>
+                <li class="nav-item"><a class="nav-link" href="paymentDelivery.php">Оплата и доставка</a></li>
             </ul>
             <form class="form-inline my-2 my-lg-0" id="catalogSearchForm">
                 <input class="form-control mr-2" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
@@ -93,7 +102,7 @@
         </a>
     </div>
 
-    <section class="text-center" id="aboutUs">
+    <section class="about-us text-center" id="aboutUs">
         <h2 class="text-center">О НАС</h2>
         <p class="lead">Лал-Авто - это ведущий поставщик автозапчастей и услуг в области автомобильного сервиса. Мы стремимся предоставить нашим клиентам только качественные товары и услуги, соответствующие самым высоким стандартам.</p>
         <p>Почему выбирают нас?</p>
@@ -106,19 +115,25 @@
         </ul>
         <div class="row">
             <div class="col-md-4">
-                <img src="img/slider-1.png" alt="Качество" class="img-fluid rounded mb-3">
-                <h5>Качество</h5>
-                <p>Мы работаем только с проверенными производителями.</p>
+                <div class="about-card">
+                    <img src="img/slider-1.png" alt="Качество" class="img-fluid rounded mb-3">
+                    <h5>Качество</h5>
+                    <p>Мы работаем только с проверенными производителями.</p>
+                </div>
             </div>
             <div class="col-md-4">
-                <img src="img/slider-2.png" alt="Доставка" class="img-fluid rounded mb-3">
-                <h5>Доставка</h5>
-                <p>Быстрая и надежная доставка по всей территории.</p>
+                <div class="about-card">
+                    <img src="img/slider-2.png" alt="Доставка" class="img-fluid rounded mb-3">
+                    <h5>Доставка</h5>
+                    <p>Быстрая и надежная доставка по всей территории.</p>
+                </div>
             </div>
             <div class="col-md-4">
-                <img src="img/slider-3.png" alt="Поддержка" class="img-fluid rounded mb-3">
-                <h5>Поддержка</h5>
-                <p>Наша команда готова помочь вам в любое время.</p>
+                <div class="about-card">
+                    <img src="img/slider-3.png" alt="Поддержка" class="img-fluid rounded mb-3">
+                    <h5>Поддержка</h5>
+                    <p>Наша команда готова помочь вам в любое время.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -161,11 +176,11 @@
                     <h5 class="modal-title w-100 text-center" id="registerModalLabel">Регистрация</h5>
                 </div>
                 <div class="modal-body text-center">
-                    <a href="user1.php" type="button" class="btn btn-primary mb-2" id="individualsBtn">Физические лица</a>
+                    <a href="individuel.php" type="button" class="btn btn-primary mb-2" id="individualsBtn">Физические лица</a>
                     <div id="individualsInfo" class="registration-info">
                         <p>- если Вы - физическое лицо, пройдите регистрацию. Регистрация возможна как при наличии карты скидок, так и при её отсутствии.</p>
                     </div>
-                    <a href="user2.php" type="button" class="btn btn-primary mb-2" id="legalEntitiesBtn">Юридические лица и ИП</a>
+                    <a href="legalEntity.php" type="button" class="btn btn-primary mb-2" id="legalEntitiesBtn">Юридические лица и ИП</a>
                     <div id="legalEntitiesInfo" class="registration-info">
                         <p>- если Вы - представитель организации, учреждения, предприятия или фирмы, заполните данную форму регистрации.</p>
                     </div>
@@ -574,6 +589,9 @@
             <p><a href="#">Политика конфиденциальности</a> | <a href="#">Условия использования</a></p>
         </div>
     </footer>
+<?php
+}
+?>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
