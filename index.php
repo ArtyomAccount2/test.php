@@ -20,17 +20,17 @@ if(empty($_POST))
 {
 ?>
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
-        <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="50"></a>
+        <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#menuModal">Меню</button>
+        <button class="btn btn-primary ml-2 mx-auto" data-toggle="modal" data-target="#menuModal">Меню</button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="trademarks.php">Торговые марки</a></li>
-                <li class="nav-item"><a class="nav-link" href="siteSupport.php">Поддержка сайта</a></li>
-                <li class="nav-item"><a class="nav-link" href="companyNews.php">Новости компании</a></li>
-                <li class="nav-item"><a class="nav-link" href="paymentDelivery.php">Оплата и доставка</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Торговые марки</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Поддержка сайта</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Новости компании</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Оплата и доставка</a></li>
             </ul>
             <form class="form-inline my-2 my-lg-0" id="catalogSearchForm">
                 <input class="form-control mr-2" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
@@ -47,18 +47,20 @@ if(empty($_POST))
                 <div class="modal-header">
                     <h5 class="modal-title w-100 text-center" id="menuModalLabel">Меню</h5>
                 </div>
-                <div class="modal-body text-center">
+                <div class="modal-body">
                     <ul class="list-unstyled">
-                        <li><a href="#">Магазины</a></li>
-                        <li><a href="#">Автосервис</a></li>
-                        <li><a href="#">Ассортимент</a></li>
-                        <li><a href="#">Масла и тех. жидкости</a></li>
-                        <li><a href="#">Аксессуары</a></li>
-                        <li><a href="#">Покупателям</a></li>
-                        <li><a href="#">Поставщикам</a></li>
-                        <li><a href="#">Вакансии</a></li>
-                        <li><a href="#">Контакты</a></li>
-                        <li><a href="#">Отзывы</a></li>
+                        <li>
+                            <a class="btn btn-primary ml-2 m-2" href="#">Магазины</a>
+                            <a class="btn btn-primary ml-2 m-2" href="#">Автосервис</a>
+                            <a class="btn btn-primary ml-2 m-2" href="#">Ассортимент</a>
+                            <a class="btn btn-primary ml-2 m-2" href="#">Масла и тех. жидкости</a>
+                            <a class="btn btn-primary ml-2 m-2" href="#">Аксессуары</a>
+                            <a class="btn btn-primary ml-2 m-2" href="#">Покупателям</a>
+                            <a class="btn btn-primary ml-2 m-2" href="#">Поставщикам</a>
+                            <a class="btn btn-primary ml-2 m-2" href="#">Вакансии</a>
+                            <a class="btn btn-primary ml-2 m-2" href="#">Контакты</a>
+                            <a class="btn btn-primary ml-2 m-2" href="#">Отзывы</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="modal-footer">
@@ -102,10 +104,14 @@ if(empty($_POST))
         </a>
     </div>
 
-    <section class="about-us text-center" id="aboutUs">
+    <section class="about-us" id="aboutUs">
         <h2 class="text-center">О НАС</h2>
         <p class="lead">Лал-Авто - это ведущий поставщик автозапчастей и услуг в области автомобильного сервиса. Мы стремимся предоставить нашим клиентам только качественные товары и услуги, соответствующие самым высоким стандартам.</p>
-        <p>Почему выбирают нас?</p>
+        <p class="lead">Наша компания предлагает широкий ассортимент автозапчастей для различных марок и моделей автомобилей, включая как оригинальные, так и высококачественные аналоги. Мы сотрудничаем с проверенными производителями, что гарантирует надежность и долговечность нашей продукции.</p>
+        <p class="lead">Кроме того, Лал-Авто предоставляет полный спектр услуг в области автомобильного сервиса. Наша команда квалифицированных специалистов готова предложить диагностику, ремонт и техническое обслуживание автомобилей любой сложности. Мы используем только современное оборудование и передовые технологии, что позволяет нам обеспечивать высокий уровень сервиса.</p>
+        <p class="lead">Мы ценим каждого клиента и стремимся к долгосрочным отношениям, поэтому всегда готовы предложить индивидуальный подход, гибкие условия сотрудничества и конкурентоспособные цены. Наша цель – сделать ваш автомобиль безопасным и надежным, а ваше время – ценным.</p>
+        <p class="lead">Выбирая Лал-Авто, вы выбираете качество, надежность и профессионализм. Мы уверены, что с нами ваш автомобиль будет в надежных руках!</p>
+        <h3 class="text-center m-5 lead-text">Почему выбирают нас?</h3>
         <ul class="list-unstyled">
             <li>✔️ Широкий ассортимент запчастей для различных марок автомобилей.</li>
             <li>✔️ Конкурентоспособные цены.</li>
@@ -113,7 +119,7 @@ if(empty($_POST))
             <li>✔️ Профессиональная консультация и поддержка клиентов.</li>
             <li>✔️ Гарантия качества на все наши товары.</li>
         </ul>
-        <div class="row">
+        <div class="row text-center">
             <div class="col-md-4">
                 <div class="about-card">
                     <img src="img/slider-1.png" alt="Качество" class="img-fluid rounded mb-3">
