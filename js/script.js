@@ -44,7 +44,9 @@ document.addEventListener('DOMContentLoaded', function()
 
         if (scrollbar) 
         {
-            if (visibleCount > 5) 
+            let isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+            if (visibleCount > 5 || !isMobile) 
             {
                 scrollbar.style.display = 'block';
                 let scrollThumb = scrollbar.querySelector('.scrollbar-thumb');
@@ -80,5 +82,43 @@ document.addEventListener('DOMContentLoaded', function()
     document.getElementById('partsSearch').addEventListener('input', function() 
     {
         filterItems(popularPartsList.querySelector('#partsContainer'), this.value, 'no-results-parts');
+    });
+
+    function addSwipeSupport(container) 
+    {
+        let hammer = new Hammer(container);
+        
+        hammer.on('swipeleft', function() 
+        {
+            let nextItem = container.querySelector('.scrollable-item:not([style*="display: none"]) + .scrollable-item');
+
+            if (nextItem) 
+            {
+                nextItem.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+            }
+        });
+
+        hammer.on('swiperight', function() 
+        {
+            let previousItem = container.querySelector('.scrollable-item[style*="display: none"] + .scrollable-item');
+
+            if (previousItem) 
+            {
+                previousItem.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+            }
+        });
+    }
+
+    addSwipeSupport(carBrandsList.querySelector('#carBrandsBlock'));
+    addSwipeSupport(popularPartsList.querySelector('#partsContainer'));
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+    
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
     });
 });

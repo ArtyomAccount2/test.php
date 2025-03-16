@@ -6,6 +6,7 @@
     <title>Лал-Авто - Автозапчасти</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -24,7 +25,7 @@ if(empty($_POST))
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <button class="btn btn-primary ml-2 mx-auto" data-toggle="modal" data-target="#menuModal">Меню</button>
+        <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#menuModal">Меню</button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item"><a class="nav-link" href="#">Торговые марки</a></li>
@@ -36,8 +37,10 @@ if(empty($_POST))
                 <input class="form-control mr-2" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Найти</button>
             </form>
-            <a href="#" class="btn btn-primary ml-3" data-toggle="modal" data-target="#loginModal">Войти</a>
-            <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#registerModal">Зарегистрироваться</a>
+            <div class="ml-3">
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Войти</a>
+                <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#registerModal">Зарегистрироваться</a>
+            </div>
         </div>
     </nav>
 
@@ -77,6 +80,7 @@ if(empty($_POST))
                 <div class="carousel-caption d-none d-md-block">
                     <h5 id="slider_body">Лучшие автозапчасти</h5>
                     <p id="slider_body">Найдите запчасти для вашего автомобиля.</p>
+                    <a href="#aboutUs" class="btn btn-primary">Перейти на следующий экран</a>
                 </div>
             </div>
             <div class="carousel-item">
@@ -84,6 +88,7 @@ if(empty($_POST))
                 <div class="carousel-caption d-none d-md-block">
                     <h5 id="slider_body">Качество и надежность</h5>
                     <p id="slider_body">Мы предлагаем только проверенные запчасти.</p>
+                    <a href="#aboutUs" class="btn btn-primary">Перейти на следующий экран</a>
                 </div>
             </div>
             <div class="carousel-item">
@@ -91,6 +96,7 @@ if(empty($_POST))
                 <div class="carousel-caption d-none d-md-block">
                     <h5 id="slider_body">Быстрая доставка</h5>
                     <p id="slider_body">Получите свои запчасти в кратчайшие сроки.</p>
+                    <a href="#aboutUs" class="btn btn-primary">Перейти на следующий экран</a>
                 </div>
             </div>
         </div>
@@ -141,6 +147,9 @@ if(empty($_POST))
                     <p>Наша команда готова помочь вам в любое время.</p>
                 </div>
             </div>
+        </div>
+        <div class="text-center">
+            <a href="#nextSection" class="btn btn-primary mt-4">Перейти на следующий экран</a>
         </div>
     </section>
 
@@ -198,7 +207,7 @@ if(empty($_POST))
         </div>
     </div>
 
-    <section class="container my-5 text-center">
+    <section class="container my-5 text-center" id="nextSection">
         <h2 class="text-center">Поиск по марке</h2>
         <input type="text" id="brandSearch" placeholder="Поиск марки" class="form-control mb-4 w-100">
         <div class="row mx-auto align-items-center">

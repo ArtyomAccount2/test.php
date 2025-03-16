@@ -15,17 +15,17 @@ error_reporting(E_ALL);
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
-        <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="50"></a>
+        <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#menuModal">Меню</button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="trademarks.php">Торговые марки</a></li>
-                <li class="nav-item"><a class="nav-link" href="siteSupport.php">Поддержка сайта</a></li>
-                <li class="nav-item"><a class="nav-link" href="companyNews.php">Новости компании</a></li>
-                <li class="nav-item"><a class="nav-link" href="paymentDelivery.php">Оплата и доставка</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Торговые марки</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Поддержка сайта</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Новости компании</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Оплата и доставка</a></li>
             </ul>
             <a href="index.php" class="btn btn-secondary ml-3">Назад</a>
         </div>
