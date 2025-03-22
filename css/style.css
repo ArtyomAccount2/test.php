@@ -19,6 +19,46 @@ h1, h2
     margin-bottom: 20px;
     z-index: 1030;
     background-color: rgba(255, 255, 255, 0.9);
+    transition: top 0.3s;
+}
+
+.navbar.collapsed 
+{
+    top: -100px;
+}
+
+#carBrandsList:has(.scrollable-item[style*="display: block"]), #popularPartsList:has(.scrollable-item[style*="display: block"]) 
+{
+    .scrollbar 
+    {
+        display: flex;
+    }
+}
+
+.scrollbar 
+{
+    display: none;
+}
+
+.scrollbar-thumb 
+{
+    background-color: #007bff;
+    border-radius: 5px;
+    height: 100%;
+    position: absolute;
+}
+
+.scrollbar-thumb 
+{
+    background-color: #007bff;
+    border-radius: 5px;
+    height: 100%;
+    position: absolute;
+}
+
+#carBrandsList, #popularPartsList 
+{
+    overflow: hidden;
 }
 
 .card 
@@ -58,6 +98,11 @@ footer
 {
     height: 100vh;
     object-fit: cover;
+}
+
+.navbar-brand img 
+{
+    height: 90px;
 }
 
 .carousel-caption 
@@ -133,6 +178,14 @@ footer
     .scrollable-item 
     {
         flex: 0 0 33.33%;
+    }
+}
+
+@media (min-width: 769px) 
+{
+    .scrollbar 
+    {
+        display: flex;
     }
 }
 
@@ -224,6 +277,10 @@ footer
     #aboutUs h5 
     {
         font-size: 1.2rem;
+    }
+    .scrollbar 
+    {
+        display: none;
     }
 }
 

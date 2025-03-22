@@ -2,6 +2,25 @@
 
 document.addEventListener('DOMContentLoaded', function() 
 {
+    let lastScrollTop = 0;
+    let navbar = document.querySelector('.navbar');
+
+    window.addEventListener('scroll', function () 
+    {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) 
+        {
+            navbar.classList.add('collapsed');
+        } 
+        else 
+        {
+            navbar.classList.remove('collapsed');
+        }
+
+        lastScrollTop = scrollTop;
+    });
+
     let carBrandsList = document.getElementById('carBrandsList');
     let popularPartsList = document.getElementById('popularParts');
 
@@ -12,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function()
 
         items.forEach(item => {
             let title = item.querySelector('.card-title') ? item.querySelector('.card-title').textContent.toLowerCase() : '';
-
             let isVisible = title.includes(searchValue.toLowerCase());
 
             if (isVisible) 
@@ -24,6 +42,8 @@ document.addEventListener('DOMContentLoaded', function()
             {
                 item.style.display = 'none';
             }
+
+            updateScrollbar(container);
         });
 
         let noResultsMessage = document.getElementById(noResultsId);
@@ -40,26 +60,25 @@ document.addEventListener('DOMContentLoaded', function()
             }
         }
 
-        let scrollbar = container.closest('.row').nextElementSibling;
-
-        if (scrollbar) 
+        function updateScrollbar(container) 
         {
-            let isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-            if (visibleCount > 5 || !isMobile) 
-            {
-                scrollbar.style.display = 'block';
-                let scrollThumb = scrollbar.querySelector('.scrollbar-thumb');
-                
-                if (scrollThumb) 
+            let scrollbar = container.closest('.row').nextElementSibling;
+            let visibleCount = container.querySelectorAll('.scrollable-item[style*="display: block"]').length;
+        
+            if (scrollbar) 
                 {
-                    let scrollWidth = (container.scrollWidth / visibleCount) * visibleCount;
-                    scrollThumb.style.width = `${scrollWidth}px`;
+                let scrollThumb = scrollbar.querySelector('.scrollbar-thumb');
+        
+                if (scrollThumb && visibleCount > 0) 
+                {
+                    scrollbar.style.display = 'flex';
+                    let scrollWidth = (container.scrollWidth / container.scrollHeight) * 100;
+                    scrollThumb.style.width = `${scrollWidth}%`;
+                } 
+                else 
+                {
+                    scrollbar.style.display = 'none';
                 }
-            } 
-            else 
-            {
-                scrollbar.style.display = 'none';
             }
         }
     }

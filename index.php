@@ -1,3 +1,33 @@
+<?php
+error_reporting(E_ALL);
+session_start();
+require_once("config/link.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") 
+{
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+
+    $stmt = $conn->prepare("SELECT * FROM users WHERE login_users = ? AND password_users = ?");
+    $stmt->bind_param("ss", $login, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) 
+    {
+        $_SESSION['loggedin'] = true;
+        $_SESSION['user'] = $login;
+
+        header("Location: index.php");
+        exit();
+    } 
+    else 
+    {
+        $error_message = "Неверный логин или пароль!";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -11,15 +41,7 @@
 </head>
 <body>
 
-<?php
-error_reporting(E_ALL);
-session_start();
-
-require_once("config/link.php");
-
-if(empty($_POST))
-{
-?>
+<div class="flex-grow-1">
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
         <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,21 +50,76 @@ if(empty($_POST))
         <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#menuModal">Меню</button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Торговые марки</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Поддержка сайта</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Новости компании</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Оплата и доставка</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#">Торговые марки</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#">Поддержка сайта</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#">Новости компании</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#">Оплата и доставка</a></li>
             </ul>
             <form class="form-inline my-2 my-lg-0" id="catalogSearchForm">
                 <input class="form-control mr-2" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Найти</button>
             </form>
             <div class="ml-3">
-                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Войти</a>
-                <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#registerModal">Зарегистрироваться</a>
+                <?php 
+                if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) 
+                {
+                ?>
+                    <form action="files/logout.php" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-secondary">Выйти</button>
+                    </form>
+                <?php 
+                } 
+                else 
+                {
+                ?>
+                    <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#loginModal">Войти</a>
+                    <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#registerModal">Зарегистрироваться</a>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </nav>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title w-100 text-center" id="loginModalLabel">Авторизация</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/">
+                        <div class="form-group">
+                            <label for="username">Логин</label>
+                            <input type="text" name="login" class="form-control" id="username" placeholder="Введите логин" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Пароль</label>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Введите пароль" required>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" name="rememberMe" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Запомнить меня</label>
+                        </div>
+                        <?php 
+                        if (!empty($error_message))
+                        {?>
+                            <div class="alert alert-danger" role="alert">
+                                <?= $error_message; ?>
+                            </div>
+                        <?php  
+                        }
+                        ?>
+                        <button type="submit" class="btn btn-primary">Войти</button>
+                        <a href="#" class="btn btn-link">Забыли пароль?</a>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -152,37 +229,6 @@ if(empty($_POST))
             <a href="#nextSection" class="btn btn-primary mt-4">Перейти на следующий экран</a>
         </div>
     </section>
-
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title w-100 text-center" id="loginModalLabel">Авторизация</h5>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="username">Логин</label>
-                            <input type="text" class="form-control" id="username" placeholder="Введите логин">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Пароль</label>
-                            <input type="password" class="form-control" id="password" placeholder="Введите пароль">
-                        </div>
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="rememberMe">
-                            <label class="form-check-label" for="rememberMe">Запомнить меня</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Войти</button>
-                        <a href="#" class="btn btn-link">Забыли пароль?</a>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -596,7 +642,7 @@ if(empty($_POST))
             <div class="scrollbar-thumb"></div>
         </div>
     </section>
-
+</div>
     <footer class="text-center py-4">
         <div class="container">
             <p>© 2025 Лал-Авто. Все права защищены.</p>
@@ -604,9 +650,6 @@ if(empty($_POST))
             <p><a href="#">Политика конфиденциальности</a> | <a href="#">Условия использования</a></p>
         </div>
     </footer>
-<?php
-}
-?>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

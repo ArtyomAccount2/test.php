@@ -14,6 +14,8 @@ error_reporting(E_ALL);
 </head>
 <body>
 
+    <div class="flex-grow-1">
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
         <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,10 +24,10 @@ error_reporting(E_ALL);
         <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#menuModal">Меню</button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Торговые марки</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Поддержка сайта</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Новости компании</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Оплата и доставка</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#">Торговые марки</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#">Поддержка сайта</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#">Новости компании</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="#">Оплата и доставка</a></li>
             </ul>
             <a href="index.php" class="btn btn-secondary ml-3">Назад</a>
         </div>
@@ -136,17 +138,6 @@ error_reporting(E_ALL);
         </div>
     </div>
 
-    <footer class="text-center py-4">
-        <div class="container">
-            <p>© 2025 Лал-Авто. Все права защищены.</p>
-            <p>Контактный телефон: +7 (4012) 65-65-65</p>
-            <p><a href="#">Политика конфиденциальности</a> | <a href="#">Условия использования</a></p>
-        </div>
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="files/app.js"></script>
-</body>
-</html>
+    <?php
+        require_once("files/register.php");
+    ?>
