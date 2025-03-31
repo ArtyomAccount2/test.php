@@ -47,13 +47,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#menuModal">Меню</button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link text-dark" href="#">Торговые марки</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="#">Поддержка сайта</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="#">Новости компании</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="#">Оплата и доставка</a></li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Торговые марки</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Поддержка сайта</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Новости компании</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Оплата и доставка</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Меню
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Автосервис</a>
+                        <a class="dropdown-item" href="#">Ассортимент</a>
+                        <a class="dropdown-item" href="#">Масла и тех. жидкости</a>
+                        <a class="dropdown-item" href="#">Аксессуары</a>
+                        <a class="dropdown-item" href="#">Покупателям</a>
+                        <a class="dropdown-item" href="#">Поставщикам</a>
+                        <a class="dropdown-item" href="#">Вакансии</a>
+                        <a class="dropdown-item" href="#">Контакты</a>
+                        <a class="dropdown-item" href="#">Отзывы</a>
+                    </div>
+                </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" id="catalogSearchForm">
                 <input class="form-control mr-2" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
@@ -72,8 +95,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 else 
                 {
                 ?>
-                    <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#loginModal">Войти</a>
-                    <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#registerModal">Зарегистрироваться</a>
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Войти</a>
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">Зарегистрироваться</a>
                 <?php
                 }
                 ?>
@@ -113,35 +136,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         <button type="submit" class="btn btn-primary">Войти</button>
                         <a href="#" class="btn btn-link">Забыли пароль?</a>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title w-100 text-center" id="menuModalLabel">Меню</h5>
-                </div>
-                <div class="modal-body">
-                    <ul class="list-unstyled">
-                        <li>
-                            <a class="btn btn-primary ml-2 m-2" href="#">Магазины</a>
-                            <a class="btn btn-primary ml-2 m-2" href="#">Автосервис</a>
-                            <a class="btn btn-primary ml-2 m-2" href="#">Ассортимент</a>
-                            <a class="btn btn-primary ml-2 m-2" href="#">Масла и тех. жидкости</a>
-                            <a class="btn btn-primary ml-2 m-2" href="#">Аксессуары</a>
-                            <a class="btn btn-primary ml-2 m-2" href="#">Покупателям</a>
-                            <a class="btn btn-primary ml-2 m-2" href="#">Поставщикам</a>
-                            <a class="btn btn-primary ml-2 m-2" href="#">Вакансии</a>
-                            <a class="btn btn-primary ml-2 m-2" href="#">Контакты</a>
-                            <a class="btn btn-primary ml-2 m-2" href="#">Отзывы</a>
-                        </li>
-                    </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>

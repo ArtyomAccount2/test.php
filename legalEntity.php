@@ -1,71 +1,14 @@
-<?php
-error_reporting(E_ALL);
-?>
+    <?php
+        require_once("files/header.php");
+    ?>
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Лал-Авто - Автозапчасти</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-
-<div class="flex-grow-1">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
-        <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#menuModal">Меню</button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link text-dark" href="#">Торговые марки</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="#">Поддержка сайта</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="#">Новости компании</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="#">Оплата и доставка</a></li>
-            </ul>
-            <a href="index.php" class="btn btn-secondary ml-3">Назад</a>
-        </div>
-    </nav>
-
-    <div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title w-100 text-center" id="menuModalLabel">Меню</h5>
-                </div>
-                <div class="modal-body text-center">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Магазины</a></li>
-                        <li><a href="#">Автосервис</a></li>
-                        <li><a href="#">Ассортимент</a></li>
-                        <li><a href="#">Масла и тех. жидкости</a></li>
-                        <li><a href="#">Аксессуары</a></li>
-                        <li><a href="#">Покупателям</a></li>
-                        <li><a href="#">Поставщикам</a></li>
-                        <li><a href="#">Вакансии</a></li>
-                        <li><a href="#">Контакты</a></li>
-                        <li><a href="#">Отзывы</a></li>
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container my-5" style="padding-top: 60px;">
+    <div class="container my-5" style="padding-top: 75px;">
         <div class="row">
             <div class="col-md-6">
                 <h2 class="text-center" style="padding-bottom: 20px;">Регистрация для юридических лиц и ИП</h2>
-                <form action="files/registerAltFrom.php" method="POST">
+                <form action="files/registerForm.php" method="POST" onsubmit="return validateForm();">
                     <div class="form-group">
-                        <label for="organizationType">Наименование организации*</label>
+                        <label class="d-flex" id="label" for="organizationType">Наименование организации<p class="text-danger">*</p></label>
                         <div class="d-flex">
                             <select name="organizationType" class="form-control w-25" style="margin-right: 10px;" id="organizationType" required>
                                 <option value="#" disabled selected></option>
@@ -80,23 +23,23 @@ error_reporting(E_ALL);
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inn">ИНН*</label>
+                        <label class="d-flex" id="label" for="inn">ИНН<p class="text-danger">*</p></label>
                         <input type="text" name="TIN" class="form-control w-100" id="inn" placeholder="Введите ИНН" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">E-mail*</label>
+                        <label class="d-flex" id="label" for="email">E-mail<p class="text-danger">*</p></label>
                         <input type="email" name="email" class="form-control w-100" id="email" placeholder="Введите E-mail" required>
                     </div>
                     <div class="form-group">
-                        <label for="login">Логин*</label>
+                        <label class="d-flex" id="label" for="login">Логин<p class="text-danger">*</p></label>
                         <input type="text" name="login" class="form-control w-100" id="login" placeholder="Введите логин" required>
                     </div>
                     <div class="form-group">
-                        <label for="password">Пароль*</label>
+                        <label class="d-flex" id="label" for="password">Пароль<p class="text-danger">*</p></label>
                         <input type="password" name="password" class="form-control w-100" id="password" placeholder="Введите пароль" required>
                     </div>
                     <div class="form-group">
-                        <label for="confirmPassword">Повтор пароля*</label>
+                        <label class="d-flex" id="label" for="confirmPassword">Повтор пароля<p class="text-danger">*</p></label>
                         <input type="password" name="password" class="form-control w-100" id="confirmPassword" placeholder="Повторите пароль" required>
                     </div>
                     <div class="form-group form-check">
@@ -108,32 +51,24 @@ error_reporting(E_ALL);
                         <input type="text" name="discountCardNumber" class="form-control w-100" id="discountCardNumber" placeholder="Введите номер карты" maxlength="6">
                     </div>
                     <div class="form-group">
-                        <label for="region">Регион*</label>
+                        <label class="d-flex" id="label" for="region">Регион<p class="text-danger">*</p></label>
                         <input type="text" name="region" class="form-control w-100" id="region" value="Калининградская область" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="city">Город*</label>
+                        <label class="d-flex" id="label" for="city">Город<p class="text-danger">*</p></label>
                         <input type="text" name="city" class="form-control w-100" id="city" placeholder="Введите город" required>
                     </div>
                     <div class="form-group">
-                        <label for="address">Адрес*</label>
+                        <label class="d-flex" id="label" for="address">Адрес<p class="text-danger">*</p></label>
                         <input type="text" name="address" class="form-control w-100" id="address" placeholder="Введите адрес" required>
                     </div>
                     <div class="form-group">
-                        <label for="contactPerson">Имя контактного лица*</label>
+                        <label class="d-flex" id="label" for="contactPerson">Имя контактного лица<p class="text-danger">*</p></label>
                         <input type="text" name="person" class="form-control w-100" id="contactPerson" placeholder="Введите имя контактного лица" required>
                     </div>
                     <div class="form-group">
-                        <label for="contactPhone">Телефон</label>
-                        <input type="tel" name="telephone" class="form-control w-100" id="contactPhone">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Мобильный телефон*</label>
+                        <label class="d-flex" id="label" for="phone">Мобильный телефон<p class="text-danger">*</p></label>
                         <input type="tel" name="phone" class="form-control w-100" id="phone" placeholder="+7 911 ___ __" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="captcha">Введите проверочное значение*</label>
-                        <input type="text" class="form-control w-100" id="captcha" placeholder="<?= rand(1, 10) . ' + ' . rand(1, 10) . ' + ' . rand(1, 10) . ' ='; ?>" required>
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="agreement" required>

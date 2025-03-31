@@ -14,6 +14,25 @@ h1, h2
     font-weight: 600;
 }
 
+#label
+{
+    height: 25px;
+}
+
+@media (min-width: 992px)
+{
+    .nav-link
+    {
+        background: linear-gradient(currentColor 0 0) bottom /var(--d, 0) 3px no-repeat;
+        transition: 0.5s;
+    }
+
+    .nav-link:hover 
+    {
+        --d: 100%;
+    }
+}
+
 .navbar 
 {
     margin-bottom: 20px;
@@ -25,14 +44,6 @@ h1, h2
 .navbar.collapsed 
 {
     top: -100px;
-}
-
-#carBrandsList:has(.scrollable-item[style*="display: block"]), #popularPartsList:has(.scrollable-item[style*="display: block"]) 
-{
-    .scrollbar 
-    {
-        display: flex;
-    }
 }
 
 .scrollbar 
@@ -170,6 +181,16 @@ footer
     .scrollable-item 
     {
         flex: 0 0 50%;
+    }
+
+    .dropdown-menu 
+    {
+        width: 100%;
+    }
+    
+    .dropdown-item 
+    {
+        padding: 10px 15px;
     }
 }
 

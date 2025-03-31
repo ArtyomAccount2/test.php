@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function()
 {
     let lastScrollTop = 0;
     let navbar = document.querySelector('.navbar');
+    let dropdownMenus = document.querySelectorAll('.dropdown-menu');
 
     window.addEventListener('scroll', function () 
     {
@@ -12,6 +13,12 @@ document.addEventListener('DOMContentLoaded', function()
         if (scrollTop > lastScrollTop) 
         {
             navbar.classList.add('collapsed');
+            dropdownMenus.forEach(menu => {
+                if (menu.classList.contains('show')) 
+                {
+                    menu.classList.remove('show');
+                }
+            });
         } 
         else 
         {
@@ -139,5 +146,25 @@ document.addEventListener('DOMContentLoaded', function()
                 behavior: 'smooth'
             });
         });
+    });
+
+    $(document).on('click', function (e) 
+    {
+        if (!$(e.target).closest('.dropdown').length) 
+        {
+            $('.dropdown-menu').removeClass('show');
+        }
+    });
+
+    document.getElementById('discountCardCheck').addEventListener('change', function() 
+    {
+        if (this.checked)
+        {
+            document.getElementById('discountCardNumberGroup').style.display = 'block';
+        }
+        else
+        {
+            document.getElementById('discountCardNumberGroup').style.display = 'none';
+        }
     });
 });
