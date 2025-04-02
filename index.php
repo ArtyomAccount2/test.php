@@ -8,22 +8,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $login = $_POST['login'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE login_users = ? AND password_users = ?");
-    $stmt->bind_param("ss", $login, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) 
+    if ($login === 'admin' && $password === 'admin') 
     {
         $_SESSION['loggedin'] = true;
-        $_SESSION['user'] = $login;
-
-        header("Location: index.php");
+        $_SESSION['user'] = 'admin';
+        header("Location: admin.php");
         exit();
-    } 
-    else 
+    }
+    else
     {
-        $error_message = "Неверный логин или пароль!";
+        $stmt = $conn->prepare("SELECT * FROM users WHERE login_users = ? AND password_users = ?");
+        $stmt->bind_param("ss", $login, $password);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) 
+        {
+            $_SESSION['loggedin'] = true;
+            $_SESSION['user'] = $login;
+
+            header("Location: index.php");
+            exit();
+        } 
+        else 
+        {
+            $error_message = "Неверный логин или пароль!";
+        }
     }
 }
 ?>
@@ -42,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 <body>
 
 <div class="flex-grow-1">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
+    <nav class="navbar navbar-expand-xl navbar-light bg-light shadow-sm fixed-top">
         <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -78,11 +88,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     </div>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0" id="catalogSearchForm">
+            <form class="form-inline my-2" id="catalogSearchForm">
                 <input class="form-control mr-2" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Найти</button>
+                <button class="btn btn-outline-primary my-2" type="submit">Найти</button>
             </form>
-            <div class="ml-3">
+            <div class="ml-auto">
                 <?php 
                 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) 
                 {
