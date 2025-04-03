@@ -92,5 +92,5 @@
     </div>
 
     <?php
-        require_once("files/register.php");
+        require_once("files/footer.php");
     ?>

@@ -46,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     <title>Лал-Авто - Автозапчасти</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -88,11 +87,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     </div>
                 </li>
             </ul>
-            <form class="form-inline my-2" id="catalogSearchForm">
+            <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-2" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
-                <button class="btn btn-outline-primary my-2" type="submit">Найти</button>
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Найти</button>
             </form>
-            <div class="ml-auto">
+            <div class="ml-3">
                 <?php 
                 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) 
                 {
@@ -650,14 +649,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     <footer class="text-center py-4">
         <div class="container">
             <p>© 2025 Лал-Авто. Все права защищены.</p>
-            <p>Контактный телефон: +7 (4012) 65-65-65</p>
-            <p><a href="#">Политика конфиденциальности</a> | <a href="#">Условия использования</a></p>
+            <p>Контактный телефон: <a href="#">+7 (4012) 65-65-65</a></p>
+            <p>
+                <a href="#">Политика конфиденциальности</a> | 
+                <a href="#">Условия использования</a>
+            </p>
+            <div class="d-flex justify-content-center mt-3">
+                <a href="https://vk.com/lalauto?ysclid=m91623ocq3201359667"><img class="mx-1 small-img" src="img/image 33.png" alt=""></a>
+                <a href="https://t.me/s/lalauto"><img class="mx-1 small-img" src="img/image 32.png" alt=""></a>
+            </div>
         </div>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

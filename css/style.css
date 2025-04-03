@@ -354,3 +354,9 @@ footer
     -webkit-filter: blur(8px);
     object-fit: cover;
 }
+
+.small-img 
+{
+    width: 25px;
+    height: auto;
+}
