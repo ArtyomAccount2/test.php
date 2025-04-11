@@ -11,24 +11,24 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $id = $_POST['id'];
-    $surname = $_POST['surname'];
-    $name = $_POST['name'];
-    $patronymic = $_POST['patronymic'];
+    $surname = !empty($_POST['surname']) ? $_POST['surname'] : null;
+    $name = !empty($_POST['name']) ? $_POST['name'] : null;
+    $patronymic = !empty($_POST['patronymic']) ? $_POST['patronymic'] : null;
     $login = $_POST['login'];
     $password = $_POST['password'];
-    $email = $_POST['email'];
-    $discountCardNumber = $_POST['discountCardNumber'] ?? null;
-    $region = $_POST['region'];
-    $city = $_POST['city'];
-    $address = $_POST['address'];
-    $phone = $_POST['phone'];
-    $inn = $_POST['TIN'];
-    $person = $_POST['person'];
-    $organization = $_POST['organization'];
-    $organizationType = $_POST['organizationType'];
+    $email = !empty($_POST['email']) ? $_POST['email'] : null;
+    $discountCardNumber = !empty($_POST['discountCardNumber']) ? $_POST['discountCardNumber'] : null;
+    $region = !empty($_POST['region']) ? $_POST['region'] : null;
+    $city = !empty($_POST['city']) ? $_POST['city'] : null;
+    $address = !empty($_POST['address']) ? $_POST['address'] : null;
+    $phone = !empty($_POST['phone']) ? $_POST['phone'] : null;
+    $inn = !empty($_POST['TIN']) ? $_POST['TIN'] : null;
+    $person = !empty($_POST['person']) ? $_POST['person'] : null;
+    $organization = !empty($_POST['organization']) ? $_POST['organization'] : null;
+    $organizationType = !empty($_POST['organizationType']) ? $_POST['organizationType'] : null;
 
-    $stmt = $conn->prepare("UPDATE users SET surname_users=?, name_users=?, patronymic_users=?, login_users=?, password_users=?, email_users=?, discountСardNumber_users=?, region_users=?, city_users=?, address_users=?, phone_users=?, TIN_users=?, person_users=?, organization_users=?, organizationType_users=? WHERE id=?");
-    $stmt->bind_param("ssssssssssssssi", $surname, $name, $patronymic, $login, $password, $email, $discountCardNumber, $region, $city, $address, $phone, $inn, $person, $organization, $organizationType, $id);
+    $stmt = $conn->prepare("UPDATE users SET surname_users=?, name_users=?, patronymic_users=?, login_users=?, password_users=?, email_users=?, discountСardNumber_users=?, region_users=?, city_users=?, address_users=?, phone_users=?, TIN_users=?, person_users=?, organization_users=?, organizationType_users=? WHERE id_users=?");
+    $stmt->bind_param("sssssssssssssssi", $surname, $name, $patronymic, $login, $password, $email, $discountCardNumber, $region, $city, $address, $phone, $inn, $person, $organization, $organizationType, $id);
     $stmt->execute();
 
     header("Location: ../admin.php");
@@ -75,15 +75,15 @@ $user = $result->fetch_assoc();
         
         <div class="form-group">
             <label for="surname">Фамилия</label>
-            <input type="text" name="surname" class="form-control" id="surname" value="<?= htmlspecialchars($user['surname_users']) ?>" required>
+            <input type="text" name="surname" class="form-control" id="surname" value="<?= htmlspecialchars($user['surname_users']) ?>">
         </div>
         <div class="form-group">
             <label for="name">Имя</label>
-            <input type="text" name="name" class="form-control" id="name" value="<?= htmlspecialchars($user['name_users']) ?>" required>
+            <input type="text" name="name" class="form-control" id="name" value="<?= htmlspecialchars($user['name_users']) ?>">
         </div>
         <div class="form-group">
             <label for="patronymic">Отчество</label>
-            <input type="text" name="patronymic" class="form-control" id="patronymic" value="<?= htmlspecialchars($user['patronymic_users']) ?>" required>
+            <input type="text" name="patronymic" class="form-control" id="patronymic" value="<?= htmlspecialchars($user['patronymic_users']) ?>">
         </div>
         <div class="form-group">
             <label for="login">Логин</label>
@@ -95,11 +95,11 @@ $user = $result->fetch_assoc();
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" name="email" class="form-control" id="email" value="<?= htmlspecialchars($user['email_users']) ?>" required>
+            <input type="email" name="email" class="form-control" id="email" value="<?= htmlspecialchars($user['email_users']) ?>">
         </div>
         <div class="form-group">
             <label for="phone">Телефон</label>
-            <input type="text" name="phone" class="form-control" id="phone" value="<?= htmlspecialchars($user['phone_users']) ?>" required>
+            <input type="text" name="phone" class="form-control" id="phone" value="<?= htmlspecialchars($user['phone_users']) ?>">
         </div>
         <div class="form-group">
             <label for="TIN">ИНН</label>
@@ -111,27 +111,27 @@ $user = $result->fetch_assoc();
         </div>
         <div class="form-group">
             <label for="region">Регион</label>
-            <input type="text" name="region" class="form-control" id="region" value="<?= htmlspecialchars($user['region_users']) ?>" required>
+            <input type="text" name="region" class="form-control" id="region" value="<?= htmlspecialchars($user['region_users']) ?>">
         </div>
         <div class="form-group">
             <label for="city">Город</label>
-            <input type="text" name="city" class="form-control" id="city" value="<?= htmlspecialchars($user['city_users']) ?>" required>
+            <input type="text" name="city" class="form-control" id="city" value="<?= htmlspecialchars($user['city_users']) ?>">
         </div>
         <div class="form-group">
             <label for="address">Адрес</label>
-            <input type="text" name="address" class="form-control" id="address" value="<?= htmlspecialchars($user['address_users']) ?>" required>
+            <input type="text" name="address" class="form-control" id="address" value="<?= htmlspecialchars($user['address_users']) ?>">
         </div>
         <div class="form-group">
             <label for="person">Физическое лицо/Юридическое лицо</label>
-            <input type="text" name="person" class="form-control" id="person" value="<?= htmlspecialchars($user['person_users']) ?>" required>
+            <input type="text" name="person" class="form-control" id="person" value="<?= htmlspecialchars($user['person_users']) ?>">
         </div>
         <div class="form-group">
             <label for="organization">Организация</label>
-            <input type="text" name="organization" class="form-control" id="organization" value="<?= htmlspecialchars($user['organization_users']) ?>" required>
+            <input type="text" name="organization" class="form-control" id="organization" value="<?= htmlspecialchars($user['organization_users']) ?>">
         </div>
         <div class="form-group">
             <label for="organizationType">Тип организации</label>
-            <input type="text" name="organizationType" class="form-control" id="organizationType" value="<?= htmlspecialchars($user['organizationType_users']) ?>" required>
+            <input type="text" name="organizationType" class="form-control" id="organizationType" value="<?= htmlspecialchars($user['organizationType_users']) ?>">
         </div>
 
         <button type="submit" class="btn btn-primary">Сохранить</button>
@@ -142,6 +142,5 @@ $user = $result->fetch_assoc();
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
 </body>
 </html>

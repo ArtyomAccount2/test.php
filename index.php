@@ -99,6 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     <form action="files/logout.php" method="POST" class="d-inline">
                         <button type="submit" class="btn btn-secondary">Выйти</button>
                     </form>
+                    <button class="btn btn-info" data-toggle="modal" data-target="#accountModal">Личный Кабинет</button>
                 <?php 
                 } 
                 else 
@@ -145,6 +146,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         <button type="submit" class="btn btn-primary">Войти</button>
                         <a href="#" class="btn btn-link">Забыли пароль?</a>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true" aria-modal="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title w-100 text-center" id="accountModalLabel" style="font-weight: bold; color: #007bff;">Личный Кабинет</h5>
+                </div>
+                <div class="modal-body">
+                    <p style="font-size: 1.1em;">Добро пожаловать, <strong><?= htmlspecialchars($_SESSION['user']); ?></strong>!</p>
+                    <p>Здесь вы можете управлять своими данными, просмотреть заказы и т.д.</p>
+                    <ul class="list-unstyled">
+                        <li><a href="#" style="color: #007bff; text-decoration: none;">Мои Заказы</a></li>
+                        <li><a href="#" style="color: #007bff; text-decoration: none;">Редактировать Профиль</a></li>
+                        <li><a href="#" style="color: #007bff; text-decoration: none;">Настройки Уведомлений</a></li>
+                        <li><a href="#" style="color: #007bff; text-decoration: none;">Изменить Пароль</a></li>
+                        <li><a href="#" style="color: #007bff; text-decoration: none;">История Платежей</a></li>
+                    </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
@@ -664,7 +689,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

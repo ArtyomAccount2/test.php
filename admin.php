@@ -46,7 +46,7 @@ while ($row = $result->fetch_assoc())
 
 <div class="container mt-5 text-center">
     <h1>Административная панель</h1>
-    <a href="index.php" class="btn btn-secondary mb-3">Назад</a>
+    <a href="../files/logout.php" class="btn btn-secondary mb-3">Назад</a>
     
     <h2>Список пользователей</h2>
     <div class="table-responsive">
@@ -110,6 +110,5 @@ while ($row = $result->fetch_assoc())
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
 </body>
 </html>

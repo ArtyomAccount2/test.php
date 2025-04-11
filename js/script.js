@@ -110,35 +110,8 @@ document.addEventListener('DOMContentLoaded', function()
         filterItems(popularPartsList.querySelector('#partsContainer'), this.value, 'no-results-parts');
     });
 
-    function addSwipeSupport(container) 
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => 
     {
-        let hammer = new Hammer(container);
-        
-        hammer.on('swipeleft', function() 
-        {
-            let nextItem = container.querySelector('.scrollable-item:not([style*="display: none"]) + .scrollable-item');
-
-            if (nextItem) 
-            {
-                nextItem.scrollIntoView({ behavior: 'smooth', inline: 'start' });
-            }
-        });
-
-        hammer.on('swiperight', function() 
-        {
-            let previousItem = container.querySelector('.scrollable-item[style*="display: none"] + .scrollable-item');
-
-            if (previousItem) 
-            {
-                previousItem.scrollIntoView({ behavior: 'smooth', inline: 'start' });
-            }
-        });
-    }
-
-    addSwipeSupport(carBrandsList.querySelector('#carBrandsBlock'));
-    addSwipeSupport(popularPartsList.querySelector('#partsContainer'));
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
     
