@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     </div>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
+            <form id="catalogSearchForm" class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-2" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Найти</button>
             </form>
@@ -280,6 +280,77 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             </div>
         </div>
     </div>
+
+    <section class="container my-5 text-center d-flex align-items-center flex-column" id="specialOffer">
+        <h2 class="text-center mb-4">Специальное предложение!</h2>
+        <p class="lead mb-4">Не упустите шанс! Скидка 20% на определенные запчасти.</p>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <img src="img/SpareParts/image1.png" alt="Коленчатый вал">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Коленчатый вал</h5>
+                        <p class="card-text">Теперь всего за <span class="text-danger font-weight-bold">20% скидки</span>!</p>
+                        <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <img src="img/SpareParts/image2.png" alt="Прокладки двигателя">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Прокладки двигателя</h5>
+                        <p class="card-text">Теперь всего за <span class="text-danger font-weight-bold">20% скидки</span>!</p>
+                        <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <img src="img/SpareParts/image3.png" alt="Топливный насос">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Топливный насос</h5>
+                        <p class="card-text">Теперь всего за <span class="text-danger font-weight-bold">20% скидки</span>!</p>
+                        <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <img src="img/SpareParts/image4.png" alt="Распределительный вал">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Распределительный вал</h5>
+                        <p class="card-text">Теперь всего за <span class="text-danger font-weight-bold">20% скидки</span>!</p>
+                        <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="countdown mb-4">
+            <div class="row text-center">
+                <div class="col">
+                    <span id="days">00</span>
+                    <div>Дней</div>
+                </div>
+                <div class="col">
+                    <span id="hours">00</span>
+                    <div>Часов</div>
+                </div>
+                <div class="col">
+                    <span id="minutes">00</span>
+                    <div>Минут</div>
+                </div>
+                <div class="col">
+                    <span id="seconds">00</span>
+                    <div>Секунд</div>
+                </div>
+            </div>
+        </div>
+
+        <p class="lead">Спешите, предложение ограничено по времени!</p>
+    </section>
 
     <section class="container my-5 text-center" id="nextSection">
         <h2 class="text-center">Поиск по марке</h2>

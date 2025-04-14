@@ -360,3 +360,56 @@ footer
     width: 25px;
     height: auto;
 }
+
+#specialOffer 
+{
+    background-color: #f8f9fa;
+    padding: 40px 20px;
+}
+
+.card 
+{
+    border: none;
+}
+
+.countdown 
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.countdown div 
+{
+    margin: 0 15px;
+    text-align: center;
+    flex: 1 1 80px;
+}
+
+.countdown span 
+{
+    font-size: 2em;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.lead 
+{
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+@media (max-width: 576px) 
+{
+    .row 
+    {
+        justify-content: center;
+    }
+
+    .col-lg-3, .col-md-4, .col-sm-6 
+    {
+        flex: 1 1 45%;
+        max-width: 45%;
+    }
+}

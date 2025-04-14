@@ -99,12 +99,12 @@ document.addEventListener('DOMContentLoaded', function()
         filterItems(carBrandsList.querySelector('#carBrandsBlock'), searchValue, 'no-results-brands');
         filterItems(popularPartsList.querySelector('#partsContainer'), searchValue, 'no-results-parts');
     });
-
+    
     document.getElementById('brandSearch').addEventListener('input', function() 
     {
         filterItems(carBrandsList.querySelector('#carBrandsBlock'), this.value, 'no-results-brands');
     });
-
+    
     document.getElementById('partsSearch').addEventListener('input', function() 
     {
         filterItems(popularPartsList.querySelector('#partsContainer'), this.value, 'no-results-parts');
@@ -141,3 +141,32 @@ document.addEventListener('DOMContentLoaded', function()
         }
     });
 });
+
+var countDownDate = new Date("Dec 31, 2025 00:00:00").getTime();
+
+var x = setInterval(function() 
+{
+    var now = new Date().getTime();
+    var distance = countDownDate - now;
+
+    if (distance < 0) 
+    {
+        clearInterval(x);
+        document.getElementById("days").innerHTML = "00";
+        document.getElementById("hours").innerHTML = "00";
+        document.getElementById("minutes").innerHTML = "00";
+         document.getElementById("seconds").innerHTML = "00";
+        alert("Скидка окончена!");
+        return;
+    }
+
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").innerHTML = String(days).padStart(2, '0');
+    document.getElementById("hours").innerHTML = String(hours).padStart(2, '0');
+    document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
+    document.getElementById("seconds").innerHTML = String(seconds).padStart(2, '0');
+}, 1000);
