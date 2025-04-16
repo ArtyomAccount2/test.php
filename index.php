@@ -88,8 +88,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 </li>
             </ul>
             <form id="catalogSearchForm" class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-2" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Найти</button>
+                <input class="form-control mr-2 button-link" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
+                <button class="btn btn-outline-primary my-2 my-sm-0 button-link" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                    Найти
+                </button>
             </form>
             <div class="ml-3">
                 <?php 
@@ -97,16 +102,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 {
                 ?>
                     <form action="files/logout.php" method="POST" class="d-inline">
-                        <button type="submit" class="btn btn-secondary">Выйти</button>
+                        <button type="submit" class="btn btn-secondary button-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                            </svg> 
+                            Выйти
+                        </button>
                     </form>
-                    <button class="btn btn-info" data-toggle="modal" data-target="#accountModal">Личный Кабинет</button>
+                    <button class="btn btn-info button-link" data-toggle="modal" data-target="#accountModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                        </svg>
+                        Личный Кабинет
+                    </button>
                 <?php 
                 } 
                 else 
                 {
                 ?>
-                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Войти</a>
-                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">Зарегистрироваться</a>
+                    <a href="#" class="btn btn-primary button-link" data-toggle="modal" data-target="#loginModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                            <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                        </svg>
+                        Войти
+                    </a>
+                    <a href="#" class="btn btn-primary button-link" data-toggle="modal" data-target="#registerModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-r-circle" viewBox="0 0 16 16">
+                            <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002h3.11c1.71 0 2.741.973 2.741 2.46 0 1.138-.667 1.94-1.495 2.24L11.5 12H9.98L8.52 8.924H6.836V12H5.5zm1.335 1.09v2.777h1.549c.995 0 1.573-.463 1.573-1.36 0-.913-.596-1.417-1.537-1.417z"/>
+                        </svg>
+                        Зарегистрироваться
+                    </a>
                 <?php
                 }
                 ?>
@@ -143,12 +171,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         <?php  
                         }
                         ?>
-                        <button type="submit" class="btn btn-primary">Войти</button>
+                        <button type="submit" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                                <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                            </svg>
+                            Войти
+                        </button>
                         <a href="#" class="btn btn-link">Забыли пароль?</a>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                        Закрыть
+                    </button>
                 </div>
             </div>
         </div>
@@ -172,7 +212,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     </ul>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                        Закрыть
+                    </button>
                 </div>
             </div>
         </div>
@@ -222,7 +268,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         <p class="lead">Кроме того, Лал-Авто предоставляет полный спектр услуг в области автомобильного сервиса. Наша команда квалифицированных специалистов готова предложить диагностику, ремонт и техническое обслуживание автомобилей любой сложности. Мы используем только современное оборудование и передовые технологии, что позволяет нам обеспечивать высокий уровень сервиса.</p>
         <p class="lead">Мы ценим каждого клиента и стремимся к долгосрочным отношениям, поэтому всегда готовы предложить индивидуальный подход, гибкие условия сотрудничества и конкурентоспособные цены. Наша цель – сделать ваш автомобиль безопасным и надежным, а ваше время – ценным.</p>
         <p class="lead">Выбирая Лал-Авто, вы выбираете качество, надежность и профессионализм. Мы уверены, что с нами ваш автомобиль будет в надежных руках!</p>
-        <h3 class="text-center m-5 lead-text">Почему выбирают нас?</h3>
+        <h2 class="text-center m-5 lead-text">Почему выбирают нас?</h2>
         <ul class="list-unstyled">
             <li>✔️ Широкий ассортимент запчастей для различных марок автомобилей.</li>
             <li>✔️ Конкурентоспособные цены.</li>
@@ -254,7 +300,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             </div>
         </div>
         <div class="text-center">
-            <a href="#nextSection" class="btn btn-primary mt-4">Перейти на следующий экран</a>
+            <a href="#specialOffer" class="btn btn-primary mt-4">Перейти на следующий экран</a>
         </div>
     </section>
 
@@ -265,17 +311,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     <h5 class="modal-title w-100 text-center" id="registerModalLabel">Регистрация</h5>
                 </div>
                 <div class="modal-body text-center">
-                    <a href="individuel.php" type="button" class="btn btn-primary mb-2" id="individualsBtn">Физические лица</a>
+                    <a href="individuel.php" type="button" class="btn btn-primary mb-2" id="individualsBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                            <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                        </svg>
+                        Физические лица
+                    </a>
                     <div id="individualsInfo" class="registration-info">
                         <p>- если Вы - физическое лицо, пройдите регистрацию. Регистрация возможна как при наличии карты скидок, так и при её отсутствии.</p>
                     </div>
-                    <a href="legalEntity.php" type="button" class="btn btn-primary mb-2" id="legalEntitiesBtn">Юридические лица и ИП</a>
+                    <a href="legalEntity.php" type="button" class="btn btn-primary mb-2" id="legalEntitiesBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                            <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                        </svg>
+                        Юридические лица и ИП
+                    </a>
                     <div id="legalEntitiesInfo" class="registration-info">
                         <p>- если Вы - представитель организации, учреждения, предприятия или фирмы, заполните данную форму регистрации.</p>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                        Закрыть
+                    </button>
                 </div>
             </div>
         </div>
@@ -285,7 +349,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         <h2 class="text-center mb-4">Специальное предложение!</h2>
         <p class="lead mb-4">Не упустите шанс! Скидка 20% на определенные запчасти.</p>
 
-        <div class="row justify-content-center">
+        <div class="row d-flex justify-content-center">
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div class="card shadow-sm h-100">
                     <img src="img/SpareParts/image1.png" alt="Коленчатый вал">
@@ -298,7 +362,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div class="card shadow-sm h-100">
-                    <img src="img/SpareParts/image2.png" alt="Прокладки двигателя">
+                    <img class="mt-3 mb-2" src="img/SpareParts/image2.png" alt="Прокладки двигателя">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Прокладки двигателя</h5>
                         <p class="card-text">Теперь всего за <span class="text-danger font-weight-bold">20% скидки</span>!</p>
@@ -308,7 +372,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div class="card shadow-sm h-100">
-                    <img src="img/SpareParts/image3.png" alt="Топливный насос">
+                    <img class="mt-3 mb-2" src="img/SpareParts/image3.png" alt="Топливный насос">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Топливный насос</h5>
                         <p class="card-text">Теперь всего за <span class="text-danger font-weight-bold">20% скидки</span>!</p>
@@ -318,9 +382,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div class="card shadow-sm h-100">
-                    <img src="img/SpareParts/image4.png" alt="Распределительный вал">
+                    <img class="mt-2 mb-2" src="img/SpareParts/image4.png" alt="Распределительный вал">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Распределительный вал</h5>
+                        <h5 class="card-title big-text">Распределительный вал</h5>
                         <p class="card-text">Теперь всего за <span class="text-danger font-weight-bold">20% скидки</span>!</p>
                         <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
                     </div>
@@ -350,6 +414,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         </div>
 
         <p class="lead">Спешите, предложение ограничено по времени!</p>
+
+        <div class="text-center">
+            <a href="#nextSection" class="btn btn-primary mt-4">Перейти на следующий экран</a>
+        </div>
     </section>
 
     <section class="container my-5 text-center" id="nextSection">
@@ -657,7 +725,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         <div class="card shadow-sm h-100">
                             <img src="img/SpareParts/image4.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Распределительный вал</h6>
+                                <h6 class="card-title big-text-card">Распределительный вал</h6>
                                 <a href="#" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>

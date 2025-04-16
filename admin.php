@@ -27,6 +27,7 @@ while ($row = $result->fetch_assoc())
     <title>Административная панель</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <style>
         table 
         {
@@ -44,13 +45,59 @@ while ($row = $result->fetch_assoc())
 </head>
 <body>
 
-<div class="container mt-5 text-center">
-    <h1>Административная панель</h1>
-    <a href="../files/logout.php" class="btn btn-secondary mb-3">Назад</a>
+<div class="flex-grow-1">
     
-    <h2>Список пользователей</h2>
-    <div class="table-responsive">
-        <table class="table table-bordered">
+<div class="container-fluid mt-5">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
+        <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Торговые марки</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Поддержка сайта</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Новости компании</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Оплата и доставка</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Меню
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Автосервис</a>
+                        <a class="dropdown-item" href="#">Ассортимент</a>
+                        <a class="dropdown-item" href="#">Масла и тех. жидкости</a>
+                        <a class="dropdown-item" href="#">Аксессуары</a>
+                        <a class="dropdown-item" href="#">Покупателям</a>
+                        <a class="dropdown-item" href="#">Поставщикам</a>
+                        <a class="dropdown-item" href="#">Вакансии</a>
+                        <a class="dropdown-item" href="#">Контакты</a>
+                        <a class="dropdown-item" href="#">Отзывы</a>
+                    </div>
+                </li>
+            </ul>
+            <a href="../files/logout.php" class="btn btn-secondary ml-3 button-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                </svg>  
+                Выйти
+            </a>
+        </div>
+    </nav>
+
+    <h1 class="mb-4 text-center" style="padding-top: 90px;" >Административная панель</h1>
+    
+    <div class="table-responsive text-center">
+        <table class="table table-bordered w-100">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -95,8 +142,8 @@ while ($row = $result->fetch_assoc())
                         <td><?= isset($user['organization_users']) ? htmlspecialchars($user['organization_users']) : 'Не указано' ?></td>
                         <td><?= isset($user['organizationType_users']) ? htmlspecialchars($user['organizationType_users']) : 'Не указано' ?></td>
                         <td>
-                            <a class="btn btn-warning btn-sm my-1" href="files/edit_user.php?id=<?= $user['id_users'] ?>">Редактировать</a>
-                            <a class="btn btn-danger btn-sm my-1" href="files/delete_user.php?id=<?= $user['id_users'] ?>">Удалить</a>
+                            <a class="btn btn-primary btn-sm my-1" href="files/edit_user.php?id=<?= $user['id_users'] ?>">Редактировать</a>
+                            <a class="btn btn-primary btn-sm my-1" href="files/delete_user.php?id=<?= $user['id_users'] ?>">Удалить</a>
                         </td>
                     </tr>
                 <?php 
