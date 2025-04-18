@@ -164,7 +164,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         </div>
                         <?php 
                         if (!empty($error_message))
-                        {?>
+                        {
+                        ?>
                             <div class="alert alert-danger" role="alert">
                                 <?= $error_message; ?>
                             </div>
@@ -204,11 +205,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     <p style="font-size: 1.1em;">Добро пожаловать, <strong><?= htmlspecialchars($_SESSION['user']); ?></strong>!</p>
                     <p>Здесь вы можете управлять своими данными, просмотреть заказы и т.д.</p>
                     <ul class="list-unstyled">
-                        <li><a href="#" style="color: #007bff; text-decoration: none;">Мои Заказы</a></li>
-                        <li><a href="#" style="color: #007bff; text-decoration: none;">Редактировать Профиль</a></li>
-                        <li><a href="#" style="color: #007bff; text-decoration: none;">Настройки Уведомлений</a></li>
-                        <li><a href="#" style="color: #007bff; text-decoration: none;">Изменить Пароль</a></li>
-                        <li><a href="#" style="color: #007bff; text-decoration: none;">История Платежей</a></li>
+                        <li><a href="#" class="link-opacity-100" style="color: #007bff;">Мои Заказы</a></li>
+                        <li><a href="#" class="link-opacity-100" style="color: #007bff;">Редактировать Профиль</a></li>
+                        <li><a href="#" class="link-opacity-100" style="color: #007bff;">Настройки Уведомлений</a></li>
+                        <li><a href="#" class="link-opacity-100" style="color: #007bff;">Изменить Пароль</a></li>
+                        <li><a href="#" class="link-opacity-100" style="color: #007bff;">История Платежей</a></li>
                     </ul>
                 </div>
                 <div class="modal-footer">
@@ -231,7 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 <div class="carousel-caption d-none d-md-block">
                     <h5 id="slider_body">Лучшие автозапчасти</h5>
                     <p id="slider_body">Найдите запчасти для вашего автомобиля.</p>
-                    <a href="#aboutUs" class="btn btn-primary">Перейти на следующий экран</a>
+                    <p><a href="#aboutUs" class="text-light link-opacity-100 link_body">Перейти на следующий экран</a></p>
                 </div>
             </div>
             <div class="carousel-item">
@@ -239,7 +240,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 <div class="carousel-caption d-none d-md-block">
                     <h5 id="slider_body">Качество и надежность</h5>
                     <p id="slider_body">Мы предлагаем только проверенные запчасти.</p>
-                    <a href="#aboutUs" class="btn btn-primary">Перейти на следующий экран</a>
+                    <p><a href="#aboutUs" class="text-light link-opacity-100 link_body">Перейти на следующий экран</a></p>
                 </div>
             </div>
             <div class="carousel-item">
@@ -247,7 +248,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 <div class="carousel-caption d-none d-md-block">
                     <h5 id="slider_body">Быстрая доставка</h5>
                     <p id="slider_body">Получите свои запчасти в кратчайшие сроки.</p>
-                    <a href="#aboutUs" class="btn btn-primary">Перейти на следующий экран</a>
+                    <p><a href="#aboutUs" class="text-light link-opacity-100 link_body">Перейти на следующий экран</a></p>
                 </div>
             </div>
         </div>
@@ -819,8 +820,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 <a href="#">Условия использования</a>
             </p>
             <div class="d-flex justify-content-center mt-3">
-                <a href="https://vk.com/lalauto?ysclid=m91623ocq3201359667"><img class="mx-1 small-img" src="img/image 33.png" alt=""></a>
-                <a href="https://t.me/s/lalauto"><img class="mx-1 small-img" src="img/image 32.png" alt=""></a>
+                <a href="https://vk.com/lalauto?ysclid=m91623ocq3201359667"><img class="mx-1 small-img navbar-brand" src="img/image 33.png" alt=""></a>
+                <a href="https://t.me/s/lalauto"><img class="mx-1 small-img navbar-brand" src="img/image 32.png" alt=""></a>
             </div>
         </div>
     </footer>

@@ -8,8 +8,8 @@
                 <a href="#">Условия использования</a>
             </p>
             <div class="d-flex justify-content-center mt-3">
-                <a href="https://vk.com/lalauto?ysclid=m91623ocq3201359667"><img class="mx-1 small-img" src="img/image 33.png" alt=""></a>
-                <a href="https://t.me/s/lalauto"><img class="mx-1 small-img" src="img/image 32.png" alt=""></a>
+                <a href="https://vk.com/lalauto?ysclid=m91623ocq3201359667"><img class="mx-1 small-img navbar-brand" src="img/image 33.png" alt=""></a>
+                <a href="https://t.me/s/lalauto"><img class="mx-1 small-img navbar-brand" src="img/image 32.png" alt=""></a>
             </div>
         </div>
     </footer>

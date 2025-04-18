@@ -113,6 +113,11 @@ h1, h2
     font-weight: 900;
 }
 
+.link_body
+{
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
 #slider_body
 {
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -432,4 +437,25 @@ footer
         flex: 1 1 45%;
         max-width: 45%;
     }
+}
+
+@keyframes fadeInUp 
+{
+    0% 
+    {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% 
+    {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+.animate-fadeInUp 
+{
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
 }

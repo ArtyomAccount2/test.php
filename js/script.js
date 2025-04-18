@@ -140,6 +140,30 @@ document.addEventListener('DOMContentLoaded', function()
             document.getElementById('discountCardNumberGroup').style.display = 'none';
         }
     });
+
+    let aboutUsSection = document.getElementById('aboutUs');
+
+    if (aboutUsSection) 
+    {
+        let observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1 
+        };
+
+        let observer = new IntersectionObserver((entries, observer) => 
+        {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) 
+                {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        observer.observe(aboutUsSection);
+    }
 });
 
 var countDownDate = new Date("Dec 31, 2025 00:00:00").getTime();
@@ -170,3 +194,27 @@ var x = setInterval(function()
     document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
     document.getElementById("seconds").innerHTML = String(seconds).padStart(2, '0');
 }, 1000);
+
+function isInViewport(element) 
+{
+    let rect = element.getBoundingClientRect();
+    return (
+      rect.top <= window.innerHeight && rect.bottom >= 0
+    );
+  }
+  
+  function onScroll() 
+  {
+    let aboutUsSection = document.getElementById('aboutUs');
+  
+    if (isInViewport(aboutUsSection)) 
+    {
+        if (!aboutUsSection.classList.contains('animate-fadeInUp')) 
+        {
+            aboutUsSection.classList.add('animate-fadeInUp');
+        }
+    } 
+  }
+  
+  window.addEventListener('scroll', onScroll);
+  window.addEventListener('load', onScroll);
