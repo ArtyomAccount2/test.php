@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function()
             let visibleCount = container.querySelectorAll('.scrollable-item[style*="display: block"]').length;
         
             if (scrollbar) 
-                {
+            {
                 let scrollThumb = scrollbar.querySelector('.scrollbar-thumb');
         
                 if (scrollThumb && visibleCount > 0) 
@@ -129,17 +129,27 @@ document.addEventListener('DOMContentLoaded', function()
         }
     });
 
-    document.getElementById('discountCardCheck').addEventListener('change', function() 
+    let discountCheckbox = document.getElementById('discountCardCheck');
+
+    if (discountCheckbox) 
     {
-        if (this.checked)
+        discountCheckbox.addEventListener('change', function() 
         {
-            document.getElementById('discountCardNumberGroup').style.display = 'block';
-        }
-        else
-        {
-            document.getElementById('discountCardNumberGroup').style.display = 'none';
-        }
-    });
+            let group = document.getElementById('discountCardNumberGroup');
+            
+            if (group) 
+            {
+                if (this.checked) 
+                {
+                    group.style.display = 'block';
+                } 
+                else 
+                {
+                    group.style.display = 'none';
+                }
+            }
+        });
+    }
 
     let aboutUsSection = document.getElementById('aboutUs');
 
