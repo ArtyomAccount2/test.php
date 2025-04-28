@@ -64,23 +64,23 @@ while ($row = $result->fetch_assoc())
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="#">Новости компании</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Оплата и доставка</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Меню
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Магазины</a>
                         <a class="dropdown-item" href="#">Автосервис</a>
                         <a class="dropdown-item" href="#">Ассортимент</a>
                         <a class="dropdown-item" href="#">Масла и тех. жидкости</a>
                         <a class="dropdown-item" href="#">Аксессуары</a>
                         <a class="dropdown-item" href="#">Покупателям</a>
+                        <a class="dropdown-item" href="#">Реквизиты</a>
                         <a class="dropdown-item" href="#">Поставщикам</a>
                         <a class="dropdown-item" href="#">Вакансии</a>
                         <a class="dropdown-item" href="#">Контакты</a>
                         <a class="dropdown-item" href="#">Отзывы</a>
+                        <a class="dropdown-item" href="#">Оплата и доставка</a>
                     </div>
                 </li>
             </ul>

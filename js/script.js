@@ -174,57 +174,28 @@ document.addEventListener('DOMContentLoaded', function()
 
         observer.observe(aboutUsSection);
     }
-});
 
-var countDownDate = new Date("Dec 31, 2025 00:00:00").getTime();
-
-var x = setInterval(function() 
-{
-    var now = new Date().getTime();
-    var distance = countDownDate - now;
-
-    if (distance < 0) 
+    function isInViewport(element) 
     {
-        clearInterval(x);
-        document.getElementById("days").innerHTML = "00";
-        document.getElementById("hours").innerHTML = "00";
-        document.getElementById("minutes").innerHTML = "00";
-         document.getElementById("seconds").innerHTML = "00";
-        alert("Скидка окончена!");
-        return;
+        let rect = element.getBoundingClientRect();
+        return (
+        rect.top <= window.innerHeight && rect.bottom >= 0
+        );
     }
-
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    document.getElementById("days").innerHTML = String(days).padStart(2, '0');
-    document.getElementById("hours").innerHTML = String(hours).padStart(2, '0');
-    document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
-    document.getElementById("seconds").innerHTML = String(seconds).padStart(2, '0');
-}, 1000);
-
-function isInViewport(element) 
-{
-    let rect = element.getBoundingClientRect();
-    return (
-      rect.top <= window.innerHeight && rect.bottom >= 0
-    );
-  }
-  
-  function onScroll() 
-  {
-    let aboutUsSection = document.getElementById('aboutUs');
-  
-    if (isInViewport(aboutUsSection)) 
+    
+    function onScroll() 
     {
-        if (!aboutUsSection.classList.contains('animate-fadeInUp')) 
+        let aboutUsSection = document.getElementById('aboutUs');
+    
+        if (isInViewport(aboutUsSection)) 
         {
-            aboutUsSection.classList.add('animate-fadeInUp');
-        }
-    } 
-  }
-  
-  window.addEventListener('scroll', onScroll);
-  window.addEventListener('load', onScroll);
+            if (!aboutUsSection.classList.contains('animate-fadeInUp')) 
+            {
+                aboutUsSection.classList.add('animate-fadeInUp');
+            }
+        } 
+    }
+    
+    window.addEventListener('scroll', onScroll);
+    window.addEventListener('load', onScroll);
+});

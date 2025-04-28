@@ -24,8 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
         if ($result->num_rows > 0) 
         {
+            $row = $result->fetch_assoc();
             $_SESSION['loggedin'] = true;
-            $_SESSION['user'] = $login;
+            $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] : $row['person_users'];
 
             header("Location: index.php");
             exit();
@@ -58,6 +59,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Навигация
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#carouselExample">Слайдер</a>
+                        <a class="dropdown-item" href="#aboutUs">О Нас</a>
+                        <a class="dropdown-item" href="#specialOffer">Колесо Фортуны</a>
+                        <a class="dropdown-item" href="#nextSection">Поиск по марке и по запчастям</a>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="#">Торговые марки</a>
                 </li>
@@ -67,23 +79,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="#">Новости компании</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Оплата и доставка</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Меню
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Магазины</a>
                         <a class="dropdown-item" href="#">Автосервис</a>
                         <a class="dropdown-item" href="#">Ассортимент</a>
                         <a class="dropdown-item" href="#">Масла и тех. жидкости</a>
                         <a class="dropdown-item" href="#">Аксессуары</a>
                         <a class="dropdown-item" href="#">Покупателям</a>
+                        <a class="dropdown-item" href="#">Реквизиты</a>
                         <a class="dropdown-item" href="#">Поставщикам</a>
                         <a class="dropdown-item" href="#">Вакансии</a>
                         <a class="dropdown-item" href="#">Контакты</a>
                         <a class="dropdown-item" href="#">Отзывы</a>
+                        <a class="dropdown-item" href="#">Оплата и доставка</a>
                     </div>
                 </li>
             </ul>
@@ -96,45 +108,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     Найти
                 </button>
             </form>
-            <div class="ml-3">
+            <div class="ml-xl-3 ml-lg-2 ml-md-1">
                 <?php 
                 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) 
                 {
                 ?>
-                    <form action="files/logout.php" method="POST" class="d-inline">
-                        <button type="submit" class="btn btn-secondary button-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
-                                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                            </svg> 
-                            Выйти
+                    <div class="d-flex flex-wrap flex-md-nowrap">
+                        <button class="btn btn-info button-link w-md-auto" data-toggle="modal" data-target="#accountModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                            </svg>
+                            Личный Кабинет
                         </button>
-                    </form>
-                    <button class="btn btn-info button-link" data-toggle="modal" data-target="#accountModal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                        </svg>
-                        Личный Кабинет
-                    </button>
+                    </div>
                 <?php 
                 } 
                 else 
                 {
                 ?>
-                    <a href="#" class="btn btn-primary button-link" data-toggle="modal" data-target="#loginModal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
-                            <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                        </svg>
-                        Войти
-                    </a>
-                    <a href="#" class="btn btn-primary button-link" data-toggle="modal" data-target="#registerModal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-r-circle" viewBox="0 0 16 16">
-                            <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002h3.11c1.71 0 2.741.973 2.741 2.46 0 1.138-.667 1.94-1.495 2.24L11.5 12H9.98L8.52 8.924H6.836V12H5.5zm1.335 1.09v2.777h1.549c.995 0 1.573-.463 1.573-1.36 0-.913-.596-1.417-1.537-1.417z"/>
-                        </svg>
-                        Зарегистрироваться
-                    </a>
+                    <div class="d-flex flex-wrap flex-md-nowrap">
+                        <a href="#" class="btn btn-primary button-link w-md-auto mx-1" data-toggle="modal" data-target="#loginModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                                <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                            </svg>
+                            Войти
+                        </a>
+                        <a href="#" class="btn btn-primary button-link w-md-auto" data-toggle="modal" data-target="#registerModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-r-circle" viewBox="0 0 16 16">
+                                <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002h3.11c1.71 0 2.741.973 2.741 2.46 0 1.138-.667 1.94-1.495 2.24L11.5 12H9.98L8.52 8.924H6.836V12H5.5zm1.335 1.09v2.777h1.549c.995 0 1.573-.463 1.573-1.36 0-.913-.596-1.417-1.537-1.417z"/>
+                            </svg>
+                            Зарегистрироваться
+                        </a>
+                    </div>
                 <?php
                 }
                 ?>
@@ -210,6 +217,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         <li><a href="#" class="link-opacity-100" style="color: #007bff;">Настройки Уведомлений</a></li>
                         <li><a href="#" class="link-opacity-100" style="color: #007bff;">Изменить Пароль</a></li>
                         <li><a href="#" class="link-opacity-100" style="color: #007bff;">История Платежей</a></li>
+                        <li>
+                        <form action="files/logout.php" method="POST">
+                            <button type="submit" class="logout-button">Выйти из аккаунта</button>
+                        </form>
+                        </li>
                     </ul>
                 </div>
                 <div class="modal-footer">
@@ -232,7 +244,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 <div class="carousel-caption d-none d-md-block">
                     <h5 id="slider_body">Лучшие автозапчасти</h5>
                     <p id="slider_body">Найдите запчасти для вашего автомобиля.</p>
-                    <p><a href="#aboutUs" class="text-light link-opacity-100 link_body">Перейти на следующий экран</a></p>
                 </div>
             </div>
             <div class="carousel-item">
@@ -240,7 +251,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 <div class="carousel-caption d-none d-md-block">
                     <h5 id="slider_body">Качество и надежность</h5>
                     <p id="slider_body">Мы предлагаем только проверенные запчасти.</p>
-                    <p><a href="#aboutUs" class="text-light link-opacity-100 link_body">Перейти на следующий экран</a></p>
                 </div>
             </div>
             <div class="carousel-item">
@@ -248,7 +258,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 <div class="carousel-caption d-none d-md-block">
                     <h5 id="slider_body">Быстрая доставка</h5>
                     <p id="slider_body">Получите свои запчасти в кратчайшие сроки.</p>
-                    <p><a href="#aboutUs" class="text-light link-opacity-100 link_body">Перейти на следующий экран</a></p>
                 </div>
             </div>
         </div>
@@ -300,9 +309,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 </div>
             </div>
         </div>
-        <div class="text-center">
-            <a href="#specialOffer" class="btn btn-primary mt-4">Перейти на следующий экран</a>
-        </div>
     </section>
 
     <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
@@ -346,80 +352,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         </div>
     </div>
 
-    <section class="container my-5 text-center d-flex align-items-center flex-column" id="specialOffer">
-        <h2 class="text-center mb-4">Специальное предложение!</h2>
-        <p class="lead mb-4">Не упустите шанс! Скидка 20% на определенные запчасти.</p>
-
-        <div class="row d-flex justify-content-center">
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="card shadow-sm h-100">
-                    <img src="img/SpareParts/image1.png" alt="Коленчатый вал">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Коленчатый вал</h5>
-                        <p class="card-text">Теперь всего за <span class="text-danger font-weight-bold">20% скидки</span>!</p>
-                        <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="card shadow-sm h-100">
-                    <img class="mt-3 mb-2" src="img/SpareParts/image2.png" alt="Прокладки двигателя">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Прокладки двигателя</h5>
-                        <p class="card-text">Теперь всего за <span class="text-danger font-weight-bold">20% скидки</span>!</p>
-                        <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="card shadow-sm h-100">
-                    <img class="mt-3 mb-2" src="img/SpareParts/image3.png" alt="Топливный насос">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Топливный насос</h5>
-                        <p class="card-text">Теперь всего за <span class="text-danger font-weight-bold">20% скидки</span>!</p>
-                        <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="card shadow-sm h-100">
-                    <img class="mt-2 mb-2" src="img/SpareParts/image4.png" alt="Распределительный вал">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title big-text">Распределительный вал</h5>
-                        <p class="card-text">Теперь всего за <span class="text-danger font-weight-bold">20% скидки</span>!</p>
-                        <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
-                    </div>
-                </div>
-            </div>
+    <section class="container my-5 text-center" id="specialOffer">
+        <h2 class="text-center mb-4">Колесо Фортуны</h2>
+        <p class="lead mb-4">Крутите колесо и получите специальное предложение!</p>
+        <br>
+        <div class="wheel-container mb-4">
+            <canvas id="wheelCanvas" width="300" height="300"></canvas>
+            <div class="wheel-pointer"></div>
         </div>
-
-        <div class="countdown mb-4">
-            <div class="row text-center">
-                <div class="col">
-                    <span id="days">00</span>
-                    <div>Дней</div>
-                </div>
-                <div class="col">
-                    <span id="hours">00</span>
-                    <div>Часов</div>
-                </div>
-                <div class="col">
-                    <span id="minutes">00</span>
-                    <div>Минут</div>
-                </div>
-                <div class="col">
-                    <span id="seconds">00</span>
-                    <div>Секунд</div>
-                </div>
-            </div>
+        <button id="spinButton" class="btn btn-primary btn-lg mb-3">Крутить колесо!</button>        
+        <div id="resultContainer" class="alert alert-success" style="display: none;">
+            <h4 id="resultText"></h4>
+            <p id="resultDescription" class="mb-0"></p>
         </div>
-
-        <p class="lead">Спешите, предложение ограничено по времени!</p>
-
-        <div class="text-center">
-            <a href="#nextSection" class="btn btn-primary mt-4">Перейти на следующий экран</a>
+        <div id="purchaseCounter" class="alert alert-info" style="display: none;">
+            <p style="margin-top: 15px;">До следующего вращения осталось: <span id="purchasesLeft">10</span> покупок</p>
         </div>
     </section>
+
+    <div class="modal fade" id="wheelResultModal" tabindex="-1" role="dialog" aria-labelledby="wheelResultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-2">
+                <div class="modal-body text-center">
+                    <h4 id="modalResultText" class="mb-3"></h4>
+                    <p id="modalResultDescription" class="mb-0"></p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                        Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <section class="container my-5 text-center" id="nextSection">
         <h2 class="text-center">Поиск по марке</h2>
@@ -433,7 +402,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Acura.png" class="card-img-top" alt="Марка 1">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Acura</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -442,7 +411,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Aixam.png" class="card-img-top" alt="Марка 2">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Aixam</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -451,7 +420,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Alfa Romeo.png" class="card-img-top" alt="Марка 3">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Alfa Romeo</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -460,7 +429,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Aston Martin.png" class="card-img-top" alt="Марка 4">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Aston Martin</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -469,7 +438,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Audi.png" class="card-img-top" alt="Марка 5">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Audi</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -478,7 +447,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Bentley.png" class="card-img-top" alt="Марка 6">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Bentley</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -487,7 +456,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/BMW.png" class="card-img-top" alt="Марка 7">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">BMW</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -496,7 +465,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Buick.png" class="card-img-top" alt="Марка 8">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Buick</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -505,7 +474,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Cadillac.png" class="card-img-top" alt="Марка 9">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Cadillac</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -514,7 +483,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Chevrolet.png" class="card-img-top" alt="Марка 10">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Chevrolet</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -523,7 +492,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Chrysler.png" class="card-img-top" alt="Марка 11">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Chrysler</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -532,7 +501,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Dodge.png" class="card-img-top" alt="Марка 12">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Dodge</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -541,7 +510,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Fiat.png" class="card-img-top" alt="Марка 13">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Fiat</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -550,7 +519,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Ford.png" class="card-img-top" alt="Марка 14">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Ford</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -559,7 +528,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Gaz.png" class="card-img-top" alt="Марка 15">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Gaz</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -568,7 +537,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Honda.png" class="card-img-top" alt="Марка 16">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Honda</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -577,7 +546,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Hummer.png" class="card-img-top" alt="Марка 17">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Hummer</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -586,7 +555,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Hyundai.png" class="card-img-top" alt="Марка 18">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Hyundai</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -595,7 +564,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Infiniti.png" class="card-img-top" alt="Марка 19">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Infiniti</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -604,7 +573,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Jaguar.png" class="card-img-top" alt="Марка 20">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Jaguar</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -613,7 +582,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Jeep.png" class="card-img-top" alt="Марка 21">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Jeep</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -622,7 +591,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Kia.png" class="card-img-top" alt="Марка 22">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Kia</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -631,7 +600,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Lada.png" class="card-img-top" alt="Марка 23">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Lada</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -640,7 +609,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Lamborghini.png" class="card-img-top" alt="Марка 24">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Lamborghini</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -649,7 +618,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Lancia.png" class="card-img-top" alt="Марка 25">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Lancia</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -658,7 +627,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Land Rover.png" class="card-img-top" alt="Марка 26">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Land Rover</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -667,7 +636,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Lexus.png" class="card-img-top" alt="Марка 27">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Lexus</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -676,7 +645,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/Stamps/Lotus.png" class="card-img-top" alt="Марка 28">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Lotus</h6>
-                                <a href="#" class="btn btn-primary">Выбрать</a>
+                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
                             </div>
                         </div>
                     </div>
@@ -700,7 +669,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image1.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Коленчатый вал</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -709,7 +678,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image2.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Прокладки двигателя</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -718,7 +687,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image3.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Топливный насос</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -727,7 +696,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image4.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title big-text-card">Распределительный вал</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -736,7 +705,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image5.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Тормозной цилиндр</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -745,7 +714,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image6.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Тормозные колодки</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -754,7 +723,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image7.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Стабилизатор</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -763,7 +732,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image8.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Тормозные суппорта</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -772,7 +741,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image9.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Топливный фильтр</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -781,7 +750,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image10.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Тормозные диски</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -790,7 +759,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image11.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Цапфа</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -799,7 +768,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             <img src="img/SpareParts/image12.png" class="card-img-top">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <h6 class="card-title">Сальники</h6>
-                                <a href="#" class="btn btn-primary">Подробнее</a>
+                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -811,6 +780,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         </div>
     </section>
 </div>
+
     <footer class="text-center py-4">
         <div class="container">
             <p>© 2025 Лал-Авто. Все права защищены.</p>
@@ -830,5 +800,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
+    <script src="files/app.js"></script>
 </body>
 </html>
