@@ -22,21 +22,12 @@ error_reporting(E_ALL);
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Торговые марки</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Поддержка сайта</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Новости компании</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Меню
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Магазины</a>
+                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Магазины</a>
                         <a class="dropdown-item" href="#">Автосервис</a>
                         <a class="dropdown-item" href="#">Ассортимент</a>
                         <a class="dropdown-item" href="#">Масла и тех. жидкости</a>
@@ -49,6 +40,15 @@ error_reporting(E_ALL);
                         <a class="dropdown-item" href="#">Отзывы</a>
                         <a class="dropdown-item" href="#">Оплата и доставка</a>
                     </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Торговые марки</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Поддержка сайта</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Новости компании</a>
                 </li>
             </ul>
             <a href="index.php" class="btn btn-secondary ml-3 button-link">

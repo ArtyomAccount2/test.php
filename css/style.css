@@ -64,23 +64,73 @@ h1, h2
 
 .scrollbar 
 {
+    height: 8px;
+    background: #f1f1f1;
+    border-radius: 4px;
+    margin: 10px 0;
+    position: relative;
     display: none;
+    width: 100%;
 }
 
 .scrollbar-thumb 
 {
     background-color: #007bff;
-    border-radius: 5px;
+    border-radius: 4px;
     height: 100%;
     position: absolute;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.scrollbar-thumb 
+.scrollbar-thumb:hover 
 {
-    background-color: #007bff;
-    border-radius: 5px;
-    height: 100%;
-    position: absolute;
+    background-color: #0056b3;
+}
+
+@media (min-width: 769px) 
+{
+    .scrollbar 
+    {
+        display: block;
+    }
+}
+
+.scroll-container 
+{
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.scrollable 
+{
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 15px;
+}
+
+.scrollable-item 
+{
+    flex: 0 0 auto;
+    transition: transform 0.3s;
+}
+
+@media (max-width: 768px) 
+{
+    .scrollable-item 
+    {
+        margin-right: 10px;
+    }
+    
+    .scrollbar 
+    {
+        display: none;
+    }
 }
 
 #carBrandsList, #popularPartsList 
@@ -104,8 +154,9 @@ h1, h2
     width: 190px;
     height: 250px;
     display: flex;
+    align-items: center;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .lead-text
@@ -183,21 +234,16 @@ footer
     white-space: nowrap;
 }
 
-.scrollable 
-{
-    display: flex;
-    transition: transform 0.5s ease;
-}
-
 #carBrandsBlock, #partsContainer 
 {
-    display: flex;
+    overflow-x: hidden;
     height: 300px;
 }
 
 .card-img-top 
 {
-    width: 100%;
+    margin-top: 10px;
+    width: 92.5%;
     height: 50%;
     object-fit: cover;
 }
@@ -556,17 +602,8 @@ footer
     color: #6c757d;
 }
 
-.logout-button 
+.profile-button
 {
     background: none; 
     border: none; 
-    color: #007bff; 
-    cursor: pointer; 
-    padding: 0; 
-    text-decoration: none;
-}
-
-.logout-button:hover 
-{
-    text-decoration: underline;
 }

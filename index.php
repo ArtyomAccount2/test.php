@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         {
             $row = $result->fetch_assoc();
             $_SESSION['loggedin'] = true;
-            $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] : $row['person_users'];
+            $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
 
             header("Location: index.php");
             exit();
@@ -70,20 +70,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         <a class="dropdown-item" href="#nextSection">Поиск по марке и по запчастям</a>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Торговые марки</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Поддержка сайта</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Новости компании</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Меню
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="#">Магазины</a>
                         <a class="dropdown-item" href="#">Автосервис</a>
                         <a class="dropdown-item" href="#">Ассортимент</a>
@@ -98,28 +89,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         <a class="dropdown-item" href="#">Оплата и доставка</a>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Торговые марки</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Поддержка сайта</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Новости компании</a>
+                </li>
             </ul>
-            <form id="catalogSearchForm" class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-2 button-link" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
-                <button class="btn btn-outline-primary my-2 my-sm-0 button-link" type="submit">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                    </svg>
-                    Найти
-                </button>
+            <form id="catalogSearchForm" class="form-inline my-2 my-lg-0 d-flex flex-nowrap align-items-center">
+                <div class="input-group flex-nowrap">
+                    <input class="form-control mr-sm-2 search-input" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary my-2 my-sm-0 button-link search-button" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                            <span class="search-text">Найти</span>
+                        </button>
+                    </div>
+                </div>
             </form>
             <div class="ml-xl-3 ml-lg-2 ml-md-1">
                 <?php 
                 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) 
                 {
                 ?>
-                    <div class="d-flex flex-wrap flex-md-nowrap">
-                        <button class="btn btn-info button-link w-md-auto" data-toggle="modal" data-target="#accountModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <div class="d-flex flex-column flex-md-row align-items-center">
+                        <p class="mb-0 text-center text-md-right mr-md-2" style="font-size: 0.9em; white-space: nowrap;">
+                            <strong><?= htmlspecialchars($_SESSION['user']); ?></strong>
+                        </p>
+                        <button class="profile-button w-md-auto" data-toggle="modal" data-target="#accountModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="48" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                                 <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                             </svg>
-                            Личный Кабинет
                         </button>
                     </div>
                 <?php 
@@ -202,30 +208,89 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         </div>
     </div>
 
-    <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true" aria-modal="true">
+    <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title w-100 text-center" id="accountModalLabel" style="font-weight: bold; color: #007bff;">Личный Кабинет</h5>
-                </div>
                 <div class="modal-body">
-                    <p style="font-size: 1.1em;">Добро пожаловать, <strong><?= htmlspecialchars($_SESSION['user']); ?></strong>!</p>
-                    <p>Здесь вы можете управлять своими данными, просмотреть заказы и т.д.</p>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="link-opacity-100" style="color: #007bff;">Мои Заказы</a></li>
-                        <li><a href="#" class="link-opacity-100" style="color: #007bff;">Редактировать Профиль</a></li>
-                        <li><a href="#" class="link-opacity-100" style="color: #007bff;">Настройки Уведомлений</a></li>
-                        <li><a href="#" class="link-opacity-100" style="color: #007bff;">Изменить Пароль</a></li>
-                        <li><a href="#" class="link-opacity-100" style="color: #007bff;">История Платежей</a></li>
-                        <li>
-                        <form action="files/logout.php" method="POST">
-                            <button type="submit" class="logout-button">Выйти из аккаунта</button>
-                        </form>
-                        </li>
-                    </ul>
+                    <div class="user-card text-center bg-light p-3 rounded mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <h4 class="modal-title font-weight-bold text-primary">Личный кабинет</h4>
+                                <p class="text-muted mb-0">Добро пожаловать, дорогой пользователь!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-menu">
+                        <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
+                            <div class="icon-wrapper bg-primary-light mb-3 mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-cart3" viewBox="0 0 16 16">
+                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                                </svg>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6>Мои заказы</h6>
+                                <p class="text-muted">Просмотр истории заказов</p>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#6c757d" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
+                            <div class="icon-wrapper bg-primary-light mb-3 mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-person" viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                                </svg>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6>Профиль</h6>
+                                <p class="text-muted">Редактирование личных данных</p>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#6c757d" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
+                            <div class="icon-wrapper bg-primary-light mb-3 mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-bell" viewBox="0 0 16 16">
+                                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
+                                </svg>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6>Уведомления</h6>
+                                <p class="text-muted">Настройка оповещений</p>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#6c757d" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
+                            <div class="icon-wrapper bg-primary-light mb-3 mr-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-shield-lock" viewBox="0 0 16 16">
+                                    <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/>
+                                    <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415"/>
+                                </svg>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6>Безопасность</h6>
+                                <p class="text-muted">Смена пароля и защита</p>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#6c757d" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                <div class="modal-footer justify-content-center">
+                    <form action="files/logout.php" method="POST" class="w-50">
+                        <button type="submit" class="btn btn-outline-danger btn-block">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right mr-2" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                            </svg>
+                            Выйти из аккаунта
+                        </button>
+                    </form>
+                    <button type="button" class="btn btn-outline-secondary btn-block w-25" data-dismiss="modal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -373,6 +438,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     <div class="modal fade" id="wheelResultModal" tabindex="-1" role="dialog" aria-labelledby="wheelResultModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content p-2">
+                <div class="modal-header justify-content-center">
+                    <h4 class="modal-title w-100 text-center" id="wheelResultModalLabel">Вы получаете!</h4>
+                </div>
                 <div class="modal-body text-center">
                     <h4 id="modalResultText" class="mb-3"></h4>
                     <p id="modalResultDescription" class="mb-0"></p>
@@ -652,7 +720,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 </div>
             </div>
         </div>
-        <div class="scrollbar" id="carBrandsScrollbar">
+        <div class="scrollbar scrollable" id="carBrandsScrollbar">
             <div class="scrollbar-thumb"></div>
         </div>
     </section>
@@ -775,7 +843,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 </div>
             </div>
         </div>
-        <div class="scrollbar" id="popularPartsScrollbar">
+        <div class="scrollbar scrollable" id="popularPartsScrollbar">
             <div class="scrollbar-thumb"></div>
         </div>
     </section>

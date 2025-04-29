@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function()
     }
 
     document.addEventListener('keydown', (e) => {
-        if (e.key.toLowerCase() === 'p') 
+        if (e.key.toLowerCase() == 'p') 
         {
             addPurchase();
         }

@@ -1,7 +1,114 @@
 "use strict";
 
+function initScrollbars() 
+{
+    let containers = [
+        { container: document.getElementById('carBrandsBlock'), scrollbar: document.getElementById('carBrandsScrollbar') },
+        { container: document.getElementById('partsContainer'), scrollbar: document.getElementById('popularPartsScrollbar') }
+    ];
+
+    containers.forEach(({ container, scrollbar }) => {
+        if (!container || !scrollbar) 
+        {
+            return;
+        }
+
+        let scrollThumb = scrollbar.querySelector('.scrollbar-thumb');
+        
+        let updateScrollbar = () => {
+            let scrollWidth = container.scrollWidth;
+            let clientWidth = container.clientWidth;
+            
+            if (scrollWidth > clientWidth) 
+            {
+                scrollbar.style.display = 'block';
+                
+                let thumbWidth = (clientWidth / scrollWidth) * 100;
+                scrollThumb.style.width = `${thumbWidth}%`;
+                
+                let scrollLeft = container.scrollLeft;
+                let maxScrollLeft = scrollWidth - clientWidth;
+                let thumbPosition = (scrollLeft / maxScrollLeft) * (100 - thumbWidth);
+                scrollThumb.style.left = `${thumbPosition}%`;
+            } 
+            else 
+            {
+                scrollbar.style.display = 'none';
+            }
+        };
+
+        container.addEventListener('scroll', () => {
+            let scrollWidth = container.scrollWidth;
+            let clientWidth = container.clientWidth;
+            let scrollLeft = container.scrollLeft;
+            let maxScrollLeft = scrollWidth - clientWidth;
+            let thumbWidth = parseFloat(scrollThumb.style.width);
+            
+            let thumbPosition = (scrollLeft / maxScrollLeft) * (100 - thumbWidth);
+            scrollThumb.style.left = `${thumbPosition}%`;
+        });
+
+        let isDragging = false;
+        
+        scrollThumb.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            e.preventDefault();
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging)
+            {
+                return;
+            }
+            
+            let scrollWidth = container.scrollWidth;
+            let clientWidth = container.clientWidth;
+            let maxScrollLeft = scrollWidth - clientWidth;
+            let scrollbarRect = scrollbar.getBoundingClientRect();
+            let thumbWidth = parseFloat(scrollThumb.style.width);
+            
+            let position = (e.clientX - scrollbarRect.left) / scrollbarRect.width;
+            position = Math.max(0, Math.min(position, 1 - thumbWidth / 100));
+            
+            let scrollLeft = position * maxScrollLeft / (1 - thumbWidth / 100);
+            container.scrollLeft = scrollLeft;
+            
+            scrollThumb.style.left = `${position * 100}%`;
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        scrollbar.addEventListener('click', (e) => {
+            if (e.target === scrollThumb)
+            {
+                return;
+            }
+            
+            let scrollWidth = container.scrollWidth;
+            let clientWidth = container.clientWidth;
+            let maxScrollLeft = scrollWidth - clientWidth;
+            let scrollbarRect = scrollbar.getBoundingClientRect();
+            let thumbWidth = parseFloat(scrollThumb.style.width);
+            
+            let position = (e.clientX - scrollbarRect.left) / scrollbarRect.width;
+            position = Math.max(0, Math.min(position, 1 - thumbWidth / 100));
+            
+            let scrollLeft = position * maxScrollLeft / (1 - thumbWidth / 100);
+            container.scrollLeft = scrollLeft;
+        });
+
+        window.addEventListener('resize', updateScrollbar);
+        
+        updateScrollbar();
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() 
 {
+    initScrollbars();
+
     let lastScrollTop = 0;
     let navbar = document.querySelector('.navbar');
     let dropdownMenus = document.querySelectorAll('.dropdown-menu');
@@ -49,8 +156,6 @@ document.addEventListener('DOMContentLoaded', function()
             {
                 item.style.display = 'none';
             }
-
-            updateScrollbar(container);
         });
 
         let noResultsMessage = document.getElementById(noResultsId);
@@ -67,27 +172,7 @@ document.addEventListener('DOMContentLoaded', function()
             }
         }
 
-        function updateScrollbar(container) 
-        {
-            let scrollbar = container.closest('.row').nextElementSibling;
-            let visibleCount = container.querySelectorAll('.scrollable-item[style*="display: block"]').length;
-        
-            if (scrollbar) 
-            {
-                let scrollThumb = scrollbar.querySelector('.scrollbar-thumb');
-        
-                if (scrollThumb && visibleCount > 0) 
-                {
-                    scrollbar.style.display = 'flex';
-                    let scrollWidth = (container.scrollWidth / container.scrollHeight) * 100;
-                    scrollThumb.style.width = `${scrollWidth}%`;
-                } 
-                else 
-                {
-                    scrollbar.style.display = 'none';
-                }
-            }
-        }
+        initScrollbars();
     }
 
     document.getElementById('catalogSearchForm').addEventListener('submit', function(event) 
