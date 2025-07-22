@@ -12,6 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
         $_SESSION['loggedin'] = true;
         $_SESSION['user'] = 'admin';
+        unset($_SESSION['login_error']);
+        unset($_SESSION['error_message']);
         header("Location: admin.php");
         exit();
     }
@@ -27,16 +29,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $row = $result->fetch_assoc();
             $_SESSION['loggedin'] = true;
             $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
-
+            unset($_SESSION['login_error']);
+            unset($_SESSION['error_message']);
             header("Location: index.php");
             exit();
         } 
         else 
         {
-            $error_message = "Неверный логин или пароль!";
+            $_SESSION['login_error'] = true;
+            $_SESSION['error_message'] = "Неверный логин или пароль!";
+            $_SESSION['form_data'] = $_POST;
+            header("Location: " . $_SERVER['REQUEST_URI']);
+            exit();
         }
     }
 }
+
+$form_data = $_SESSION['form_data'] ?? [];
+unset($_SESSION['form_data']);
 ?>
 
 <!DOCTYPE html>
@@ -45,144 +55,167 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лал-Авто - Автозапчасти</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index-styles.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() 
+        {
+        <?php 
+        if (isset($_SESSION['login_error'])) 
+        { 
+        ?>
+            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+
+            <?php unset($_SESSION['login_error']); ?>
+        <?php 
+        } 
+        ?>
+    });
+    </script>
 </head>
 <body>
 
 <div class="flex-grow-1">
     <nav class="navbar navbar-expand-xl navbar-light bg-light shadow-sm fixed-top">
-        <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Навигация
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#carouselExample">Слайдер</a>
-                        <a class="dropdown-item" href="#aboutUs">О Нас</a>
-                        <a class="dropdown-item" href="#specialOffer">Колесо Фортуны</a>
-                        <a class="dropdown-item" href="#nextSection">Поиск по марке и по запчастям</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Меню
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Магазины</a>
-                        <a class="dropdown-item" href="#">Автосервис</a>
-                        <a class="dropdown-item" href="#">Ассортимент</a>
-                        <a class="dropdown-item" href="#">Масла и тех. жидкости</a>
-                        <a class="dropdown-item" href="#">Аксессуары</a>
-                        <a class="dropdown-item" href="#">Покупателям</a>
-                        <a class="dropdown-item" href="#">Реквизиты</a>
-                        <a class="dropdown-item" href="#">Поставщикам</a>
-                        <a class="dropdown-item" href="#">Вакансии</a>
-                        <a class="dropdown-item" href="#">Контакты</a>
-                        <a class="dropdown-item" href="#">Отзывы</a>
-                        <a class="dropdown-item" href="#">Оплата и доставка</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Торговые марки</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Поддержка сайта</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">Новости компании</a>
-                </li>
-            </ul>
-            <form id="catalogSearchForm" class="form-inline my-2 my-lg-0 d-flex flex-nowrap align-items-center">
-                <div class="input-group flex-nowrap">
-                    <input class="form-control mr-sm-2 search-input" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-primary my-2 my-sm-0 button-link search-button" type="submit">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Навигация
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#carouselExample">Слайдер</a></li>
+                            <li><a class="dropdown-item" href="#aboutUs">О Нас</a></li>
+                            <li><a class="dropdown-item" href="#specialOffer">Колесо Фортуны</a></li>
+                            <li><a class="dropdown-item" href="#nextSection">Поиск по марке и по запчастям</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Меню
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
+                            <li><a class="dropdown-item" href="#">Магазины</a></li>
+                            <li><a class="dropdown-item" href="#">Автосервис</a></li>
+                            <li><a class="dropdown-item" href="#">Ассортимент</a></li>
+                            <li><a class="dropdown-item" href="#">Масла и тех. жидкости</a></li>
+                            <li><a class="dropdown-item" href="#">Аксессуары</a></li>
+                            <li><a class="dropdown-item" href="#">Покупателям</a></li>
+                            <li><a class="dropdown-item" href="#">Реквизиты</a></li>
+                            <li><a class="dropdown-item" href="#">Поставщикам</a></li>
+                            <li><a class="dropdown-item" href="#">Вакансии</a></li>
+                            <li><a class="dropdown-item" href="#">Контакты</a></li>
+                            <li><a class="dropdown-item" href="#">Отзывы</a></li>
+                            <li><a class="dropdown-item" href="#">Оплата и доставка</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Торговые марки</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Поддержка сайта</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Новости компании</a>
+                    </li>
+                </ul>
+                <form id="catalogSearchForm" class="d-flex align-items-center me-3">
+                    <div class="input-group">
+                        <input class="form-control me-2 search-input" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
+                        <button class="btn btn-outline-primary button-link search-button" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                             </svg>
                             <span class="search-text">Найти</span>
                         </button>
                     </div>
+                </form>
+                <div class="ms-xl-3 ms-lg-2 ms-md-1">
+                    <?php 
+                    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) 
+                    {
+                    ?>
+                        <div class="d-flex flex-column flex-md-row align-items-center">
+                            <p class="mb-0 text-center text-md-end me-md-2" style="font-size: 0.9em; white-space: nowrap;">
+                                <strong><?= htmlspecialchars($_SESSION['user']); ?></strong>
+                            </p>
+                            <button class="profile-button w-md-auto" data-bs-toggle="modal" data-bs-target="#accountModal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="48" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    <?php 
+                    } 
+                    else 
+                    {
+                    ?>
+                        <div class="d-flex flex-wrap flex-md-nowrap">
+                            <a href="#" class="btn btn-primary button-link w-md-auto mx-1" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                                    <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                                </svg>
+                                Войти
+                            </a>
+                            <a href="#" class="btn btn-primary button-link w-md-auto" data-bs-toggle="modal" data-bs-target="#registerModal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-r-circle" viewBox="0 0 16 16">
+                                    <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002h3.11c1.71 0 2.741.973 2.741 2.46 0 1.138-.667 1.94-1.495 2.24L11.5 12H9.98L8.52 8.924H6.836V12H5.5zm1.335 1.09v2.777h1.549c.995 0 1.573-.463 1.573-1.36 0-.913-.596-1.417-1.537-1.417z"/>
+                                </svg>
+                                Зарегистрироваться
+                            </a>
+                        </div>
+                    <?php
+                    }
+                    ?>
                 </div>
-            </form>
-            <div class="ml-xl-3 ml-lg-2 ml-md-1">
-                <?php 
-                if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) 
-                {
-                ?>
-                    <div class="d-flex flex-column flex-md-row align-items-center">
-                        <p class="mb-0 text-center text-md-right mr-md-2" style="font-size: 0.9em; white-space: nowrap;">
-                            <strong><?= htmlspecialchars($_SESSION['user']); ?></strong>
-                        </p>
-                        <button class="profile-button w-md-auto" data-toggle="modal" data-target="#accountModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="48" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                            </svg>
-                        </button>
-                    </div>
-                <?php 
-                } 
-                else 
-                {
-                ?>
-                    <div class="d-flex flex-wrap flex-md-nowrap">
-                        <a href="#" class="btn btn-primary button-link w-md-auto mx-1" data-toggle="modal" data-target="#loginModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
-                                <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                            </svg>
-                            Войти
-                        </a>
-                        <a href="#" class="btn btn-primary button-link w-md-auto" data-toggle="modal" data-target="#registerModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-r-circle" viewBox="0 0 16 16">
-                                <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002h3.11c1.71 0 2.741.973 2.741 2.46 0 1.138-.667 1.94-1.495 2.24L11.5 12H9.98L8.52 8.924H6.836V12H5.5zm1.335 1.09v2.777h1.549c.995 0 1.573-.463 1.573-1.36 0-.913-.596-1.417-1.537-1.417z"/>
-                            </svg>
-                            Зарегистрироваться
-                        </a>
-                    </div>
-                <?php
-                }
-                ?>
             </div>
         </div>
     </nav>
 
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title w-100 text-center" id="loginModalLabel">Авторизация</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="/">
-                        <div class="form-group">
-                            <label for="username">Логин</label>
-                            <input type="text" name="login" class="form-control" id="username" placeholder="Введите логин" required>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Логин</label>
+                            <input type="text" name="login" class="form-control" id="username" 
+                                placeholder="Введите логин" required
+                                value="<?= htmlspecialchars($form_data['login'] ?? '') ?>">
                         </div>
-                        <div class="form-group">
-                            <label for="password">Пароль</label>
-                            <input type="password" name="password" class="form-control" id="password" placeholder="Введите пароль" required>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Пароль</label>
+                            <input type="password" name="password" class="form-control" id="password" 
+                                placeholder="Введите пароль" required
+                                value="<?= htmlspecialchars($form_data['password'] ?? '') ?>">
                         </div>
-                        <div class="form-group form-check">
+                        <div class="mb-3 form-check">
                             <input type="checkbox" name="rememberMe" class="form-check-input" id="rememberMe">
                             <label class="form-check-label" for="rememberMe">Запомнить меня</label>
                         </div>
                         <?php 
-                        if (!empty($error_message))
+                        if (isset($_SESSION['error_message'])) 
                         {
                         ?>
                             <div class="alert alert-danger" role="alert">
-                                <?= $error_message; ?>
+                                <?= htmlspecialchars($_SESSION['error_message']); ?>
                             </div>
-                        <?php  
+                        <?php 
+                            unset($_SESSION['error_message']);
                         }
                         ?>
                         <button type="submit" class="btn btn-primary">
@@ -196,7 +229,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -208,21 +241,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         </div>
     </div>
 
-    <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="user-card text-center bg-light p-3 rounded mb-4">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
-                                <h4 class="modal-title font-weight-bold text-primary">Личный кабинет</h4>
+                                <h4 class="modal-title fw-bold text-primary">Личный кабинет</h4>
                                 <p class="text-muted mb-0">Добро пожаловать, дорогой пользователь!</p>
                             </div>
                         </div>
                     </div>
                     <div class="account-menu">
                         <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
-                            <div class="icon-wrapper bg-primary-light mb-3 mr-3">
+                            <div class="icon-wrapper bg-primary-light mb-3 me-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-cart3" viewBox="0 0 16 16">
                                     <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
                                 </svg>
@@ -236,7 +269,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             </svg>
                         </a>
                         <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
-                            <div class="icon-wrapper bg-primary-light mb-3 mr-3">
+                            <div class="icon-wrapper bg-primary-light mb-3 me-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-person" viewBox="0 0 16 16">
                                     <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
                                 </svg>
@@ -250,7 +283,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             </svg>
                         </a>
                         <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
-                            <div class="icon-wrapper bg-primary-light mb-3 mr-3">
+                            <div class="icon-wrapper bg-primary-light mb-3 me-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-bell" viewBox="0 0 16 16">
                                     <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
                                 </svg>
@@ -264,7 +297,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                             </svg>
                         </a>
                         <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
-                            <div class="icon-wrapper bg-primary-light mb-3 mr-3">
+                            <div class="icon-wrapper bg-primary-light mb-3 me-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-shield-lock" viewBox="0 0 16 16">
                                     <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/>
                                     <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415"/>
@@ -283,14 +316,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 <div class="modal-footer justify-content-center">
                     <form action="files/logout.php" method="POST" class="w-50">
                         <button type="submit" class="btn btn-outline-danger btn-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right mr-2" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right me-2" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
                                 <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
                             </svg>
                             Выйти из аккаунта
                         </button>
                     </form>
-                    <button type="button" class="btn btn-outline-secondary btn-block w-25" data-dismiss="modal">
+                    <button type="button" class="btn btn-outline-secondary btn-block w-25" data-bs-dismiss="modal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -302,7 +335,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         </div>
     </div>
 
-    <div id="carouselExample" class="carousel slide" data-ride="carousel">
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="img/1.jpg" class="d-block w-100" alt="Слайд 1">
@@ -326,36 +359,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 </div>
             </div>
         </div>
-        <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Предыдущий</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+            <span class="visually-hidden">Предыдущий</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Следующий</span>
-        </a>
+            <span class="visually-hidden">Следующий</span>
+        </button>
     </div>
 
-    <div id="aboutUs" class="py-5 about-us">
+    <section id="aboutUs" class="py-5">
         <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="display-4 font-weight-bold mb-3">О Нас</h2>
+            <div class="text-center mb-5 animate-fadeInUp">
+                <h2 class="display-3 fw-bold mb-3 text-gradient-primary">О компании Лал-Авто</h2>
                 <div class="divider mx-auto bg-primary" style="width: 80px; height: 4px;"></div>
-            </div> 
-            <p class="lead text-center">Лал-Авто — ведущий поставщик автозапчастей и автоуслуг. Предлагаем оригинальные и качественные запчасти для всех марок, сотрудничая с проверенными производителями. Наши специалисты выполняют диагностику, ремонт и обслуживание с современным оборудованием. Ценим клиентов, предлагаем индивидуальный подход и доступные цены.</p>
-            <br>
-            <div class="text-center mb-5">
-                <h2 class="display-4 font-weight-bold mb-3">Почему выбирают нас?</h2>
-                <div class="divider mx-auto bg-primary" style="width: 80px; height: 4px;"></div>
-            </div> 
-            <ul class="list-unstyled">
-                <li class="list-connect">✓ Широкий ассортимент запчастей для различных марок автомобилей.</li>
-                <li class="list-connect">✓ Конкурентоспособные цены.</li>
-                <li class="list-connect">✓ Быстрая доставка и удобные способы оплаты.</li>
-                <li class="list-connect">✓ Профессиональная консультация и поддержка клиентов.</li>
-                <li class="list-connect">✓ Гарантия качества на все наши товары.</li>
-            </ul>
-            <br>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <p class="lead fs-4 mb-5">
+                        Лал-Авто — ведущий поставщик автозапчастей и автоуслуг с 2010 года. 
+                        Мы предлагаем оригинальные и качественные запчасти для всех марок автомобилей, 
+                        сотрудничая только с проверенными производителями.
+                    </p>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="about-card p-4 h-100 text-center">
@@ -391,17 +419,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     </div>
                 </div>
             </div>
+            <div class="stats-section py-4 mb-5">
+                <div class="row g-2 text-center">
+                    <div class="col-6 col-md-3">
+                        <div class="stat-item p-3">
+                            <div class="stat-number display-4 fw-bold text-primary mb-2">12+</div>
+                            <div class="stat-label fs-6">Лет на рынке</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="stat-item p-3">
+                            <div class="stat-number display-4 fw-bold text-primary mb-2">50K+</div>
+                            <div class="stat-label fs-6">Товаров в каталоге</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="stat-item p-3">
+                            <div class="stat-number display-4 fw-bold text-primary mb-2">100+</div>
+                            <div class="stat-label fs-6">Брендов-партнеров</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="stat-item p-3">
+                            <div class="stat-number display-4 fw-bold text-primary mb-2">24/7</div>
+                            <div class="stat-label fs-6">Поддержка клиентов</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="text-center mt-4">
                 <a href="#" class="btn btn-primary btn-lg px-4">Подробнее о компании</a>
             </div>
         </div>
-    </div>
+        </div>
+    <section>
 
-    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title w-100 text-center" id="registerModalLabel">Регистрация</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
                     <a href="individuel.php" type="button" class="btn btn-primary mb-2" id="individualsBtn">
@@ -426,7 +484,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -456,18 +514,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         </div>
     </section>
 
-    <div class="modal fade" id="wheelResultModal" tabindex="-1" role="dialog" aria-labelledby="wheelResultModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="wheelResultModal" tabindex="-1" aria-labelledby="wheelResultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-2">
                 <div class="modal-header justify-content-center">
                     <h4 class="modal-title w-100 text-center" id="wheelResultModalLabel">Вы получаете!</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
                     <h4 id="modalResultText" class="mb-3"></h4>
                     <p id="modalResultDescription" class="mb-0"></p>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -870,25 +929,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     </section>
 </div>
 
-    <footer class="text-center py-4">
-        <div class="container">
-            <p>© 2025 Лал-Авто. Все права защищены.</p>
-            <p>Контактный телефон: <a href="#">+7 (4012) 65-65-65</a></p>
-            <p>
-                <a href="#">Политика конфиденциальности</a> | 
-                <a href="#">Условия использования</a>
-            </p>
-            <div class="d-flex justify-content-center mt-3">
-                <a href="https://vk.com/lalauto?ysclid=m91623ocq3201359667"><img class="mx-1 small-img navbar-brand" src="img/image 33.png" alt=""></a>
-                <a href="https://t.me/s/lalauto"><img class="mx-1 small-img navbar-brand" src="img/image 32.png" alt=""></a>
-            </div>
+<footer class="text-center py-4 bg-light mt-auto">
+    <div class="container">
+        <p>© 2025 Лал-Авто. Все права защищены.</p>
+        <p>Контактный телефон: <a href="tel:+74012656565">+7 (4012) 65-65-65</a></p>
+        <p>
+            <a href="privacy.php">Политика конфиденциальности</a> | 
+            <a href="terms.php">Условия использования</a>
+        </p>
+        <div class="d-flex justify-content-center mt-3">
+            <a href="https://vk.com/lalauto?ysclid=m91623ocq3201359667"><img class="mx-1 small-img navbar-brand" src="img/image 33.png" alt=""></a>
+            <a href="https://t.me/s/lalauto"><img class="mx-1 small-img navbar-brand" src="img/image 32.png" alt=""></a>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="js/script.js"></script>
-    <script src="files/app.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="js/script.js"></script>
+<script src="files/app.js"></script>
 </body>
 </html>

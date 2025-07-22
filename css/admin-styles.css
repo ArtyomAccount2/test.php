@@ -1,0 +1,85 @@
+.admin-container 
+{
+    padding-top: 90px;
+}
+
+.admin-container h1 
+{
+    padding-top: 50px;
+}
+
+.table-responsive 
+{
+    overflow-x: auto;
+}
+
+table 
+{
+    font-size: 0.8rem;
+}
+
+th, td 
+{
+    padding: 0.3rem;
+    vertical-align: middle;
+}
+
+.d-flex.flex-column.gap-1 
+{
+    gap: 0.5rem;
+}
+
+.btn-sm 
+{
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.btn-sm svg 
+{
+    margin-right: 0.2rem;
+}
+
+@media (max-width: 768px) 
+{
+    .table-responsive 
+    {
+        width: 100%;
+        margin-bottom: 1rem;
+        overflow-y: hidden;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        border: 1px solid #dee2e6;
+    }
+    
+    table 
+    {
+        width: 100%;
+        margin-bottom: 1rem;
+        background-color: transparent;
+    }
+    
+    th, td 
+    {
+        white-space: nowrap;
+    }
+}
+
+.navbar 
+{
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand img 
+{
+    height: 75px;
+}
+
+.button-link 
+{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}

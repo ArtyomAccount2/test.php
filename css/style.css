@@ -1,69 +1,77 @@
-html 
-{
+html {
     scroll-behavior: smooth;
 }
 
-body 
-{
+body {
     font-family: 'Montserrat', sans-serif;
 }
 
-h1, h2 
-{
+h1, h2 {
     color: #333;
     font-weight: 600;
 }
 
-#label
-{
-    height: 25px;
-}
-
-@media (min-width: 1200px)
-{
-    .nav-link
-    {
-        background: linear-gradient(currentColor 0 0) bottom /var(--d, 0) 1px no-repeat;
-        transition: 0.5s;
-    }
-
-    .nav-link:hover 
-    {
-        --d: 85%;
-        opacity: 0.7;
-    }
-}
-
-.nav-link, .button-link
-{
-    font-size: 0.9rem;
-}
-
-.button-link-admin
-{
-    font-size: 0.5rem;
-}
-
-.navbar 
-{
+.navbar {
     margin-bottom: 20px;
     z-index: 1030;
     background-color: rgba(255, 255, 255, 0.9);
     transition: top 0.3s;
 }
 
-.navbar.collapsed 
-{
+.navbar.collapsed {
     top: -100px;
 }
 
-.navbar-brand
-{
+.navbar-brand {
     transition: transform 0.2s;
 }
 
-.scrollbar 
-{
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+footer {
+    background-color: #f0f0f0;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+@media (min-width: 1200px) {
+    .nav-link {
+        background: linear-gradient(currentColor 0 0) bottom /var(--d, 0) 1px no-repeat;
+        transition: 0.5s;
+    }
+
+    .nav-link:hover {
+        --d: 85%;
+        opacity: 0.7;
+    }
+}
+
+.nav-link, .button-link {
+    font-size: 0.9rem;
+}
+
+.button-link-admin {
+    font-size: 0.5rem;
+}
+
+.scrollbar {
     height: 8px;
     background: #f1f1f1;
     border-radius: 4px;
@@ -73,8 +81,7 @@ h1, h2
     width: 100%;
 }
 
-.scrollbar-thumb 
-{
+.scrollbar-thumb {
     background-color: #007bff;
     border-radius: 4px;
     height: 100%;
@@ -85,615 +92,110 @@ h1, h2
     transition: background-color 0.3s;
 }
 
-.scrollbar-thumb:hover 
-{
+.scrollbar-thumb:hover {
     background-color: #0056b3;
 }
 
-@media (min-width: 769px) 
-{
-    .scrollbar 
-    {
-        display: block;
-    }
-}
-
-.scroll-container 
-{
-    position: relative;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-}
-
-.scrollable 
-{
+.scrollable {
     display: flex;
     flex-wrap: nowrap;
     padding-bottom: 15px;
 }
 
-.scrollable-item 
-{
+.scrollable-item {
     flex: 0 0 auto;
     transition: transform 0.3s;
 }
 
-@media (max-width: 768px) 
-{
-    .scrollable-item 
-    {
+@media (min-width: 769px) {
+    .scrollbar {
+        display: block;
+    }
+}
+
+@media (max-width: 768px) {
+    .scrollable-item {
         margin-right: 10px;
     }
     
-    .scrollbar 
-    {
+    .scrollbar {
         display: none;
     }
 }
 
-#carBrandsList, #popularPartsList 
-{
-    overflow: hidden;
-}
-
-.big-text
-{
+.big-text {
     font-size: 1rem;
 }
 
-.big-text-card
-{
+.big-text-card {
     font-size: 0.875rem;
 }
 
-.card 
-{
-    transition: transform 0.2s;
-    width: 190px;
-    height: 250px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.lead-text
-{
+.lead-text {
     font-size: 32px;
     font-weight: 900;
 }
 
-.link_body
-{
+.link_body {
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
-#slider_body
-{
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.card:hover, .navbar-brand:hover
-{
-    transform: scale(1.05);
-}
-
-footer 
-{
-    background-color: #f0f0f0;
-}
-
-.carousel-item img 
-{
-    height: 100vh;
-    object-fit: cover;
-}
-
-.navbar-brand img 
-{
-    height: 90px;
-}
-
-.carousel-caption 
-{
-    bottom: 20%;
-}
-
-.row.align-items-center 
-{
-    display: flex;
-    justify-content: center;
-}
-
-.card-body 
-{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-dialog-centered 
-{
-    display: flex;
-    align-items: center;
-}
-
-.overflow-hidden 
-{
-    overflow: hidden;
-}
-
-#popularParts 
-{
-    overflow-x: hidden;
-    white-space: nowrap;
-}
-
-#carBrandsBlock, #partsContainer 
-{
-    overflow-x: hidden;
-    height: 300px;
-}
-
-.card-img-top 
-{
-    margin-top: 10px;
-    width: 92.5%;
-    height: 50%;
-    object-fit: cover;
-}
-
-.scrollable-item 
-{
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-@media (max-width: 768px) 
-{
-    .dropdown-menu 
-    {
-        width: 100%;
-    }
-    
-    .dropdown-item 
-    {
-        padding: 10px 15px;
-    }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) 
-{
-    .scrollable-item 
-    {
-        flex: 0 0 33.33%;
-    }
-}
-
-@media (min-width: 769px) 
-{
-    .scrollbar 
-    {
-        display: flex;
-    }
-}
-
-@media (min-width: 1025px) 
-{
-    .scrollable-item 
-    {
-        flex: 0 0 20%;
-    }
-}
-
-#aboutUs h5 
-{
-    margin-top: 15px;
-    font-size: 1.5rem;
-    color: #007bff;;
-}
-
-#no-results-brands, #no-results-parts 
-{
-    margin-top: 100px;
-    color: #dc3545;
-    font-weight: bold;
-    width: 100%;
-    justify-content: center;
-}
-
-#aboutUs 
-{
-    background: linear-gradient(135deg, #e0f7fa 15%, #f9f9f9 85%);
-    padding: 60px;
-    position: relative;
-    z-index: 1;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-#aboutUs h2 
-{
-    margin-bottom: 30px;
-    font-size: 2.5rem;
-    color: #007bff;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-#aboutUs p 
-{
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.about-card 
-{
-    background: white;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.about-card:hover 
-{
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-}
-
-.row.text-center 
-{
-    display: flex;
-    flex-wrap: wrap;
-}
-
-#aboutUs .row div 
-{
-    padding: 20px;
-}
-
-#aboutUs img 
-{
-    width: 80%;
-    max-width: 250px;
-    height: auto;
-    border-radius: 10px;
-}
-
-@media (max-width: 768px) 
-{
-    #aboutUs h5 
-    {
-        font-size: 1.2rem;
-    }
-    .scrollbar 
-    {
-        display: none;
-    }
-}
-
-.scrollable 
-{
-    overflow-y: hidden;
-}
-
-#carBrandsList:has(.scrollable-item) > .scrollable, #popularParts:has(.scrollable-item) > .scrollable 
-{
-    display: flex;
-}
-
-@media (max-width: 1456px)
-{
-    .navbar 
-    {
-        padding: 10px 20px;
-    }
-
-    .navbar-nav .nav-item 
-    {
-        margin: 0 10px;
-    }
-
-    .form-inline 
-    {
-        width: 100%;
-    }
-
-    .form-control 
-    {
-        width: 70%;
-    }
-
-    .btn 
-    {
-        margin-left: 5px;
-    }
-}
-
-.carousel-item>img
-{
-    filter: blur(8px);
-    -webkit-filter: blur(8px);
-    object-fit: cover;
-}
-
-.small-img 
-{
+.small-img {
     width: 25px;
     height: auto;
 }
 
-#specialOffer 
-{
-    background-color: #faf9f8;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    padding: 40px 20px;
-}
-
-.card 
-{
-    border: none;
-}
-
-.countdown 
-{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 20px 0;
-}
-
-.countdown div 
-{
-    margin: 0 15px;
-    text-align: center;
-    flex: 1 1 80px;
-}
-
-.countdown span 
-{
-    font-size: 2em;
-    font-weight: bold;
-    color: #007bff;
-}
-
-.lead 
-{
-    font-size: 1.2em;
-    font-weight: 600;
-}
-
-@media (max-width: 576px) 
-{
-    .row 
-    {
-        justify-content: center;
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
     }
-
-    .col-lg-3, .col-md-4, .col-sm-6 
-    {
-        flex: 1 1 45%;
-        max-width: 45%;
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-@keyframes fadeInUp 
-{
-    0% 
-    {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    100% 
-    {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-.animate-fadeInUp 
-{
+.animate-fadeInUp {
     opacity: 0;
     animation: fadeInUp 1s forwards;
 }
 
-.wheel-container 
-{
-    position: relative;
-    width: 300px;
-    height: 300px;
-    margin: 0 auto 40px;
-}
-
-#wheelCanvas 
-{
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 8px solid #333;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.wheel-pointer 
-{
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-top: 40px solid #005bbc;
-    z-index: 5;
-}
-
-#spinButton 
-{
-    padding: 12px 30px;
-    font-size: 18px;
-    border-radius: 50px;
-    transition: all 0.3s;
-    margin: 20px auto;
-}
-
-#spinButton:hover 
-{
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-#spinButton:disabled 
-{
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-#resultContainer 
-{
-    max-width: 500px;
-    margin: 0 auto;
-    transition: all 0.5s;
-}
-
-#purchaseCounter 
-{
-    max-width: 500px;
-    margin: 20px auto;
-}
-
-#wheelResultModal .modal-content 
-{
+.profile-button {
+    background: none;
     border: none;
 }
 
-#wheelResultModal .modal-header 
-{
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-#wheelResultModal .modal-footer 
-{
-    border-top: none;
-    padding-top: 0;
-}
-
-#modalResultText 
-{
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-#modalResultDescription 
-{
-    font-size: 1.1rem;
-    color: #6c757d;
-}
-
-.profile-button
-{
-    background: none; 
-    border: none; 
-}
-
-.icon-box 
-{
-    width: 80px;
-    height: 80px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 123, 255, 0.1);
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-.about-card:hover .icon-box 
-{
-    background: rgba(0, 123, 255, 0.2);
-    transform: scale(1.1);
-}
-
-@media (min-width: 613px) 
-{
-    .list-unstyled
-    {
+@media (min-width: 613px) {
+    .list-unstyled {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    .list-connect
-    {
+    .list-connect {
         width: 605px;
     }
 }
 
-@media (max-width: 768px) 
-{
-    .scrollable 
-    {
-        justify-content: flex-start;
+@media (max-width: 768px) {
+    .dropdown-menu {
+        width: 100%;
     }
     
-    .scrollable-item 
-    {
-        margin-right: 75px;
-        width: 160px;
-    }
-    
-    #carBrandsBlock, #partsContainer 
-    {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 15px;
-    }
-    
-    #carBrandsBlock::-webkit-scrollbar, #partsContainer::-webkit-scrollbar 
-    {
-        display: none;
+    .dropdown-item {
+        padding: 10px 15px;
     }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) 
-{
-    .scrollable 
-    {
-        justify-content: flex-start;
-        flex-wrap: wrap;
-    }
-    
-    .scrollable-item 
-    {
-        flex: 0 0 25%;
-        margin-bottom: 15px;
+@media (min-width: 769px) and (max-width: 1024px) {
+    .scrollable-item {
+        flex: 0 0 33.33%;
     }
 }
 
-@media (min-width: 768px) and (max-width: 992px) 
-{
-    .about-card:nth-child(3) 
-    {
-        margin-left: auto;
-        margin-right: auto;
-        float: none;
-    }
-
-    .row 
-    {
-        justify-content: center;
-    }
-
-    .col-lg-4.col-md-6.mb-4 
-    {
-        flex: 0 0 50%;
-        max-width: 50%;
+@media (min-width: 1025px) {
+    .scrollable-item {
+        flex: 0 0 20%;
     }
 }

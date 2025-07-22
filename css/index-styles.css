@@ -1,0 +1,360 @@
+.carousel-item img 
+{
+    height: 100vh;
+    object-fit: cover;
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+}
+
+.carousel-caption 
+{
+    bottom: 20%;
+}
+
+#slider_body 
+{
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+#aboutUs 
+{
+    background: linear-gradient(135deg, #e0f7fa 15%, #f9f9f9 85%);
+    padding: 60px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+#aboutUs h2 
+{
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #007bff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+#aboutUs p 
+{
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.about-card 
+{
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.about-card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.icon-box 
+{
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 123, 255, 0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.about-card:hover .icon-box 
+{
+    background: rgba(0, 123, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.stats-section 
+{
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 123, 255, 0.1);
+}
+
+.stat-item 
+{
+    position: relative;
+}
+
+.stat-item::after 
+{
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60%;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.stat-item:last-child::after 
+{
+    display: none;
+}
+
+.stat-number 
+{
+    font-weight: 700;
+    color: #007bff;
+}
+
+#specialOffer 
+{
+    background-color: #faf9f8;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    padding: 40px 20px;
+}
+
+.wheel-container 
+{
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto 40px;
+}
+
+#wheelCanvas 
+{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 8px solid #333;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.wheel-pointer 
+{
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 40px solid #005bbc;
+    z-index: 5;
+}
+
+#spinButton 
+{
+    padding: 12px 30px;
+    font-size: 18px;
+    border-radius: 50px;
+    transition: all 0.3s;
+    margin: 20px auto;
+}
+
+#spinButton:hover 
+{
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+#spinButton:disabled 
+{
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+#resultContainer 
+{
+    max-width: 500px;
+    margin: 0 auto;
+    transition: all 0.5s;
+}
+
+#purchaseCounter 
+{
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+#wheelResultModal .modal-content 
+{
+    border: none;
+}
+
+#wheelResultModal .modal-header 
+{
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+#wheelResultModal .modal-footer 
+{
+    border-top: none;
+    padding-top: 0;
+}
+
+#modalResultText 
+{
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+#modalResultDescription 
+{
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+.card 
+{
+    width: 190px;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    border: none;
+}
+
+.card-img-top 
+{
+    margin-top: 10px;
+    width: 92.5%;
+    height: 50%;
+    object-fit: cover;
+}
+
+.card-body 
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#carBrandsBlock, #partsContainer 
+{
+    overflow-x: hidden;
+    height: 300px;
+}
+
+#no-results-brands, #no-results-parts 
+{
+    margin-top: 100px;
+    color: #dc3545;
+    font-weight: bold;
+    width: 100%;
+    justify-content: center;
+}
+
+@media (max-width: 768px) 
+{
+    .scrollable 
+    {
+        justify-content: flex-start;
+    }
+    
+    .scrollable-item 
+    {
+        margin-right: 75px;
+        width: 160px;
+    }
+    
+    #carBrandsBlock, #partsContainer 
+    {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 15px;
+    }
+    
+    #carBrandsBlock::-webkit-scrollbar, #partsContainer::-webkit-scrollbar 
+    {
+        display: none;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) 
+{
+    .scrollable 
+    {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    
+    .scrollable-item 
+    {
+        flex: 0 0 25%;
+        margin-bottom: 15px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 992px) 
+{
+    .about-card:nth-child(3) 
+    {
+        margin-left: auto;
+        margin-right: auto;
+        float: none;
+    }
+
+    .row 
+    {
+        justify-content: center;
+    }
+
+    .col-lg-4.col-md-6.mb-4 
+    {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 576px) 
+{
+    .row 
+    {
+        justify-content: center;
+    }
+
+    .col-lg-3, .col-md-4, .col-sm-6 
+    {
+        flex: 1 1 45%;
+        max-width: 45%;
+    }
+}
+
+@media (max-width: 1456px) 
+{
+    .navbar 
+    {
+        padding: 10px 20px;
+    }
+
+    .navbar-nav .nav-item 
+    {
+        margin: 0 10px;
+    }
+
+    .form-inline 
+    {
+        width: 100%;
+    }
+
+    .form-control 
+    {
+        width: 70%;
+    }
+
+    .btn 
+    {
+        margin-left: 5px;
+    }
+}
