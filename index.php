@@ -369,90 +369,91 @@ unset($_SESSION['form_data']);
         </button>
     </div>
 
-    <section id="aboutUs" class="py-5">
-        <div class="container">
-            <div class="text-center mb-5 animate-fadeInUp">
-                <h2 class="display-3 fw-bold mb-3 text-gradient-primary">О компании Лал-Авто</h2>
+    <section id="aboutUs" class="py-5 position-relative overflow-hidden">
+        <div class="position-absolute top-0 start-0 w-100 h-100">
+            <div class="about-bg-circle circle-1"></div>
+            <div class="about-bg-circle circle-2"></div>
+            <div class="about-bg-circle circle-3"></div>
+        </div>
+        <div class="container position-relative">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="display-4 fw-bold mb-3 text-gradient-primary">Лал-Авто - ваш надежный партнер</h2>
                 <div class="divider mx-auto bg-primary" style="width: 80px; height: 4px;"></div>
+                <p class="lead mt-3">Качество, проверенное временем</p>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-10 text-center">
-                    <p class="lead fs-4 mb-5">
-                        Лал-Авто — ведущий поставщик автозапчастей и автоуслуг с 2010 года. 
-                        Мы предлагаем оригинальные и качественные запчасти для всех марок автомобилей, 
-                        сотрудничая только с проверенными производителями.
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="about-card p-4 h-100 text-center">
-                        <div class="icon-box mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#007bff" viewBox="0 0 16 16">
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="about-card h-100">
+                        <div class="about-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                             </svg>
                         </div>
                         <h3 class="h4 mb-3">Качество</h3>
-                        <p class="mb-0">Мы работаем только с проверенными производителями</p>
+                        <p>Мы сотрудничаем только с проверенными мировыми производителями автозапчастей, гарантируя оригинальность и долговечность каждой детали.</p>
+                        <div class="about-card-number">01</div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="about-card p-4 h-100 text-center">
-                        <div class="icon-box mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#007bff" viewBox="0 0 16 16">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="about-card h-100">
+                        <div class="about-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
                             </svg>
                         </div>
                         <h3 class="h4 mb-3">Доставка</h3>
-                        <p class="mb-0">Быстрая и надежная доставка по всей территории страны гарантирована</p>
+                        <p>Собственная логистическая служба обеспечивает быструю доставку в любой регион. 95% заказов доставляются в течение 1-3 дней.</p>
+                        <div class="about-card-number">02</div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="about-card p-4 h-100 text-center">
-                        <div class="icon-box mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#007bff" viewBox="0 0 16 16">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="about-card h-100">
+                        <div class="about-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
                             </svg>
                         </div>
                         <h3 class="h4 mb-3">Поддержка</h3>
-                        <p class="mb-0">Наша команда готова помочь вам в любое время, гарантируя качественную поддержку</p>
+                        <p>Наши специалисты готовы помочь с подбором запчастей 24/7. Среднее время ответа на запрос - 15 минут.</p>
+                        <div class="about-card-number">03</div>
                     </div>
                 </div>
             </div>
-            <div class="stats-section py-4 mb-5">
-                <div class="row g-2 text-center">
+            <div class="stats-section mt-5 py-4" data-aos="fade-up">
+                <div class="row g-3 text-center">
                     <div class="col-6 col-md-3">
-                        <div class="stat-item p-3">
-                            <div class="stat-number display-4 fw-bold text-primary mb-2">12+</div>
-                            <div class="stat-label fs-6">Лет на рынке</div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="12">21</div>
+                            <div class="stat-label">Лет на рынке</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="stat-item p-3">
-                            <div class="stat-number display-4 fw-bold text-primary mb-2">50K+</div>
-                            <div class="stat-label fs-6">Товаров в каталоге</div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="50000">500+</div>
+                            <div class="stat-label">Товаров</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="stat-item p-3">
-                            <div class="stat-number display-4 fw-bold text-primary mb-2">100+</div>
-                            <div class="stat-label fs-6">Брендов-партнеров</div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="100">39+</div>
+                            <div class="stat-label">Брендов</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="stat-item p-3">
-                            <div class="stat-number display-4 fw-bold text-primary mb-2">24/7</div>
-                            <div class="stat-label fs-6">Поддержка клиентов</div>
+                        <div class="stat-item">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Поддержка</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="text-center mt-4">
-                <a href="#" class="btn btn-primary btn-lg px-4">Подробнее о компании</a>
+            <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="100">
+                <a href="#" class="btn btn-primary btn-lg px-4 py-2 btn-hover-effect">
+                    <span>Подробнее о компании</span>
+                </a>
             </div>
         </div>
-        </div>
-    <section>
+    </section>
 
     <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -538,393 +539,89 @@ unset($_SESSION['form_data']);
         </div>
     </div>
 
-    <section class="container my-5 text-center" id="nextSection">
-        <h2 class="text-center">Поиск по марке</h2>
-        <input type="text" id="brandSearch" placeholder="Поиск марки" class="form-control mb-4 w-100">
-        <div class="row mx-auto align-items-center">
-            <div id="carBrandsList" class="col overflow-hidden" style="max-height: 300px; overflow-y: auto;">
-                <div id="no-results-brands" style="display: none;">Ничего не найдено!</div>
-                <div class="row flex-nowrap scrollable" id="carBrandsBlock">
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Acura.png" class="card-img-top" alt="Марка 1">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Acura</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Aixam.png" class="card-img-top" alt="Марка 2">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Aixam</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Alfa Romeo.png" class="card-img-top" alt="Марка 3">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Alfa Romeo</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Aston Martin.png" class="card-img-top" alt="Марка 4">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Aston Martin</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Audi.png" class="card-img-top" alt="Марка 5">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Audi</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Bentley.png" class="card-img-top" alt="Марка 6">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Bentley</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/BMW.png" class="card-img-top" alt="Марка 7">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">BMW</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Buick.png" class="card-img-top" alt="Марка 8">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Buick</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Cadillac.png" class="card-img-top" alt="Марка 9">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Cadillac</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Chevrolet.png" class="card-img-top" alt="Марка 10">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Chevrolet</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Chrysler.png" class="card-img-top" alt="Марка 11">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Chrysler</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Dodge.png" class="card-img-top" alt="Марка 12">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Dodge</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Fiat.png" class="card-img-top" alt="Марка 13">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Fiat</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Ford.png" class="card-img-top" alt="Марка 14">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Ford</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Gaz.png" class="card-img-top" alt="Марка 15">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Gaz</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Honda.png" class="card-img-top" alt="Марка 16">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Honda</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Hummer.png" class="card-img-top" alt="Марка 17">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Hummer</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Hyundai.png" class="card-img-top" alt="Марка 18">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Hyundai</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Infiniti.png" class="card-img-top" alt="Марка 19">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Infiniti</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Jaguar.png" class="card-img-top" alt="Марка 20">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Jaguar</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Jeep.png" class="card-img-top" alt="Марка 21">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Jeep</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Kia.png" class="card-img-top" alt="Марка 22">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Kia</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Lada.png" class="card-img-top" alt="Марка 23">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Lada</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Lamborghini.png" class="card-img-top" alt="Марка 24">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Lamborghini</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Lancia.png" class="card-img-top" alt="Марка 25">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Lancia</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Land Rover.png" class="card-img-top" alt="Марка 26">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Land Rover</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Lexus.png" class="card-img-top" alt="Марка 27">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Lexus</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/Stamps/Lotus.png" class="card-img-top" alt="Марка 28">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Lotus</h6>
-                                <a href="#" class="btn btn-outline-primary">Выбрать</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <section class="container my-5" id="nextSection">
+        <div class="section-header text-center mb-5">
+            <h2 class="mb-3">Поиск по марке автомобиля</h2>
+            <p class="lead text-muted">Найдите запчасти для вашего автомобиля</p>
+            <div class="search-container position-relative mx-auto" style="max-width: 500px;">
+                <input type="text" id="brandSearch" placeholder="Начните вводить марку..." class="form-control form-control-lg search-input">
+                <button class="btn btn-link search-clear" type="button" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search search-icon" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
             </div>
         </div>
-        <div class="scrollbar scrollable" id="carBrandsScrollbar">
-            <div class="scrollbar-thumb"></div>
+        <div class="brands-container">
+            <div class="position-relative">
+                <div id="carBrandsList" class="scrollable-container">
+                    <div id="no-results-brands" class="no-results-message">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                        </svg>
+                        <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                    </div>
+                    <div class="scrollable" id="carBrandsBlock">
+                    </div>
+                </div>
+                <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                </button>
+                <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </section>
 
-    <section class="container my-5 text-center">
-        <h2 class="text-center">Поиск по запчастям</h2>
-        <input type="text" id="partsSearch" placeholder="Поиск запчасти" class="form-control mb-4 w-100">
-        <div class="row mx-auto align-items-center">
-            <div id="popularParts" class="col overflow-hidden" style="max-height: 300px; overflow-y: auto;">
-                <div id="no-results-parts" style="display: none;">Ничего не найдено!</div>
-                <div class="row flex-nowrap scrollable" id="partsContainer">
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image1.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Коленчатый вал</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image2.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Прокладки двигателя</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image3.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Топливный насос</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image4.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title big-text-card">Распределительный вал</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image5.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Тормозной цилиндр</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image6.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Тормозные колодки</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image7.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Стабилизатор</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image8.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Тормозные суппорта</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image9.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Топливный фильтр</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image10.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Тормозные диски</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image11.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Цапфа</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 scrollable-item">
-                        <div class="card shadow-sm h-100">
-                            <img src="img/SpareParts/image12.png" class="card-img-top">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="card-title">Сальники</h6>
-                                <a href="#" class="btn btn-outline-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <section class="container my-5" id="nextSection2">
+        <div class="section-header text-center mb-5">
+            <h2 class="mb-3">Популярные запчасти</h2>
+            <p class="lead text-muted">Широкий ассортимент качественных автозапчастей</p>
+            <div class="search-container position-relative mx-auto" style="max-width: 500px;">
+                <input type="text" id="partsSearch" placeholder="Найдите нужную запчасть..." class="form-control form-control-lg search-input">
+                <button class="btn btn-link search-clear" type="button" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search search-icon" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
             </div>
         </div>
-        <div class="scrollbar scrollable" id="popularPartsScrollbar">
-            <div class="scrollbar-thumb"></div>
+        <div class="parts-container">
+            <div class="position-relative">
+                <div id="popularParts" class="scrollable-container">
+                    <div id="no-results-parts" class="no-results-message">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                        </svg>
+                        <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                    </div>
+                    <div class="scrollable" id="partsContainer">
+                    </div>
+                </div>
+                <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                </button>
+                <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </section>
 </div>
