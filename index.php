@@ -57,11 +57,12 @@ unset($_SESSION['form_data']);
     <title>Лал-Авто - Автозапчасти</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/index-styles.css">
     <script>
-        document.addEventListener('DOMContentLoaded', function() 
-        {
+    document.addEventListener('DOMContentLoaded', function() 
+    {
         <?php 
         if (isset($_SESSION['login_error'])) 
         { 
@@ -131,9 +132,7 @@ unset($_SESSION['form_data']);
                     <div class="input-group">
                         <input class="form-control me-2 search-input" type="search" placeholder="Поиск по каталогу" aria-label="Search" id="catalogSearchInput">
                         <button class="btn btn-outline-primary button-link search-button" type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                            </svg>
+                            <i class="bi bi-search"></i>
                             <span class="search-text">Найти</span>
                         </button>
                     </div>
@@ -148,10 +147,7 @@ unset($_SESSION['form_data']);
                                 <strong><?= htmlspecialchars($_SESSION['user']); ?></strong>
                             </p>
                             <button class="profile-button w-md-auto" data-bs-toggle="modal" data-bs-target="#accountModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="48" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
-                                </svg>
+                                <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
                             </button>
                         </div>
                     <?php 
@@ -161,16 +157,11 @@ unset($_SESSION['form_data']);
                     ?>
                         <div class="d-flex flex-wrap flex-md-nowrap">
                             <a href="#" class="btn btn-primary button-link w-md-auto mx-1" data-bs-toggle="modal" data-bs-target="#loginModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
-                                    <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                                </svg>
+                                <i class="bi bi-box-arrow-in-right"></i>
                                 Войти
                             </a>
                             <a href="#" class="btn btn-primary button-link w-md-auto" data-bs-toggle="modal" data-bs-target="#registerModal">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-r-circle" viewBox="0 0 16 16">
-                                    <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.5 4.002h3.11c1.71 0 2.741.973 2.741 2.46 0 1.138-.667 1.94-1.495 2.24L11.5 12H9.98L8.52 8.924H6.836V12H5.5zm1.335 1.09v2.777h1.549c.995 0 1.573-.463 1.573-1.36 0-.913-.596-1.417-1.537-1.417z"/>
-                                </svg>
+                                <i class="bi bi-r-circle"></i>
                                 Зарегистрироваться
                             </a>
                         </div>
@@ -193,15 +184,11 @@ unset($_SESSION['form_data']);
                     <form method="POST" action="/">
                         <div class="mb-3">
                             <label for="username" class="form-label">Логин</label>
-                            <input type="text" name="login" class="form-control" id="username" 
-                                placeholder="Введите логин" required
-                                value="<?= htmlspecialchars($form_data['login'] ?? '') ?>">
+                            <input type="text" name="login" class="form-control" id="username" placeholder="Введите логин" required value="<?= htmlspecialchars($form_data['login'] ?? '') ?>">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Пароль</label>
-                            <input type="password" name="password" class="form-control" id="password" 
-                                placeholder="Введите пароль" required
-                                value="<?= htmlspecialchars($form_data['password'] ?? '') ?>">
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Введите пароль" required value="<?= htmlspecialchars($form_data['password'] ?? '') ?>">
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" name="rememberMe" class="form-check-input" id="rememberMe">
@@ -219,10 +206,7 @@ unset($_SESSION['form_data']);
                         }
                         ?>
                         <button type="submit" class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
-                                <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                            </svg>
+                            <i class="bi bi-box-arrow-in-right"></i>
                             Войти
                         </button>
                         <a href="#" class="btn btn-link">Забыли пароль?</a>
@@ -230,10 +214,7 @@ unset($_SESSION['form_data']);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                        </svg>
+                        <i class="bi bi-x-circle"></i>
                         Закрыть
                     </button>
                 </div>
@@ -256,78 +237,55 @@ unset($_SESSION['form_data']);
                     <div class="account-menu">
                         <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
                             <div class="icon-wrapper bg-primary-light mb-3 me-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-cart3" viewBox="0 0 16 16">
-                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                                </svg>
+                                <i class="bi bi-cart3"></i>
                             </div>
                             <div class="flex-grow-1">
                                 <h6>Мои заказы</h6>
                                 <p class="text-muted">Просмотр истории заказов</p>
                             </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#6c757d" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
-                            </svg>
+                            <i class="bi bi-chevron-right"></i>
                         </a>
                         <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
                             <div class="icon-wrapper bg-primary-light mb-3 me-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-person" viewBox="0 0 16 16">
-                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-                                </svg>
+                                <i class="bi bi-person"></i>
                             </div>
                             <div class="flex-grow-1">
                                 <h6>Профиль</h6>
                                 <p class="text-muted">Редактирование личных данных</p>
                             </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#6c757d" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
-                            </svg>
+                            <i class="bi bi-chevron-right"></i>
                         </a>
                         <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
                             <div class="icon-wrapper bg-primary-light mb-3 me-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-bell" viewBox="0 0 16 16">
-                                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
-                                </svg>
+                                <i class="bi bi-bell"></i>
                             </div>
                             <div class="flex-grow-1">
                                 <h6>Уведомления</h6>
                                 <p class="text-muted">Настройка оповещений</p>
                             </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#6c757d" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
-                            </svg>
+                            <i class="bi bi-chevron-right"></i>
                         </a>
                         <a href="#" class="menu-item d-flex align-items-center p-3 rounded">
                             <div class="icon-wrapper bg-primary-light mb-3 me-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007bff" class="bi bi-shield-lock" viewBox="0 0 16 16">
-                                    <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/>
-                                    <path d="M9.5 6.5a1.5 1.5 0 0 1-1 1.415l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99a1.5 1.5 0 1 1 2-1.415"/>
-                                </svg>
+                                <i class="bi bi-shield-lock"></i>
                             </div>
                             <div class="flex-grow-1">
                                 <h6>Безопасность</h6>
                                 <p class="text-muted">Смена пароля и защита</p>
                             </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#6c757d" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
-                            </svg>
+                            <i class="bi bi-chevron-right"></i>
                         </a>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <form action="files/logout.php" method="POST" class="w-50">
                         <button type="submit" class="btn btn-outline-danger btn-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right me-2" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
-                                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
-                            </svg>
+                            <i class="bi bi-box-arrow-right me-2"></i>
                             Выйти из аккаунта
                         </button>
                     </form>
                     <button type="button" class="btn btn-outline-secondary btn-block w-25" data-bs-dismiss="modal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                        </svg>
+                        <i class="bi bi-x-circle"></i>
                         Закрыть
                     </button>
                 </div>
@@ -373,7 +331,6 @@ unset($_SESSION['form_data']);
         <div class="position-absolute top-0 start-0 w-100 h-100">
             <div class="about-bg-circle circle-1"></div>
             <div class="about-bg-circle circle-2"></div>
-            <div class="about-bg-circle circle-3"></div>
         </div>
         <div class="container position-relative">
             <div class="text-center mb-5" data-aos="fade-up">
@@ -385,9 +342,7 @@ unset($_SESSION['form_data']);
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="about-card h-100">
                         <div class="about-card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                            </svg>
+                            <i class="bi bi-star-fill" style="font-size: 2rem;"></i>
                         </div>
                         <h3 class="h4 mb-3">Качество</h3>
                         <p>Мы сотрудничаем только с проверенными мировыми производителями автозапчастей, гарантируя оригинальность и долговечность каждой детали.</p>
@@ -397,9 +352,7 @@ unset($_SESSION['form_data']);
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="about-card h-100">
                         <div class="about-card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A2 2 0 0 1 4.732 11h5.536a2 2 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
-                            </svg>
+                            <i class="bi bi-truck" style="font-size: 2rem;"></i>
                         </div>
                         <h3 class="h4 mb-3">Доставка</h3>
                         <p>Собственная логистическая служба обеспечивает быструю доставку в любой регион. 95% заказов доставляются в течение 1-3 дней.</p>
@@ -409,9 +362,7 @@ unset($_SESSION['form_data']);
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
                     <div class="about-card h-100">
                         <div class="about-card-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
-                            </svg>
+                            <i class="bi bi-info-circle-fill" style="font-size: 2rem;"></i>
                         </div>
                         <h3 class="h4 mb-3">Поддержка</h3>
                         <p>Наши специалисты готовы помочь с подбором запчастей 24/7. Среднее время ответа на запрос - 15 минут.</p>
@@ -464,20 +415,14 @@ unset($_SESSION['form_data']);
                 </div>
                 <div class="modal-body text-center">
                     <a href="individuel.php" type="button" class="btn btn-primary mb-2" id="individualsBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
-                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
-                            <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
-                        </svg>
+                        <i class="bi bi-person-add"></i>
                         Физические лица
                     </a>
                     <div id="individualsInfo" class="registration-info">
                         <p>- если Вы - физическое лицо, пройдите регистрацию. Регистрация возможна как при наличии карты скидок, так и при её отсутствии.</p>
                     </div>
                     <a href="legalEntity.php" type="button" class="btn btn-primary mb-2" id="legalEntitiesBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
-                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
-                            <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
-                        </svg>
+                        <i class="bi bi-person-add"></i>
                         Юридические лица и ИП
                     </a>
                     <div id="legalEntitiesInfo" class="registration-info">
@@ -486,10 +431,7 @@ unset($_SESSION['form_data']);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                        </svg>
+                        <i class="bi bi-x-circle"></i>
                         Закрыть
                     </button>
                 </div>
@@ -528,10 +470,7 @@ unset($_SESSION['form_data']);
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                        </svg>
+                        <i class="bi bi-x-circle"></i>
                         Закрыть
                     </button>
                 </div>
@@ -539,104 +478,159 @@ unset($_SESSION['form_data']);
         </div>
     </div>
 
-    <section class="container my-5" id="nextSection">
-        <div class="section-header text-center mb-5">
-            <h2 class="mb-3">Поиск по марке автомобиля</h2>
-            <p class="lead text-muted">Найдите запчасти для вашего автомобиля</p>
-            <div class="search-container position-relative mx-auto" style="max-width: 500px;">
-                <input type="text" id="brandSearch" placeholder="Начните вводить марку..." class="form-control form-control-lg search-input">
-                <button class="btn btn-link search-clear" type="button" style="display: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                    </svg>
-                </button>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search search-icon" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                </svg>
-            </div>
+    <section class="container-fluid" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9f9ff 100%); position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);">
+        <div class="position-absolute top-0 start-0 w-100 h-100">
+            <div class="about-bg-circle circle-1"></div>
+            <div class="about-bg-circle circle-2"></div>
         </div>
-        <div class="brands-container">
-            <div class="position-relative">
-                <div id="carBrandsList" class="scrollable-container">
-                    <div id="no-results-brands" class="no-results-message">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
-                        </svg>
-                        <p>Ничего не найдено. Попробуйте изменить запрос</p>
-                    </div>
-                    <div class="scrollable" id="carBrandsBlock">
+        <div class="container">
+            <section class="container my-5" id="nextSection">
+                <div class="section-header text-center mb-5">
+                    <h2 class="mb-3">Поиск по марке автомобиля</h2>
+                    <p class="lead text-muted">Найдите запчасти для вашего автомобиля</p>
+                    <div class="search-container position-relative mx-auto" style="max-width: 500px;">
+                        <input type="text" id="brandSearch" placeholder="Начните вводить марку..." class="form-control form-control-lg search-input">
+                        <button class="btn btn-link search-clear" type="button" style="display: none;">
+                            <i class="bi bi-x"></i>
+                        </button>
+                        <i class="bi bi-search search-icon"></i>
                     </div>
                 </div>
-                <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                    </svg>
-                </button>
-                <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </section>
+                <div class="brands-container">
+                    <div class="position-relative">
+                        <div id="carBrandsList" class="scrollable-container">
+                            <div id="no-results-brands" class="no-results-message">
+                                <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
+                                <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                            </div>
+                            <div class="scrollable" id="carBrandsBlock">
+                            </div>
+                        </div>
+                        <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
 
-    <section class="container my-5" id="nextSection2">
-        <div class="section-header text-center mb-5">
-            <h2 class="mb-3">Популярные запчасти</h2>
-            <p class="lead text-muted">Широкий ассортимент качественных автозапчастей</p>
-            <div class="search-container position-relative mx-auto" style="max-width: 500px;">
-                <input type="text" id="partsSearch" placeholder="Найдите нужную запчасть..." class="form-control form-control-lg search-input">
-                <button class="btn btn-link search-clear" type="button" style="display: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                    </svg>
-                </button>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search search-icon" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                </svg>
-            </div>
-        </div>
-        <div class="parts-container">
-            <div class="position-relative">
-                <div id="popularParts" class="scrollable-container">
-                    <div id="no-results-parts" class="no-results-message">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
-                        </svg>
-                        <p>Ничего не найдено. Попробуйте изменить запрос</p>
-                    </div>
-                    <div class="scrollable" id="partsContainer">
+            <section class="container my-5" id="nextSection2">
+                <div class="section-header text-center mb-5">
+                    <h2 class="mb-3">Популярные запчасти</h2>
+                    <p class="lead text-muted">Широкий ассортимент качественных автозапчастей</p>
+                    <div class="search-container position-relative mx-auto" style="max-width: 500px;">
+                        <input type="text" id="partsSearch" placeholder="Найдите нужную запчасть..." class="form-control form-control-lg search-input">
+                        <button class="btn btn-link search-clear" type="button" style="display: none;">
+                            <i class="bi bi-x"></i>
+                        </button>
+                        <i class="bi bi-search search-icon"></i>
                     </div>
                 </div>
-                <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                    </svg>
-                </button>
-                <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-                    </svg>
-                </button>
-            </div>
+                <div class="parts-container">
+                    <div class="position-relative">
+                        <div id="popularParts" class="scrollable-container">
+                            <div id="no-results-parts" class="no-results-message">
+                                <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
+                                <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                            </div>
+                            <div class="scrollable" id="partsContainer">
+                            </div>
+                        </div>
+                        <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
         </div>
     </section>
 </div>
 
-<footer class="text-center py-4 bg-light mt-auto">
+<footer class="footer-section bg-dark text-white pt-5 pb-3">
     <div class="container">
-        <p>© 2025 Лал-Авто. Все права защищены.</p>
-        <p>Контактный телефон: <a href="tel:+74012656565">+7 (4012) 65-65-65</a></p>
-        <p>
-            <a href="privacy.php">Политика конфиденциальности</a> | 
-            <a href="terms.php">Условия использования</a>
-        </p>
-        <div class="d-flex justify-content-center mt-3">
-            <a href="https://vk.com/lalauto?ysclid=m91623ocq3201359667"><img class="mx-1 small-img navbar-brand" src="img/image 33.png" alt=""></a>
-            <a href="https://t.me/s/lalauto"><img class="mx-1 small-img navbar-brand" src="img/image 32.png" alt=""></a>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <p class="mb-3">Лал-Авто - ваш надежный партнер в мире автозапчастей с 2010 года. Мы предлагаем оригинальные и качественные автокомплектующие от ведущих мировых производителей с гарантией и профессиональной поддержкой.</p>
+                <div class="contact-info">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-telephone me-2"></i>
+                        <a href="tel:+74012656565" class="text-white">+7 (4012) 65-65-65</a>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-envelope me-2"></i>
+                        <a href="mailto:info@lal-auto.ru" class="text-white">info@lal-auto.ru</a>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-geo-alt me-2"></i>
+                        <span>г. Калининград, ул. Автомобильная, 12</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <h5 class="text-uppercase mb-4 text-center">Быстрые ссылки</h5>
+                <ul class="list-unstyled text-center">
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Главная</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Магазины</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Автосервис</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Ассортимент</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Новости</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Контакты</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <h5 class="text-uppercase mb-4 text-center">Информация</h5>
+                <ul class="list-unstyled text-center">
+                    <li class="mb-2"><a href="privacy.php" class="text-white text-decoration-none">Политика конфиденциальности</a></li>
+                    <li class="mb-2"><a href="terms.php" class="text-white text-decoration-none">Условия использования</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Оплата и доставка</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Возврат и обмен</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Вакансии</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Поставщикам</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h5 class="text-uppercase mb-4 text-center">Мы в соцсетях</h5>
+                <div class="social-links mb-4 text-center">
+                    <a href="https://vk.com/lalauto" class="text-white me-3" target="_blank">
+                        <img  src="img/image 33.png" alt="VK" width="32" height="32">
+                    </a>
+                    <a href="https://t.me/s/lalauto" class="text-white" target="_blank">
+                        <img src="img/image 32.png" alt="Telegram" width="32" height="32">
+                    </a>
+                </div>
+                <h5 class="text-uppercase mb-3 text-center">Подписаться на новости</h5>
+                <form class="subscribe-form px-3 px-md-0">
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Ваш email" aria-label="Ваш email">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="bi bi-envelope-arrow-up"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="payment-methods mt-3 text-center">
+                    <h6 class="mb-2">Способы оплаты:</h6>
+                    <div class="d-flex justify-content-center">
+                        <img src="img/1.png" alt="Visa" class="me-2" width="40">
+                        <img src="img/2.png" alt="Mastercard" class="me-2" width="40">
+                        <img src="img/3.png" alt="МИР" width="40">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4 bg-light">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <p class="mb-0">© 2025 Лал-Авто. Все права защищены.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <a href="#" class="text-white text-decoration-none me-3">Карта сайта</a>
+                <a href="#" class="text-white text-decoration-none">Разработчикам API</a>
+            </div>
         </div>
     </div>
 </footer>

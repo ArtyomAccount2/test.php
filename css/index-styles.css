@@ -342,12 +342,6 @@
     width: 100%;
 }
 
-.section-header h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #333;
-}
-
 .search-container {
     position: relative;
     width: 100%;
@@ -397,7 +391,7 @@
     position: relative;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 60px;
 }
 
 .scrollable-container {
@@ -668,4 +662,54 @@
     .btn {
         margin-left: 5px;
     }
+}
+
+#nextSection, #nextSection2 
+{
+    background: transparent;
+    padding: 40px 0;
+    position: relative;
+}
+
+.brands-parts-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9f9ff 100%);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.brands-parts-container .about-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(0, 123, 255, 0.05);
+    z-index: 0;
+}
+
+.brands-parts-container .about-bg-circle.circle-1 {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    left: -150px;
+}
+
+.brands-parts-container .about-bg-circle.circle-2 {
+    width: 500px;
+    height: 500px;
+    bottom: -250px;
+    right: -250px;
+    background: rgba(0, 123, 255, 0.03);
+}
+
+.brands-parts-container .about-bg-circle.circle-3 {
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    right: 10%;
+    background: rgba(0, 123, 255, 0.07);
+}
+
+.section-header h2 {
+    color: #007bff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
