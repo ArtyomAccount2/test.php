@@ -3,6 +3,11 @@ error_reporting(E_ALL);
 session_start();
 require_once("config/link.php");
 
+if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['user'] == 'admin')
+{
+    header("Location: ../files/logout.php");
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $login = $_POST['login'];

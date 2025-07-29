@@ -83,3 +83,300 @@ th, td
     align-items: center;
     gap: 0.3rem;
 }
+
+.admin-body 
+{
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.wrapper 
+{
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+#sidebar 
+{
+    min-width: 250px;
+    max-width: 250px;
+    background: #343a40;
+    color: #fff;
+    transition: all 0.3s;
+    position: relative;
+    min-height: 100vh;
+    z-index: 1000;
+}
+
+#sidebar.active 
+{
+    margin-left: -250px;
+}
+
+#sidebar .sidebar-header 
+{
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#sidebar .sidebar-header h3 
+{
+    color: #fff;
+    font-size: 1.1rem;
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+#sidebar ul.components 
+{
+    padding: 15px 0;
+}
+
+#sidebar ul li a 
+{
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+#sidebar ul li a:hover 
+{
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#sidebar ul li a i 
+{
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+#sidebar ul li.active > a 
+{
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#sidebar ul ul a 
+{
+    font-size: 0.85rem;
+    padding-left: 40px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#content 
+{
+    width: 100%;
+    min-height: 100vh;
+    transition: all 0.3s;
+    overflow-x: hidden;
+}
+
+.navbar 
+{
+    padding: 10px 15px;
+    background: #fff;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+}
+
+.navbar-brand img 
+{
+    height: 30px;
+}
+
+.table-responsive 
+{
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.table 
+{
+    margin-bottom: 0;
+    font-size: 0.85rem;
+}
+
+.table thead th 
+{
+    border-bottom: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+    padding: 12px 10px;
+    background-color: #f8f9fa;
+    white-space: nowrap;
+}
+
+.table tbody td 
+{
+    vertical-align: middle;
+    padding: 10px;
+    border-top: 1px solid #eceeef;
+    white-space: nowrap;
+}
+
+.table-hover tbody tr:hover 
+{
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.card 
+{
+    border: none;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header 
+{
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 15px;
+}
+
+.badge 
+{
+    font-weight: 500;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+}
+
+.btn-sm 
+{
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+@media (min-width: 992px) 
+{
+    #sidebarToggle
+    {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) 
+{
+    #sidebar 
+    {
+        margin-left: -250px;
+        position: fixed;
+        height: 100vh;
+    }
+
+    #sidebarToggle
+    {
+        display: block;
+    }
+    
+    #sidebar.active 
+    {
+        margin-left: 0;
+    }
+    
+    #content 
+    {
+        width: 100%;
+    }
+    
+    .navbar-brand img 
+    {
+        height: 25px;
+    }
+    
+    .table-responsive 
+    {
+        border: 1px solid #dee2e6;
+    }
+    
+    .card-header .row > div 
+    {
+        margin-bottom: 10px;
+    }
+    
+    .card-header .text-md-end 
+    {
+        text-align: left;
+    }
+}
+
+@media (max-width: 768px) 
+{
+    #sidebar 
+    {
+        min-width: 200px;
+        max-width: 200px;
+    }
+    
+    #sidebar ul li a 
+    {
+        padding: 8px 10px;
+    }
+    
+    #sidebar ul ul a 
+    {
+        padding-left: 30px;
+    }
+    
+    .table thead th, 
+    .table tbody td 
+    {
+        padding: 8px 5px;
+    }
+    
+    .btn-group-sm > .btn 
+    {
+        padding: 0.2rem 0.4rem;
+    }
+}
+
+@media (max-width: 576px) 
+{
+    .navbar 
+    {
+        padding: 8px 10px;
+    }
+    
+    .card-header 
+    {
+        padding: 10px;
+    }
+    
+    .input-group > .form-control,
+    .input-group > .form-select 
+    {
+        font-size: 0.8rem;
+    }
+    
+    .btn 
+    {
+        font-size: 0.8rem;
+    }
+    
+    .pagination .page-link 
+    {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+.card:hover 
+{
+    transform: scale(1);
+}
+
+.list-unstyled 
+{
+    display: block;
+}
