@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $login = $_POST['login'];
     $password = $_POST['password'];
 
-    if ($login === 'admin' && $password === 'admin') 
+    if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
     {
         $_SESSION['loggedin'] = true;
         $_SESSION['user'] = 'admin';
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
     else
     {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE login_users = ? AND password_users = ?");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
         $stmt->bind_param("ss", $login, $password);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -94,7 +94,7 @@ unset($_SESSION['form_data']);
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Навигация
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -105,22 +105,22 @@ unset($_SESSION['form_data']);
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Меню
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
-                            <li><a class="dropdown-item" href="#">Магазины</a></li>
-                            <li><a class="dropdown-item" href="#">Автосервис</a></li>
-                            <li><a class="dropdown-item" href="#">Ассортимент</a></li>
-                            <li><a class="dropdown-item" href="#">Масла и тех. жидкости</a></li>
-                            <li><a class="dropdown-item" href="#">Аксессуары</a></li>
-                            <li><a class="dropdown-item" href="#">Покупателям</a></li>
-                            <li><a class="dropdown-item" href="#">Реквизиты</a></li>
-                            <li><a class="dropdown-item" href="#">Поставщикам</a></li>
-                            <li><a class="dropdown-item" href="#">Вакансии</a></li>
-                            <li><a class="dropdown-item" href="#">Контакты</a></li>
-                            <li><a class="dropdown-item" href="#">Отзывы</a></li>
-                            <li><a class="dropdown-item" href="#">Оплата и доставка</a></li>
+                            <li><a class="dropdown-item" href="includes/shops.php">Магазины</a></li>
+                            <li><a class="dropdown-item" href="includes/service.php">Автосервис</a></li>
+                            <li><a class="dropdown-item" href="includes/assortment.php">Ассортимент</a></li>
+                            <li><a class="dropdown-item" href="includes/oils.php">Масла и тех. жидкости</a></li>
+                            <li><a class="dropdown-item" href="includes/accessories.php">Аксессуары</a></li>
+                            <li><a class="dropdown-item" href="includes/customers.php">Покупателям</a></li>
+                            <li><a class="dropdown-item" href="includes/requisites.php">Реквизиты</a></li>
+                            <li><a class="dropdown-item" href="includes/suppliers.php">Поставщикам</a></li>
+                            <li><a class="dropdown-item" href="includes/vacancies.php">Вакансии</a></li>
+                            <li><a class="dropdown-item" href="includes/contacts.php">Контакты</a></li>
+                            <li><a class="dropdown-item" href="includes/reviews.php">Отзывы</a></li>
+                            <li><a class="dropdown-item" href="includes/delivery.php">Оплата и доставка</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -579,12 +579,12 @@ unset($_SESSION['form_data']);
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 <h5 class="text-uppercase mb-4 text-center">Быстрые ссылки</h5>
                 <ul class="list-unstyled text-center">
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Главная</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Магазины</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Автосервис</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Ассортимент</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Новости</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Контакты</a></li>
+                    <li class="mb-2"><a href="index.php" class="text-white text-decoration-none">Главная</a></li>
+                    <li class="mb-2"><a href="includes/shops.php" class="text-white text-decoration-none">Магазины</a></li>
+                    <li class="mb-2"><a href="includes/service.php" class="text-white text-decoration-none">Автосервис</a></li>
+                    <li class="mb-2"><a href="includes/assortment.php" class="text-white text-decoration-none">Ассортимент</a></li>
+                    <li class="mb-2"><a href="includes/news.php" class="text-white text-decoration-none">Новости</a></li>
+                    <li class="mb-2"><a href="includes/contacts.php" class="text-white text-decoration-none">Контакты</a></li>
                 </ul>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
@@ -592,10 +592,10 @@ unset($_SESSION['form_data']);
                 <ul class="list-unstyled text-center">
                     <li class="mb-2"><a href="privacy.php" class="text-white text-decoration-none">Политика конфиденциальности</a></li>
                     <li class="mb-2"><a href="terms.php" class="text-white text-decoration-none">Условия использования</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Оплата и доставка</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Возврат и обмен</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Вакансии</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Поставщикам</a></li>
+                    <li class="mb-2"><a href="includes/delivery.php" class="text-white text-decoration-none">Оплата и доставка</a></li>
+                    <li class="mb-2"><a href="includes/return.php" class="text-white text-decoration-none">Возврат и обмен</a></li>
+                    <li class="mb-2"><a href="includes/vacancies.php" class="text-white text-decoration-none">Вакансии</a></li>
+                    <li class="mb-2"><a href="includes/suppliers.php" class="text-white text-decoration-none">Поставщикам</a></li>
                 </ul>
             </div>
             <div class="col-lg-3 col-md-6">

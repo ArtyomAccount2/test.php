@@ -26,22 +26,22 @@ error_reporting(E_ALL);
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Меню
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Магазины</a></li>
-                            <li><a class="dropdown-item" href="#">Автосервис</a></li>
-                            <li><a class="dropdown-item" href="#">Ассортимент</a></li>
-                            <li><a class="dropdown-item" href="#">Масла и тех. жидкости</a></li>
-                            <li><a class="dropdown-item" href="#">Аксессуары</a></li>
-                            <li><a class="dropdown-item" href="#">Покупателям</a></li>
-                            <li><a class="dropdown-item" href="#">Реквизиты</a></li>
-                            <li><a class="dropdown-item" href="#">Поставщикам</a></li>
-                            <li><a class="dropdown-item" href="#">Вакансии</a></li>
-                            <li><a class="dropdown-item" href="#">Контакты</a></li>
-                            <li><a class="dropdown-item" href="#">Отзывы</a></li>
-                            <li><a class="dropdown-item" href="#">Оплата и доставка</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
+                            <li><a class="dropdown-item" href="includes/shops.php">Магазины</a></li>
+                            <li><a class="dropdown-item" href="includes/service.php">Автосервис</a></li>
+                            <li><a class="dropdown-item" href="includes/assortment.php">Ассортимент</a></li>
+                            <li><a class="dropdown-item" href="includes/oils.php">Масла и тех. жидкости</a></li>
+                            <li><a class="dropdown-item" href="includes/accessories.php">Аксессуары</a></li>
+                            <li><a class="dropdown-item" href="includes/customers.php">Покупателям</a></li>
+                            <li><a class="dropdown-item" href="includes/requisites.php">Реквизиты</a></li>
+                            <li><a class="dropdown-item" href="includes/suppliers.php">Поставщикам</a></li>
+                            <li><a class="dropdown-item" href="includes/vacancies.php">Вакансии</a></li>
+                            <li><a class="dropdown-item" href="includes/contacts.php">Контакты</a></li>
+                            <li><a class="dropdown-item" href="includes/reviews.php">Отзывы</a></li>
+                            <li><a class="dropdown-item" href="includes/delivery.php">Оплата и доставка</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">

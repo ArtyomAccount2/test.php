@@ -22,12 +22,12 @@
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                     <h5 class="text-uppercase mb-4 text-center">Быстрые ссылки</h5>
                     <ul class="list-unstyled text-center">
-                        <li class="mb-2"><a href="index.php" class="text-white text-decoration-none">Главная</a></li>
-                        <li class="mb-2"><a href="includes/shops.php" class="text-white text-decoration-none">Магазины</a></li>
-                        <li class="mb-2"><a href="includes/service.php" class="text-white text-decoration-none">Автосервис</a></li>
-                        <li class="mb-2"><a href="includes/assortment.php" class="text-white text-decoration-none">Ассортимент</a></li>
-                        <li class="mb-2"><a href="includes/news.php" class="text-white text-decoration-none">Новости</a></li>
-                        <li class="mb-2"><a href="includes/contacts.php" class="text-white text-decoration-none">Контакты</a></li>
+                        <li class="mb-2"><a href="../index.php" class="text-white text-decoration-none">Главная</a></li>
+                        <li class="mb-2"><a href="shops.php" class="text-white text-decoration-none">Магазины</a></li>
+                        <li class="mb-2"><a href="service.php" class="text-white text-decoration-none">Автосервис</a></li>
+                        <li class="mb-2"><a href="assortment.php" class="text-white text-decoration-none">Ассортимент</a></li>
+                        <li class="mb-2"><a href="news.php" class="text-white text-decoration-none">Новости</a></li>
+                        <li class="mb-2"><a href="contacts.php" class="text-white text-decoration-none">Контакты</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
@@ -35,20 +35,20 @@
                     <ul class="list-unstyled text-center">
                         <li class="mb-2"><a href="privacy.php" class="text-white text-decoration-none">Политика конфиденциальности</a></li>
                         <li class="mb-2"><a href="terms.php" class="text-white text-decoration-none">Условия использования</a></li>
-                        <li class="mb-2"><a href="includes/delivery.php" class="text-white text-decoration-none">Оплата и доставка</a></li>
-                        <li class="mb-2"><a href="includes/return.php" class="text-white text-decoration-none">Возврат и обмен</a></li>
-                        <li class="mb-2"><a href="includes/vacancies.php" class="text-white text-decoration-none">Вакансии</a></li>
-                        <li class="mb-2"><a href="includes/suppliers.php" class="text-white text-decoration-none">Поставщикам</a></li>
+                        <li class="mb-2"><a href="delivery.php" class="text-white text-decoration-none">Оплата и доставка</a></li>
+                        <li class="mb-2"><a href="return.php" class="text-white text-decoration-none">Возврат и обмен</a></li>
+                        <li class="mb-2"><a href="vacancies.php" class="text-white text-decoration-none">Вакансии</a></li>
+                        <li class="mb-2"><a href="suppliers.php" class="text-white text-decoration-none">Поставщикам</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-uppercase mb-4 text-center">Мы в соцсетях</h5>
                     <div class="social-links mb-4 text-center">
                         <a href="https://vk.com/lalauto" class="text-white me-3" target="_blank">
-                            <img  src="img/image 33.png" alt="VK" width="32" height="32">
+                            <img  src="../img/image 33.png" alt="VK" width="32" height="32">
                         </a>
                         <a href="https://t.me/s/lalauto" class="text-white" target="_blank">
-                            <img src="img/image 32.png" alt="Telegram" width="32" height="32">
+                            <img src="../img/image 32.png" alt="Telegram" width="32" height="32">
                         </a>
                     </div>
                     <h5 class="text-uppercase mb-3 text-center">Подписаться на новости</h5>
@@ -63,9 +63,9 @@
                     <div class="payment-methods mt-3 text-center">
                         <h6 class="mb-2">Способы оплаты:</h6>
                         <div class="d-flex justify-content-center">
-                            <img src="img/1.png" alt="Visa" class="me-2" width="40">
-                            <img src="img/2.png" alt="Mastercard" class="me-2" width="40">
-                            <img src="img/3.png" alt="МИР" width="40">
+                            <img src="../img/1.png" alt="Visa" class="me-2" width="40">
+                            <img src="../img/2.png" alt="Mastercard" class="me-2" width="40">
+                            <img src="../img/3.png" alt="МИР" width="40">
                         </div>
                     </div>
                 </div>
@@ -76,15 +76,9 @@
                     <p class="mb-0">© 2025 Лал-Авто. Все права защищены.</p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
-                    <a href="#" class="text-white text-decoration-none me-3">Карта сайта</a>
-                    <a href="#" class="text-white text-decoration-none">Разработчикам API</a>
+                    <a href="sitemap.php" class="text-white text-decoration-none me-3">Карта сайта</a>
+                    <a href="api.php" class="text-white text-decoration-none">Разработчикам API</a>
                 </div>
             </div>
         </div>
     </footer>
-
-    <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="js/script.js"></script>
-    <script src="files/app.js"></script>
-</body>
-</html>

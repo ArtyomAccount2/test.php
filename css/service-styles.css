@@ -1,0 +1,90 @@
+.service-card 
+{
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.service-card:hover 
+{
+    transform: translateY(-5px);
+}
+
+.service-list 
+{
+    list-style: none;
+    padding-left: 0;
+}
+
+.service-list li 
+{
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+.service-list li:last-child 
+{
+    border-bottom: none;
+}
+
+.service-list i 
+{
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.advantage-card 
+{
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s;
+}
+
+.advantage-card:hover 
+{
+    transform: translateY(-5px);
+}
+
+.advantage-icon 
+{
+    color: #007bff;
+    font-size: 2rem;
+}
+
+#serviceForm .form-control, #serviceForm .form-select 
+{
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+
+#serviceForm .form-control:focus, #serviceForm .form-select:focus 
+{
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+.search-input 
+{
+    padding-left: 2.5rem;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s;
+}
+
+.search-input:focus 
+{
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+@media (max-width: 768px) 
+{
+    .service-card 
+    {
+        margin-bottom: 20px;
+    }
+}
