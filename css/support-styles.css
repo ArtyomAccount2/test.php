@@ -1,0 +1,272 @@
+.container.my-5 
+{
+    padding-bottom: 3rem;
+}
+
+h1 
+{
+    font-weight: 600;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h1:after 
+{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80px;
+    height: 3px;
+    background-color: #3498db;
+}
+
+.lead 
+{
+    color: #7f8c8d;
+    font-weight: 400;
+}
+
+.support-card 
+{
+    background: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    height: 100%;
+}
+
+.support-card h3 
+{
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.support-card h3 i 
+{
+    margin-right: 10px;
+    color: #3498db;
+}
+
+.accordion-item 
+{
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.accordion-button 
+{
+    font-weight: 500;
+    color: #2c3e50;
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+.accordion-button:not(.collapsed) 
+{
+    background-color: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+}
+
+.accordion-button:focus 
+{
+    box-shadow: none;
+    border-color: rgba(52, 152, 219, 0.25);
+}
+
+.accordion-body 
+{
+    color: #7f8c8d;
+    line-height: 1.6;
+}
+
+#supportForm label 
+{
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+#supportForm .form-control,
+#supportForm .form-select 
+{
+    border-radius: 5px;
+    padding: 10px 15px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#supportForm .form-control:focus,
+#supportForm .form-select:focus 
+{
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}
+
+#supportForm textarea 
+{
+    resize: vertical;
+    min-height: 120px;
+}
+
+#supportForm button[type="submit"] 
+{
+    font-weight: 500;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+#supportForm button[type="submit"]:hover 
+{
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+#supportForm button[type="submit"] i 
+{
+    margin-right: 8px;
+}
+
+.support-contacts 
+{
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.support-contacts h3 
+{
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.support-contacts h3 i 
+{
+    margin-right: 10px;
+    color: #e74c3c;
+}
+
+.contact-method 
+{
+    text-align: center;
+    padding: 20px 15px;
+    height: 100%;
+}
+
+.contact-icon 
+{
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+}
+
+.contact-method h4 
+{
+    font-size: 1.1rem;
+    margin: 15px 0 10px;
+    color: #2c3e50;
+}
+
+.contact-method p 
+{
+    color: #3498db;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.contact-method small 
+{
+    color: #7f8c8d;
+    font-size: 0.85rem;
+}
+
+.contact-method .btn 
+{
+    margin-top: 10px;
+    font-size: 0.85rem;
+}
+
+.bg-primary 
+{ 
+    background-color: #3498db; 
+}
+
+.bg-success 
+{ 
+    background-color: #2ecc71; 
+}
+
+.bg-warning 
+{ 
+    background-color: #f39c12; 
+}
+
+.support-card,
+.support-contacts 
+{
+    transition: all 0.3s ease;
+}
+
+.support-card:hover,
+.support-contacts:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) 
+{
+    .support-card 
+    {
+        margin-bottom: 20px;
+    }
+    
+    h1 
+    {
+        font-size: 1.8rem;
+    }
+    
+    .contact-method 
+    {
+        margin-bottom: 20px;
+    }
+}
+
+@keyframes fadeInUp 
+{
+    from 
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to 
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.support-card:nth-child(1) 
+{
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.support-card:nth-child(2) 
+{
+    animation: fadeInUp 0.5s ease 0.1s forwards;
+}
+
+.support-contacts 
+{
+    animation: fadeInUp 0.5s ease 0.2s forwards;
+}

@@ -590,8 +590,8 @@ unset($_SESSION['form_data']);
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 <h5 class="text-uppercase mb-4 text-center">Информация</h5>
                 <ul class="list-unstyled text-center">
-                    <li class="mb-2"><a href="privacy.php" class="text-white text-decoration-none">Политика конфиденциальности</a></li>
-                    <li class="mb-2"><a href="terms.php" class="text-white text-decoration-none">Условия использования</a></li>
+                    <li class="mb-2"><a href="includes/privacy.php" class="text-white text-decoration-none">Политика конфиденциальности</a></li>
+                    <li class="mb-2"><a href="includes/terms.php" class="text-white text-decoration-none">Условия использования</a></li>
                     <li class="mb-2"><a href="includes/delivery.php" class="text-white text-decoration-none">Оплата и доставка</a></li>
                     <li class="mb-2"><a href="includes/return.php" class="text-white text-decoration-none">Возврат и обмен</a></li>
                     <li class="mb-2"><a href="includes/vacancies.php" class="text-white text-decoration-none">Вакансии</a></li>

@@ -1,0 +1,296 @@
+.container.my-5 
+{
+    padding-bottom: 3rem;
+}
+
+h1 
+{
+    font-weight: 600;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h1:after 
+{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80px;
+    height: 3px;
+    background-color: #3498db;
+}
+
+.lead 
+{
+    color: #7f8c8d;
+    font-weight: 400;
+}
+
+.return-card 
+{
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.return-card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.return-card h3 
+{
+    color: #2c3e50;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.return-card h3:after 
+{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 2px;
+    background-color: #3498db;
+}
+
+.return-card h3 i 
+{
+    margin-right: 10px;
+    color: #3498db;
+}
+
+.return-card ul, .return-card ol 
+{
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.return-card ul li, .return-card ol li 
+{
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.return-card ul li:before 
+{
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #3498db;
+    font-weight: bold;
+}
+
+.return-card ol 
+{
+    counter-reset: item;
+}
+
+.return-card ol li 
+{
+    counter-increment: item;
+}
+
+.return-card ol li:before 
+{
+    content: counter(item) ".";
+    position: absolute;
+    left: 0;
+    color: #3498db;
+    font-weight: bold;
+}
+
+.return-card p 
+{
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.return-card p strong 
+{
+    color: #2c3e50;
+}
+
+.return-process 
+{
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+}
+
+.return-process h3 
+{
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 30px;
+    font-size: 1.5rem;
+}
+
+.return-process h3 i 
+{
+    color: #e74c3c;
+    margin-right: 10px;
+}
+
+.process-steps 
+{
+    position: relative;
+    padding-left: 30px;
+}
+
+.process-steps:before 
+{
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: #3498db;
+    opacity: 0.3;
+}
+
+.process-step 
+{
+    position: relative;
+    margin-bottom: 30px;
+    display: flex;
+}
+
+.step-number 
+{
+    width: 40px;
+    height: 40px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 20px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.step-content 
+{
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    flex-grow: 1;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+}
+
+.step-content h5 
+{
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.step-content p 
+{
+    color: #7f8c8d;
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) 
+{
+    .return-card 
+    {
+        padding: 20px;
+    }
+    
+    h1 
+    {
+        font-size: 1.8rem;
+    }
+    
+    .process-steps 
+    {
+        padding-left: 20px;
+    }
+    
+    .process-step 
+    {
+        flex-direction: column;
+    }
+    
+    .step-number 
+    {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}
+
+@keyframes fadeInUp 
+{
+    from 
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to 
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.return-card 
+{
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.return-card:nth-child(1) 
+{ 
+    animation-delay: 0.1s; 
+}
+
+.return-card:nth-child(2) 
+{ 
+    animation-delay: 0.2s; 
+}
+
+.process-step 
+{
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.process-step:nth-child(1) 
+{ 
+    animation-delay: 0.3s; 
+}
+
+.process-step:nth-child(2) 
+{ 
+    animation-delay: 0.4s; 
+}
+
+.process-step:nth-child(3) 
+{ 
+    animation-delay: 0.5s; 
+}
+
+.process-step:nth-child(4) 
+{ 
+    animation-delay: 0.6s; 
+}

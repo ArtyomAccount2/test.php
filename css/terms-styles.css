@@ -1,0 +1,222 @@
+.container.my-5 
+{
+    padding-bottom: 3rem;
+}
+
+h1 
+{
+    font-weight: 600;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h1:after 
+{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80px;
+    height: 3px;
+    background-color: #3498db;
+}
+
+.lead 
+{
+    color: #7f8c8d;
+    font-weight: 400;
+}
+
+.terms-content 
+{
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.terms-content section 
+{
+    border-bottom: 1px solid #eee;
+    padding-bottom: 25px;
+}
+
+.terms-content section:last-child 
+{
+    border-bottom: none;
+}
+
+.terms-content h3 
+{
+    font-size: 1.4rem;
+    color: #2c3e50;
+    margin-top: 30px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.terms-content h3:before 
+{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    background-color: #3498db;
+    border-radius: 50%;
+}
+
+.terms-content p 
+{
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.terms-content ul 
+{
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.terms-content li 
+{
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.terms-content li:before 
+{
+    position: absolute;
+    left: 0;
+    background-color: #3498db;
+    font-weight: bold;
+}
+
+.terms-content a 
+{
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.terms-content a:hover 
+{
+    color: #3498db;
+    text-decoration: underline;
+}
+
+.terms-content p:first-of-type 
+{
+    counter-reset: section;
+}
+
+.terms-content p 
+{
+    counter-increment: section;
+    position: relative;
+    padding-left: 30px;
+}
+
+.terms-content p:before 
+{
+    content: counter(section) ".";
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.terms-content ul ul 
+{
+    padding-left: 25px;
+    margin-top: 10px;
+}
+
+.terms-content ul ul li:before 
+{
+    content: '◦';
+    color: #3498db;
+}
+
+@media (max-width: 768px) 
+{
+    .terms-content 
+    {
+        padding: 20px;
+    }
+    
+    h1 
+    {
+        font-size: 1.8rem;
+    }
+    
+    .terms-content h3 
+    {
+        font-size: 1.2rem;
+    }
+    
+    .terms-content p 
+    {
+        padding-left: 25px;
+    }
+    
+    .terms-content p:before 
+    {
+        left: 0;
+    }
+}
+
+@keyframes fadeIn 
+{
+    from 
+    { 
+        opacity: 0; transform: translateY(20px); 
+    }
+    to 
+    { 
+        opacity: 1; transform: translateY(0); 
+    }
+}
+
+.terms-content section 
+{
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.terms-content section:nth-child(1) 
+{ 
+    animation-delay: 0.1s; 
+}
+
+.terms-content section:nth-child(2) 
+{ 
+    animation-delay: 0.2s; 
+}
+
+.terms-content section:nth-child(3) 
+{ 
+    animation-delay: 0.3s; 
+}
+
+.terms-content section:nth-child(4) 
+{ 
+    animation-delay: 0.4s; 
+}
+
+.terms-content section:nth-child(5) 
+{ 
+    animation-delay: 0.5s; 
+}
+
+.terms-content section:nth-child(6) 
+{ 
+    animation-delay: 0.6s; 
+}
+
+.terms-content section:nth-child(7) 
+{ 
+    animation-delay: 0.7s; 
+}

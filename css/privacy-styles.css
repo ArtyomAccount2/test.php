@@ -1,0 +1,164 @@
+.container.my-5 
+{
+    padding-bottom: 3rem;
+}
+
+h1 
+{
+    font-weight: 600;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h1:after 
+{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80px;
+    height: 3px;
+    background-color: #3498db;
+}
+
+.lead 
+{
+    color: #7f8c8d;
+    font-weight: 400;
+    font-size: 1.1rem;
+}
+
+.privacy-content 
+{
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.privacy-content section 
+{
+    border-bottom: 1px solid #eee;
+    padding-bottom: 25px;
+}
+
+.privacy-content section:last-child 
+{
+    border-bottom: none;
+}
+
+h3 
+{
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.4rem;
+    margin-top: 30px;
+}
+
+h3:first-child 
+{
+    margin-top: 0;
+}
+
+a 
+{
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.privacy-content p:first-of-type 
+{
+    counter-reset: section;
+}
+
+.privacy-content section h3 
+{
+    counter-increment: section;
+}
+
+.privacy-content section h3:before 
+{
+    content: counter(section) ". ";
+}
+
+@media (max-width: 768px) 
+{
+    .privacy-content 
+    {
+        padding: 20px;
+    }
+    
+    h1 
+    {
+        font-size: 1.8rem;
+    }
+    
+    h3 
+    {
+        font-size: 1.2rem;
+    }
+    
+    .lead 
+    {
+        font-size: 1rem;
+    }
+}
+
+@keyframes fadeIn 
+{
+    from 
+    { 
+        opacity: 0; transform: translateY(20px); 
+    }
+    to 
+    { 
+        opacity: 1; transform: translateY(0); 
+    }
+}
+
+.privacy-content 
+{
+    animation: fadeIn 0.6s ease forwards;
+}
+
+section 
+{
+    animation: fadeIn 0.5s ease forwards;
+}
+
+section:nth-child(1) 
+{ 
+    animation-delay: 0.1s; 
+}
+
+section:nth-child(2) 
+{ 
+    animation-delay: 0.2s; 
+}
+
+section:nth-child(3) 
+{ 
+    animation-delay: 0.3s; 
+}
+
+section:nth-child(4) 
+{ 
+    animation-delay: 0.4s; 
+}
+
+section:nth-child(5) 
+{ 
+    animation-delay: 0.5s; 
+}
+
+section:nth-child(6) 
+{ 
+    animation-delay: 0.6s; 
+}
+
+section:nth-child(7) 
+{ 
+    animation-delay: 0.7s; 
+}

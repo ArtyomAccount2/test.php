@@ -1,0 +1,223 @@
+.container.my-5 
+{
+    padding-bottom: 3rem;
+}
+
+h1 
+{
+    font-weight: 600;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h1:after 
+{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80px;
+    height: 3px;
+    background-color: #3498db;
+}
+
+.lead 
+{
+    color: #7f8c8d;
+    font-weight: 400;
+}
+
+.requisites-card 
+{
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.requisites-card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.requisites-card h3 
+{
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 25px;
+}
+
+.requisites-card h3 i 
+{
+    margin-right: 10px;
+    color: #3498db;
+}
+
+.requisites-item 
+{
+    display: flex;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #eee;
+}
+
+.requisites-item:last-child 
+{
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.requisites-label 
+{
+    font-weight: 600;
+    color: #2c3e50;
+    min-width: 180px;
+    flex-shrink: 0;
+}
+
+.requisites-value 
+{
+    color: #555;
+    word-break: break-word;
+    margin-left: 10px;
+}
+
+.documents-card 
+{
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.documents-card h3 
+{
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 25px;
+}
+
+.documents-card h3 i 
+{
+    margin-right: 10px;
+    color: #e74c3c;
+}
+
+.document-item 
+{
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    color: #2c3e50;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.document-item:hover 
+{
+    background-color: #3498db;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.document-item i 
+{
+    font-size: 1.5rem;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+@keyframes fadeInUp 
+{
+    from 
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to 
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.requisites-card, .documents-card 
+{
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.requisites-card:nth-child(1) 
+{ 
+    animation-delay: 0.1s; 
+}
+
+.requisites-card:nth-child(2) 
+{ 
+    animation-delay: 0.2s; 
+}
+
+.documents-card 
+{ 
+    animation-delay: 0.3s; 
+}
+
+@media (max-width: 768px) 
+{
+    .requisites-item 
+    {
+        flex-direction: column;
+    }
+    
+    .requisites-label 
+    {
+        margin-bottom: 5px;
+        min-width: 100%;
+    }
+    
+    .requisites-card, .documents-card 
+    {
+        padding: 20px;
+    }
+    
+    h1 
+    {
+        font-size: 1.8rem;
+    }
+    
+    .requisites-card h3, .documents-card h3 
+    {
+        font-size: 1.3rem;
+    }
+}
+
+.bi-building 
+{
+    color: #3498db;
+}
+
+.bi-bank 
+{
+    color: #2ecc71;
+}
+
+.bi-file-earmark-text 
+{
+    color: #e74c3c;
+}

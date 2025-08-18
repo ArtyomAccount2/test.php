@@ -1,0 +1,261 @@
+.container.my-5 
+{
+    padding-bottom: 3rem;
+}
+
+h1 
+{
+    font-weight: 600;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h1:after 
+{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80px;
+    height: 3px;
+    background-color: #3498db;
+}
+
+.lead 
+{
+    color: #7f8c8d;
+    font-weight: 400;
+}
+
+.supplier-info-card 
+{
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    border-left: 4px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.supplier-info-card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.supplier-info-card h3 
+{
+    color: #3498db;
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.supplier-info-card h3 i 
+{
+    margin-right: 10px;
+    font-size: 1.3em;
+}
+
+.supplier-info-card p 
+{
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.supplier-info-card ul, 
+.supplier-info-card ol 
+{
+    padding-left: 20px;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.supplier-info-card li 
+{
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.supplier-info-card strong 
+{
+    color: #2c3e50;
+}
+
+.supplier-info-card a 
+{
+    color: #3498db;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.supplier-info-card a:hover 
+{
+    text-decoration: underline;
+}
+
+.supplier-form-card 
+{
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-top: 30px;
+    border-top: 4px solid #3498db;
+}
+
+.supplier-form-card h3 
+{
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.supplier-form-card h3 i 
+{
+    margin-right: 10px;
+    font-size: 1.3em;
+    color: #3498db;
+}
+
+.supplier-form-card .form-label 
+{
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.supplier-form-card .form-control 
+{
+    border-radius: 5px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    transition: all 0.3s;
+}
+
+.supplier-form-card .form-control:focus 
+{
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}
+
+.supplier-form-card textarea.form-control 
+{
+    min-height: 100px;
+}
+
+.supplier-form-card .form-check-label 
+{
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.supplier-form-card .btn-primary 
+{
+    background-color: #3498db;
+    border: none;
+    padding: 12px;
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.supplier-form-card .btn-primary:hover 
+{
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.supplier-form-card .btn-primary i 
+{
+    margin-right: 8px;
+}
+
+@keyframes fadeInUp 
+{
+    from 
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to 
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.supplier-info-card 
+{
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.supplier-info-card:nth-child(1) 
+{ 
+    animation-delay: 0.1s; 
+}
+
+.supplier-info-card:nth-child(2) 
+{ 
+    animation-delay: 0.2s; 
+}
+
+.supplier-form-card 
+{ 
+    animation-delay: 0.3s; 
+}
+
+@media (max-width: 768px) 
+{
+    .supplier-info-card,
+    .supplier-form-card 
+    {
+        padding: 20px;
+    }
+    
+    h1 
+    {
+        font-size: 1.8rem;
+    }
+    
+    .supplier-info-card h3,
+    .supplier-form-card h3 
+    {
+        font-size: 1.3rem;
+    }
+    
+    .supplier-form-card .btn-primary 
+    {
+        font-size: 1rem;
+    }
+}
+
+.was-validated .form-control:invalid,
+.form-control.is-invalid 
+{
+    border-color: #e74c3c;
+}
+
+.was-validated .form-control:valid,
+.form-control.is-valid 
+{
+    border-color: #2ecc71;
+}
+
+.invalid-feedback 
+{
+    color: #e74c3c;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
