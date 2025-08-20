@@ -90,97 +90,155 @@ unset($_SESSION['form_data']);
 
 <div class="container my-5 pt-4">
     <div class="row mb-5">
-        <div class="col-12">
+        <div class="col-12 text-center">
             <h1 class="mb-3" style="padding-top: 60px;">Реквизиты компании</h1>
-            <p class="lead">Юридическая информация и банковские реквизиты</p>
+            <p class="lead">Официальная информация о компании Лал-Авто</p>
         </div>
     </div>
     <div class="row g-4">
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <div class="requisites-card">
                 <h3 class="mb-4"><i class="bi bi-building"></i> Общая информация</h3>
-                <div class="requisites-item">
-                    <div class="requisites-label">Полное наименование:</div>
-                    <div class="requisites-value">Общество с ограниченной ответственностью "Лал-Авто"</div>
-                </div>
-                <div class="requisites-item">
-                    <div class="requisites-label">Юридический адрес:</div>
-                    <div class="requisites-value">236022, г. Калининград, ул. Автомобильная, д. 12</div>
-                </div>
-                <div class="requisites-item">
-                    <div class="requisites-label">Фактический адрес:</div>
-                    <div class="requisites-value">236022, г. Калининград, ул. Автомобильная, д. 12</div>
-                </div>
-                <div class="requisites-item">
-                    <div class="requisites-label">ИНН:</div>
-                    <div class="requisites-value">3905123456</div>
-                </div>
-                <div class="requisites-item">
-                    <div class="requisites-label">КПП:</div>
-                    <div class="requisites-value">390501001</div>
-                </div>
-                <div class="requisites-item">
-                    <div class="requisites-label">ОГРН:</div>
-                    <div class="requisites-value">1123905001234</div>
-                </div>
-                <div class="requisites-item">
-                    <div class="requisites-label">ОКПО:</div>
-                    <div class="requisites-value">12345678</div>
+                <div class="requisites-list">
+                    <div class="requisite-item">
+                        <span class="requisite-label">Полное наименование:</span>
+                        <span class="requisite-value">Общество с ограниченной ответственностью "Лал-Авто"</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">Сокращенное наименование:</span>
+                        <span class="requisite-value">ООО "Лал-Авто"</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">ИНН:</span>
+                        <span class="requisite-value">3900000000</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">КПП:</span>
+                        <span class="requisite-value">390001001</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">ОГРН:</span>
+                        <span class="requisite-value">1023900000000</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">ОКПО:</span>
+                        <span class="requisite-value">12345678</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">ОКВЭД:</span>
+                        <span class="requisite-value">45.32.1 Торговля автомобильными деталями, узлами и принадлежностями</span>
+                    </div>
                 </div>
             </div>
-        </div>    
-        <div class="col-md-6">
+        </div>
+        <div class="col-lg-6">
             <div class="requisites-card">
                 <h3 class="mb-4"><i class="bi bi-bank"></i> Банковские реквизиты</h3>
-                <div class="requisites-item">
-                    <div class="requisites-label">Банк:</div>
-                    <div class="requisites-value">ПАО "Сбербанк"</div>
+                <div class="requisites-list">
+                    <div class="requisite-item">
+                        <span class="requisite-label">Расчетный счет:</span>
+                        <span class="requisite-value">40702810500000000001</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">Банк:</span>
+                        <span class="requisite-value">ПАО "Сбербанк"</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">БИК:</span>
+                        <span class="requisite-value">044525225</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">Корреспондентский счет:</span>
+                        <span class="requisite-value">30101810400000000225</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">Юридический адрес банка:</span>
+                        <span class="requisite-value">117997, г. Москва, ул. Вавилова, д. 19</span>
+                    </div>
                 </div>
-                <div class="requisites-item">
-                    <div class="requisites-label">БИК:</div>
-                    <div class="requisites-value">042202612</div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="requisites-card">
+                <h3 class="mb-4"><i class="bi bi-geo-alt"></i> Адреса и контакты</h3>
+                <div class="requisites-list">
+                    <div class="requisite-item">
+                        <span class="requisite-label">Юридический адрес:</span>
+                        <span class="requisite-value">236000, г. Калининград, ул. Автомобильная, д. 12</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">Фактический адрес:</span>
+                        <span class="requisite-value">236000, г. Калининград, ул. Автомобильная, д. 12</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">Телефон:</span>
+                        <span class="requisite-value">+7 (4012) 65-65-65</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">Email:</span>
+                        <span class="requisite-value">info@lal-auto.ru</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">Сайт:</span>
+                        <span class="requisite-value">www.lal-auto.ru</span>
+                    </div>
                 </div>
-                <div class="requisites-item">
-                    <div class="requisites-label">Корр. счет:</div>
-                    <div class="requisites-value">30101810000000000612</div>
-                </div>
-                <div class="requisites-item">
-                    <div class="requisites-label">Расчетный счет:</div>
-                    <div class="requisites-value">40702810512340123456</div>
-                </div>
-                <div class="requisites-item">
-                    <div class="requisites-label">Генеральный директор:</div>
-                    <div class="requisites-value">Иванов Иван Иванович</div>
-                </div>
-                <div class="requisites-item">
-                    <div class="requisites-label">Действует на основании:</div>
-                    <div class="requisites-value">Устава</div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="requisites-card">
+                <h3 class="mb-4"><i class="bi bi-person"></i> Руководство</h3>
+                <div class="requisites-list">
+                    <div class="requisite-item">
+                        <span class="requisite-label">Генеральный директор:</span>
+                        <span class="requisite-value">Иванов Петр Сергеевич</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">Главный бухгалтер:</span>
+                        <span class="requisite-value">Смирнова Ольга Владимировна</span>
+                    </div>
+                    <div class="requisite-item">
+                        <span class="requisite-label">Действует на основании:</span>
+                        <span class="requisite-value">Устава</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="row mt-5">
         <div class="col-12">
-            <div class="documents-card">
-                <h3 class="mb-4"><i class="bi bi-file-earmark-text"></i> Документы</h3>
+            <div class="documents-section">
+                <h3 class="mb-4 text-center"><i class="bi bi-file-earmark-text"></i> Документы</h3>
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <a href="docs/ustav.pdf" class="document-item" target="_blank">
-                            <i class="bi bi-file-earmark-pdf"></i>
-                            <span>Устав компании</span>
-                        </a>
+                        <div class="document-card">
+                            <div class="document-icon">
+                                <i class="bi bi-file-pdf"></i>
+                            </div>
+                            <h5>Устав компании</h5>
+                            <p>PDF, 2.3 MB</p>
+                            <a href="#" class="btn btn-outline-primary">Скачать</a>
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <a href="docs/certificate.pdf" class="document-item" target="_blank">
-                            <i class="bi bi-file-earmark-pdf"></i>
-                            <span>Свидетельство о регистрации</span>
-                        </a>
+                        <div class="document-card">
+                            <div class="document-icon">
+                                <i class="bi bi-file-pdf"></i>
+                            </div>
+                            <h5>Свидетельство ОГРН</h5>
+                            <p>PDF, 1.8 MB</p>
+                            <a href="#" class="btn btn-outline-primary">Скачать</a>
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <a href="docs/license.pdf" class="document-item" target="_blank">
-                            <i class="bi bi-file-earmark-pdf"></i>
-                            <span>Лицензии</span>
-                        </a>
+                        <div class="document-card">
+                            <div class="document-icon">
+                                <i class="bi bi-file-pdf"></i>
+                            </div>
+                            <h5>Свидетельство ИНН</h5>
+                            <p>PDF, 1.5 MB</p>
+                            <a href="#" class="btn btn-outline-primary">Скачать</a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -95,7 +95,6 @@ unset($_SESSION['form_data']);
             <li class="breadcrumb-item active" aria-current="page">Масла и тех. жидкости</li>
         </ol>
     </nav>
-
     <div class="row mb-4 align-items-center">
         <div class="col-md-6">
             <h1 class="mb-0">Масла и технические жидкости</h1>

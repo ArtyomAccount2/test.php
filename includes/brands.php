@@ -90,93 +90,90 @@ unset($_SESSION['form_data']);
 
 <div class="container my-5 pt-4">
     <div class="row mb-5">
-        <div class="col-12">
+        <div class="col-12 text-center">
             <h1 class="mb-3" style="padding-top: 60px;">Торговые марки</h1>
-            <p class="lead">Бренды, представленные в нашем ассортименте</p>
+            <p class="lead">Официальный дилер ведущих мировых производителей автозапчастей</p>
         </div>
     </div>
     <div class="row mb-4">
-        <div class="col-md-6">
+        <div class="col-md-6 mx-auto">
             <div class="search-container position-relative">
                 <input type="text" id="brandSearch" placeholder="Поиск по брендам..." class="form-control form-control-lg">
                 <button class="btn btn-link search-clear" type="button" style="display: none;">
                     <i class="bi bi-x"></i>
                 </button>
-                <i class="bi bi-search search-icon"></i>
             </div>
-        </div>
-        <div class="col-md-6">
-            <select class="form-select form-select-lg">
-                <option selected>Все категории</option>
-                <option>Оригинальные запчасти</option>
-                <option>Аналоги</option>
-                <option>Масла и жидкости</option>
-                <option>Аксессуары</option>
-                <option>Автохимия</option>
-            </select>
         </div>
     </div>
-    <div class="row g-4">
-        <div class="col-6 col-md-4 col-lg-3 col-xl-2">
-            <div class="brand-card">
-                <div class="brand-logo-container">
-                    <img src="../img/no-image.png" class="brand-logo" alt="Bosch">
-                </div>
-                <div class="brand-name">Bosch</div>
-                <div class="brand-category">Оригинальные запчасти, Аналоги</div>
-                <a href="brand-single.php?id=1" class="stretched-link"></a>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex flex-wrap gap-2 justify-content-center">
+                <button class="btn btn-outline-primary filter-btn active" data-filter="all">Все</button>
+                <button class="btn btn-outline-primary filter-btn" data-filter="premium">Премиум</button>
+                <button class="btn btn-outline-primary filter-btn" data-filter="original">Оригинальные</button>
+                <button class="btn btn-outline-primary filter-btn" data-filter="aftermarket">Аналоги</button>
+                <button class="btn btn-outline-primary filter-btn" data-filter="russia">Российские</button>
             </div>
         </div>
-        <div class="col-6 col-md-4 col-lg-3 col-xl-2">
-            <div class="brand-card">
-                <div class="brand-logo-container">
-                    <img src="../img/no-image.png" class="brand-logo" alt="Castrol">
-                </div>
-                <div class="brand-name">Castrol</div>
-                <div class="brand-category">Масла и жидкости</div>
-                <a href="brand-single.php?id=2" class="stretched-link"></a>
-            </div>
-        </div>
-        <!-- Остальные бренды -->
     </div>
-    <div class="brand-letters mt-5">
-        <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
-            <a href="#" class="brand-letter active">Все</a>
-            <a href="#" class="brand-letter">A</a>
-            <a href="#" class="brand-letter">B</a>
-            <a href="#" class="brand-letter">C</a>
-            <!-- Остальные буквы -->
+    <div class="row g-4 brands-grid">
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="premium">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Bosch" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Bosch</h5>
+                    <p class="brand-country">Германия</p>
+                    <div class="brand-category">Премиум</div>
+                    <p class="brand-description">Мировой лидер в производстве автокомпонентов и систем</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 1000 товаров</span>
+                        <span class="stat-item">Гарантия 2 года</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div> 
-    <div class="brand-categories mt-5">
-        <h3 class="mb-4 text-center">Категории брендов</h3>
-        <div class="row g-3">
-            <div class="col-md-4">
-                <a href="#" class="category-card">
-                    <div class="category-icon">
-                        <i class="bi bi-gear"></i>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="premium">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Castrol" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Castrol</h5>
+                    <p class="brand-country">Великобритания</p>
+                    <div class="brand-category">Премиум</div>
+                    <p class="brand-description">Ведущий производитель моторных масел и смазочных материалов</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 500 товаров</span>
+                        <span class="stat-item">Одобрено OEM</span>
                     </div>
-                    <h4>Оригинальные запчасти</h4>
-                    <p>Официальные поставщики автокомпонентов</p>
-                </a>
+                </div>
             </div>
-            <div class="col-md-4">
-                <a href="#" class="category-card">
-                    <div class="category-icon">
-                        <i class="bi bi-gear-wide"></i>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="brands-stats bg-light p-4 rounded">
+                <h3 class="text-center mb-4">Статистика по брендам</h3>
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Брендов</div>
                     </div>
-                    <h4>Аналоги</h4>
-                    <p>Качественные аналоги оригинальных запчастей</p>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="#" class="category-card">
-                    <div class="category-icon">
-                        <i class="bi bi-droplet"></i>
+                    <div class="col-md-3">
+                        <div class="stat-number">10 000+</div>
+                        <div class="stat-label">Товаров</div>
                     </div>
-                    <h4>Масла и жидкости</h4>
-                    <p>Производители масел и технических жидкостей</p>
-                </a>
+                    <div class="col-md-3">
+                        <div class="stat-number">15</div>
+                        <div class="stat-label">Лет на рынке</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Оригинальная продукция</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -187,5 +184,54 @@ unset($_SESSION['form_data']);
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() 
+{
+    let filterButtons = document.querySelectorAll('.filter-btn');
+    let brandItems = document.querySelectorAll('.brand-item');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() 
+        {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            let filter = this.getAttribute('data-filter');
+            
+            brandItems.forEach(item => {
+                if (filter === 'all' || item.getAttribute('data-category') === filter) 
+                {
+                    item.style.display = 'block';
+                } 
+                else 
+                {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    let searchInput = document.getElementById('brandSearch');
+    
+    searchInput.addEventListener('input', function() 
+    {
+        let searchText = this.value.toLowerCase();
+        
+        brandItems.forEach(item => {
+            let brandName = item.querySelector('.brand-name').textContent.toLowerCase();
+            let brandDescription = item.querySelector('.brand-description').textContent.toLowerCase();
+            
+            if (brandName.includes(searchText) || brandDescription.includes(searchText)) 
+            {
+                item.style.display = 'block';
+            } 
+            else 
+            {
+                item.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

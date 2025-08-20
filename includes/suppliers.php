@@ -90,84 +90,169 @@ unset($_SESSION['form_data']);
 
 <div class="container my-5 pt-4">
     <div class="row mb-5">
-        <div class="col-12">
+        <div class="col-12 text-center">
             <h1 class="mb-3" style="padding-top: 60px;">Поставщикам</h1>
-            <p class="lead">Информация для поставщиков автозапчастей и аксессуаров</p>
+            <p class="lead">Сотрудничество с компанией Лал-Авто</p>
         </div>
     </div>
     <div class="row g-4 mb-5">
-        <div class="col-md-6">
-            <div class="supplier-info-card">
-                <h3 class="mb-4"><i class="bi bi-handshake"></i> Сотрудничество</h3>
-                <p>Компания "Лал-Авто" заинтересована в расширении круга поставщиков качественных автозапчастей, масел и аксессуаров.</p>
-                <p>Мы рассматриваем предложения от производителей и официальных дистрибьюторов автокомпонентов.</p>
-                <p><strong>Наши приоритеты:</strong></p>
-                <ul>
-                    <li>Оригинальные запчасти и аналоги проверенных производителей</li>
-                    <li>Конкурентные цены и гибкие условия поставки</li>
-                    <li>Наличие сертификатов соответствия</li>
-                    <li>Гарантия качества продукции</li>
-                    <li>Стабильность поставок</li>
-                </ul>
+        <div class="col-md-4">
+            <div class="cooperation-card text-center p-4">
+                <div class="cooperation-icon mb-3">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h4>Стабильные заказы</h4>
+                <p>Регулярные поставки и стабильный объем закупок</p>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="supplier-info-card">
-                <h3 class="mb-4"><i class="bi bi-card-checklist"></i> Требования к поставщикам</h3>
-                <p><strong>Для начала сотрудничества необходимо предоставить:</strong></p>
-                <ol>
-                    <li>Реквизиты компании (сканы учредительных документов)</li>
-                    <li>Прайс-лист в электронном виде (Excel, PDF)</li>
-                    <li>Информацию о условиях работы (скидки, отсрочка платежа)</li>
-                    <li>Сроки и условия поставки</li>
-                    <li>Сертификаты на продукцию (если требуется)</li>
-                    <li>Образцы продукции или каталоги</li>
-                </ol>
-                <p>Все документы можно отправить на электронную почту <a href="mailto:suppliers@lal-auto.ru">suppliers@lal-auto.ru</a> или привезти в наш офис по предварительной договоренности.</p>
+        <div class="col-md-4">
+            <div class="cooperation-card text-center p-4">
+                <div class="cooperation-icon mb-3">
+                    <i class="bi bi-cash-coin"></i>
+                </div>
+                <h4>Своевременная оплата</h4>
+                <p>Четкие сроки оплаты и прозрачные условия расчетов</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="cooperation-card text-center p-4">
+                <div class="cooperation-icon mb-3">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <h4>Долгосрочное партнерство</h4>
+                <p>Работаем с проверенными поставщиками годами</p>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <div class="supplier-form-card">
-                <h3 class="mb-4 text-center"><i class="bi bi-envelope"></i> Форма для поставщиков</h3>
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="requirements-section">
+                <h3 class="mb-4"><i class="bi bi-check-circle"></i> Требования к поставщикам</h3>
+                <div class="requirements-list">
+                    <div class="requirement-item">
+                        <div class="requirement-icon">
+                            <i class="bi bi-1-circle"></i>
+                        </div>
+                        <div class="requirement-content">
+                            <h5>Качество продукции</h5>
+                            <p>Соответствие ГОСТ, ТУ и международным стандартам качества</p>
+                        </div>
+                    </div>
+                    
+                    <div class="requirement-item">
+                        <div class="requirement-icon">
+                            <i class="bi bi-2-circle"></i>
+                        </div>
+                        <div class="requirement-content">
+                            <h5>Сертификация</h5>
+                            <p>Наличие всех необходимых сертификатов и разрешительной документации</p>
+                        </div>
+                    </div>
+
+                    <div class="requirement-item">
+                        <div class="requirement-icon">
+                            <i class="bi bi-3-circle"></i>
+                        </div>
+                        <div class="requirement-content">
+                            <h5>Стабильность поставок</h5>
+                            <p>Соблюдение согласованных сроков и объемов поставок</p>
+                        </div>
+                    </div>
+
+                    <div class="requirement-item">
+                        <div class="requirement-icon">
+                            <i class="bi bi-4-circle"></i>
+                        </div>
+                        <div class="requirement-content">
+                            <h5>Конкурентные цены</h5>
+                            <p>Предложение рыночных цен и гибкие условия сотрудничества</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="cooperation-form-section">
+                <h3 class="mb-4"><i class="bi bi-envelope"></i> Стать поставщиком</h3>
                 <form id="supplierForm">
                     <div class="mb-3">
-                        <label for="supplierName" class="form-label">Название компании *</label>
-                        <input type="text" class="form-control" id="supplierName" required>
+                        <label for="companyName" class="form-label">Название компании *</label>
+                        <input type="text" class="form-control" id="companyName" required>
                     </div>
                     <div class="mb-3">
-                        <label for="supplierContact" class="form-label">Контактное лицо *</label>
-                        <input type="text" class="form-control" id="supplierContact" required>
+                        <label for="contactPerson" class="form-label">Контактное лицо *</label>
+                        <input type="text" class="form-control" id="contactPerson" required>
                     </div>
                     <div class="mb-3">
-                        <label for="supplierPhone" class="form-label">Телефон *</label>
-                        <input type="tel" class="form-control" id="supplierPhone" required>
+                        <label for="phone" class="form-label">Телефон *</label>
+                        <input type="tel" class="form-control" id="phone" required>
                     </div>
                     <div class="mb-3">
-                        <label for="supplierEmail" class="form-label">Email *</label>
-                        <input type="email" class="form-control" id="supplierEmail" required>
+                        <label for="email" class="form-label">Email *</label>
+                        <input type="email" class="form-control" id="email" required>
                     </div>
                     <div class="mb-3">
-                        <label for="supplierProducts" class="form-label">Какие товары предлагаете? *</label>
-                        <textarea class="form-control" id="supplierProducts" rows="3" required></textarea>
+                        <label for="productCategory" class="form-label">Категория товаров *</label>
+                        <select class="form-select" id="productCategory" required>
+                            <option value="" selected disabled>Выберите категорию</option>
+                            <option>Автозапчасти</option>
+                            <option>Масла и жидкости</option>
+                            <option>Аксессуары</option>
+                            <option>Автохимия</option>
+                            <option>Шины и диски</option>
+                            <option>Инструменты</option>
+                            <option>Другое</option>
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label for="supplierBrands" class="form-label">Какие бренды представляете?</label>
-                        <textarea class="form-control" id="supplierBrands" rows="2"></textarea>
+                        <label for="message" class="form-label">О компании и предлагаемой продукции</label>
+                        <textarea class="form-control" id="message" rows="4"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="supplierFiles" class="form-label">Прикрепить файлы (прайс, реквизиты)</label>
-                        <input type="file" class="form-control" id="supplierFiles" multiple>
+                        <label for="file" class="form-label">Прайс-лист (опционально)</label>
+                        <input type="file" class="form-control" id="file">
                     </div>
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="supplierAgree" required>
-                        <label class="form-check-label" for="supplierAgree">Я согласен на обработку персональных данных</label>
+                        <input type="checkbox" class="form-check-input" id="agree" required>
+                        <label class="form-check-label" for="agree">Я согласен на обработку персональных данных</label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100 py-2">
+                    <button type="submit" class="btn btn-primary w-100">
                         <i class="bi bi-send"></i> Отправить заявку
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="partners-section">
+                <h3 class="mb-4 text-center"><i class="bi bi-people"></i> Наши партнеры</h3>
+                <div class="partners-grid">
+                    <div class="partner-item">
+                        <img src="../img/no-image.png" alt="Bosch" class="partner-logo">
+                        <span class="partner-name">Bosch</span>
+                    </div>
+                    <div class="partner-item">
+                        <img src="../img/no-image.png" alt="Castrol" class="partner-logo">
+                        <span class="partner-name">Castrol</span>
+                    </div>
+                    <div class="partner-item">
+                        <img src="../img/no-image.png" alt="Mobil" class="partner-logo">
+                        <span class="partner-name">Mobil</span>
+                    </div>
+                    <div class="partner-item">
+                        <img src="../img/no-image.png" alt="Brembo" class="partner-logo">
+                        <span class="partner-name">Brembo</span>
+                    </div>
+                    <div class="partner-item">
+                        <img src="../img/no-image.png" alt="Mann-Filter" class="partner-logo">
+                        <span class="partner-name">Mann-Filter</span>
+                    </div>
+                    <div class="partner-item">
+                        <img src="../img/no-image.png" alt="NGK" class="partner-logo">
+                        <span class="partner-name">NGK</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

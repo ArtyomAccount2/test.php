@@ -90,94 +90,152 @@ unset($_SESSION['form_data']);
 
 <div class="container my-5 pt-4">
     <div class="row mb-5">
-        <div class="col-12">
+        <div class="col-12 text-center">
             <h1 class="mb-3" style="padding-top: 60px;">Покупателям</h1>
-            <p class="lead">Вся информация для наших клиентов</p>
+            <p class="lead">Всё, что нужно знать о покупках в Лал-Авто</p>
+        </div>
+    </div>
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="info-card text-center p-4">
+                <div class="info-icon mb-3">
+                    <i class="bi bi-truck"></i>
+                </div>
+                <h4>Быстрая доставка</h4>
+                <p>Доставка по Калининграду за 1 день, по области - 1-3 дня. Бесплатная доставка от 5000 ₽</p>
+                <a href="delivery.php" class="btn btn-outline-primary mt-2">Подробнее</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-card text-center p-4">
+                <div class="info-icon mb-3">
+                    <i class="bi bi-credit-card"></i>
+                </div>
+                <h4>Удобная оплата</h4>
+                <p>Наличные, карты, онлайн-платежи, безналичный расчет. Рассрочка и кредит доступны</p>
+                <a href="delivery.php#payment" class="btn btn-outline-primary mt-2">Подробнее</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-card text-center p-4">
+                <div class="info-icon mb-3">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <h4>Гарантия качества</h4>
+                <p>Только оригинальные запчасти и сертифицированные товары. Гарантия до 2 лет</p>
+                <a href="#guarantee" class="btn btn-outline-primary mt-2">Подробнее</a>
+            </div>
         </div>
     </div>
     <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
-            <div class="info-card h-100">
-                <div class="info-card-icon bg-primary">
-                    <i class="bi bi-truck"></i>
+        <div class="col-lg-6">
+            <div class="faq-section">
+                <h3 class="mb-4"><i class="bi bi-question-circle"></i> Частые вопросы</h3>
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Как подобрать запчасти для моего автомобиля?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                Вы можете воспользоваться нашим онлайн-каталогом, указав марку, модель и год выпуска автомобиля. Также наши консультанты всегда готовы помочь по телефону +7 (4012) 65-65-65.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Есть ли скидки для постоянных клиентов?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                Да, у нас действует программа лояльности. При покупке карты постоянного клиента вы получаете скидку 5% на все покупки. При суммарных покупках от 50 000 ₽ скидка увеличивается до 7%, от 100 000 ₽ - до 10%.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Можно ли вернуть товар?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                Да, в течение 14 дней с момента покупки при сохранении товарного вида, упаковки и наличии чека. Некоторые товары (личные предметы, расходники) возврату не подлежат.
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h3>Доставка</h3>
-                <p>Узнайте все о способах и условиях доставки ваших заказов</p>
-                <a href="delivery.php" class="btn btn-outline-primary">Подробнее</a>
             </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="info-card h-100">
-                <div class="info-card-icon bg-success">
-                    <i class="bi bi-credit-card"></i>
+        <div class="col-lg-6">
+            <div class="benefits-section">
+                <h3 class="mb-4"><i class="bi bi-star"></i> Преимущества покупок у нас</h3>
+                <div class="benefits-list">
+                    <div class="benefit-item d-flex align-items-center mb-3">
+                        <div class="benefit-icon me-3">
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                        </div>
+                        <div>
+                            <h5>Широкий ассортимент</h5>
+                            <p class="mb-0">Более 50 000 наименований запчастей и аксессуаров</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item d-flex align-items-center mb-3">
+                        <div class="benefit-icon me-3">
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                        </div>
+                        <div>
+                            <h5>Профессиональные консультации</h5>
+                            <p class="mb-0">Опытные менеджеры помогут с подбором</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item d-flex align-items-center mb-3">
+                        <div class="benefit-icon me-3">
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                        </div>
+                        <div>
+                            <h5>Сервисный центр</h5>
+                            <p class="mb-0">Установка и гарантийное обслуживание</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item d-flex align-items-center mb-3">
+                        <div class="benefit-icon me-3">
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                        </div>
+                        <div>
+                            <h5>Техническая поддержка</h5>
+                            <p class="mb-0">Помощь в установке и эксплуатации</p>
+                        </div>
+                    </div>
                 </div>
-                <h3>Оплата</h3>
-                <p>Различные способы оплаты для вашего удобства</p>
-                <a href="delivery.php#payment" class="btn btn-outline-success">Подробнее</a>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="info-card h-100">
-                <div class="info-card-icon bg-warning">
-                    <i class="bi bi-arrow-left-right"></i>
-                </div>
-                <h3>Возврат и обмен</h3>
-                <p>Условия возврата и обмена товаров</p>
-                <a href="return.php" class="btn btn-outline-warning">Подробнее</a>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="info-card h-100">
-                <div class="info-card-icon bg-info">
-                    <i class="bi bi-percent"></i>
-                </div>
-                <h3>Скидки и акции</h3>
-                <p>Текущие акции и программы лояльности</p>
-                <a href="promotions.php" class="btn btn-outline-info">Подробнее</a>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="info-card h-100">
-                <div class="info-card-icon bg-danger">
-                    <i class="bi bi-patch-question"></i>
-                </div>
-                <h3>FAQ</h3>
-                <p>Ответы на часто задаваемые вопросы</p>
-                <a href="faq.php" class="btn btn-outline-danger">Подробнее</a>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="info-card h-100">
-                <div class="info-card-icon bg-secondary">
-                    <i class="bi bi-person-plus"></i>
-                </div>
-                <h3>Корпоративным клиентам</h3>
-                <p>Специальные условия для организаций</p>
-                <a href="corporate.php" class="btn btn-outline-secondary">Подробнее</a>
             </div>
         </div>
     </div>
-    <div class="row mt-5">
-        <div class="col-lg-8 mx-auto">
-            <div class="card faq-section">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0"><i class="bi bi-question-circle"></i> Частые вопросы</h3>
-                </div>
-                <div class="card-body">
-                    <div class="accordion" id="faqAccordion">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne">
-                                    Как узнать, подойдет ли запчасть к моему автомобилю?
-                                </button>
-                            </h2>
-                            <div id="faqOne" class="accordion-collapse collapse show">
-                                <div class="accordion-body">
-                                    Вы можете воспользоваться нашим онлайн-каталогом, указав марку, модель и год выпуска вашего автомобиля. Также наши консультанты всегда готовы помочь вам по телефону или в магазине. Для точного подбора рекомендуется знать VIN-код автомобиля.
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Другие вопросы -->
+    <div class="row mt-5" id="guarantee">
+        <div class="col-12">
+            <div class="guarantee-section p-4">
+                <h3 class="mb-4 text-center"><i class="bi bi-shield-check"></i> Гарантийные обязательства</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Что покрывается гарантией:</h5>
+                        <ul>
+                            <li>Заводские дефекты и брак</li>
+                            <li>Несоответствие техническим характеристикам</li>
+                            <li>Преждевременный износ при правильной эксплуатации</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Условия гарантии:</h5>
+                        <ul>
+                            <li>Срок гарантии: 6-24 месяца (зависит от товара)</li>
+                            <li>Наличие товарного чека или документа покупки</li>
+                            <li>Соблюдение правил эксплуатации</li>
+                            <li>Установка квалифицированными специалистами</li>
+                        </ul>
                     </div>
                 </div>
             </div>

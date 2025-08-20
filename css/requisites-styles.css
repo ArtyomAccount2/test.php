@@ -1,223 +1,113 @@
-.container.my-5 
-{
-    padding-bottom: 3rem;
-}
-
-h1 
-{
-    font-weight: 600;
-    color: #2c3e50;
-    position: relative;
-    padding-bottom: 15px;
-}
-
-h1:after 
-{
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 80px;
-    height: 3px;
-    background-color: #3498db;
-}
-
-.lead 
-{
-    color: #7f8c8d;
-    font-weight: 400;
-}
-
 .requisites-card 
 {
-    background: #fff;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    height: 100%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.requisites-card:hover 
-{
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1.5rem;
+    border: 1px solid #f0f0f0;
 }
 
 .requisites-card h3 
 {
-    color: #2c3e50;
-    font-size: 1.5rem;
-    font-weight: 600;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 25px;
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
-.requisites-card h3 i 
-{
-    margin-right: 10px;
-    color: #3498db;
-}
-
-.requisites-item 
+.requisites-list 
 {
     display: flex;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px dashed #eee;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.requisites-item:last-child 
-{
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-.requisites-label 
-{
-    font-weight: 600;
-    color: #2c3e50;
-    min-width: 180px;
-    flex-shrink: 0;
-}
-
-.requisites-value 
-{
-    color: #555;
-    word-break: break-word;
-    margin-left: 10px;
-}
-
-.documents-card 
-{
-    background: #fff;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.documents-card h3 
-{
-    color: #2c3e50;
-    font-size: 1.5rem;
-    font-weight: 600;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 25px;
-}
-
-.documents-card h3 i 
-{
-    margin-right: 10px;
-    color: #e74c3c;
-}
-
-.document-item 
+.requisite-item 
 {
     display: flex;
-    align-items: center;
-    padding: 15px;
-    background-color: #f8f9fa;
+    flex-wrap: wrap;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 3px solid #007bff;
+}
+
+.requisite-label 
+{
+    font-weight: 600;
+    color: #495057;
+    min-width: 200px;
+    margin-right: 1rem;
+}
+
+.requisite-value 
+{
+    color: #212529;
+    flex: 1;
+}
+
+.documents-section 
+{
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-top: 2rem;
+}
+
+.document-card 
+{
+    text-align: center;
+    padding: 1.5rem;
+    border: 1px solid #dee2e6;
     border-radius: 8px;
-    color: #2c3e50;
-    text-decoration: none;
     transition: all 0.3s ease;
     height: 100%;
 }
 
-.document-item:hover 
+.document-card:hover 
 {
-    background-color: #3498db;
-    color: white;
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.15);
+    border-color: #007bff;
 }
 
-.document-item i 
+.document-icon 
 {
-    font-size: 1.5rem;
-    margin-right: 15px;
-    flex-shrink: 0;
+    font-size: 3rem;
+    color: #dc3545;
+    margin-bottom: 1rem;
 }
 
-@keyframes fadeInUp 
+.document-card h5 
 {
-    from 
-    {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to 
-    {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    color: #007bff;
+    margin-bottom: 0.5rem;
 }
 
-.requisites-card, .documents-card 
+.document-card p 
 {
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-.requisites-card:nth-child(1) 
-{ 
-    animation-delay: 0.1s; 
-}
-
-.requisites-card:nth-child(2) 
-{ 
-    animation-delay: 0.2s; 
-}
-
-.documents-card 
-{ 
-    animation-delay: 0.3s; 
+    color: #6c757d;
+    margin-bottom: 1rem;
 }
 
 @media (max-width: 768px) 
 {
-    .requisites-item 
+    .requisite-item 
     {
         flex-direction: column;
     }
     
-    .requisites-label 
+    .requisite-label 
     {
-        margin-bottom: 5px;
-        min-width: 100%;
+        min-width: auto;
+        margin-bottom: 0.5rem;
+        margin-right: 0;
     }
     
-    .requisites-card, .documents-card 
+    .document-card 
     {
-        padding: 20px;
+        margin-bottom: 1.5rem;
     }
-    
-    h1 
-    {
-        font-size: 1.8rem;
-    }
-    
-    .requisites-card h3, .documents-card h3 
-    {
-        font-size: 1.3rem;
-    }
-}
-
-.bi-building 
-{
-    color: #3498db;
-}
-
-.bi-bank 
-{
-    color: #2ecc71;
-}
-
-.bi-file-earmark-text 
-{
-    color: #e74c3c;
 }

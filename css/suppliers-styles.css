@@ -1,261 +1,152 @@
-.container.my-5 
+.cooperation-card 
 {
-    padding-bottom: 3rem;
-}
-
-h1 
-{
-    font-weight: 600;
-    color: #2c3e50;
-    position: relative;
-    padding-bottom: 15px;
-}
-
-h1:after 
-{
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 80px;
-    height: 3px;
-    background-color: #3498db;
-}
-
-.lead 
-{
-    color: #7f8c8d;
-    font-weight: 400;
-}
-
-.supplier-info-card 
-{
-    background: #fff;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    height: 100%;
-    border-left: 4px solid #3498db;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+    height: 100%;
 }
 
-.supplier-info-card:hover 
+.cooperation-card:hover 
 {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+    border-color: #007bff;
 }
 
-.supplier-info-card h3 
+.cooperation-icon 
 {
-    color: #3498db;
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-}
-
-.supplier-info-card h3 i 
-{
-    margin-right: 10px;
-    font-size: 1.3em;
-}
-
-.supplier-info-card p 
-{
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-.supplier-info-card ul, 
-.supplier-info-card ol 
-{
-    padding-left: 20px;
-    margin-bottom: 15px;
-    color: #555;
-}
-
-.supplier-info-card li 
-{
-    margin-bottom: 8px;
-    line-height: 1.5;
-}
-
-.supplier-info-card strong 
-{
-    color: #2c3e50;
-}
-
-.supplier-info-card a 
-{
-    color: #3498db;
-    font-weight: 500;
-    text-decoration: none;
-}
-
-.supplier-info-card a:hover 
-{
-    text-decoration: underline;
-}
-
-.supplier-form-card 
-{
-    background: #fff;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-    margin-top: 30px;
-    border-top: 4px solid #3498db;
-}
-
-.supplier-form-card h3 
-{
-    color: #2c3e50;
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin-bottom: 25px;
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 auto;
+    color: white;
+    font-size: 1.8rem;
 }
 
-.supplier-form-card h3 i 
+.requirements-list 
 {
-    margin-right: 10px;
-    font-size: 1.3em;
-    color: #3498db;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.supplier-form-card .form-label 
+.requirement-item 
 {
-    font-weight: 500;
-    color: #2c3e50;
-    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #007bff;
 }
 
-.supplier-form-card .form-control 
+.requirement-icon 
 {
-    border-radius: 5px;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    transition: all 0.3s;
+    font-size: 1.5rem;
+    color: #007bff;
+    margin-right: 1rem;
+    min-width: 40px;
+    text-align: center;
 }
 
-.supplier-form-card .form-control:focus 
+.requirement-content h5 
 {
-    border-color: #3498db;
-    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    color: #007bff;
+    margin-bottom: 0.5rem;
 }
 
-.supplier-form-card textarea.form-control 
+.requirement-content p 
 {
-    min-height: 100px;
+    color: #6c757d;
+    margin-bottom: 0;
 }
 
-.supplier-form-card .form-check-label 
+.cooperation-form-section 
 {
-    color: #555;
-    font-size: 0.9rem;
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f0f0f0;
 }
 
-.supplier-form-card .btn-primary 
+.cooperation-form-section h3 
 {
-    background-color: #3498db;
-    border: none;
-    padding: 12px;
-    font-weight: 500;
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
-    transition: all 0.3s;
-    margin-top: 10px;
+    color: #007bff;
+    margin-bottom: 1.5rem;
 }
 
-.supplier-form-card .btn-primary:hover 
+.partners-section 
 {
-    background-color: #2980b9;
-    transform: translateY(-2px);
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-top: 2rem;
 }
 
-.supplier-form-card .btn-primary i 
+.partners-grid 
 {
-    margin-right: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
 }
 
-@keyframes fadeInUp 
+.partner-item 
 {
-    from 
-    {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to 
-    {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    text-align: center;
+    padding: 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
-.supplier-info-card 
+.partner-item:hover 
 {
-    animation: fadeInUp 0.6s ease forwards;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.15);
+    border-color: #007bff;
 }
 
-.supplier-info-card:nth-child(1) 
-{ 
-    animation-delay: 0.1s; 
+.partner-logo 
+{
+    max-width: 100%;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 1rem;
 }
 
-.supplier-info-card:nth-child(2) 
-{ 
-    animation-delay: 0.2s; 
-}
-
-.supplier-form-card 
-{ 
-    animation-delay: 0.3s; 
+.partner-name 
+{
+    font-weight: 600;
+    color: #495057;
 }
 
 @media (max-width: 768px) 
 {
-    .supplier-info-card,
-    .supplier-form-card 
+    .requirement-item 
     {
-        padding: 20px;
+        flex-direction: column;
+        text-align: center;
     }
     
-    h1 
+    .requirement-icon 
     {
-        font-size: 1.8rem;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
     }
     
-    .supplier-info-card h3,
-    .supplier-form-card h3 
+    .partners-grid 
     {
-        font-size: 1.3rem;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
     }
-    
-    .supplier-form-card .btn-primary 
-    {
-        font-size: 1rem;
-    }
-}
-
-.was-validated .form-control:invalid,
-.form-control.is-invalid 
-{
-    border-color: #e74c3c;
-}
-
-.was-validated .form-control:valid,
-.form-control.is-valid 
-{
-    border-color: #2ecc71;
-}
-
-.invalid-feedback 
-{
-    color: #e74c3c;
-    font-size: 0.85rem;
-    margin-top: 5px;
 }

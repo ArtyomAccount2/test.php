@@ -90,105 +90,140 @@ unset($_SESSION['form_data']);
 
 <div class="container my-5 pt-4">
     <div class="row mb-5">
-        <div class="col-12">
+        <div class="col-12 text-center">
             <h1 class="mb-3" style="padding-top: 60px;">Поддержка сайта</h1>
-            <p class="lead">Помощь в работе с сайтом и технические вопросы</p>
+            <p class="lead">Помощь в работе с сайтом и техническая поддержка</p>
         </div>
     </div>
     <div class="row g-4 mb-5">
-        <div class="col-md-6">
-            <div class="support-card">
-                <h3 class="mb-4"><i class="bi bi-question-circle"></i> Частые вопросы</h3>
-                <div class="accordion" id="supportAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#supportOne">
-                                Как восстановить пароль?
-                            </button>
-                        </h2>
-                        <div id="supportOne" class="accordion-collapse collapse show">
-                            <div class="accordion-body">
-                                На странице входа нажмите ссылку "Забыли пароль?". Введите email, указанный при регистрации, и следуйте инструкциям в письме.
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Другие вопросы -->
+        <div class="col-md-4">
+            <div class="support-card text-center p-4">
+                <div class="support-icon mb-3">
+                    <i class="bi bi-question-circle"></i>
                 </div>
+                <h4>Частые вопросы</h4>
+                <p>Ответы на самые популярные вопросы по работе с сайтом</p>
+                <a href="faq.php" class="btn btn-outline-primary mt-2">Смотреть FAQ</a>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="support-card">
-                <h3 class="mb-4"><i class="bi bi-chat-left-text"></i> Обратная связь</h3>
-                <form id="supportForm">
-                    <div class="mb-3">
-                        <label for="supportName" class="form-label">Ваше имя *</label>
-                        <input type="text" class="form-control" id="supportName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="supportEmail" class="form-label">Email *</label>
-                        <input type="email" class="form-control" id="supportEmail" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="supportTopic" class="form-label">Тема *</label>
-                        <select class="form-select" id="supportTopic" required>
-                            <option value="" selected disabled>Выберите тему</option>
-                            <option>Техническая проблема</option>
-                            <option>Вопрос по работе сайта</option>
-                            <option>Предложение по улучшению</option>
-                            <option>Другое</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="supportMessage" class="form-label">Сообщение *</label>
-                        <textarea class="form-control" id="supportMessage" rows="5" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="supportScreenshot" class="form-label">Скриншот (если требуется)</label>
-                        <input type="file" class="form-control" id="supportScreenshot" accept="image/*">
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100 py-2">
-                        <i class="bi bi-send"></i> Отправить сообщение
-                    </button>
-                </form>
+        <div class="col-md-4">
+            <div class="support-card text-center p-4">
+                <div class="support-icon mb-3">
+                    <i class="bi bi-book"></i>
+                </div>
+                <h4>Инструкции</h4>
+                <p>Пошаговые руководства по использованию функционала сайта</p>
+                <a href="#instructions" class="btn btn-outline-primary mt-2">Читать инструкции</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="support-card text-center p-4">
+                <div class="support-icon mb-3">
+                    <i class="bi bi-bug"></i>
+                </div>
+                <h4>Сообщить о проблеме</h4>
+                <p>Нашли ошибку или неработающую функцию? Сообщите нам</p>
+                <a href="#report" class="btn btn-outline-primary mt-2">Сообщить о проблеме</a>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-8 mx-auto">
-            <div class="support-contacts">
-                <h3 class="mb-4 text-center"><i class="bi bi-headset"></i> Контакты поддержки</h3>
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="contact-method">
-                            <div class="contact-icon bg-primary">
-                                <i class="bi bi-telephone"></i>
+            <div class="support-content">
+                <section id="instructions" class="mb-5">
+                    <h3 class="mb-4"><i class="bi bi-book"></i> Инструкции по работе с сайтом</h3>
+                    <div class="accordion" id="instructionsAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#instruction1">
+                                    Как зарегистрироваться на сайте
+                                </button>
+                            </h2>
+                            <div id="instruction1" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    <ol>
+                                        <li>Нажмите кнопку "Зарегистрироваться" в правом верхнем углу</li>
+                                        <li>Выберите тип регистрации: физическое или юридическое лицо</li>
+                                        <li>Заполните все обязательные поля формы</li>
+                                        <li>Подтвердите email, перейдя по ссылке в письме</li>
+                                        <li>Войдите в систему используя свои учетные данные</li>
+                                    </ol>
+                                </div>
                             </div>
-                            <h4>Телефон</h4>
-                            <p>+7 (4012) 65-65-67</p>
-                            <small>Пн-Пт: 9:00-18:00</small>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#instruction2">
+                                    Как сделать заказ
+                                </button>
+                            </h2>
+                            <div id="instruction2" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <ol>
+                                        <li>Найдите нужный товар через поиск или каталог</li>
+                                        <li>Добавьте товар в корзину, указав количество</li>
+                                        <li>Перейдите в корзину и проверьте состав заказа</li>
+                                        <li>Выберите способ доставки и оплаты</li>
+                                        <li>Подтвердите заказ и дождитесь звонка менеджера</li>
+                                    </ol>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="contact-method">
-                            <div class="contact-icon bg-success">
-                                <i class="bi bi-envelope"></i>
+                </section>
+                <section id="report" class="mb-5">
+                    <h3 class="mb-4"><i class="bi bi-bug"></i> Сообщить о проблеме</h3>
+                    <div class="report-form">
+                        <form id="problemForm">
+                            <div class="mb-3">
+                                <label for="problemType" class="form-label">Тип проблемы *</label>
+                                <select class="form-select" id="problemType" required>
+                                    <option value="" selected disabled>Выберите тип проблемы</option>
+                                    <option>Техническая ошибка</option>
+                                    <option>Не работает функция</option>
+                                    <option>Некорректное отображение</option>
+                                    <option>Другое</option>
+                                </select>
                             </div>
-                            <h4>Email</h4>
-                            <p>support@lal-auto.ru</p>
-                            <small>Ответ в течение 24 часов</small>
+                            <div class="mb-3">
+                                <label for="problemUrl" class="form-label">URL страницы (если применимо)</label>
+                                <input type="url" class="form-control" id="problemUrl">
+                            </div>
+                            <div class="mb-3">
+                                <label for="problemDescription" class="form-label">Описание проблемы *</label>
+                                <textarea class="form-control" id="problemDescription" rows="5" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="screenshot" class="form-label">Скриншот (опционально)</label>
+                                <input type="file" class="form-control" id="screenshot" accept="image/*">
+                            </div>
+                            <div class="mb-3">
+                                <label for="contactEmail" class="form-label">Email для обратной связи *</label>
+                                <input type="email" class="form-control" id="contactEmail" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Отправить сообщение</button>
+                        </form>
+                    </div>
+                </section>
+                <section class="contact-support">
+                    <h3 class="mb-4"><i class="bi bi-headset"></i> Служба поддержки</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="contact-method">
+                                <h5><i class="bi bi-telephone"></i> Телефон</h5>
+                                <p>+7 (4012) 65-65-65</p>
+                                <p class="text-muted">Пн-Пт: 9:00-18:00</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="contact-method">
+                                <h5><i class="bi bi-envelope"></i> Email</h5>
+                                <p>support@lal-auto.ru</p>
+                                <p class="text-muted">Ответ в течение 24 часов</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="contact-method">
-                            <div class="contact-icon bg-warning">
-                                <i class="bi bi-chat-dots"></i>
-                            </div>
-                            <h4>Онлайн-чат</h4>
-                            <p>Доступен в рабочее время</p>
-                            <button class="btn btn-sm btn-outline-warning">Открыть чат</button>
-                        </div>
-                    </div>
-                </div>
+                </section>
             </div>
         </div>
     </div>

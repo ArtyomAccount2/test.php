@@ -167,7 +167,6 @@ unset($_SESSION['form_data']);
                             <label class="form-check-label" for="avail3">Под заказ</label>
                         </div>
                     </div>
-                    
                     <button class="btn btn-primary w-100">Применить фильтры</button>
                     <button class="btn btn-outline-secondary w-100 mt-2">Сбросить</button>
                 </div>
