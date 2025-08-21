@@ -1,0 +1,270 @@
+.api-documentation 
+{
+    background: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f0f0f0;
+}
+
+.api-documentation h2 
+{
+    color: #007bff;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.api-documentation h2 i 
+{
+    margin-right: 0.75rem;
+    font-size: 1.2em;
+}
+
+.api-documentation h4 
+{
+    color: #495057;
+    margin: 1.5rem 0 1rem;
+    font-weight: 600;
+}
+
+.api-documentation h5 
+{
+    color: #6c757d;
+    margin: 1rem 0 0.5rem;
+    font-weight: 600;
+}
+
+.api-endpoint 
+{
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-left: 4px solid #007bff;
+}
+
+.endpoint-info 
+{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.method 
+{
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.method.get 
+{
+    background: #61affe;
+    color: white;
+}
+
+.method.post 
+{
+    background: #49cc90;
+    color: white;
+}
+
+.method.put 
+{
+    background: #fca130;
+    color: white;
+}
+
+.method.delete 
+{
+    background: #f93e3e;
+    color: white;
+}
+
+.endpoint-info code 
+{
+    background: #e9ecef;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: #495057;
+}
+
+.api-documentation pre 
+{
+    background: #2d2d2d;
+    color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+.api-documentation code 
+{
+    color: #e83e8c;
+    font-family: 'Courier New', monospace;
+}
+
+.api-documentation ul 
+{
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.api-documentation li 
+{
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+    color: #495057;
+}
+
+.api-documentation li code 
+{
+    background: #f8f9fa;
+    padding: 0.125rem 0.25rem;
+    border-radius: 3px;
+    color: #e83e8c;
+}
+
+.table th 
+{
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+}
+
+.code-example 
+{
+    margin-bottom: 2rem;
+}
+
+.code-example h5 
+{
+    color: #495057;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.support-section 
+{
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.support-contact 
+{
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    height: 100%;
+}
+
+.support-contact h5 
+{
+    color: #007bff;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.support-contact h5 i 
+{
+    margin-right: 0.5rem;
+}
+
+.support-contact p 
+{
+    margin-bottom: 0;
+    color: #495057;
+}
+
+.support-contact a 
+{
+    color: #007bff;
+    text-decoration: none;
+}
+
+.support-contact a:hover 
+{
+    text-decoration: underline;
+}
+
+.alert 
+{
+    border-radius: 8px;
+    border: none;
+    margin: 1rem 0;
+}
+
+.alert-info 
+{
+    background: #e9f9ff;
+    color: #0056b3;
+}
+
+.alert-warning 
+{
+    background: #fff3cd;
+    color: #856404;
+}
+
+@media (max-width: 768px) 
+{
+    .api-documentation 
+    {
+        padding: 1.5rem;
+    }
+    
+    .api-endpoint 
+    {
+        padding: 1rem;
+    }
+    
+    .endpoint-info 
+    {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .api-documentation pre 
+    {
+        font-size: 0.8rem;
+        padding: 0.75rem;
+    }
+    
+    .support-contact 
+    {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 576px) 
+{
+    .api-documentation h2 
+    {
+        font-size: 1.5rem;
+    }
+    
+    .api-documentation h4 
+    {
+        font-size: 1.1rem;
+    }
+    
+    .table 
+    {
+        font-size: 0.9rem;
+    }
+}
