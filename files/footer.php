@@ -76,8 +76,8 @@
                     <p class="mb-0">© 2025 Лал-Авто. Все права защищены.</p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
-                    <a href="#" class="text-white text-decoration-none me-3">Карта сайта</a>
-                    <a href="#" class="text-white text-decoration-none">Разработчикам API</a>
+                    <a href="includes/sitemap.php" class="text-white text-decoration-none me-3">Карта сайта</a>
+                    <a href="includes/api.php" class="text-white text-decoration-none">Разработчикам API</a>
                 </div>
             </div>
         </div>

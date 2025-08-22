@@ -44,13 +44,13 @@ error_reporting(E_ALL);
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="#">Торговые марки</a>
+                        <a class="nav-link text-dark" href="includes/brands.php">Торговые марки</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="#">Поддержка сайта</a>
+                        <a class="nav-link text-dark" href="includes/support.php">Поддержка сайта</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="#">Новости компании</a>
+                        <a class="nav-link text-dark" href="includes/news.php">Новости компании</a>
                     </li>
                 </ul>
                 <a href="index.php" class="btn btn-secondary ms-3 button-link header-back-button">

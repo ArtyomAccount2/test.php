@@ -124,13 +124,13 @@ unset($_SESSION['form_data']);
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="#">Торговые марки</a>
+                        <a class="nav-link text-dark" href="includes/brands.php">Торговые марки</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="#">Поддержка сайта</a>
+                        <a class="nav-link text-dark" href="includes/support.php">Поддержка сайта</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="#">Новости компании</a>
+                        <a class="nav-link text-dark" href="includes/news.php">Новости компании</a>
                     </li>
                 </ul>
                 <form id="catalogSearchForm" class="d-flex align-items-center me-3">
@@ -633,8 +633,8 @@ unset($_SESSION['form_data']);
                 <p class="mb-0">© 2025 Лал-Авто. Все права защищены.</p>
             </div>
             <div class="col-md-6 text-center text-md-end">
-                <a href="#" class="text-white text-decoration-none me-3">Карта сайта</a>
-                <a href="#" class="text-white text-decoration-none">Разработчикам API</a>
+                <a href="includes/sitemap.php" class="text-white text-decoration-none me-3">Карта сайта</a>
+                <a href="includes/api.php" class="text-white text-decoration-none">Разработчикам API</a>
             </div>
         </div>
     </div>

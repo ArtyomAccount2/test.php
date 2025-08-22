@@ -1,0 +1,305 @@
+.about-page 
+{
+    padding-top: 100px;
+}
+
+.breadcrumb-container 
+{
+    background-color: #f8f9fa;
+    padding: 15px 0;
+    margin-bottom: 30px;
+}
+
+.breadcrumb 
+{
+    margin-bottom: 0;
+}
+
+.about-hero 
+{
+    padding: 60px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9f9ff 100%);
+}
+
+.about-title 
+{
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #007bff;
+    margin-bottom: 1rem;
+}
+
+.about-subtitle 
+{
+    font-size: 1.5rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+.about-description
+{
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #495057;
+}
+
+.about-hero-image 
+{
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.about-hero-image img 
+{
+    transition: transform 0.3s ease;
+}
+
+.about-hero-image:hover img 
+{
+    transform: scale(1.05);
+}
+
+.about-features 
+{
+    padding: 80px 0;
+    background: white;
+}
+
+.section-title 
+{
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.section-title::after 
+{
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #007bff;
+}
+
+.feature-item 
+{
+    text-align: center;
+    padding: 30px 20px;
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover 
+{
+    transform: translateY(-10px);
+}
+
+.feature-icon 
+{
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: rgba(0, 123, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #007bff;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover .feature-icon 
+{
+    background: #007bff;
+    color: white;
+    transform: scale(1.1);
+}
+
+.feature-item h3 
+{
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.feature-item p 
+{
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+.about-history 
+{
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.timeline 
+{
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.timeline::before 
+{
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: #007bff;
+}
+
+.timeline-item 
+{
+    display: flex;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.timeline-item:nth-child(odd) 
+{
+    flex-direction: row-reverse;
+}
+
+.timeline-year 
+{
+    width: 100px;
+    height: 100px;
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+.timeline-content 
+{
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin: 0 30px;
+    flex-grow: 1;
+    position: relative;
+}
+
+.timeline-content::before 
+{
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    background: white;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.timeline-item:nth-child(even) .timeline-content::before 
+{
+    left: -10px;
+}
+
+.timeline-item:nth-child(odd) .timeline-content::before 
+{
+    right: -10px;
+}
+
+.timeline-content h3 
+{
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.timeline-content p 
+{
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+.about-stats 
+{
+    padding: 60px 0;
+    background: white;
+}
+
+.stat-item 
+{
+    text-align: center;
+    padding: 20px;
+}
+
+.stat-number 
+{
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.stat-label 
+{
+    font-size: 1.1rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) 
+{
+    .about-title 
+    {
+        font-size: 2rem;
+    }
+    
+    .about-subtitle 
+    {
+        font-size: 1.2rem;
+    }
+    
+    .timeline::before 
+    {
+        left: 30px;
+    }
+    
+    .timeline-item 
+    {
+        flex-direction: row;
+        margin-left: 60px;
+    }
+    
+    .timeline-year 
+    {
+        width: 60px;
+        height: 60px;
+        font-size: 1rem;
+        position: absolute;
+        left: -80px;
+    }
+    
+    .timeline-content::before 
+    {
+        left: -10px;
+        right: auto;
+    }
+    
+    .feature-item 
+    {
+        margin-bottom: 30px;
+    }
+}

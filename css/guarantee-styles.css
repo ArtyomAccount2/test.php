@@ -1,0 +1,306 @@
+.guarantee-page 
+{
+    padding-top: 100px;
+}
+
+.breadcrumb-container 
+{
+    background-color: #f8f9fa;
+    padding: 15px 0;
+    margin-bottom: 30px;
+}
+
+.guarantee-hero 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.guarantee-title 
+{
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.guarantee-subtitle 
+{
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.guarantee-info 
+{
+    padding: 60px 0;
+    background: white;
+}
+
+.guarantee-info h2 
+{
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 2rem;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #007bff;
+}
+
+.guarantee-term 
+{
+    margin-bottom: 30px;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 4px solid #007bff;
+}
+
+.guarantee-term h3 
+{
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.guarantee-term p 
+{
+    color: #495057;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.guarantee-term ul 
+{
+    color: #495057;
+    padding-left: 20px;
+}
+
+.guarantee-term li 
+{
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.guarantee-card 
+{
+    margin-bottom: 30px;
+}
+
+.guarantee-card .card 
+{
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.guarantee-card .card:hover 
+{
+    transform: translateY(-5px);
+}
+
+.guarantee-card .card-body 
+{
+    padding: 25px;
+}
+
+.guarantee-card h4 
+{
+    color: #007bff;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.guarantee-card p 
+{
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+.documents-section 
+{
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.documents-section h4 
+{
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.document-link 
+{
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background: white;
+    border-radius: 8px;
+    color: #007bff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.document-link:hover 
+{
+    background: #007bff;
+    color: white;
+    transform: translateX(5px);
+}
+
+.document-link i 
+{
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.warranty-process 
+{
+    padding: 60px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9f9ff 100%);
+}
+
+.warranty-process h2 
+{
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.process-steps 
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.process-step 
+{
+    text-align: center;
+    padding: 30px 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.process-step:hover 
+{
+    transform: translateY(-10px);
+}
+
+.step-number 
+{
+    width: 60px;
+    height: 60px;
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 auto 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.process-step::before 
+{
+    content: '';
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 2px;
+    background: #007bff;
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.process-step:last-child::before 
+{
+    display: none;
+}
+
+.process-step h4 
+{
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.process-step p 
+{
+    color: #6c757d;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) 
+{
+    .guarantee-title 
+    {
+        font-size: 2rem;
+    }
+    
+    .guarantee-info h2 
+    {
+        font-size: 1.7rem;
+    }
+    
+    .process-steps 
+    {
+        grid-template-columns: 1fr;
+    }
+    
+    .process-step::before 
+    {
+        display: none;
+    }
+    
+    .guarantee-term 
+    {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 576px) 
+{
+    .guarantee-hero 
+    {
+        padding: 40px 0;
+    }
+    
+    .guarantee-info,
+    .warranty-process 
+    {
+        padding: 40px 0;
+    }
+    
+    .process-step 
+    {
+        padding: 20px 15px;
+    }
+    
+    .step-number 
+    {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+}
