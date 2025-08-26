@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
             unset($_SESSION['login_error']);
             unset($_SESSION['error_message']);
-            header("Location: ../index.php");
+            header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         } 
         else 
