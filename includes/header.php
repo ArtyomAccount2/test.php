@@ -92,7 +92,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="/">
+                    <form method="POST" action="">
+                        <input type="hidden" name="redirect_url" value="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>">
                         <div class="mb-3">
                             <label for="username" class="form-label">Логин</label>
                             <input type="text" name="login" class="form-control" id="username" placeholder="Введите логин" required value="<?= htmlspecialchars($form_data['login'] ?? '') ?>">
@@ -135,7 +136,7 @@
 
     <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content border-0 shadow-lg">
+            <div class="modal-content border-0 shadow-lg" style="max-height: 90vh;">
                 <div class="modal-header bg-gradient-primary text-white border-0 rounded-top-3">
                     <div class="w-100 text-center position-relative">
                         <h4 class="modal-title fw-bold mb-1">Личный кабинет</h4>
@@ -143,7 +144,7 @@
                         <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 </div>
-                <div class="modal-body p-4">
+                <div class="modal-body p-4" style="overflow-y: auto;">
                     <div class="user-card bg-light p-4 rounded-3 mb-4 shadow-sm">
                         <div class="d-flex align-items-center">
                             <div class="user-avatar me-3">

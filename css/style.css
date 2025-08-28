@@ -420,6 +420,8 @@ footer
 {
     border-radius: 16px;
     overflow: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 #f1f1f1;
 }
 
 .bg-gradient-primary 
@@ -524,4 +526,26 @@ footer
 .menu-item:nth-child(4) 
 { 
     animation-delay: 0.4s; 
+}
+
+.modal-body::-webkit-scrollbar 
+{
+    width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track 
+{
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb 
+{
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover 
+{
+    background: #a8a8a8;
 }

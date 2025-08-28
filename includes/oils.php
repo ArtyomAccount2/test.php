@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 session_start();
 require_once("../config/link.php");
 
-if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['user'] == 'admin') 
+if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['user'] == 'admin')
 {
     header("Location: ../files/logout.php");
 }
@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     $login = $_POST['login'];
     $password = $_POST['password'];
+    $redirect_url = $_POST['redirect_url'] ?? $_SERVER['REQUEST_URI'];
 
     if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
     {
@@ -21,8 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         unset($_SESSION['error_message']);
         header("Location: ../admin.php");
         exit();
-    } 
-    else 
+    }
+    else
     {
         $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
         $stmt->bind_param("ss", $login, $password);
@@ -36,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
             unset($_SESSION['login_error']);
             unset($_SESSION['error_message']);
-            header("Location: " . $_SERVER['REQUEST_URI']);
+            header("Location: " . $redirect_url);
             exit();
         } 
         else 
@@ -44,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $_SESSION['login_error'] = true;
             $_SESSION['error_message'] = "Неверный логин или пароль!";
             $_SESSION['form_data'] = $_POST;
-            header("Location: " . $_SERVER['REQUEST_URI']);
+            header("Location: " . $redirect_url);
             exit();
         }
     }
