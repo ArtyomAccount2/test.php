@@ -57,9 +57,9 @@
                             <p class="mb-0 text-center text-md-end me-md-2" style="font-size: 0.9em; white-space: nowrap;">
                                 <strong><?= htmlspecialchars($_SESSION['user']); ?></strong>
                             </p>
-                            <button class="profile-button w-md-auto" data-bs-toggle="modal" data-bs-target="#accountModal">
+                            <a href="../profile.php" class="profile-button w-md-auto text-decoration-none">
                                 <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
-                            </button>
+                            </a>
                         </div>
                     <?php 
                     } 
