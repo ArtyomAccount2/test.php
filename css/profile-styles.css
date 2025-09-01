@@ -88,29 +88,16 @@
     box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
 }
 
-.quick-actions, .stats-widget 
+.stats-widget 
 {
     border: none;
     border-radius: 15px;
     transition: transform 0.3s ease;
 }
 
-.quick-actions:hover, .stats-widget:hover 
+.stats-widget:hover 
 {
     transform: translateY(-2px);
-}
-
-.quick-actions .btn, .stats-widget .btn 
-{
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    text-align: left;
-}
-
-.quick-actions .btn:hover 
-{
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .stats-widget .stat-item 
@@ -142,45 +129,6 @@
     border-radius: 15px 15px 0 0;
     font-weight: 600;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-}
-
-.stat-card 
-{
-    transition: transform 0.3s ease;
-    border-radius: 15px;
-    border: none;
-}
-
-.stat-card:hover 
-{
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.stat-icon 
-{
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.stat-number 
-{
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #333 0%, #555 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.stat-label 
-{
-    color: #6c757d;
-    font-weight: 500;
-    font-size: 0.9rem;
 }
 
 .activity-timeline 
@@ -282,100 +230,35 @@
     }
 }
 
+@keyframes fadeIn 
+{
+    from 
+    {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to 
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin 
+{
+    0% 
+    { 
+        transform: rotate(0deg); 
+    }
+    100% 
+    { 
+        transform: rotate(360deg); 
+    }
+}
+
 .profile-avatar 
 {
     animation: pulse 2s infinite;
-}
-
-.stat-card 
-{
-    animation: fadeInUp 0.6s ease-out;
-}
-
-.stat-card:nth-child(1) 
-{ 
-    animation-delay: 0.1s; 
-}
-
-.stat-card:nth-child(2) 
-{ 
-    animation-delay: 0.2s; 
-}
-
-.stat-card:nth-child(3) 
-{ 
-    animation-delay: 0.3s; 
-}
-
-.stat-card:nth-child(4) 
-{ 
-    animation-delay: 0.4s; 
-}
-
-@media (max-width: 768px) 
-{
-    .profile-container 
-    {
-        padding-top: 80px;
-    }
-    
-    .profile-sidebar 
-    {
-        margin-bottom: 1.5rem;
-    }
-    
-    .avatar-circle
-    {
-        width: 80px;
-        height: 80px;
-    }
-    
-    .stat-card 
-    {
-        margin-bottom: 1rem;
-    }
-    
-    .stat-number 
-    {
-        font-size: 1.5rem;
-    }
-    
-    .activity-timeline 
-    {
-        padding-left: 1.5rem;
-    }
-    
-    .activity-item::before 
-    {
-        left: -1.5rem;
-    }
-}
-
-@media (max-width: 576px) 
-{
-    .card-body 
-    {
-        padding: 1.5rem;
-    }
-    
-    .list-group-item 
-    {
-        padding: 0.75rem 1rem;
-        font-size: 0.9rem;
-    }
-    
-    .btn 
-    {
-        width: 100%;
-        margin-bottom: 0.5rem;
-    }
-    
-    .activity-icon 
-    {
-        width: 32px;
-        height: 32px;
-        font-size: 0.8rem;
-    }
 }
 
 .alert 
@@ -429,14 +312,408 @@
     animation: spin 1s linear infinite;
 }
 
-@keyframes spin 
+.wishlist-item 
 {
-    0% 
-    { 
-        transform: rotate(0deg); 
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.wishlist-item:hover 
+{
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.wishlist-item-img 
+{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.wishlist-item-price 
+{
+    font-weight: 600;
+    color: #28a745;
+    font-size: 1.1rem;
+}
+
+.notification-item 
+{
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.notification-item:hover 
+{
+    transform: translateX(5px);
+}
+
+.notification-item.alert-info 
+{
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    border-left: 4px solid #17a2b8;
+}
+
+.notification-item.alert-warning 
+{
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    border-left: 4px solid #ffc107;
+}
+
+.notification-item.alert-success 
+{
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border-left: 4px solid #28a745;
+}
+
+.tab-pane 
+{
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.empty-state 
+{
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.empty-state i 
+{
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+.empty-state p 
+{
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.btn-remove-wishlist 
+{
+    transition: all 0.3s ease;
+}
+
+.btn-remove-wishlist:hover 
+{
+    transform: scale(1.1);
+    background-color: #dc3545;
+    color: white;
+}
+
+.wishlist-item,
+.notification-item 
+{
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+}
+
+.wishlist-item.show,
+.notification-item.show 
+{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stat-card 
+{
+    height: 180px;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    display: flex;
+}
+
+.stat-card .card-body 
+{
+    padding: 1.5rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.stat-icon 
+{
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.stat-number 
+{
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+    flex-shrink: 0;
+    min-height: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-label 
+{
+    color: #6c757d;
+    font-weight: 500;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    text-align: center;
+    flex-shrink: 0;
+    min-height: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon.text-primary 
+{
+    color: #007bff;
+}
+
+.stat-icon.text-success 
+{
+    color: #28a745;
+}
+
+.stat-icon.text-info 
+{
+    color: #17a2b8;
+}
+
+.stat-icon.text-warning 
+{
+    color: #ffc107;
+}
+
+.stat-number 
+{
+    background: linear-gradient(135deg, #333 0%, #555 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 992px) 
+{
+    .stat-card 
+    {
+        height: 160px;
     }
-    100% 
-    { 
-        transform: rotate(360deg); 
+    
+    .stat-icon 
+    {
+        font-size: 2rem;
+        margin-bottom: 0.6rem;
     }
+    
+    .stat-number 
+    {
+        font-size: 1.8rem;
+        min-height: 2.2rem;
+    }
+    
+    .stat-label 
+    {
+        font-size: 0.85rem;
+        min-height: 2.2rem;
+    }
+}
+
+@media (max-width: 768px) 
+{
+    .profile-container 
+    {
+        padding-top: 80px;
+    }
+    
+    .profile-sidebar 
+    {
+        margin-bottom: 1.5rem;
+    }
+    
+    .avatar-circle
+    {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .stat-card 
+    {
+        height: 150px;
+    }
+    
+    .stat-card .card-body 
+    {
+        padding: 1.2rem 0.4rem;
+    }
+    
+    .stat-icon 
+    {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-number 
+    {
+        font-size: 1.6rem;
+        min-height: 2rem;
+    }
+    
+    .stat-label 
+    {
+        font-size: 0.8rem;
+        min-height: 2rem;
+    }
+    
+    .activity-timeline 
+    {
+        padding-left: 1.5rem;
+    }
+    
+    .activity-item::before 
+    {
+        left: -1.5rem;
+    }
+}
+
+@media (max-width: 576px) 
+{
+    .card-body 
+    {
+        padding: 1.5rem;
+    }
+    
+    .list-group-item 
+    {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .btn 
+    {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .activity-icon 
+    {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+    
+    .stat-card 
+    {
+        height: 140px;
+        margin-bottom: 1rem;
+    }
+    
+    .stat-card .card-body 
+    {
+        padding: 1rem 0.3rem;
+    }
+    
+    .stat-icon 
+    {
+        font-size: 1.6rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .stat-number 
+    {
+        font-size: 1.4rem;
+        min-height: 1.8rem;
+    }
+    
+    .stat-label 
+    {
+        font-size: 0.75rem;
+        min-height: 1.8rem;
+    }
+    
+    .wishlist-item 
+    {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .wishlist-item-img 
+    {
+        margin-bottom: 1rem;
+    }
+    
+    .notification-item .d-flex 
+    {
+        flex-direction: column;
+    }
+    
+    .notification-item .btn 
+    {
+        margin-top: 1rem;
+        align-self: flex-end;
+    }
+}
+
+.row 
+{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.row > [class*='col-'] 
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 576px) 
+{
+    .row.mt-4 
+    {
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+    }
+    
+    .col-sm-6 
+    {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+
+.stat-card .card-body > * 
+{
+    flex-shrink: 0;
+}
+
+.stat-card .card-body 
+{
+    text-align: center;
+}
+
+.stat-card .card-body .stat-number,
+.stat-card .card-body .stat-label 
+{
+    margin-bottom: 0;
 }

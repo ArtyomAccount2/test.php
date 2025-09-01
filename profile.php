@@ -304,34 +304,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                             </div>
                         </div>
                         <div class="row mt-4">
-                            <div class="col-md-3">
+                            <div class="col-sm-6 col-md-3 mb-3">
                                 <div class="stat-card card text-center">
                                     <div class="card-body">
                                         <i class="bi bi-cart3 stat-icon text-primary"></i>
                                         <h3 class="stat-number"><?= $orderStats['total_orders'] ?></h3>
-                                        <p class="stat-label">Всего заказов</p>
+                                        <p class="stat-label">Всего<br>заказов</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-sm-6 col-md-3 mb-3">
                                 <div class="stat-card card text-center">
                                     <div class="card-body">
                                         <i class="bi bi-cash stat-icon text-success"></i>
                                         <h3 class="stat-number"><?= number_format($orderStats['total_amount'], 0, ',', ' ') ?> ₽</h3>
-                                        <p class="stat-label">Общая сумма</p>
+                                        <p class="stat-label">Общая<br>сумма</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-sm-6 col-md-3 mb-3">
                                 <div class="stat-card card text-center">
                                     <div class="card-body">
                                         <i class="bi bi-truck stat-icon text-info"></i>
                                         <h3 class="stat-number"><?= $orderStats['pending_orders'] ?></h3>
-                                        <p class="stat-label">Активные заказы</p>
+                                        <p class="stat-label">Активные<br>заказы</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-sm-6 col-md-3 mb-3">
                                 <div class="stat-card card text-center">
                                     <div class="card-body">
                                         <i class="bi bi-star-fill stat-icon text-warning"></i>
@@ -371,7 +371,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                     </div>
                     <div class="tab-pane fade" id="orders">
                         <div class="card shadow-sm">
-                            <div class="card-header bg-primary text-white">
+                            <div class="card-header bg-primary text-dark">
                                 <h5 class="mb-0"><i class="bi bi-cart3 me-2"></i>История заказов</h5>
                             </div>
                             <div class="card-body">
@@ -414,6 +414,96 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                                 <?php 
                                 } 
                                 ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="wishlist">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-dark">
+                                <h5 class="mb-0"><i class="bi bi-heart me-2"></i>Избранное</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="wishlist-items">
+                                    <div class="wishlist-item d-flex align-items-center">
+                                        <img src="../img/no-image.png" alt="Моторное масло" class="wishlist-item-img me-3">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">Моторное масло Castrol 5W-40</h6>
+                                            <p class="text-muted mb-1">Артикул: CAST-5W40-4L</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="wishlist-item-price">3,450 ₽</span>
+                                                <span class="badge bg-success">В наличии</span>
+                                            </div>
+                                        </div>
+                                        <div class="ms-3">
+                                            <a href="assortment.php" class="btn btn-primary btn-sm me-2">
+                                                <i class="bi bi-cart-plus"></i>
+                                            </a>
+                                            <button class="btn btn-outline-danger btn-sm btn-remove-wishlist">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="wishlist-item d-flex align-items-center">
+                                        <img src="../img/no-image.png" alt="Воздушный фильтр" class="wishlist-item-img me-3">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">Воздушный фильтр Mann</h6>
+                                            <p class="text-muted mb-1">Артикул: MANN-FILTER</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="wishlist-item-price">1,890 ₽</span>
+                                                <span class="badge bg-warning">Под заказ</span>
+                                            </div>
+                                        </div>
+                                        <div class="ms-3">
+                                            <a href="assortment.php" class="btn btn-primary btn-sm me-2">
+                                                <i class="bi bi-cart-plus"></i>
+                                            </a>
+                                            <button class="btn btn-outline-danger btn-sm btn-remove-wishlist">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="notifications">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-dark">
+                                <h5 class="mb-0"><i class="bi bi-bell me-2"></i>Уведомления</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="notification-list">
+                                    <div class="notification-item alert alert-info">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1">Новое поступление</h6>
+                                                <p class="mb-1">Появились в наличии запчасти для Toyota Camry</p>
+                                                <small class="text-muted">2 часа назад</small>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-secondary">Прочитано</button>
+                                        </div>
+                                    </div>
+                                    <div class="notification-item alert alert-warning">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1">Заказ готов к выдаче</h6>
+                                                <p class="mb-1">Ваш заказ #12345 готов к получению</p>
+                                                <small class="text-muted">Вчера, 15:30</small>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-secondary">Прочитано</button>
+                                        </div>
+                                    </div>
+                                    <div class="notification-item alert alert-success">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1">Скидка 15%</h6>
+                                                <p class="mb-1">Специальное предложение для вас действует до конца недели</p>
+                                                <small class="text-muted">3 дня назад</small>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-secondary">Прочитано</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

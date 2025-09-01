@@ -419,65 +419,69 @@ unset($_SESSION['form_data']);
         </div>
         <div class="container">
             <section class="container my-5" id="nextSection">
-                <div class="section-header text-center mb-5">
-                    <h2 class="mb-3">Поиск по марке автомобиля</h2>
-                    <p class="lead text-muted">Найдите запчасти для вашего автомобиля</p>
-                    <div class="search-container position-relative mx-auto" style="max-width: 500px;">
-                        <input type="text" id="brandSearch" placeholder="Начните вводить марку..." class="form-control form-control-lg search-input">
-                        <button class="btn btn-link search-clear" type="button" style="display: none;">
-                            <i class="bi bi-x"></i>
-                        </button>
-                        <i class="bi bi-search search-icon"></i>
-                    </div>
-                </div>
-                <div class="brands-container">
-                    <div class="position-relative">
-                        <div id="carBrandsList" class="scrollable-container">
-                            <div id="no-results-brands" class="no-results-message">
-                                <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
-                                <p>Ничего не найдено. Попробуйте изменить запрос</p>
-                            </div>
-                            <div class="scrollable" id="carBrandsBlock">
-                            </div>
+                <div class="search-section">
+                    <div class="section-header text-center mb-5">
+                        <h2 class="mb-3">Поиск по марке автомобиля</h2>
+                        <p class="lead text-muted">Найдите запчасти для вашего автомобиля</p>
+                        <div class="search-container position-relative mx-auto" style="max-width: 500px;">
+                            <input type="text" id="brandSearch" placeholder="Начните вводить марку..." class="form-control form-control-lg search-input">
+                            <button class="btn btn-link search-clear" type="button" style="display: none;">
+                                <i class="bi bi-x"></i>
+                            </button>
+                            <i class="bi bi-search search-icon"></i>
                         </div>
-                        <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
-                            <i class="bi bi-chevron-left"></i>
-                        </button>
-                        <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
-                            <i class="bi bi-chevron-right"></i>
-                        </button>
+                    </div>
+                    <div class="brands-container">
+                        <div class="position-relative">
+                            <div id="carBrandsList" class="scrollable-container">
+                                <div id="no-results-brands" class="no-results-message">
+                                    <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
+                                    <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                                </div>
+                                <div class="scrollable" id="carBrandsBlock">
+                                </div>
+                            </div>
+                            <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <section class="container my-5" id="nextSection2">
-                <div class="section-header text-center mb-5">
-                    <h2 class="mb-3">Популярные запчасти</h2>
-                    <p class="lead text-muted">Широкий ассортимент качественных автозапчастей</p>
-                    <div class="search-container position-relative mx-auto" style="max-width: 500px;">
-                        <input type="text" id="partsSearch" placeholder="Найдите нужную запчасть..." class="form-control form-control-lg search-input">
-                        <button class="btn btn-link search-clear" type="button" style="display: none;">
-                            <i class="bi bi-x"></i>
-                        </button>
-                        <i class="bi bi-search search-icon"></i>
-                    </div>
-                </div>
-                <div class="parts-container">
-                    <div class="position-relative">
-                        <div id="popularParts" class="scrollable-container">
-                            <div id="no-results-parts" class="no-results-message">
-                                <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
-                                <p>Ничего не найдено. Попробуйте изменить запрос</p>
-                            </div>
-                            <div class="scrollable" id="partsContainer">
-                            </div>
+                <div class="search-section">
+                    <div class="section-header text-center mb-5">
+                        <h2 class="mb-3">Популярные запчасти</h2>
+                        <p class="lead text-muted">Широкий ассортимент качественных автозапчастей</p>
+                        <div class="search-container position-relative mx-auto" style="max-width: 500px;">
+                            <input type="text" id="partsSearch" placeholder="Найдите нужную запчасть..." class="form-control form-control-lg search-input">
+                            <button class="btn btn-link search-clear" type="button" style="display: none;">
+                                <i class="bi bi-x"></i>
+                            </button>
+                            <i class="bi bi-search search-icon"></i>
                         </div>
-                        <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
-                            <i class="bi bi-chevron-left"></i>
-                        </button>
-                        <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
-                            <i class="bi bi-chevron-right"></i>
-                        </button>
+                    </div>
+                    <div class="parts-container">
+                        <div class="position-relative">
+                            <div id="popularParts" class="scrollable-container">
+                                <div id="no-results-parts" class="no-results-message">
+                                    <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
+                                    <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                                </div>
+                                <div class="scrollable" id="partsContainer">
+                                </div>
+                            </div>
+                            <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
