@@ -101,7 +101,8 @@ unset($_SESSION['form_data']);
                             <li><a class="dropdown-item" href="#carouselExample">Слайдер</a></li>
                             <li><a class="dropdown-item" href="#aboutUs">О Нас</a></li>
                             <li><a class="dropdown-item" href="#specialOffer">Колесо Фортуны</a></li>
-                            <li><a class="dropdown-item" href="#nextSection">Поиск по марке и по запчастям</a></li>
+                            <li><a class="dropdown-item" href="#nextSection">Поиск по марке автомобиля</a></li>
+                            <li><a class="dropdown-item" href="#nextSection2">Популярные запчасти</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

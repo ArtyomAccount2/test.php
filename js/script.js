@@ -158,13 +158,21 @@ function handleHeaderSearch()
         return;
     }
 
+    let navbarHeight = document.querySelector('.navbar') ? document.querySelector('.navbar').offsetHeight : 0;
+    let offset = navbarHeight + 20;
+
     if (isRussian) 
     {
         let targetSection = document.querySelector('#nextSection2');
 
         if (targetSection) 
         {
-            targetSection.scrollIntoView({ behavior: 'smooth' });
+            let targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
         }
         
         setTimeout(() => {
@@ -191,7 +199,12 @@ function handleHeaderSearch()
 
         if (targetSection) 
         {
-            targetSection.scrollIntoView({ behavior: 'smooth' });
+            let targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - offset;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
         }
         
         setTimeout(() => {
@@ -345,7 +358,13 @@ document.addEventListener('DOMContentLoaded', function()
 
             if (target) 
             {
-                target.scrollIntoView({
+                let navbarHeight = document.querySelector('.navbar') ? document.querySelector('.navbar').offsetHeight : 0;
+                let offset = navbarHeight + 20;
+                
+                let targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                
+                window.scrollTo({
+                    top: targetPosition,
                     behavior: 'smooth'
                 });
             }
