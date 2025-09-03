@@ -380,3 +380,45 @@ th, td
 {
     display: block;
 }
+
+#sidebar ul li.active > a 
+{
+    background: rgba(255, 255, 255, 0.15);
+    border-left: 3px solid #007bff;
+}
+
+#sidebar ul ul li.active > a 
+{
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 2px solid #007bff;
+}
+
+.collapse 
+{
+    transition: all 0.3s ease;
+}
+
+.section-content 
+{
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn 
+{
+    from 
+    { 
+        opacity: 0; transform: translateY(10px); 
+    }
+    to 
+    { 
+        opacity: 1; transform: translateY(0); 
+    }
+}
+
+@media (max-width: 768px) 
+{
+    .form-row .col-md-6 
+    {
+        margin-bottom: 1rem;
+    }
+}
