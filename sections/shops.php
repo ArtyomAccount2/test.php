@@ -56,32 +56,32 @@
                 <h5 class="mb-0">Список магазинов</h5>
                 <span class="badge bg-primary">15 магазинов</span>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
+            <div class="card-body p-0">
+                <div class="table-responsive" style="max-height: 397.5px; overflow-y: auto;">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light sticky-top" style="position: sticky; top: 0; z-index: 10; background: #f8f9fa;">
                             <tr>
-                                <th>ID</th>
-                                <th>Название</th>
-                                <th>Адрес</th>
-                                <th>Регион</th>
-                                <th>Телефон</th>
-                                <th>Статус</th>
-                                <th>Действия</th>
+                                <th style="position: sticky; left: 0; background: #f8f9fa; z-index: 11;">ID</th>
+                                <th style="min-width: 200px;">Название</th>
+                                <th style="min-width: 200px;">Адрес</th>
+                                <th style="min-width: 120px;">Регион</th>
+                                <th style="min-width: 150px;">Телефон</th>
+                                <th style="min-width: 100px;">Статус</th>
+                                <th style="min-width: 120px; position: sticky; right: 0; background: #f8f9fa; z-index: 11;">Действия</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>1</td>
+                                <td style="position: sticky; left: 0; background: white; z-index: 1;">1</td>
                                 <td>
                                     <strong>Лал-Авто Центр</strong>
                                     <br><small class="text-muted">Основной магазин</small>
                                 </td>
-                                <td>ул. Ленина, 123</td>
+                                <td>ул. Ленина, 123, бизнес-центр "Северный", 5 этаж, офис 501</td>
                                 <td>Москва</td>
-                                <td>+7 (495) 123-45-67</td>
+                                <td>+7 (495) 123-45-67, +7 (495) 123-45-68</td>
                                 <td><span class="badge bg-success">Активен</span></td>
-                                <td>
+                                <td style="position: sticky; right: 0; background: white; z-index: 1;">
                                     <div class="btn-group btn-group-sm">
                                         <button class="btn btn-outline-primary" title="Редактировать">
                                             <i class="bi bi-pencil"></i>
@@ -96,16 +96,16 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>2</td>
+                                <td style="position: sticky; left: 0; background: white; z-index: 1;">2</td>
                                 <td>
                                     <strong>Лал-Авто Север</strong>
                                     <br><small class="text-muted">Филиал</small>
                                 </td>
-                                <td>пр. Мира, 45</td>
+                                <td>пр. Мира, 45, торговый комплекс "Европа", 2 этаж, секция 205</td>
                                 <td>Санкт-Петербург</td>
-                                <td>+7 (812) 987-65-43</td>
+                                <td>+7 (812) 987-65-43, +7 (812) 987-65-44</td>
                                 <td><span class="badge bg-success">Активен</span></td>
-                                <td>
+                                <td style="position: sticky; right: 0; background: white; z-index: 1;">
                                     <div class="btn-group btn-group-sm">
                                         <button class="btn btn-outline-primary">
                                             <i class="bi bi-pencil"></i>
@@ -120,16 +120,16 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>3</td>
+                                <td style="position: sticky; left: 0; background: white; z-index: 1;">3</td>
                                 <td>
                                     <strong>Лал-Авто Восток</strong>
                                     <br><small class="text-muted">Филиал</small>
                                 </td>
-                                <td>ул. Баумана, 78</td>
+                                <td>ул. Баумана, 78, исторический центр, здание бывшей фабрики</td>
                                 <td>Казань</td>
-                                <td>+7 (843) 456-78-90</td>
+                                <td>+7 (843) 456-78-90, +7 (843) 456-78-91</td>
                                 <td><span class="badge bg-warning">На обслуживании</span></td>
-                                <td>
+                                <td style="position: sticky; right: 0; background: white; z-index: 1;">
                                     <div class="btn-group btn-group-sm">
                                         <button class="btn btn-outline-primary">
                                             <i class="bi bi-pencil"></i>
@@ -144,16 +144,112 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>4</td>
+                                <td style="position: sticky; left: 0; background: white; z-index: 1;">4</td>
                                 <td>
                                     <strong>Лал-Авто Сибирь</strong>
                                     <br><small class="text-muted">Филиал</small>
                                 </td>
-                                <td>ул. Кирова, 32</td>
+                                <td>ул. Кирова, 32, деловой центр "Сибирь", 3 этаж, офис 301</td>
                                 <td>Новосибирск</td>
-                                <td>+7 (383) 234-56-78</td>
+                                <td>+7 (383) 234-56-78, +7 (383) 234-56-79</td>
                                 <td><span class="badge bg-secondary">Неактивен</span></td>
+                                <td style="position: sticky; right: 0; background: white; z-index: 1;">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-outline-info">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="position: sticky; left: 0; background: white; z-index: 1;">5</td>
                                 <td>
+                                    <strong>Лал-Авто Юг</strong>
+                                    <br><small class="text-muted">Филиал</small>
+                                </td>
+                                <td>пр. Победы, 89, торговый комплекс "Южные ворота", 1 этаж</td>
+                                <td>Ростов-на-Дону</td>
+                                <td>+7 (863) 345-67-89, +7 (863) 345-67-90</td>
+                                <td><span class="badge bg-success">Активен</span></td>
+                                <td style="position: sticky; right: 0; background: white; z-index: 1;">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-outline-info">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="position: sticky; left: 0; background: white; z-index: 1;">6</td>
+                                <td>
+                                    <strong>Лал-Авто Урал</strong>
+                                    <br><small class="text-muted">Филиал</small>
+                                </td>
+                                <td>ул. Ленина, 56, бизнес-центр "Урал", 4 этаж, офис 401</td>
+                                <td>Екатеринбург</td>
+                                <td>+7 (343) 456-78-90, +7 (343) 456-78-91</td>
+                                <td><span class="badge bg-success">Активен</span></td>
+                                <td style="position: sticky; right: 0; background: white; z-index: 1;">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-outline-info">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="position: sticky; left: 0; background: white; z-index: 1;">7</td>
+                                <td>
+                                    <strong>Лал-Авто Дальний Восток</strong>
+                                    <br><small class="text-muted">Филиал</small>
+                                </td>
+                                <td>ул. Советская, 123, торговый центр "Океан", 2 этаж</td>
+                                <td>Владивосток</td>
+                                <td>+7 (423) 567-89-01, +7 (423) 567-89-02</td>
+                                <td><span class="badge bg-warning">На обслуживании</span></td>
+                                <td style="position: sticky; right: 0; background: white; z-index: 1;">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-outline-info">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="position: sticky; left: 0; background: white; z-index: 1;">8</td>
+                                <td>
+                                    <strong>Лал-Авто Крым</strong>
+                                    <br><small class="text-muted">Филиал</small>
+                                </td>
+                                <td>ул. Набережная, 45, курортный комплекс "Черноморье"</td>
+                                <td>Севастополь</td>
+                                <td>+7 (869) 678-90-12, +7 (869) 678-90-13</td>
+                                <td><span class="badge bg-success">Активен</span></td>
+                                <td style="position: sticky; right: 0; background: white; z-index: 1;">
                                     <div class="btn-group btn-group-sm">
                                         <button class="btn btn-outline-primary">
                                             <i class="bi bi-pencil"></i>
@@ -171,8 +267,8 @@
                     </table>
                 </div>
 
-                <nav aria-label="Page navigation" class="mt-3">
-                    <ul class="pagination justify-content-center">
+                <nav aria-label="Page navigation" class="mt-3 p-3">
+                    <ul class="pagination justify-content-center mb-0">
                         <li class="page-item disabled">
                             <a class="page-link" href="#" tabindex="-1">
                                 <i class="bi bi-chevron-left"></i>
@@ -258,7 +354,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Название магазина *</label>
+                                <label class="form-label">Название магазина<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" placeholder="Введите название" required>
                             </div>
                         </div>
@@ -277,7 +373,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Регион *</label>
+                                <label class="form-label">Регион<span class="text-danger">*</span></label>
                                 <select class="form-select" required>
                                     <option value="">Выберите регион</option>
                                     <option value="moscow">Москва</option>
@@ -290,14 +386,14 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Телефон *</label>
+                                <label class="form-label">Телефон<span class="text-danger">*</span></label>
                                 <input type="tel" class="form-control" placeholder="+7 (XXX) XXX-XX-XX" required>
                             </div>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Адрес *</label>
+                        <label class="form-label">Адрес<span class="text-danger">*</span></label>
                         <textarea class="form-control" rows="2" placeholder="Полный адрес магазина" required></textarea>
                     </div>
 
@@ -380,6 +476,24 @@ document.addEventListener('DOMContentLoaded', function()
         addShopModal.addEventListener('shown.bs.modal', function() 
         {
             console.log('Модальное окно добавления магазина открыто');
+        });
+    }
+
+    let tableContainer = document.querySelector('.table-responsive');
+
+    if (tableContainer) 
+    {
+        tableContainer.addEventListener('scroll', function() 
+        {
+            let scrollLeft = this.scrollLeft;
+            let fixedColumns = this.querySelectorAll('[style*="left: 0"], [style*="right: 0"]');
+            
+            fixedColumns.forEach(col => {
+                if (col.style.left === '0px') 
+                {
+                    col.style.transform = `translateX(${scrollLeft}px)`;
+                }
+            });
         });
     }
 });

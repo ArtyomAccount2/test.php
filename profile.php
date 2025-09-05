@@ -128,13 +128,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                     <a class="nav-link text-dark" href="../index.php">Главная</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="assortment.php">Каталог</a>
+                    <a class="nav-link text-dark" href="includes/assortment.php">Каталог</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="orders.php">Мои заказы</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="support.php">Поддержка</a>
+                    <a class="nav-link text-dark" href="includes/support.php">Поддержка</a>
                 </li>
             </ul>
             <div class="d-flex align-items-center">
@@ -280,11 +280,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                                             <input type="text" class="form-control" value="<?= htmlspecialchars($userData['patronymic_users'] ?? 'Не указано') ?>" disabled>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Email *</label>
+                                            <label class="form-label">Email<span class="text-danger">*</span></label>
                                             <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($userData['email_users'] ?? '') ?>" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Телефон *</label>
+                                            <label class="form-label">Телефон<span class="text-danger">*</span></label>
                                             <input type="tel" name="phone" class="form-control" value="<?= htmlspecialchars($userData['phone_users'] ?? '') ?>" required>
                                         </div>
                                         <div class="col-md-6 mb-3">

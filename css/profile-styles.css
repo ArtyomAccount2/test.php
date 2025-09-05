@@ -717,3 +717,50 @@
 {
     margin-bottom: 0;
 }
+
+.table-responsive::-webkit-scrollbar 
+{
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track 
+{
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb 
+{
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover 
+{
+    background: #a8a8a8;
+}
+
+.table-responsive 
+{
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+.table th,
+.table td 
+{
+    white-space: nowrap;
+}
+
+.table-responsive 
+{
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+}
+
+.table-responsive thead th 
+{
+    background: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}

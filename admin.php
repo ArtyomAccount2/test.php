@@ -155,7 +155,7 @@ function isActiveSubmenu($parent, $item = null)
                             <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Профиль</a></li>
                             <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Настройки</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="../files/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Выйти</a></li>
+                            <li><a class="dropdown-item text-danger" href="../files/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Выйти</a></li>
                         </ul>
                     </div>
                 </div>
