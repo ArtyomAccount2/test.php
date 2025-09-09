@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                     <a class="nav-link text-dark" href="includes/assortment.php">Каталог</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="orders.php">Мои заказы</a>
+                    <a class="nav-link text-dark" href="includes/orders.php">Мои заказы</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="includes/support.php">Поддержка</a>
@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person me-2"></i>Профиль</a></li>
-                        <li><a class="dropdown-item" href="orders.php"><i class="bi bi-cart3 me-2"></i>Заказы</a></li>
+                        <li><a class="dropdown-item" href="includes/orders.php"><i class="bi bi-cart3 me-2"></i>Заказы</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger" href="files/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Выйти</a></li>
                     </ul>
@@ -409,7 +409,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                                     <div class="text-center py-5">
                                         <i class="bi bi-cart-x display-1 text-muted"></i>
                                         <p class="text-muted mt-3">У вас пока нет заказов</p>
-                                        <a href="assortment.php" class="btn btn-primary mt-2">Перейти в каталог</a>
+                                        <a href="includes/assortment.php" class="btn btn-primary mt-2">Перейти в каталог</a>
                                     </div>
                                 <?php 
                                 } 
@@ -425,7 +425,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                             <div class="card-body">
                                 <div class="wishlist-items">
                                     <div class="wishlist-item d-flex align-items-center">
-                                        <img src="../img/no-image.png" alt="Моторное масло" class="wishlist-item-img me-3">
+                                        <img src="img/no-image.png" alt="Моторное масло" class="wishlist-item-img me-3">
                                         <div class="flex-grow-1">
                                             <h6 class="mb-1">Моторное масло Castrol 5W-40</h6>
                                             <p class="text-muted mb-1">Артикул: CAST-5W40-4L</p>
@@ -435,7 +435,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                                             </div>
                                         </div>
                                         <div class="ms-3">
-                                            <a href="assortment.php" class="btn btn-primary btn-sm me-2">
+                                            <a href="includes/assortment.php" class="btn btn-primary btn-sm me-2">
                                                 <i class="bi bi-cart-plus"></i>
                                             </a>
                                             <button class="btn btn-outline-danger btn-sm btn-remove-wishlist">
@@ -444,7 +444,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                                         </div>
                                     </div>
                                     <div class="wishlist-item d-flex align-items-center">
-                                        <img src="../img/no-image.png" alt="Воздушный фильтр" class="wishlist-item-img me-3">
+                                        <img src="img/no-image.png" alt="Воздушный фильтр" class="wishlist-item-img me-3">
                                         <div class="flex-grow-1">
                                             <h6 class="mb-1">Воздушный фильтр Mann</h6>
                                             <p class="text-muted mb-1">Артикул: MANN-FILTER</p>
@@ -454,7 +454,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                                             </div>
                                         </div>
                                         <div class="ms-3">
-                                            <a href="assortment.php" class="btn btn-primary btn-sm me-2">
+                                            <a href="includes/assortment.php" class="btn btn-primary btn-sm me-2">
                                                 <i class="bi bi-cart-plus"></i>
                                             </a>
                                             <button class="btn btn-outline-danger btn-sm btn-remove-wishlist">
