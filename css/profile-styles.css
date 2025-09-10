@@ -504,8 +504,8 @@
 .stat-number 
 {
     background: linear-gradient(135deg, #333 0%, #555 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
 }
 
 @media (max-width: 992px) 

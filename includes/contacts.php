@@ -95,44 +95,64 @@ unset($_SESSION['form_data']);
         <div class="col-lg-6">
             <div class="contact-card p-4 h-100">
                 <h2 class="mb-4">Контактная информация</h2>
-                <div class="contact-info mb-4">
-                    <div class="contact-item mb-3">
-                        <div class="contact-icon">
-                            <i class="bi bi-geo-alt-fill"></i>
-                        </div>
-                        <div class="contact-text" style="margin-bottom: 20px">
-                            <h5>Адрес:</h5>
-                            <p>г. Калининград, ул. Автомобильная, 12</p>
-                        </div>
-                    </div>
-                    <div class="contact-item mb-3">
-                        <div class="contact-icon">
-                            <i class="bi bi-telephone-fill"></i>
-                        </div>
-                        <div class="contact-text" style="margin-bottom: 20px">
-                            <h5>Телефоны:</h5>
-                            <p>+7 (4012) 65-65-65 (многоканальный)</p>
-                            <p>+7 (911) 123-45-67 (мобильный)</p>
+                <div class="row">
+                    <div class="contact-item mb-4 p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                        <div class="d-flex align-items-start">
+                            <div class="contact-icon bg-primary p-2 rounded-circle me-3">
+                                <i class="bi bi-geo-alt-fill text-white"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h5 class="text-primary fw-bold mb-2">Адрес:</h5>
+                                <p class="mb-1">г. Калининград, ул. Автомобильная, 12</p>
+                                <small class="text-muted">Бесплатная парковка для клиентов</small>
+                            </div>
                         </div>
                     </div>
-                    <div class="contact-item mb-3">
-                        <div class="contact-icon">
-                            <i class="bi bi-envelope-fill"></i>
-                        </div>
-                        <div class="contact-text" style="margin-bottom: 20px">
-                            <h5>Email:</h5>
-                            <p>info@lal-auto.ru</p>
-                            <p>sales@lal-auto.ru</p>
+                    <div class="contact-item mb-4 p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                        <div class="d-flex align-items-start">
+                            <div class="contact-icon bg-primary p-2 rounded-circle me-3">
+                                <i class="bi bi-telephone-fill text-white"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h5 class="text-primary fw-bold mb-2">Телефоны:</h5>
+                                <p class="mb-1">+7 (4012) 65-65-65 (многоканальный)</p>
+                                <p class="mb-1">+7 (911) 123-45-67 (мобильный)</p>
+                                <small class="text-muted">Консультация и запись на сервис</small>
+                            </div>
                         </div>
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="bi bi-clock-fill"></i>
+                    <div class="contact-item mb-4 p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                        <div class="d-flex align-items-start">
+                            <div class="contact-icon bg-primary p-2 rounded-circle me-3">
+                                <i class="bi bi-envelope-fill text-white"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h5 class="text-primary fw-bold mb-2">Email:</h5>
+                                <p class="mb-1">
+                                    <a href="mailto:info@lal-auto.ru" class="text-decoration-none text-dark">
+                                        info@lal-auto.ru
+                                    </a>
+                                </p>
+                                <p class="mb-1">
+                                    <a href="mailto:sales@lal-auto.ru" class="text-decoration-none text-dark">
+                                        sales@lal-auto.ru
+                                    </a>
+                                </p>
+                                <small class="text-muted">Ответим в течение 24 часов</small>
+                            </div>
                         </div>
-                        <div class="contact-text" style="margin-bottom: 20px">
-                            <h5>Режим работы:</h5>
-                            <p>Пн-Пт: 9:00-20:00</p>
-                            <p>Сб-Вс: 10:00-18:00</p>
+                    </div>
+                    <div class="contact-item p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                        <div class="d-flex align-items-start">
+                            <div class="contact-icon bg-primary p-2 rounded-circle me-3">
+                                <i class="bi bi-clock-fill text-white"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h5 class="text-primary fw-bold mb-2">Режим работы:</h5>
+                                <p class="mb-1">Пн-Пт: 9:00-20:00</p>
+                                <p class="mb-1">Сб-Вс: 10:00-18:00</p>
+                                <small class="text-muted">Без перерыва на обед</small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -140,35 +160,68 @@ unset($_SESSION['form_data']);
         </div>
         <div class="col-lg-6">
             <div class="contact-card p-4 h-100">
-                <h2 class="mb-4">Обратная связь</h2>
-                <form id="contactForm">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Ваше имя</label>
-                        <input type="text" class="form-control" id="name" required>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-primary p-3 rounded-circle me-3">
+                        <i class="bi bi-chat-dots-fill text-white fs-4"></i>
+                    </div>
+                    <h2 class="mb-0 text-primary">Обратная связь</h2>
+                </div>
+                <form id="contactForm" class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label fw-semibold">
+                                <i class="bi bi-person me-1"></i>Ваше имя
+                            </label>
+                            <input type="text" class="form-control form-control-lg" id="name" placeholder="Иван Иванов" required>
+                            <div class="invalid-feedback">Пожалуйста, введите ваше имя</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label fw-semibold">
+                                <i class="bi bi-envelope me-1"></i>Email
+                            </label>
+                            <input type="email" class="form-control form-control-lg" id="email" placeholder="example@mail.ru" required>
+                            <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" required>
+                        <label for="phone" class="form-label fw-semibold">
+                            <i class="bi bi-phone me-1"></i>Телефон
+                        </label>
+                        <input type="tel" class="form-control form-control-lg" id="phone" placeholder="+7 (900) 123-45-67">
                     </div>
                     <div class="mb-3">
-                        <label for="phone" class="form-label">Телефон</label>
-                        <input type="tel" class="form-control" id="phone">
-                    </div>
-                    <div class="mb-3">
-                        <label for="subject" class="form-label">Тема</label>
-                        <select class="form-select" id="subject">
-                            <option selected>Общий вопрос</option>
-                            <option>Вопрос по товару</option>
-                            <option>Запись на сервис</option>
-                            <option>Жалоба</option>
-                            <option>Сотрудничество</option>
+                        <label for="subject" class="form-label fw-semibold">
+                            <i class="bi bi-tag me-1"></i>Тема обращения
+                        </label>
+                        <select class="form-select form-select-lg" id="subject" required>
+                            <option value="" selected disabled>Выберите тему</option>
+                            <option value="general">Общий вопрос</option>
+                            <option value="product">Вопрос по товару</option>
+                            <option value="service">Запись на сервис</option>
+                            <option value="complaint">Жалоба</option>
+                            <option value="cooperation">Сотрудничество</option>
                         </select>
+                        <div class="invalid-feedback">Пожалуйста, выберите тему</div>
                     </div>
-                    <div class="mb-3">
-                        <label for="message" class="form-label">Сообщение</label>
-                        <textarea class="form-control" id="message" rows="5" required></textarea>
+                    <div class="mb-4">
+                        <label for="message" class="form-label fw-semibold">
+                            <i class="bi bi-chat-text me-1"></i>Сообщение
+                        </label>
+                        <textarea class="form-control form-control-lg" id="message" rows="5" 
+                                placeholder="Опишите ваш вопрос подробнее..." required></textarea>
+                        <div class="invalid-feedback">Пожалуйста, напишите ваше сообщение</div>
+                        <div class="form-text">Максимум 500 символов</div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Отправить</button>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="consent" required>
+                        <label class="form-check-label small" for="consent">
+                            Я согласен на обработку персональных данных
+                        </label>
+                        <div class="invalid-feedback">Необходимо ваше согласие</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
+                        <i class="bi bi-send me-2"></i>Отправить сообщение
+                    </button>
                 </form>
             </div>
         </div>
