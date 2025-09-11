@@ -111,3 +111,11 @@
         margin-bottom: 1.5rem;
     }
 }
+
+@media (min-width: 991px) 
+{
+    .requisites-card 
+    {
+        height: 675px;
+    }
+}

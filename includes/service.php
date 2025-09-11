@@ -92,54 +92,180 @@ unset($_SESSION['form_data']);
 <div class="container my-5">
     <h1 class="text-center mb-5" style="padding-top: 85px;">Автосервис "Лал-Авто"</h1>
     <div class="row g-4 mb-5">
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <div class="service-card h-100 p-4">
-                <h2 class="mb-4">Наши услуги</h2>
-                <ul class="service-list">
-                    <li><i class="bi bi-check-circle-fill text-primary"></i> Диагностика автомобиля</li>
-                    <li><i class="bi bi-check-circle-fill text-primary"></i> Техническое обслуживание</li>
-                    <li><i class="bi bi-check-circle-fill text-primary"></i> Ремонт двигателя</li>
-                    <li><i class="bi bi-check-circle-fill text-primary"></i> Ремонт ходовой части</li>
-                    <li><i class="bi bi-check-circle-fill text-primary"></i> Электронные системы</li>
-                    <li><i class="bi bi-check-circle-fill text-primary"></i> Шиномонтаж и балансировка</li>
-                    <li><i class="bi bi-check-circle-fill text-primary"></i> Кузовной ремонт</li>
-                    <li><i class="bi bi-check-circle-fill text-primary"></i> Покраска автомобиля</li>
-                </ul>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-primary p-3 rounded-circle me-3">
+                        <i class="bi bi-tools text-white fs-4"></i>
+                    </div>
+                    <h2 class="mb-0 text-primary">Наши услуги</h2>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="service-item p-3 rounded-3 border">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="service-icon bg-primary p-2 rounded-circle me-2">
+                                    <i class="bi bi-search text-white"></i>
+                                </div>
+                                <h6 class="mb-0">Диагностика</h6>
+                            </div>
+                            <p class="small text-muted mb-0">Комплексная проверка всех систем</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="service-item p-3 rounded-3 border">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="service-icon bg-success p-2 rounded-circle me-2">
+                                    <i class="bi bi-gear-fill text-white"></i>
+                                </div>
+                                <h6 class="mb-0">Техобслуживание</h6>
+                            </div>
+                            <p class="small text-muted mb-0">Регулярное ТО по регламенту</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="service-item p-3 rounded-3 border">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="service-icon bg-danger p-2 rounded-circle me-2">
+                                    <i class="bi bi-lightning-charge text-white"></i>
+                                </div>
+                                <h6 class="mb-0">Двигатель</h6>
+                            </div>
+                            <p class="small text-muted mb-0">Ремонт и обслуживание ДВС</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="service-item p-3 rounded-3 border">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="service-icon bg-warning p-2 rounded-circle me-2">
+                                    <i class="bi bi-car-front text-dark"></i>
+                                </div>
+                                <h6 class="mb-0">Ходовая часть</h6>
+                            </div>
+                            <p class="small text-muted mb-0">Ремонт подвески и рулевого управления</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="service-item p-3 rounded-3 border">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="service-icon bg-info p-2 rounded-circle me-2">
+                                    <i class="bi bi-cpu text-white"></i>
+                                </div>
+                                <h6 class="mb-0">Электроника</h6>
+                            </div>
+                            <p class="small text-muted mb-0">Диагностика и ремонт электронных систем</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="service-item p-3 rounded-3 border">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="service-icon bg-secondary p-2 rounded-circle me-2">
+                                    <i class="bi bi-circle text-white"></i>
+                                </div>
+                                <h6 class="mb-0">Шиномонтаж</h6>
+                            </div>
+                            <p class="small text-muted mb-0">Балансировка и сезонная смена шин</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-top">
+                    <div class="alert alert-info d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill me-3 fs-4"></i>
+                        <div>
+                            <strong>Специальное предложение!</strong><br>
+                            При записи онлайн - скидка 10% на диагностику
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <div class="service-card h-100 p-4">
-                <h2 class="mb-4">Записаться на сервис</h2>
-                <form id="serviceForm">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Ваше имя</label>
-                        <input type="text" class="form-control" id="name" required>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-primary p-3 rounded-circle me-3">
+                        <i class="bi bi-calendar-check text-white fs-4"></i>
+                    </div>
+                    <h2 class="mb-0 text-primary">Запись на сервис</h2>
+                </div>
+                <form id="serviceForm" class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label fw-semibold">
+                                <i class="bi bi-person me-1"></i>Ваше имя
+                            </label>
+                            <input type="text" class="form-control form-control-lg" id="name" placeholder="Иван Иванов" required>
+                            <div class="invalid-feedback">Пожалуйста, введите ваше имя</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label fw-semibold">
+                                <i class="bi bi-phone me-1"></i>Телефон
+                            </label>
+                            <input type="tel" class="form-control form-control-lg" id="phone" placeholder="+7 (900) 123-45-67" required>
+                            <div class="invalid-feedback">Пожалуйста, введите телефон</div>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label for="phone" class="form-label">Телефон</label>
-                        <input type="tel" class="form-control" id="phone" required>
+                        <label for="car" class="form-label fw-semibold">
+                            <i class="bi bi-car-front me-1"></i>Автомобиль
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" class="form-control form-control-lg" id="car" placeholder="Марка, модель, год" required>
+                        </div>
+                        <div class="invalid-feedback">Пожалуйста, укажите автомобиль</div>
                     </div>
                     <div class="mb-3">
-                        <label for="car" class="form-label">Марка и модель автомобиля</label>
-                        <input type="text" class="form-control" id="car" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="service" class="form-label">Услуга</label>
-                        <select class="form-select" id="service" required>
+                        <label for="service" class="form-label fw-semibold">
+                            <i class="bi bi-tools me-1"></i>Услуга
+                        </label>
+                        <select class="form-select form-select-lg" id="service" required>
                             <option value="" selected disabled>Выберите услугу</option>
-                            <option value="diagnostics">Диагностика</option>
-                            <option value="maintenance">ТО</option>
-                            <option value="engine">Ремонт двигателя</option>
-                            <option value="suspension">Ремонт ходовой</option>
-                            <option value="electronics">Электронные системы</option>
-                            <option value="tires">Шиномонтаж</option>
+                            <option value="diagnostics">Диагностика (от 1500₽)</option>
+                            <option value="maintenance">Техническое обслуживание (от 3000₽)</option>
+                            <option value="engine">Ремонт двигателя (от 5000₽)</option>
+                            <option value="suspension">Ремонт ходовой части (от 2500₽)</option>
+                            <option value="electronics">Электронные системы (от 2000₽)</option>
+                            <option value="tires">Шиномонтаж (от 1000₽)</option>
+                            <option value="other">Другая услуга</option>
                         </select>
+                        <div class="invalid-feedback">Пожалуйста, выберите услугу</div>
                     </div>
                     <div class="mb-3">
-                        <label for="date" class="form-label">Желаемая дата</label>
-                        <input type="date" class="form-control" id="date" required>
+                        <label for="date" class="form-label fw-semibold">
+                            <i class="bi bi-calendar me-1"></i>Желаемая дата
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-clock"></i>
+                            </span>
+                            <input type="date" class="form-control form-control-lg" id="date" required>
+                        </div>
+                        <div class="invalid-feedback">Пожалуйста, выберите дату</div>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Записаться</button>
+                    <div class="mb-4">
+                        <label for="message" class="form-label fw-semibold">
+                            <i class="bi bi-chat-text me-1"></i>Дополнительная информация
+                        </label>
+                        <textarea class="form-control form-control-lg" id="message" rows="3" placeholder="Опишите проблему или особые пожелания..."></textarea>
+                    </div>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="consent" required>
+                        <label class="form-check-label small" for="consent">
+                            Я согласен на обработку персональных данных
+                        </label>
+                        <div class="invalid-feedback">Необходимо ваше согласие</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
+                        <i class="bi bi-calendar-check me-2"></i>Записаться онлайн
+                    </button>
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Мы перезвоним для подтверждения записи в течение 30 минут
+                        </small>
+                    </div>
                 </form>
             </div>
         </div>

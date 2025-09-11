@@ -174,27 +174,50 @@ unset($_SESSION['form_data']);
         </div>
         <div class="col-lg-6">
             <div class="cooperation-form-section">
-                <h3 class="mb-4"><i class="bi bi-envelope"></i> Стать поставщиком</h3>
-                <form id="supplierForm">
-                    <div class="mb-3">
-                        <label for="companyName" class="form-label">Название компании *</label>
-                        <input type="text" class="form-control" id="companyName" required>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-primary p-3 rounded-circle me-3">
+                        <i class="bi bi-envelope-fill text-white fs-4"></i>
+                    </div>
+                    <h3 class="mb-0 text-primary">Стать поставщиком</h3>
+                </div>
+                <form id="supplierForm" class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="companyName" class="form-label fw-semibold">
+                                <i class="bi bi-building me-1"></i>Название компании<span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control form-control-lg" id="companyName" required>
+                            <div class="invalid-feedback">Пожалуйста, укажите название компании</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="contactPerson" class="form-label fw-semibold">
+                                <i class="bi bi-person me-1"></i>Контактное лицо<span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control form-control-lg" id="contactPerson" required>
+                            <div class="invalid-feedback">Пожалуйста, укажите контактное лицо</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label fw-semibold">
+                                <i class="bi bi-phone me-1"></i>Телефон<span class="text-danger">*</span>
+                            </label>
+                            <input type="tel" class="form-control form-control-lg" id="phone" required>
+                            <div class="invalid-feedback">Пожалуйста, укажите телефон</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label fw-semibold">
+                                <i class="bi bi-envelope me-1"></i>Email<span class="text-danger">*</span>
+                            </label>
+                            <input type="email" class="form-control form-control-lg" id="email" required>
+                            <div class="invalid-feedback">Пожалуйста, укажите email</div>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label for="contactPerson" class="form-label">Контактное лицо *</label>
-                        <input type="text" class="form-control" id="contactPerson" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Телефон *</label>
-                        <input type="tel" class="form-control" id="phone" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email *</label>
-                        <input type="email" class="form-control" id="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="productCategory" class="form-label">Категория товаров *</label>
-                        <select class="form-select" id="productCategory" required>
+                        <label for="productCategory" class="form-label fw-semibold">
+                            <i class="bi bi-tags me-1"></i>Категория товаров<span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select form-select-lg" id="productCategory" required>
                             <option value="" selected disabled>Выберите категорию</option>
                             <option>Автозапчасти</option>
                             <option>Масла и жидкости</option>
@@ -204,22 +227,38 @@ unset($_SESSION['form_data']);
                             <option>Инструменты</option>
                             <option>Другое</option>
                         </select>
+                        <div class="invalid-feedback">Пожалуйста, выберите категорию</div>
                     </div>
                     <div class="mb-3">
-                        <label for="message" class="form-label">О компании и предлагаемой продукции</label>
-                        <textarea class="form-control" id="message" rows="4"></textarea>
+                        <label for="message" class="form-label fw-semibold">
+                            <i class="bi bi-chat-text me-1"></i>О компании и предлагаемой продукции
+                        </label>
+                        <textarea class="form-control form-control-lg" id="message" rows="4" 
+                                  placeholder="Расскажите о вашей компании и продукции..."></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="file" class="form-label">Прайс-лист (опционально)</label>
-                        <input type="file" class="form-control" id="file">
+                        <label for="file" class="form-label fw-semibold">
+                            <i class="bi bi-file-earmark-text me-1"></i>Прайс-лист (опционально)
+                        </label>
+                        <input type="file" class="form-control form-control-lg" id="file">
+                        <div class="form-text">PDF, DOC, XLS до 10MB</div>
                     </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="agree" required>
-                        <label class="form-check-label" for="agree">Я согласен на обработку персональных данных</label>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="agree" required>
+                        <label class="form-check-label small" for="agree">
+                            Я согласен на обработку персональных данных
+                        </label>
+                        <div class="invalid-feedback">Необходимо ваше согласие</div>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="bi bi-send"></i> Отправить заявку
+                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
+                        <i class="bi bi-send me-2"></i> Отправить заявку
                     </button>
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Мы свяжемся с вами в течение 2 рабочих дней
+                        </small>
+                    </div>
                 </form>
             </div>
         </div>
