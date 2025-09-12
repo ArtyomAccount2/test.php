@@ -186,14 +186,14 @@ unset($_SESSION['form_data']);
                             <label for="companyName" class="form-label fw-semibold">
                                 <i class="bi bi-building me-1"></i>Название компании<span class="text-danger">*</span>
                             </label>
-                            <input type="text" class="form-control form-control-lg" id="companyName" required>
+                            <input type="text" class="form-control form-control-lg" id="companyName" required placeholder="ООО «Лал-Авто»">
                             <div class="invalid-feedback">Пожалуйста, укажите название компании</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="contactPerson" class="form-label fw-semibold">
                                 <i class="bi bi-person me-1"></i>Контактное лицо<span class="text-danger">*</span>
                             </label>
-                            <input type="text" class="form-control form-control-lg" id="contactPerson" required>
+                            <input type="text" class="form-control form-control-lg" id="contactPerson" required placeholder="Иванов А.П.">
                             <div class="invalid-feedback">Пожалуйста, укажите контактное лицо</div>
                         </div>
                     </div>
@@ -202,14 +202,14 @@ unset($_SESSION['form_data']);
                             <label for="phone" class="form-label fw-semibold">
                                 <i class="bi bi-phone me-1"></i>Телефон<span class="text-danger">*</span>
                             </label>
-                            <input type="tel" class="form-control form-control-lg" id="phone" required>
+                            <input type="tel" class="form-control form-control-lg" id="phone" required placeholder="+7 (495) 123-45-67">
                             <div class="invalid-feedback">Пожалуйста, укажите телефон</div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label fw-semibold">
                                 <i class="bi bi-envelope me-1"></i>Email<span class="text-danger">*</span>
                             </label>
-                            <input type="email" class="form-control form-control-lg" id="email" required>
+                            <input type="email" class="form-control form-control-lg" id="email" required placeholder="info@lal-avto.ru">
                             <div class="invalid-feedback">Пожалуйста, укажите email</div>
                         </div>
                     </div>

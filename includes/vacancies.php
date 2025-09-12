@@ -144,7 +144,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
                 <div class="vacancy-footer">
-                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#responseModal">
+                    <button class="btn btn-primary btn-lg w-100 py-3 fw-bold" data-bs-toggle="modal" data-bs-target="#responseModal">
                         <i class="bi bi-envelope"></i> Откликнуться на вакансию
                     </button>
                 </div>
@@ -195,7 +195,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
                 <div class="vacancy-footer">
-                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#responseModal">
+                    <button class="btn btn-primary btn-lg w-100 py-3 fw-bold" data-bs-toggle="modal" data-bs-target="#responseModal">
                         <i class="bi bi-envelope"></i> Откликнуться на вакансию
                     </button>
                 </div>

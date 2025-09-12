@@ -198,7 +198,7 @@ unset($_SESSION['form_data']);
                 <h3 class="mb-4 text-center fw-bold"><i class="bi bi-pencil-square me-2"></i>Оставить отзыв</h3>
                 <form id="reviewForm">
                     <div class="mb-3">
-                        <label for="reviewName" class="form-label fw-semibold">Ваше имя <span class="text-danger">*</span></label>
+                        <label for="reviewName" class="form-label fw-semibold">Ваше имя<span class="text-danger">*</span></label>
                         <input type="text" class="form-control py-2" id="reviewName" required placeholder="Как к вам обращаться?">
                     </div>
                     <div class="mb-3">
@@ -206,7 +206,7 @@ unset($_SESSION['form_data']);
                         <input type="email" class="form-control py-2" id="reviewEmail" placeholder="example@mail.com">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Оценка <span class="text-danger">*</span></label>
+                        <label class="form-label fw-semibold">Оценка<span class="text-danger">*</span></label>
                         <div class="rating-stars">
                             <i class="bi bi-star rating-star fs-2" data-rating="1"></i>
                             <i class="bi bi-star rating-star fs-2" data-rating="2"></i>
@@ -217,15 +217,15 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="reviewText" class="form-label fw-semibold">Текст отзыва <span class="text-danger">*</span></label>
+                        <label for="reviewText" class="form-label fw-semibold">Текст отзыва<span class="text-danger">*</span></label>
                         <textarea class="form-control py-2" id="reviewText" rows="5" required placeholder="Поделитесь вашими впечатлениями..."></textarea>
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="agreePolicy" required>
                         <label class="form-check-label" for="agreePolicy">Я согласен на обработку персональных данных</label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
-                        <i class="bi bi-send-fill me-2"></i> Отправить отзыв
+                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
+                        <i class="bi bi-send me-2"></i> Отправить отзыв
                     </button>
                 </form>
             </div>

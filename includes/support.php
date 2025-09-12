@@ -175,35 +175,64 @@ unset($_SESSION['form_data']);
                 <section id="report" class="mb-5">
                     <h3 class="mb-4"><i class="bi bi-bug"></i> Сообщить о проблеме</h3>
                     <div class="report-form">
-                        <form id="problemForm">
-                            <div class="mb-3">
-                                <label for="problemType" class="form-label">Тип проблемы *</label>
-                                <select class="form-select" id="problemType" required>
-                                    <option value="" selected disabled>Выберите тип проблемы</option>
-                                    <option>Техническая ошибка</option>
-                                    <option>Не работает функция</option>
-                                    <option>Некорректное отображение</option>
-                                    <option>Другое</option>
-                                </select>
+
+                        <form id="problemForm" class="needs-validation" novalidate>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="problemType" class="form-label fw-semibold">
+                                        <i class="bi bi-tag me-1"></i>Тип проблемы<span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select form-select-lg" id="problemType" required>
+                                        <option value="" selected disabled>Выберите тип проблемы</option>
+                                        <option value="technical">Техническая ошибка</option>
+                                        <option value="function">Не работает функция</option>
+                                        <option value="display">Некорректное отображение</option>
+                                        <option value="other">Другое</option>
+                                    </select>
+                                    <div class="invalid-feedback">Пожалуйста, выберите тип проблемы</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="contactEmail" class="form-label fw-semibold">
+                                        <i class="bi bi-envelope me-1"></i>Email для обратной связи<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="email" class="form-control form-control-lg" id="contactEmail" placeholder="your@email.com" required>
+                                    <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
+                                </div>
                             </div>
                             <div class="mb-3">
-                                <label for="problemUrl" class="form-label">URL страницы (если применимо)</label>
-                                <input type="url" class="form-control" id="problemUrl">
+                                <label for="problemUrl" class="form-label fw-semibold">
+                                    <i class="bi bi-link me-1"></i>URL страницы (если применимо)
+                                </label>
+                                <input type="url" class="form-control form-control-lg" id="problemUrl" placeholder="https://...">
                             </div>
                             <div class="mb-3">
-                                <label for="problemDescription" class="form-label">Описание проблемы *</label>
-                                <textarea class="form-control" id="problemDescription" rows="5" required></textarea>
+                                <label for="problemDescription" class="form-label fw-semibold">
+                                    <i class="bi bi-chat-text me-1"></i>Описание проблемы<span class="text-danger">*</span>
+                                </label>
+                                <textarea class="form-control form-control-lg" id="problemDescription" rows="5" 
+                                          placeholder="Подробно опишите возникшую проблему..." required></textarea>
+                                <div class="invalid-feedback">Пожалуйста, опишите проблему</div>
+                                <div class="form-text">Максимум 1000 символов</div>
                             </div>
-                            <div class="mb-3">
-                                <label for="screenshot" class="form-label">Скриншот (опционально)</label>
-                                <input type="file" class="form-control" id="screenshot" accept="image/*">
+                            <div class="mb-4">
+                                <label for="screenshot" class="form-label fw-semibold">
+                                    <i class="bi bi-image me-1"></i>Скриншот (опционально)
+                                </label>
+                                <input type="file" class="form-control form-control-lg" id="screenshot" accept="image/*">
+                                <div class="form-text">Максимальный размер файла: 5MB</div>
                             </div>
-                            <div class="mb-3">
-                                <label for="contactEmail" class="form-label">Email для обратной связи *</label>
-                                <input type="email" class="form-control" id="contactEmail" required>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="consent" required>
+                                <label class="form-check-label small" for="consent">
+                                    Я согласен на обработку персональных данных
+                                </label>
+                                <div class="invalid-feedback">Необходимо ваше согласие</div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Отправить сообщение</button>
+                            <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
+                                <i class="bi bi-send me-2"></i>Отправить сообщение
+                            </button>
                         </form>
+
                     </div>
                 </section>
                 <section class="contact-support">

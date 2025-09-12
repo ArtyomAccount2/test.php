@@ -150,7 +150,6 @@ unset($_SESSION['form_data']);
                 <button class="btn btn-sm btn-primary" id="applyFilters">Применить</button>
             </div>
         </div>
-        
         <div class="row">
             <div class="col-md-3">
                 <div class="filter-group mb-3">
@@ -294,12 +293,12 @@ unset($_SESSION['form_data']);
         </div>
         <div class="collapse show" id="specsTable">
             <div class="table-responsive">
-                <table class="specs-table table table-hover">
+                <table class="table table-striped table-hover">
                     <thead class="table-dark">
                         <tr>
-                            <th>Спецификация</th>
-                            <th>Описание</th>
-                            <th>Применение</th>
+                            <th><i class="bi bi-card-checklist"></i> Спецификация</th>
+                            <th><i class="bi bi-clipboard-data"></i> Описание</th>
+                            <th><i class="bi bi-gear"></i> Применение</th>
                         </tr>
                     </thead>
                     <tbody>

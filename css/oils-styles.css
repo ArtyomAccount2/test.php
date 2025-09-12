@@ -92,37 +92,6 @@
     font-size: 0.9rem;
 }
 
-.specs-table 
-{
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.specs-table th 
-{
-    background-color: #343a40;
-    color: white;
-    font-weight: 500;
-}
-
-.specs-table td 
-{
-    vertical-align: middle;
-}
-
-.specs-table tr:nth-child(even) 
-{
-    background-color: #f8f9fa;
-}
-
-.specs-table tr:hover 
-{
-    background-color: #e9ecef;
-}
-
 @media (max-width: 768px) 
 {
     .product-card 
@@ -133,12 +102,6 @@
     .filter-group 
     {
         margin-bottom: 15px;
-    }
-    
-    .specs-table 
-    {
-        display: block;
-        overflow-x: auto;
     }
     
     .oil-categories .col-md-3 
@@ -159,4 +122,20 @@
         padding-left: 8px;
         padding-right: 8px;
     }
+}
+
+.table th 
+{
+    background-color: #343a40;
+    color: white;
+}
+
+.table-hover tbody tr:hover 
+{
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.table-responsive 
+{
+    border-radius: 5px;
 }
