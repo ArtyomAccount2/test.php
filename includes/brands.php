@@ -99,10 +99,11 @@ unset($_SESSION['form_data']);
     <div class="row mb-4">
         <div class="col-md-6 mx-auto">
             <div class="search-container position-relative">
-                <input type="text" id="brandSearch" placeholder="Поиск по брендам..." class="form-control form-control-lg">
+                <input type="text" id="brandSearch" placeholder="Поиск по брендам..." class="form-control form-control-lg search-input">
                 <button class="btn btn-link search-clear" type="button" style="display: none;">
                     <i class="bi bi-x"></i>
                 </button>
+                <i class="bi bi-search search-icon"></i>
             </div>
         </div>
     </div>

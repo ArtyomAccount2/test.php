@@ -434,7 +434,7 @@
     max-width: 1200px;
     background-color: white;
     margin: 0 auto;
-    padding: 60px 60px;
+    padding: 60px 70px;
     border-radius: 15px;
 }
 
@@ -442,6 +442,7 @@
 {
     position: relative;
     min-height: 250px;
+    padding: 0 40px;
 }
 
 .scrollable 
@@ -453,6 +454,10 @@
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    margin: 0 -10px;
+    position: relative;
+    z-index: 10;
+    scroll-snap-type: x mandatory;
 }
 
 .scrollable::-webkit-scrollbar 
@@ -464,7 +469,9 @@
 {
     flex: 0 0 auto;
     width: 180px;
+    margin: 0 10px;
     transition: transform 0.3s;
+    scroll-snap-align: start;
 }
 
 .scroll-button 
@@ -480,7 +487,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10;
+    z-index: 20;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: all 0.3s;
@@ -492,14 +499,29 @@
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
+.scrollable-item:first-child 
+{
+    margin-left: 0;
+}
+
+.scrollable-item:last-child 
+{
+    margin-right: 0;
+}
+
 .scroll-left 
 {
-    left: 0;
+    left: 10px;
 }
 
 .scroll-right 
 {
-    right: 0;
+    right: 10px;
+}
+
+.scrollable 
+{
+    scroll-padding: 0 20px;
 }
 
 .no-results-message 
@@ -631,14 +653,16 @@
         width: 160px;
     }
     
-    #carBrandsBlock, #partsContainer 
+    #carBrandsBlock, 
+    #partsContainer 
     {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         padding-bottom: 15px;
     }
     
-    #carBrandsBlock::-webkit-scrollbar, #partsContainer::-webkit-scrollbar 
+    #carBrandsBlock::-webkit-scrollbar, 
+    #partsContainer::-webkit-scrollbar 
     {
         display: none;
     }
@@ -845,5 +869,180 @@
     100% 
     { 
         background-position: 0% 50%; 
+    }
+}
+
+@media (max-width: 768px) 
+{
+    .brands-container,
+    .parts-container 
+    {
+        padding: 40px 20px;
+    }
+    
+    .scrollable-container 
+    {
+        padding: 0 30px;
+    }
+    
+    .scroll-button 
+    {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .scroll-left 
+    {
+        left: 5px;
+    }
+    
+    .scroll-right 
+    {
+        right: 5px;
+    }
+    
+    .scrollable-item 
+    {
+        width: 160px;
+        margin: 0 8px;
+    }
+}
+
+.scrollable-container-wrapper 
+{
+    position: relative;
+    width: 100%;
+}
+
+@media (min-width: 1400px) 
+{
+    .brands-container, 
+    .parts-container 
+    {
+        padding: 45px;
+    }
+}
+
+@media (max-width: 768px) 
+{
+    .scrollable 
+    {
+        height: auto;
+        padding-bottom: 15px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .scrollable-container
+    {
+        min-height: 280px;
+    }
+    
+    .scroll-button 
+    {
+        width: 35px;
+        height: 35px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 20;
+        background-color: rgba(255, 255, 255, 0.9);
+        border: 1px solid #dee2e6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .scroll-button:hover 
+    {
+        background-color: #f8f9fa;
+    }
+    
+    .scroll-left 
+    {
+        left: 5px;
+    }
+    
+    .scroll-right 
+    {
+        right: 5px;
+    }
+    
+    .scroll-button.hidden 
+    {
+        display: none;
+    }
+    
+    .brands-container, 
+    .parts-container 
+    {
+        padding: 30px 15px;
+    }
+    
+    .scrollable-item 
+    {
+        width: 160px;
+        margin-right: 15px;
+    }
+    
+    .card 
+    {
+        width: 160px;
+        height: 230px;
+    }
+    
+    .card-img-top 
+    {
+        height: 45%;
+    }
+}
+
+@media (max-width: 480px) 
+{
+    .scrollable-item 
+    {
+        width: 140px;
+        margin-right: 10px;
+    }
+    
+    .card 
+    {
+        width: 140px;
+        height: 210px;
+    }
+    
+    .card-title 
+    {
+        font-size: 0.8rem;
+    }
+    
+    .scroll-button 
+    {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.scroll-button i 
+{
+    font-size: 1.2rem;
+    color: #007bff;
+}
+
+.scroll-button:hover i 
+{
+    color: #0056b3;
+}
+
+.scroll-button 
+{
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+@media (max-width: 1025px) 
+{
+    .scroll-left,
+    .scroll-right
+    {
+        display: none;
     }
 }

@@ -434,20 +434,22 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="brands-container">
                         <div class="position-relative">
-                            <div id="carBrandsList" class="scrollable-container">
-                                <div id="no-results-brands" class="no-results-message">
-                                    <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
-                                    <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                            <div class="scrollable-container-wrapper">
+                                <div id="carBrandsList" class="scrollable-container">
+                                    <div id="no-results-brands" class="no-results-message">
+                                        <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
+                                        <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                                    </div>
+                                    <div class="scrollable" id="carBrandsBlock">
+                                    </div>
                                 </div>
-                                <div class="scrollable" id="carBrandsBlock">
-                                </div>
+                                <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
                             </div>
-                            <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
-                                <i class="bi bi-chevron-left"></i>
-                            </button>
-                            <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
-                                <i class="bi bi-chevron-right"></i>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -468,20 +470,22 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="parts-container">
                         <div class="position-relative">
-                            <div id="popularParts" class="scrollable-container">
-                                <div id="no-results-parts" class="no-results-message">
-                                    <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
-                                    <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                            <div class="scrollable-container-wrapper">
+                                <div id="popularParts" class="scrollable-container">
+                                    <div id="no-results-parts" class="no-results-message">
+                                        <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
+                                        <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                                    </div>
+                                    <div class="scrollable" id="partsContainer">
+                                    </div>
                                 </div>
-                                <div class="scrollable" id="partsContainer">
-                                </div>
+                                <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
                             </div>
-                            <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
-                                <i class="bi bi-chevron-left"></i>
-                            </button>
-                            <button class="scroll-button scroll-right" aria-label="Прокрутить вправо">
-                                <i class="bi bi-chevron-right"></i>
-                            </button>
                         </div>
                     </div>
                 </div>

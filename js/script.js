@@ -103,8 +103,10 @@ function setupScrollButtons()
             let direction = this.classList.contains('scroll-left') ? -1 : 1;
             let container = this.closest('.position-relative').querySelector('.scrollable');
 
+            let scrollAmount = window.innerWidth <= 768 ? 350 : 450;
+            
             container.scrollBy({
-                left: direction * 300,
+                left: direction * scrollAmount,
                 behavior: 'smooth'
             });
         });
@@ -126,6 +128,7 @@ function filterItems(container, searchValue, noResultsId)
         let isVisible = searchValue === '' || title.includes(searchValue.toLowerCase());
         
         item.style.display = isVisible ? 'block' : 'none';
+
         if (isVisible) 
         {
             visibleCount++;
@@ -140,7 +143,7 @@ function filterItems(container, searchValue, noResultsId)
     }
 }
 
-function handleHeaderSearch() 
+function handleHeaderSearch()
 {
     let searchValue = document.getElementById('catalogSearchInput').value.trim();
     let clearBtn = document.querySelector('#catalogSearchForm .search-clear');
@@ -246,11 +249,28 @@ function clearAllSearches()
     filterItems(document.querySelector('#popularParts .scrollable'), '', 'no-results-parts');
 }
 
+function checkScrollButtonsVisibility() 
+{
+    document.querySelectorAll('.scrollable-container').forEach(container => {
+        let scrollable = container.querySelector('.scrollable');
+        let scrollLeftBtn = container.querySelector('.scroll-left');
+        let scrollRightBtn = container.querySelector('.scroll-right');
+        
+        if (scrollable && scrollLeftBtn && scrollRightBtn) 
+        {
+            scrollLeftBtn.style.display = scrollable.scrollLeft > 0 ? 'flex' : 'none';
+            scrollRightBtn.style.display = scrollable.scrollLeft < (scrollable.scrollWidth - scrollable.clientWidth - 10) ? 'flex' : 'none';
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() 
 {
     initBrandCards();
     initPartsCards();
     setupScrollButtons();
+
+    setTimeout(checkScrollButtonsVisibility, 100);
 
     let lastScrollTop = 0;
     let navbar = document.querySelector('.navbar');
@@ -286,8 +306,7 @@ document.addEventListener('DOMContentLoaded', function()
 
     if (catalogSearchForm) 
     {
-        catalogSearchForm.addEventListener('submit', function(event) 
-        {
+        catalogSearchForm.addEventListener('submit', function(event) {
             event.preventDefault();
             handleHeaderSearch();
         });
@@ -301,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function()
         {
             let searchInput = document.getElementById('catalogSearchInput');
 
-            if (searchInput) 
+            if (searchInput)
             {
                 searchInput.value = '';
                 this.style.display = 'none';
@@ -334,8 +353,7 @@ document.addEventListener('DOMContentLoaded', function()
 
     if (brandSearch) 
     {
-        brandSearch.addEventListener('input', function() 
-        {
+        brandSearch.addEventListener('input', function() {
             filterItems(document.querySelector('#carBrandsList .scrollable'), this.value, 'no-results-brands');
         });
     }
@@ -344,8 +362,7 @@ document.addEventListener('DOMContentLoaded', function()
 
     if (partsSearch) 
     {
-        partsSearch.addEventListener('input', function() 
-        {
+        partsSearch.addEventListener('input', function() {
             filterItems(document.querySelector('#popularParts .scrollable'), this.value, 'no-results-parts');
         });
     }
@@ -371,6 +388,12 @@ document.addEventListener('DOMContentLoaded', function()
         });
     });
 
+    document.querySelectorAll('.scrollable').forEach(scrollable => {
+        scrollable.addEventListener('scroll', checkScrollButtonsVisibility);
+    });
+
+    window.addEventListener('resize', checkScrollButtonsVisibility);
+
     if (typeof $ !== 'undefined') 
     {
         $(document).on('click', function(e) 
@@ -386,8 +409,7 @@ document.addEventListener('DOMContentLoaded', function()
 
     if (discountCheckbox) 
     {
-        discountCheckbox.addEventListener('change', function() 
-        {
+        discountCheckbox.addEventListener('change', function() {
             let group = document.getElementById('discountCardNumberGroup');
 
             if (group) 
