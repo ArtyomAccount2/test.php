@@ -1,5 +1,3 @@
-"use strict";
-
 function initBrandCards() 
 {
     let brands = [

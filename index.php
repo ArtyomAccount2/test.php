@@ -94,9 +94,7 @@ unset($_SESSION['form_data']);
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Навигация
-                        </a>
+                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Навигация</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#carouselExample">Слайдер</a></li>
                             <li><a class="dropdown-item" href="#aboutUs">О Нас</a></li>
@@ -106,9 +104,7 @@ unset($_SESSION['form_data']);
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Меню
-                        </a>
+                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Меню</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
                             <li><a class="dropdown-item" href="includes/shops.php">Магазины</a></li>
                             <li><a class="dropdown-item" href="includes/service.php">Автосервис</a></li>
@@ -163,12 +159,10 @@ unset($_SESSION['form_data']);
                     ?>
                         <div class="d-flex flex-wrap flex-md-nowrap">
                             <a href="#" class="btn btn-primary button-link w-md-auto mx-1" data-bs-toggle="modal" data-bs-target="#loginModal">
-                                <i class="bi bi-box-arrow-in-right"></i>
-                                Войти
+                                <i class="bi bi-box-arrow-in-right"></i> Войти
                             </a>
                             <a href="#" class="btn btn-primary button-link w-md-auto" data-bs-toggle="modal" data-bs-target="#registerModal">
-                                <i class="bi bi-r-circle"></i>
-                                Зарегистрироваться
+                                <i class="bi bi-r-circle"></i> Зарегистрироваться
                             </a>
                         </div>
                     <?php
@@ -212,16 +206,14 @@ unset($_SESSION['form_data']);
                         }
                         ?>
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-box-arrow-in-right"></i>
-                            Войти
+                            <i class="bi bi-box-arrow-in-right"></i> Войти
                         </button>
                         <a href="#" class="btn btn-link">Забыли пароль?</a>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i>
-                        Закрыть
+                        <i class="bi bi-x-circle"></i> Закрыть
                     </button>
                 </div>
             </div>
@@ -350,15 +342,13 @@ unset($_SESSION['form_data']);
                 </div>
                 <div class="modal-body text-center">
                     <a href="individuel.php" type="button" class="btn btn-primary mb-2" id="individualsBtn">
-                        <i class="bi bi-person-add"></i>
-                        Физические лица
+                        <i class="bi bi-person-add"></i> Физические лица
                     </a>
                     <div id="individualsInfo" class="registration-info">
                         <p>- если Вы - физическое лицо, пройдите регистрацию. Регистрация возможна как при наличии карты скидок, так и при её отсутствии.</p>
                     </div>
                     <a href="legalEntity.php" type="button" class="btn btn-primary mb-2" id="legalEntitiesBtn">
-                        <i class="bi bi-person-add"></i>
-                        Юридические лица и ИП
+                        <i class="bi bi-person-add"></i> Юридические лица и ИП
                     </a>
                     <div id="legalEntitiesInfo" class="registration-info">
                         <p>- если Вы - представитель организации, учреждения, предприятия или фирмы, заполните данную форму регистрации.</p>
@@ -366,8 +356,7 @@ unset($_SESSION['form_data']);
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i>
-                        Закрыть
+                        <i class="bi bi-x-circle"></i> Закрыть
                     </button>
                 </div>
             </div>
@@ -393,21 +382,56 @@ unset($_SESSION['form_data']);
     </section>
 
     <div class="modal fade" id="wheelResultModal" tabindex="-1" aria-labelledby="wheelResultModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-2">
-                <div class="modal-header justify-content-center">
-                    <h4 class="modal-title w-100 text-center" id="wheelResultModalLabel">Вы получаете!</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <h4 id="modalResultText" class="mb-3"></h4>
-                    <p id="modalResultDescription" class="mb-0"></p>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i>
-                        Закрыть
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content prize-modal-content">
+                <div id="confetti-container"></div>
+                
+                <div class="modal-header prize-modal-header justify-content-center position-relative">
+                    <div class="prize-ribbon position-absolute">
+                        <i class="bi bi-gift-fill" style="color: #333;"></i>
+                    </div>
+                    <h3 class="modal-title w-100 text-center prize-title" id="wheelResultModalLabel">
+                        <span class="prize-congrats">Поздравляем!</span>
+                    </h3>
+                    <button type="button" class="btn-close prize-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: white; font-size: 1.2rem;">×</span>
                     </button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <div class="prize-icon-container mb-3">
+                        <div class="prize-icon-wrapper">
+                            <i class="bi bi-trophy-fill prize-icon" id="modalPrizeIcon"></i>
+                        </div>
+                    </div>
+                    <h4 class="prize-result-text mb-2" id="modalResultText"></h4>
+                    <p class="prize-description mb-3" id="modalResultDescription"></p>
+                    <div class="prize-code-container bg-light rounded p-3 mb-3" id="prizeCodeSection" style="display: none;">
+                        <p class="mb-1 small text-muted">Ваш промокод:</p>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <code class="promo-code fs-5 fw-bold me-2" id="modalPromoCode"></code>
+                            <button class="btn btn-sm btn-outline-secondary copy-btn" data-bs-toggle="tooltip" title="Скопировать">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                        <small class="text-muted">Действителен 7 дней</small>
+                    </div>
+                    <div class="prize-actions mt-4">
+                        <button type="button" class="btn btn-primary btn-lg prize-action-btn me-2" id="usePrizeBtn">
+                            <i class="bi bi-cart-check me-2"></i>Использовать сейчас
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary prize-action-btn" data-bs-dismiss="modal">
+                            <i class="bi bi-clock me-2"></i>Воспользоваться позже
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center border-top-0 pt-0">
+                    <div class="prize-timer text-center w-100">
+                        <div class="progress mb-2" style="height: 6px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                role="progressbar" style="width: 100%" id="prizeTimerBar"></div>
+                        </div>
+                        <small class="text-muted">Это окно закроется автоматически через <span id="prizeTimer">10</span> сек.</small>
+                    </div>
                 </div>
             </div>
         </div>

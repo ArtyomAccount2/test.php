@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() 
+{
     let initTools = () => {
         let tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         
@@ -8,9 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     let animateStatistics = () => {
-
         let statNumbers = document.querySelectorAll('.stat-number');
-
         statNumbers.forEach(number => {
             let originalText = number.textContent;
             let targetValue;
@@ -29,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             let timer = setInterval(() => {
                 current += increment;
+
                 if (current >= targetValue) 
                 {
                     number.textContent = originalText;
@@ -50,15 +50,13 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     let handleForms = () => {
-
         let profileForm = document.getElementById('profileForm');
-        
+
         if (profileForm) 
         {
             profileForm.addEventListener('submit', function() 
             {
                 let submitBtn = this.querySelector('button[type="submit"]');
-                
                 submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Сохранение...';
                 submitBtn.disabled = true;
             });
@@ -66,23 +64,18 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     let handleTabs = () => {
-
         let tabLinks = document.querySelectorAll('[data-bs-toggle="tab"]');
-        
         tabLinks.forEach(link => {
-            link.addEventListener('click', function(e) 
-            {
+            link.addEventListener('click', function(e) {
                 e.preventDefault();
-
                 tabLinks.forEach(l => l.classList.remove('active'));
-
                 this.classList.add('active');
-
                 let target = document.querySelector(this.getAttribute('href'));
 
                 document.querySelectorAll('.tab-pane').forEach(pane => {
                     pane.classList.remove('show', 'active');
                 });
+
                 target.classList.add('show', 'active');
 
                 setTimeout(() => {
@@ -108,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
             items.forEach((item, index) => {
                 item.style.opacity = '0';
                 item.style.transform = 'translateY(20px)';
-                
                 setTimeout(() => {
                     item.style.transition = 'all 0.4s ease';
                     item.style.opacity = '1';
@@ -119,18 +111,15 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     let handleNotifications = () => {
-
         let notificationButtons = document.querySelectorAll('.notification-item .btn');
-
         notificationButtons.forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function() 
+            {
                 let notification = this.closest('.notification-item');
                 notification.style.opacity = '0';
                 notification.style.transform = 'translateX(-100px)';
-                
                 setTimeout(() => {
                     notification.remove();
-
                     let badge = document.querySelector('a[href="#notifications"] .badge');
 
                     if (badge) 
@@ -165,22 +154,17 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     let initWishlist = () => {
-
         let wishlistItems = document.querySelectorAll('.wishlist-item');
-
         wishlistItems.forEach(item => {
             let removeBtn = item.querySelector('.btn-remove-wishlist');
-
             if (removeBtn) 
             {
                 removeBtn.addEventListener('click', function() 
                 {
                     item.style.opacity = '0';
                     item.style.transform = 'translateX(100px)';
-                    
                     setTimeout(() => {
                         item.remove();
-
                         let badge = document.querySelector('a[href="#wishlist"] .badge');
 
                         if (badge) 
@@ -223,7 +207,6 @@ document.addEventListener('DOMContentLoaded', function() {
         handleTabs();
         handleNotifications();
         initWishlist();
-
         setTimeout(() => {
             animateTabContent('profile');
         }, 500);

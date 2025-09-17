@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', function()
     let wheelFortune = canvas.getContext('2d');
     let spinButton = document.getElementById('spinButton');
     let resultModal = new bootstrap.Modal(document.getElementById('wheelResultModal'));
-    let modalResultText = document.getElementById('modalResultText');
-    let modalResultDescription = document.getElementById('modalResultDescription');
     let purchaseCounter = document.getElementById('purchaseCounter');
     let purchasesLeft = document.getElementById('purchasesLeft');
 
@@ -27,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function()
     
     let rotation = 0;
     let isSpinning = false;
-    let currentWinIndex = null;
+    let autoCloseTimer;
+    let currentPrizeType = '';
 
     function drawWheel() 
     {
@@ -126,27 +125,137 @@ document.addEventListener('DOMContentLoaded', function()
         isSpinning = false;
         currentWinIndex = winIndex;
         let prize = segments[winIndex];
-    
-        modalResultText.textContent = prize.text.includes('%') ? `Скидка ${prize.text}` : prize.text;
-        modalResultDescription.textContent = prize.desc;
         
-        if (prize.text === "Неудача") 
-        {
-            modalResultText.style.color = "#dc3545";
-        } 
-        else 
-        {
-            modalResultText.style.color = "#28a745";
-        }
+        currentPrizeType = prize.text === "Неудача" ? 'failure' : 'success';
+        
+        updatePrizeModal(prize);
         
         resultModal.show();
-    
+        
+        if (currentPrizeType === 'success') 
+        {
+            createConfetti();
+        }
+        
+        startAutoCloseTimer();
+        
         localStorage.setItem('wheelLastPrize', JSON.stringify(prize));
         localStorage.setItem('wheelSpinsLeft', requiredPurchases);
-    
+        
         drawWheel();
         updateSpinStatus();
     }
+
+    function updatePrizeModal(prize) 
+    {
+        let modal = document.getElementById('wheelResultModal');
+        let icon = document.getElementById('modalPrizeIcon');
+        let resultText = document.getElementById('modalResultText');
+        let description = document.getElementById('modalResultDescription');
+        let codeSection = document.getElementById('prizeCodeSection');
+        let promoCode = document.getElementById('modalPromoCode');
+        let usePrizeBtn = document.getElementById('usePrizeBtn');
+        let laterBtn = document.querySelector('.prize-action-btn[data-bs-dismiss="modal"]');
+        
+        modal.classList.remove('prize-success', 'prize-failure');
+        modal.classList.add(`prize-${currentPrizeType}`);
+        
+        icon.className = currentPrizeType === 'success' ? 'bi bi-trophy-fill prize-icon' : 'bi bi-emoji-frown-fill prize-icon';
+        
+        resultText.textContent = prize.text.includes('%') ? `Скидка ${prize.text}` : prize.text;
+        resultText.style.color = currentPrizeType === 'success' ? '#28a745' : '#dc3545';
+        description.textContent = prize.desc;
+        
+        if (currentPrizeType === 'success') 
+        {
+            let generatedCode = generatePromoCode(prize.text);
+            promoCode.textContent = generatedCode;
+            codeSection.style.display = 'block';
+            usePrizeBtn.style.display = 'block';
+            laterBtn.style.display = 'block';
+        } 
+        else 
+        {
+            codeSection.style.display = 'none';
+            usePrizeBtn.style.display = 'none';
+            laterBtn.style.display = 'none';
+        }
+        
+        let copyBtn = document.querySelector('.copy-btn');
+
+        copyBtn.onclick = function() 
+        {
+            navigator.clipboard.writeText(promoCode.textContent).then(() => {
+                let originalHtml = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="bi bi-check"></i>';
+
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalHtml;
+                }, 2000);
+            });
+        };
+    }
+
+    function generatePromoCode(prizeText) 
+    {
+        let prefix = prizeText.includes('доставка') ? 'FREE' : 'DISCOUNT';
+        let randomNum = Math.floor(1000 + Math.random() * 9000);
+        return `${prefix}${randomNum}`;
+    }
+
+    function createConfetti() 
+    {
+        let container = document.getElementById('confetti-container');
+        container.innerHTML = '';
+        
+        let colors = ['#007bff', '#28a745', '#dc3545', '#ffc107', '#6f42c1', '#fd7e14'];
+        
+        for (let i = 0; i < 150; i++) 
+        {
+            let confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            confetti.style.animationDelay = (Math.random() * 2) + 's';
+            
+            container.appendChild(confetti);
+        }
+    }
+
+    function startAutoCloseTimer() 
+    {
+        let timeLeft = 10;
+        let timerElement = document.getElementById('prizeTimer');
+        let timerBar = document.getElementById('prizeTimerBar');
+        
+        if (autoCloseTimer) clearInterval(autoCloseTimer);
+        
+        autoCloseTimer = setInterval(() => {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+            timerBar.style.width = (timeLeft * 10) + '%';
+            
+            if (timeLeft <= 0) 
+            {
+                clearInterval(autoCloseTimer);
+                resultModal.hide();
+            }
+        }, 1000);
+    }
+
+    document.getElementById('wheelResultModal').addEventListener('hidden.bs.modal', function() 
+    {
+        if (autoCloseTimer) 
+        {
+            clearInterval(autoCloseTimer);
+        }
+    });
+
+    document.getElementById('usePrizeBtn').addEventListener('click', function() 
+    {
+        window.location.href = 'includes/assortment.php';
+    });
 
     function addPurchase() 
     {

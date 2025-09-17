@@ -1046,3 +1046,263 @@
         display: none;
     }
 }
+
+.prize-modal-content 
+{
+    border: none;
+    border-radius: 20px;
+    overflow: visible;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.prize-modal-header 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border-bottom: none;
+    padding: 2rem 1rem 1.5rem;
+    position: relative;
+    overflow: visible;
+}
+
+.prize-ribbon 
+{
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: #333;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.prize-title 
+{
+    font-weight: 700;
+    font-size: 1.8rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    color: white;
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+.prize-congrats 
+{
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.prize-close-btn 
+{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    padding: 8px;
+    opacity: 1;
+    transition: all 0.3s ease;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prize-close-btn:hover 
+{
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.prize-close-btn .btn-close 
+{
+    filter: invert(1) brightness(2);
+    opacity: 1;
+    margin: 0;
+    padding: 0;
+    width: 14px;
+    height: 14px;
+}
+
+.prize-icon-container 
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.prize-icon-wrapper 
+{
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse 
+{
+    0% 
+    { 
+        transform: scale(1); 
+    }
+    50% 
+    { 
+        transform: scale(1.05); 
+    }
+    100% 
+    { 
+        transform: scale(1); 
+    }
+}
+
+.prize-icon 
+{
+    font-size: 2.5rem;
+    color: #007bff;
+}
+
+.prize-success .prize-icon 
+{
+    color: #28a745;
+}
+
+.prize-failure .prize-icon 
+{
+    color: #dc3545;
+}
+
+.prize-result-text 
+{
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.prize-description 
+{
+    font-size: 1.1rem;
+    color: #6c757d;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.promo-code 
+{
+    color: #28a745;
+    font-weight: bold;
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.copy-btn 
+{
+    transition: all 0.3s ease;
+}
+
+.copy-btn:hover 
+{
+    transform: scale(1.1);
+}
+
+.prize-actions 
+{
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.prize-action-btn 
+{
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.prize-action-btn:hover 
+{
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.prize-timer 
+{
+    max-width: 300px;
+}
+
+#confetti-container 
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.confetti 
+{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+    animation: fall linear forwards;
+}
+
+@keyframes fall 
+{
+    to 
+    {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) 
+{
+    .prize-modal-content 
+    {
+        margin: 1rem;
+    }
+    
+    .prize-title 
+    {
+        font-size: 1.5rem;
+    }
+    
+    .prize-result-text 
+    {
+        font-size: 1.5rem;
+    }
+    
+    .prize-actions 
+    {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .prize-action-btn 
+    {
+        width: 100%;
+        max-width: 250px;
+    }
+}

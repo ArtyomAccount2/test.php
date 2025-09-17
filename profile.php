@@ -70,33 +70,110 @@ if (isset($_SESSION['user']))
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') 
 {
-    $email = $_POST['email'] ?? '';
-    $phone = $_POST['phone'] ?? '';
-    
-    if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL) && $userId) 
+    if (isset($_POST['update_avatar']) && $userId) 
     {
-        $updateSql = "UPDATE users SET email_users = ?, phone_users = ? WHERE id_users = ?";
-        $updateStmt = $conn->prepare($updateSql);
-        
-        if ($updateStmt) 
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) 
         {
-            $updateStmt->bind_param("ssi", $email, $phone, $userId);
+            $avatar = $_FILES['avatar'];
+            
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+            $fileType = mime_content_type($avatar['tmp_name']);
+            
+            if (in_array($fileType, $allowedTypes)) {
+                
+                if ($avatar['size'] <= 2 * 1024 * 1024) 
+                {
+                    
+                    $uploadDir = 'uploads/avatars/';
+                    
+                    if (!file_exists($uploadDir)) 
+                    {
+                        mkdir($uploadDir, 0755, true);
+                    }
+                    
+                    $fileExtension = pathinfo($avatar['name'], PATHINFO_EXTENSION);
+                    $fileName = 'avatar_' . $userId . '_' . time() . '.' . $fileExtension;
+                    $filePath = $uploadDir . $fileName;
+                    
+                    if (move_uploaded_file($avatar['tmp_name'], $filePath)) 
+                    {   
+                        if (!empty($userData['avatar_users']) && $userData['avatar_users'] !== 'img/no-avatar.png') 
+                        {
+                            if (file_exists($userData['avatar_users'])) 
+                            {
+                                unlink($userData['avatar_users']);
+                            }
+                        }
+                        
+                        $avatarUpdateSql = "UPDATE users SET avatar_users = ? WHERE id_users = ?";
+                        $avatarStmt = $conn->prepare($avatarUpdateSql);
 
-            if ($updateStmt->execute()) 
+                        if ($avatarStmt) 
+                        {
+                            $avatarStmt->bind_param("si", $filePath, $userId);
+
+                            if ($avatarStmt->execute()) 
+                            {
+                                $_SESSION['success_message'] = "Аватар успешно обновлен!";
+                            }
+
+                            $avatarStmt->close();
+                        }
+                    } 
+                    else 
+                    {
+                        $_SESSION['error_message'] = "Ошибка загрузки файла.";
+                    }
+                } 
+                else 
+                {
+                    $_SESSION['error_message'] = "Размер файла не должен превышать 2MB.";
+                }
+            } 
+            else 
             {
-                $_SESSION['success_message'] = "Данные успешно обновлены!";
-                header("Location: profile.php");
-                exit();
+                $_SESSION['error_message'] = "Разрешены только файлы JPG, PNG и GIF.";
             }
-
-            $updateStmt->close();
+        } 
+        else 
+        {
+            $_SESSION['error_message'] = "Пожалуйста, выберите файл для загрузки.";
         }
-    } 
-    else 
+        
+        header("Location: profile.php");
+        exit();
+    }
+    else if (isset($_POST['update_profile'])) 
     {
-        $_SESSION['error_message'] = "Пожалуйста, заполните все поля корректно!";
+        $email = $_POST['email'] ?? '';
+        $phone = $_POST['phone'] ?? '';
+        
+        if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL) && $userId) 
+        {
+            $updateSql = "UPDATE users SET email_users = ?, phone_users = ? WHERE id_users = ?";
+            $updateStmt = $conn->prepare($updateSql);
+            
+            if ($updateStmt) 
+            {
+                $updateStmt->bind_param("ssi", $email, $phone, $userId);
+
+                if ($updateStmt->execute()) 
+                {
+                    $_SESSION['success_message'] = "Данные успешно обновлены!";
+                }
+
+                $updateStmt->close();
+            }
+        } 
+        else 
+        {
+            $_SESSION['error_message'] = "Пожалуйста, заполните все поля корректно!";
+        }
+        
+        header("Location: profile.php");
+        exit();
     }
 }
 ?>
@@ -188,11 +265,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile']))
                     <div class="card-body text-center">
                         <div class="profile-avatar mb-3">
                             <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto">
-                                <i class="bi bi-person-fill" style="font-size: 2.5rem;"></i>
+                                <?php 
+                                if (!empty($userData['avatar_users']))
+                                {
+                                ?>
+                                    <img src="<?= htmlspecialchars($userData['avatar_users']) ?>" alt="Аватар" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                                <?php 
+                                }
+                                else
+                                {
+                                ?>
+                                    <i class="bi bi-person-fill" style="font-size: 2.5rem;"></i>
+                                <?php 
+                                } 
+                                ?>
                             </div>
-                            <button class="btn-avatar-edit" data-bs-toggle="tooltip" title="Сменить фото">
-                                <i class="bi bi-camera-fill"></i>
-                            </button>
+                            <form id="avatarForm" method="POST" enctype="multipart/form-data" class="d-inline">
+                                <input type="file" name="avatar" id="avatarInput" accept="image/*" class="d-none" onchange="document.getElementById('avatarForm').submit()">
+                                <button type="button" class="btn-avatar-edit" onclick="document.getElementById('avatarInput').click()" data-bs-toggle="tooltip" title="Сменить фото">
+                                    <i class="bi bi-camera-fill"></i>
+                                </button>
+                                <input type="hidden" name="update_avatar" value="1">
+                            </form>
                         </div>
                         <h5 class="card-title"><?= htmlspecialchars($_SESSION['user']); ?></h5>
                         <p class="text-muted small">Премиум статус</p>
