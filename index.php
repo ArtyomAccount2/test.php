@@ -326,7 +326,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="100">
-                <a href="#" class="btn btn-primary btn-lg px-4 py-2 btn-hover-effect">
+                <a href="includes/about.php" class="btn btn-primary btn-lg px-4 py-2 btn-hover-effect">
                     <span>Подробнее о компании</span>
                 </a>
             </div>

@@ -75,8 +75,7 @@
                         <label class="form-check-label" for="agreement">Я согласен с Пользовательским соглашением</label>
                     </div>
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-r-circle"></i>
-                        Зарегистрироваться
+                        <i class="bi bi-r-circle"></i> Зарегистрироваться
                     </button>
                 </form>
             </div>

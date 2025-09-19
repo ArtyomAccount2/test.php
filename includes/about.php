@@ -110,25 +110,25 @@ unset($_SESSION['form_data']);
             </div>
         </section>
 
-        <section class="about-features">
-            <div class="container">
+        <section class="about-features py-5 position-relative overflow-hidden">
+            <div class="container position-relative">
                 <h2 class="section-title text-center">Наши преимущества</h2>
-                <div class="row">
-                    <div class="col-md-4 feature-item">
+                <div class="row g-4 justify-content-center">
+                    <div class="col-lg-4 col-md-6 feature-item">
                         <div class="feature-icon">
                             <i class="bi bi-award"></i>
                         </div>
                         <h3>Качество</h3>
                         <p>Только оригинальные запчасти от проверенных производителей с гарантией качества</p>
                     </div>
-                    <div class="col-md-4 feature-item">
+                    <div class="col-lg-4 col-md-6 feature-item">
                         <div class="feature-icon">
                             <i class="bi bi-truck"></i>
                         </div>
                         <h3>Доставка</h3>
                         <p>Быстрая доставка по всему региону. 95% заказов доставляются в течение 1-3 дней</p>
                     </div>
-                    <div class="col-md-4 feature-item">
+                    <div class="col-lg-4 col-md-6 feature-item">
                         <div class="feature-icon">
                             <i class="bi bi-headset"></i>
                         </div>

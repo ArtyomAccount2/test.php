@@ -53,10 +53,8 @@ error_reporting(E_ALL);
                         <a class="nav-link text-dark" href="includes/news.php">Новости компании</a>
                     </li>
                 </ul>
-                <a href="index.php" class="btn btn-secondary ms-3 button-link header-back-button">
-                    <i class="bi bi-backspace-reverse"></i>
-                    Назад
-                </a>
+                <a href="javascript:history.back()" class="btn btn-secondary ms-3 button-link header-back-button">
+                    <i class="bi bi-backspace-reverse"></i> Назад</a>
             </div>
         </div>
     </nav>

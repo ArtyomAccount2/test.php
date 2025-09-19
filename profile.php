@@ -45,13 +45,7 @@ if (isset($_SESSION['user']))
 
     if ($userId) 
     {
-        $orderSql = "SELECT 
-            COUNT(*) as total_orders,
-            COALESCE(SUM(total_amount), 0) as total_amount,
-            SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders,
-            SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed_orders
-        FROM orders WHERE user_id = ?";
-        
+        $orderSql = "SELECT COUNT(*) as total_orders, COALESCE(SUM(total_amount), 0) as total_amount, SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending_orders, SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed_orders FROM orders WHERE user_id = ?";
         $orderStmt = $conn->prepare($orderSql);
         
         if ($orderStmt) 
