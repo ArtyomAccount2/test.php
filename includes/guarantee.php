@@ -95,7 +95,6 @@ unset($_SESSION['form_data']);
                 <p class="guarantee-subtitle">Мы гарантируем качество каждой детали</p>
             </div>
         </section>
-
         <section class="guarantee-info">
             <div class="container">
                 <div class="row">
@@ -167,7 +166,6 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
         </section>
-
         <section class="warranty-process">
             <div class="container">
                 <h2 class="text-center">Процесс гарантийного обслуживания</h2>

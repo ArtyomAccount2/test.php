@@ -112,7 +112,6 @@ unset($_SESSION['form_data']);
                 <div class="sitemap-section">
                     <h3 class="mb-4"><i class="bi bi-cart"></i> Каталог и покупки</h3>
                     <ul class="sitemap-list">
-                        <li><a href="assortment.php">Все товары</a></li>
                         <li><a href="oils.php">Масла и тех. жидкости</a></li>
                         <li><a href="accessories.php">Аксессуары</a></li>
                         <li><a href="brands.php">Торговые марки</a></li>
@@ -145,7 +144,6 @@ unset($_SESSION['form_data']);
                     <ul class="sitemap-list">
                         <li><a href="faq.php">Частые вопросы (FAQ)</a></li>
                         <li><a href="support.php">Поддержка сайта</a></li>
-                        <li><a href="sitemap.php">Карта сайта</a></li>
                         <li><a href="api.php">API для разработчиков</a></li>
                     </ul>
                 </div>

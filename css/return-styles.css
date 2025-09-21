@@ -136,6 +136,7 @@
     padding: 1.5rem;
     border-left: 4px solid #007bff;
     flex: 1;
+    margin-left: 15px;
 }
 
 .timeline-content h5 

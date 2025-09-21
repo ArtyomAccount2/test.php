@@ -179,15 +179,15 @@ unset($_SESSION['form_data']);
             <div class="container">
                 <div class="row">
                     <div class="col-md-3 stat-item">
-                        <div class="stat-number">13+</div>
+                        <div class="stat-number">21</div>
                         <div class="stat-label">Лет на рынке</div>
                     </div>
                     <div class="col-md-3 stat-item">
-                        <div class="stat-number">50000+</div>
+                        <div class="stat-number">500+</div>
                         <div class="stat-label">Товаров в каталоге</div>
                     </div>
                     <div class="col-md-3 stat-item">
-                        <div class="stat-number">100+</div>
+                        <div class="stat-number">39+</div>
                         <div class="stat-label">Брендов партнеров</div>
                     </div>
                     <div class="col-md-3 stat-item">
