@@ -139,7 +139,6 @@ unset($_SESSION['form_data']);
                             <p>Соответствие ГОСТ, ТУ и международным стандартам качества</p>
                         </div>
                     </div>
-                    
                     <div class="requirement-item">
                         <div class="requirement-icon">
                             <i class="bi bi-2-circle"></i>
@@ -149,7 +148,6 @@ unset($_SESSION['form_data']);
                             <p>Наличие всех необходимых сертификатов и разрешительной документации</p>
                         </div>
                     </div>
-
                     <div class="requirement-item">
                         <div class="requirement-icon">
                             <i class="bi bi-3-circle"></i>
@@ -159,7 +157,6 @@ unset($_SESSION['form_data']);
                             <p>Соблюдение согласованных сроков и объемов поставок</p>
                         </div>
                     </div>
-
                     <div class="requirement-item">
                         <div class="requirement-icon">
                             <i class="bi bi-4-circle"></i>
@@ -167,6 +164,24 @@ unset($_SESSION['form_data']);
                         <div class="requirement-content">
                             <h5>Конкурентные цены</h5>
                             <p>Предложение рыночных цен и гибкие условия сотрудничества</p>
+                        </div>
+                    </div>
+                    <div class="requirement-item">
+                        <div class="requirement-icon">
+                            <i class="bi bi-5-circle"></i>
+                        </div>
+                        <div class="requirement-content">
+                            <h5>Гарантийные обязательства</h5>
+                            <p>Предоставление гарантии на поставляемую продукцию и оперативное решение гарантийных случаев</p>
+                        </div>
+                    </div>
+                    <div class="requirement-item">
+                        <div class="requirement-icon">
+                            <i class="bi bi-6-circle"></i>
+                        </div>
+                        <div class="requirement-content">
+                            <h5>Логистические возможности</h5>
+                            <p>Обеспечение своевременной доставки по всей территории России</p>
                         </div>
                     </div>
                 </div>

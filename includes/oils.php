@@ -125,7 +125,7 @@ unset($_SESSION['form_data']);
             {
                 echo '
                 <div class="col-md-3 col-6">
-                    <div class="category-card card h-100 border-0 shadow-sm">
+                    <div class="category-card card h-100 shadow">
                         <div class="card-body text-center">
                             <div class="category-icon text-'.$category['color'].' mb-3">
                                 <i class="bi '.$category['icon'].'" style="font-size: 2.5rem;"></i>

@@ -96,7 +96,7 @@ unset($_SESSION['form_data']);
             <div class="contact-card p-4 h-100">
                 <h2 class="mb-4">Контактная информация</h2>
                 <div class="row">
-                    <div class="contact-item mb-4 p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                    <div class="contact-item mb-2 p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
                         <div class="d-flex align-items-start">
                             <div class="contact-icon bg-primary p-2 rounded-circle me-3">
                                 <i class="bi bi-geo-alt-fill text-white"></i>
@@ -108,7 +108,7 @@ unset($_SESSION['form_data']);
                             </div>
                         </div>
                     </div>
-                    <div class="contact-item mb-4 p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                    <div class="contact-item mb-2 p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
                         <div class="d-flex align-items-start">
                             <div class="contact-icon bg-primary p-2 rounded-circle me-3">
                                 <i class="bi bi-telephone-fill text-white"></i>
@@ -121,7 +121,7 @@ unset($_SESSION['form_data']);
                             </div>
                         </div>
                     </div>
-                    <div class="contact-item mb-4 p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                    <div class="contact-item mb-2 p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
                         <div class="d-flex align-items-start">
                             <div class="contact-icon bg-primary p-2 rounded-circle me-3">
                                 <i class="bi bi-envelope-fill text-white"></i>
@@ -153,6 +153,18 @@ unset($_SESSION['form_data']);
                                 <p class="mb-1">Сб-Вс: 10:00-18:00</p>
                                 <small class="text-muted">Без перерыва на обед</small>
                             </div>
+                        </div>
+                    </div>
+                    <div class="p-3 rounded-3" style="background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); border-left: 4px solid #ffc107;">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-exclamation-triangle-fill text-warning me-2 fs-5"></i>
+                            <h5 class="mb-0 text-dark">Срочная помощь</h5>
+                        </div>
+                        <p class="small mb-2">Экстренные случаи и техническая поддержка</p>
+                        <div class="d-grid gap-2">
+                            <a href="tel:+79111234567" class="btn btn-warning btn-sm">
+                                <i class="bi bi-telephone-fill me-1"></i>+7 (911) 123-45-67
+                            </a>
                         </div>
                     </div>
                 </div>

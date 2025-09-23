@@ -177,6 +177,26 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                 </div>
+                <div class="mt-4 pt-3 border-top">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-lightning-charge-fill text-warning me-2 fs-5"></i>
+                        <h5 class="mb-0">Срочные услуги</h5>
+                    </div>
+                    <div class="small">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6>Замена аккумулятора</h6>
+                            <span class="fw-bold">30 мин</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6>Шиномонтаж</h6>
+                            <span class="fw-bold">45 мин</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6>Компьютерная диагностика</h6>
+                            <span class="fw-bold">20 мин</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-lg-6">

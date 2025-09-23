@@ -101,23 +101,28 @@ unset($_SESSION['form_data']);
                 <i class="bi bi-search search-icon"></i>
             </div>
         </div>
-        <div class="col-md-6">
-            <select class="form-select form-select-lg">
-                <option selected>Все категории</option>
-                <option>Двигатель</option>
-                <option>Трансмиссия</option>
-                <option>Ходовая часть</option>
-                <option>Тормозная система</option>
-                <option>Электрика</option>
-                <option>Кузовные детали</option>
-                <option>Фильтры</option>
-                <option>Масла и жидкости</option>
+        <div class="col-md-4">
+            <select id="categoryFilter" class="form-select form-select-lg">
+                <option value="все категории" selected>Все категории</option>
+                <option value="двигатель">Двигатель</option>
+                <option value="трансмиссия">Трансмиссия</option>
+                <option value="ходовая часть">Ходовая часть</option>
+                <option value="тормозная система">Тормозная система</option>
+                <option value="электрика">Электрика</option>
+                <option value="кузовные детали">Кузовные детали</option>
+                <option value="фильтры">Фильтры</option>
+                <option value="масла и жидкости">Масла и жидкости</option>
             </select>
         </div>
+        <div class="col-md-2">
+            <button id="searchButton" class="btn btn-primary btn-lg w-100">
+                <i class="bi bi-search"></i> Найти
+            </button>
+        </div>
     </div>
-    <div class="row g-4">
-        <div class="col-lg-3 col-md-4 col-6">
-            <div class="product-card">
+    <div class="row g-4" id="productsContainer">
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="фильтры">
                 <div class="product-badge">Новинка</div>
                 <img src="../img/no-image.png" class="product-img" alt="Товар">
                 <div class="product-body">
@@ -130,8 +135,8 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-6">
-            <div class="product-card">
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="тормозная система">
                 <div class="product-badge">Акция</div>
                 <img src="../img/no-image.png" class="product-img" alt="Товар">
                 <div class="product-body">
@@ -140,6 +145,143 @@ unset($_SESSION['form_data']);
                         <span class="text-danger">3 890 ₽</span>
                         <small class="text-decoration-line-through text-muted">4 500 ₽</small>
                     </div>
+                    <div class="product-actions">
+                        <button class="btn btn-sm btn-outline-primary">В корзину</button>
+                        <button class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="двигатель">
+                <div class="product-badge">Хит</div>
+                <img src="../img/no-image.png" class="product-img" alt="Товар">
+                <div class="product-body">
+                    <h5 class="product-title">Свечи зажигания NGK BKR6E</h5>
+                    <div class="product-price">850 ₽</div>
+                    <div class="product-actions">
+                        <button class="btn btn-sm btn-outline-primary">В корзину</button>
+                        <button class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="трансмиссия">
+                <img src="../img/no-image.png" class="product-img" alt="Товар">
+                <div class="product-body">
+                    <h5 class="product-title">Сцепление SACHS 3000 951 515</h5>
+                    <div class="product-price">12 500 ₽</div>
+                    <div class="product-actions">
+                        <button class="btn btn-sm btn-outline-primary">В корзину</button>
+                        <button class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="ходовая часть">
+                <div class="product-badge">Акция</div>
+                <img src="../img/no-image.png" class="product-img" alt="Товар">
+                <div class="product-body">
+                    <h5 class="product-title">Амортизатор KYB 334302</h5>
+                    <div class="product-price">
+                        <span class="text-danger">4 200 ₽</span>
+                        <small class="text-decoration-line-through text-muted">5 100 ₽</small>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn btn-sm btn-outline-primary">В корзину</button>
+                        <button class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="электрика">
+                <img src="../img/no-image.png" class="product-img" alt="Товар">
+                <div class="product-body">
+                    <h5 class="product-title">Аккумулятор VARTA Blue Dynamic E11</h5>
+                    <div class="product-price">8 900 ₽</div>
+                    <div class="product-actions">
+                        <button class="btn btn-sm btn-outline-primary">В корзину</button>
+                        <button class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="кузовные детали">
+                <div class="product-badge">Новинка</div>
+                <img src="../img/no-image.png" class="product-img" alt="Товар">
+                <div class="product-body">
+                    <h5 class="product-title">Фара правая Hyundai Solaris</h5>
+                    <div class="product-price">15 300 ₽</div>
+                    <div class="product-actions">
+                        <button class="btn btn-sm btn-outline-primary">В корзину</button>
+                        <button class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="масла и жидкости">
+                <img src="../img/no-image.png" class="product-img" alt="Товар">
+                <div class="product-body">
+                    <h5 class="product-title">Моторное масло Mobil 1 5W-30</h5>
+                    <div class="product-price">3 800 ₽</div>
+                    <div class="product-actions">
+                        <button class="btn btn-sm btn-outline-primary">В корзину</button>
+                        <button class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="фильтры">
+                <img src="../img/no-image.png" class="product-img" alt="Товар">
+                <div class="product-body">
+                    <h5 class="product-title">Воздушный фильтр Bosch F026400224</h5>
+                    <div class="product-price">1 100 ₽</div>
+                    <div class="product-actions">
+                        <button class="btn btn-sm btn-outline-primary">В корзину</button>
+                        <button class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="тормозная система">
+                <img src="../img/no-image.png" class="product-img" alt="Товар">
+                <div class="product-body">
+                    <h5 class="product-title">Тормозной диск TRW DF4261</h5>
+                    <div class="product-price">6 700 ₽</div>
+                    <div class="product-actions">
+                        <button class="btn btn-sm btn-outline-primary">В корзину</button>
+                        <button class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="двигатель">
+                <div class="product-badge">Хит</div>
+                <img src="../img/no-image.png" class="product-img" alt="Товар">
+                <div class="product-body">
+                    <h5 class="product-title">Ремень ГРМ Gates T420</h5>
+                    <div class="product-price">2 900 ₽</div>
+                    <div class="product-actions">
+                        <button class="btn btn-sm btn-outline-primary">В корзину</button>
+                        <button class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 product-col">
+            <div class="product-card" data-category="электрика">
+                <img src="../img/no-image.png" class="product-img" alt="Товар">
+                <div class="product-body">
+                    <h5 class="product-title">Генератор Valeo 439730</h5>
+                    <div class="product-price">18 500 ₽</div>
                     <div class="product-actions">
                         <button class="btn btn-sm btn-outline-primary">В корзину</button>
                         <button class="btn btn-sm btn-outline-secondary">Подробнее</button>
@@ -168,5 +310,84 @@ unset($_SESSION['form_data']);
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() 
+{
+    function performSearch() 
+    {
+        let searchTerm = document.getElementById('partsSearch').value.toLowerCase();
+        let categoryFilter = document.getElementById('categoryFilter').value.toLowerCase();
+        let allProductCols = document.querySelectorAll('.product-col');
+        let foundResults = false;
+
+        allProductCols.forEach(col => {
+            col.style.display = 'none';
+        });
+
+        allProductCols.forEach(col => {
+            let card = col.querySelector('.product-card');
+            let title = card.querySelector('.product-title').textContent.toLowerCase();
+            let category = card.getAttribute('data-category') || '';
+            let matchesSearch = searchTerm === '' || title.includes(searchTerm);
+            let matchesCategory = categoryFilter === 'все категории' || category.toLowerCase().includes(categoryFilter);
+
+            if (matchesSearch && matchesCategory) {
+                col.style.display = 'block';
+                foundResults = true;
+            }
+        });
+
+        let oldMessage = document.getElementById('noResultsMessage');
+
+        if (oldMessage) 
+        {
+            oldMessage.remove();
+        }
+
+        if (!foundResults) 
+        {
+            let message = document.createElement('div');
+            message.id = 'noResultsMessage';
+            message.className = 'col-12 text-center mt-5';
+            message.innerHTML = '<h4>Товары не найдены</h4><p>Попробуйте изменить параметры поиска</p>';
+            document.getElementById('productsContainer').appendChild(message);
+        }
+    }
+
+    function resetSearch() 
+    {
+        document.getElementById('partsSearch').value = '';
+        document.getElementById('categoryFilter').value = 'все категории';
+        document.querySelector('.search-clear').style.display = 'none';
+        performSearch();
+    }
+
+    document.getElementById('searchButton').addEventListener('click', performSearch);
+        
+    document.getElementById('partsSearch').addEventListener('keypress', function(e) 
+    {
+        if (e.key === 'Enter') 
+        {
+            performSearch();
+        }
+    });
+
+    document.getElementById('categoryFilter').addEventListener('change', performSearch);
+
+    document.querySelector('.search-clear').addEventListener('click', resetSearch);
+
+    document.getElementById('partsSearch').addEventListener('input', function() 
+    {
+        document.querySelector('.search-clear').style.display = this.value ? 'block' : 'none';
+    });
+
+    let allProductCols = document.querySelectorAll('.product-col');
+
+    allProductCols.forEach(col => 
+    {
+        col.style.display = 'block';
+    });
+});
+</script>
 </body>
 </html>

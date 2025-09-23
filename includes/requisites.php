@@ -96,9 +96,9 @@ unset($_SESSION['form_data']);
             <p class="lead">Официальная информация о компании Лал-Авто</p>
         </div>
     </div>
-    <div class="row g-4">
-        <div class="col-lg-6">
-            <div class="requisites-card">
+    <div class="row g-4 requisites-row">
+        <div class="col-lg-12">
+            <div class="requisites-card w-100">
                 <h3 class="mb-4"><i class="bi bi-building"></i> Общая информация</h3>
                 <div class="requisites-list">
                     <div class="requisite-item">
@@ -132,8 +132,8 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="requisites-card">
+        <div class="col-lg-12">
+            <div class="requisites-card w-100">
                 <h3 class="mb-4"><i class="bi bi-bank"></i> Банковские реквизиты</h3>
                 <div class="requisites-list">
                     <div class="requisite-item">
@@ -159,8 +159,8 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="requisites-card">
+        <div class="col-lg-12">
+            <div class="requisites-card w-100">
                 <h3 class="mb-4"><i class="bi bi-geo-alt"></i> Адреса и контакты</h3>
                 <div class="requisites-list">
                     <div class="requisite-item">
@@ -186,8 +186,8 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="requisites-card">
+        <div class="col-lg-12">
+            <div class="requisites-card w-100">
                 <h3 class="mb-4"><i class="bi bi-person"></i> Руководство</h3>
                 <div class="requisites-list">
                     <div class="requisite-item">
