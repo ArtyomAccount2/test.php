@@ -53,6 +53,73 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
+
+$products = [
+    ['id' => 1, 'title' => 'Castrol EDGE 5W-30', 'art' => '15698E4', 'volume' => '4 л', 'price' => 3890, 'stock' => true, 'hit' => true, 'brand' => 'Castrol', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
+    ['id' => 2, 'title' => 'Mobil Super 3000 X1 5W-40', 'art' => '152343', 'volume' => '4 л', 'price' => 3450, 'stock' => true, 'hit' => false, 'brand' => 'Mobil', 'viscosity' => '5W-40', 'type' => 'Синтетическое'],
+    ['id' => 3, 'title' => 'Liqui Moly Special Tec AA 5W-30', 'art' => '1123DE', 'volume' => '5 л', 'price' => 4210, 'stock' => true, 'hit' => true, 'brand' => 'Liqui Moly', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
+    ['id' => 4, 'title' => 'Shell Helix HX7 10W-40', 'art' => '87654F', 'volume' => '4 л', 'price' => 2890, 'stock' => false, 'hit' => false, 'brand' => 'Shell', 'viscosity' => '10W-40', 'type' => 'Полусинтетическое'],
+    ['id' => 5, 'title' => 'Total Quartz 9000 5W-40', 'art' => 'TQ9000', 'volume' => '5 л', 'price' => 3650, 'stock' => true, 'hit' => false, 'brand' => 'Total', 'viscosity' => '5W-40', 'type' => 'Синтетическое'],
+    ['id' => 6, 'title' => 'Motul 8100 X-clean 5W-30', 'art' => 'M8100', 'volume' => '5 л', 'price' => 4890, 'stock' => true, 'hit' => true, 'brand' => 'Motul', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
+    ['id' => 7, 'title' => 'ZIC X9 5W-30', 'art' => 'ZX9-5W30', 'volume' => '4 л', 'price' => 2990, 'stock' => true, 'hit' => false, 'brand' => 'ZIC', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
+    ['id' => 8, 'title' => 'ELF Evolution 900 NF 5W-40', 'art' => 'ELF900', 'volume' => '5 л', 'price' => 3750, 'stock' => true, 'hit' => false, 'brand' => 'ELF', 'viscosity' => '5W-40', 'type' => 'Синтетическое'],
+    ['id' => 9, 'title' => 'Castrol MAGNATEC 5W-30', 'art' => 'CAST567', 'volume' => '4 л', 'price' => 3250, 'stock' => true, 'hit' => true, 'brand' => 'Castrol', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
+    ['id' => 10, 'title' => 'Mobil 1 0W-40', 'art' => 'MOB1-0W40', 'volume' => '4 л', 'price' => 4450, 'stock' => true, 'hit' => false, 'brand' => 'Mobil', 'viscosity' => '0W-40', 'type' => 'Синтетическое'],
+    ['id' => 11, 'title' => 'Liqui Moly Molygen 5W-40', 'art' => 'LM-MOLY', 'volume' => '5 л', 'price' => 5120, 'stock' => true, 'hit' => true, 'brand' => 'Liqui Moly', 'viscosity' => '5W-40', 'type' => 'Синтетическое'],
+    ['id' => 12, 'title' => 'Shell Helix Ultra 5W-40', 'art' => 'SHU-5W40', 'volume' => '4 л', 'price' => 3980, 'stock' => true, 'hit' => false, 'brand' => 'Shell', 'viscosity' => '5W-40', 'type' => 'Синтетическое'],
+    ['id' => 13, 'title' => 'Total Quartz INEO ECS 5W-30', 'art' => 'TQ-ECS', 'volume' => '5 л', 'price' => 4120, 'stock' => false, 'hit' => false, 'brand' => 'Total', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
+    ['id' => 14, 'title' => 'Motul 8100 Eco-nergy 5W-30', 'art' => 'MOT-ECO', 'volume' => '5 л', 'price' => 4670, 'stock' => true, 'hit' => true, 'brand' => 'Motul', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
+    ['id' => 15, 'title' => 'ZIC X7 10W-40', 'art' => 'ZX7-10W40', 'volume' => '4 л', 'price' => 2450, 'stock' => true, 'hit' => false, 'brand' => 'ZIC', 'viscosity' => '10W-40', 'type' => 'Полусинтетическое'],
+    ['id' => 16, 'title' => 'ELF Evolution 700 STI 10W-40', 'art' => 'ELF700', 'volume' => '4 л', 'price' => 2780, 'stock' => true, 'hit' => false, 'brand' => 'ELF', 'viscosity' => '10W-40', 'type' => 'Полусинтетическое']
+];
+
+$search_query = $_GET['search'] ?? '';
+$sort_type = $_GET['sort'] ?? 'default';
+
+if (!empty($search_query)) 
+{
+    $filtered_products = array_filter($products, function($product) use ($search_query) 
+    {
+        return stripos($product['title'], $search_query) !== false || 
+               stripos($product['art'], $search_query) !== false ||
+               stripos($product['brand'], $search_query) !== false;
+    });
+} 
+else 
+{
+    $filtered_products = $products;
+}
+
+switch ($sort_type) 
+{
+    case 'price_asc':
+        usort($filtered_products, function($a, $b) 
+        {
+            return $a['price'] - $b['price'];
+        });
+        break;
+    case 'price_desc':
+        usort($filtered_products, function($a, $b) 
+        {
+            return $b['price'] - $a['price'];
+        });
+        break;
+    case 'name':
+        usort($filtered_products, function($a, $b) 
+        {
+            return strcmp($a['title'], $b['title']);
+        });
+        break;
+    case 'popular':
+        usort($filtered_products, function($a, $b) 
+        {
+            if ($a['hit'] == $b['hit']) return 0;
+            return $a['hit'] ? -1 : 1;
+        });
+        break;
+    default:
+        break;
+}
 ?>
 
 <!DOCTYPE html>
@@ -99,6 +166,14 @@ unset($_SESSION['form_data']);
     <div class="row mb-4 align-items-center">
         <div class="col-md-6">
             <h1 class="mb-0">Масла и технические жидкости</h1>
+            <?php 
+            if (!empty($search_query))
+            {
+            ?>
+                <p class="text-muted mt-2">Результаты поиска для: "<?php echo htmlspecialchars($search_query); ?>"</p>
+            <?php 
+            } 
+            ?>
         </div>
         <div class="col-md-6 text-md-end">
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#oilSelectorModal">
@@ -209,80 +284,105 @@ unset($_SESSION['form_data']);
     </div>
     <div class="products-section mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0"><i class="bi bi-box-seam"></i> Товары</h2>
+            <h2 class="mb-0"><i class="bi bi-box-seam"></i> Товары <span class="badge bg-secondary"><?php echo count($filtered_products); ?></span></h2>
             <div class="d-flex">
                 <div class="dropdown me-2">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Сортировка
+                        <?php
+                        $sort_labels = [
+                            'default' => 'По умолчанию',
+                            'popular' => 'По популярности',
+                            'price_asc' => 'По цене (возрастание)',
+                            'price_desc' => 'По цене (убывание)',
+                            'name' => 'По названию'
+                        ];
+                        echo $sort_labels[$sort_type] ?? 'Сортировка';
+                        ?>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                        <li><a class="dropdown-item" href="#">По популярности</a></li>
-                        <li><a class="dropdown-item" href="#">По цене (возрастание)</a></li>
-                        <li><a class="dropdown-item" href="#">По цене (убывание)</a></li>
-                        <li><a class="dropdown-item" href="#">По названию</a></li>
+                        <li><a class="dropdown-item" href="?sort=default&search=<?php echo urlencode($search_query); ?>">По умолчанию</a></li>
+                        <li><a class="dropdown-item" href="?sort=popular&search=<?php echo urlencode($search_query); ?>">По популярности</a></li>
+                        <li><a class="dropdown-item" href="?sort=price_asc&search=<?php echo urlencode($search_query); ?>">По цене (возрастание)</a></li>
+                        <li><a class="dropdown-item" href="?sort=price_desc&search=<?php echo urlencode($search_query); ?>">По цене (убывание)</a></li>
+                        <li><a class="dropdown-item" href="?sort=name&search=<?php echo urlencode($search_query); ?>">По названию</a></li>
                     </ul>
                 </div>
-                <div class="input-group" style="width: 200px;">
-                    <input type="text" class="form-control" placeholder="Поиск...">
-                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
-                </div>
+                <form method="GET" class="d-flex">
+                    <div class="input-group" style="width: 200px;">
+                        <input type="text" class="form-control" name="search" placeholder="Поиск..." value="<?php echo htmlspecialchars($search_query); ?>">
+                        <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+                        <?php 
+                        if (!empty($search_query))
+                        {
+                        ?>
+                            <a href="?" class="btn btn-outline-danger"><i class="bi bi-x"></i></a>
+                        <?php
+                        }
+                        ?>
+                    </div>
+                    <input type="hidden" name="sort" value="<?php echo $sort_type; ?>">
+                </form>
             </div>
         </div>
-        <div class="row g-4">
-            <?php
-            $products = [
-                ['title' => 'Castrol EDGE 5W-30', 'art' => '15698E4', 'volume' => '4 л', 'price' => '3 890', 'stock' => true, 'hit' => true],
-                ['title' => 'Mobil Super 3000 X1 5W-40', 'art' => '152343', 'volume' => '4 л', 'price' => '3 450', 'stock' => true, 'hit' => false],
-                ['title' => 'Liqui Moly Special Tec AA 5W-30', 'art' => '1123DE', 'volume' => '5 л', 'price' => '4 210', 'stock' => true, 'hit' => true],
-                ['title' => 'Shell Helix HX7 10W-40', 'art' => '87654F', 'volume' => '4 л', 'price' => '2 890', 'stock' => false, 'hit' => false],
-                ['title' => 'Total Quartz 9000 5W-40', 'art' => 'TQ9000', 'volume' => '5 л', 'price' => '3 650', 'stock' => true, 'hit' => false],
-                ['title' => 'Motul 8100 X-clean 5W-30', 'art' => 'M8100', 'volume' => '5 л', 'price' => '4 890', 'stock' => true, 'hit' => true],
-                ['title' => 'ZIC X9 5W-30', 'art' => 'ZX9-5W30', 'volume' => '4 л', 'price' => '2 990', 'stock' => true, 'hit' => false],
-                ['title' => 'ELF Evolution 900 NF 5W-40', 'art' => 'ELF900', 'volume' => '5 л', 'price' => '3 750', 'stock' => true, 'hit' => false]
-            ];
-            
-            foreach ($products as $product) 
-            {
-                echo '
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="product-card card h-100">
-                        '.($product['hit'] ? '<span class="badge bg-danger position-absolute top-0 start-0 m-2">Хит</span>' : '').'
-                        <img src="../img/no-image.png" class="product-img card-img-top p-3" alt="'.$product['title'].'">
-                        <div class="card-body">
-                            <h5 class="product-title card-title">'.$product['title'].'</h5>
-                            <p class="product-meta text-muted small mb-2">Арт. '.$product['art'].', '.$product['volume'].'</p>
-                            <h4 class="product-price mb-3">'.$product['price'].' ₽</h4>
-                            <p class="product-stock '.($product['stock'] ? 'text-success' : 'text-danger').' mb-3">
-                                <i class="bi '.($product['stock'] ? 'bi-check-circle' : 'bi-x-circle').'"></i> 
-                                '.($product['stock'] ? 'В наличии' : 'Нет в наличии').'
-                            </p>
-                            <div class="product-actions d-grid gap-2">
-                                <button class="btn btn-sm '.($product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled').'">
-                                    <i class="bi bi-cart-plus"></i> В корзину
-                                </button>
-                                <button class="btn btn-sm btn-outline-secondary">
-                                    <i class="bi bi-info-circle"></i> Подробнее
-                                </button>
+        <?php 
+        if (empty($filtered_products))
+        {
+        ?>
+            <div class="alert alert-warning text-center">
+                <i class="bi bi-exclamation-triangle"></i> По вашему запросу "<?php echo htmlspecialchars($search_query); ?>" ничего не найдено.
+            </div>
+        <?php 
+        }
+        else
+        {
+        ?>
+            <div class="row g-4">
+                <?php
+                foreach ($filtered_products as $product) 
+                {
+                    echo '
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="product-card card h-100">
+                            '.($product['hit'] ? '<span class="badge bg-danger position-absolute top-0 start-0 m-2">Хит</span>' : '').'
+                            <img src="../img/no-image.png" class="product-img card-img-top p-3" alt="'.$product['title'].'">
+                            <div class="card-body">
+                                <h5 class="product-title card-title">'.$product['title'].'</h5>
+                                <p class="product-meta text-muted small mb-2">Арт. '.$product['art'].', '.$product['volume'].'</p>
+                                <h4 class="product-price mb-3">'.number_format($product['price'], 0, '', ' ').' ₽</h4>
+                                <p class="product-stock '.($product['stock'] ? 'text-success' : 'text-danger').' mb-3">
+                                    <i class="bi '.($product['stock'] ? 'bi-check-circle' : 'bi-x-circle').'"></i> 
+                                    '.($product['stock'] ? 'В наличии' : 'Нет в наличии').'
+                                </p>
+                                <div class="product-actions d-grid gap-2">
+                                    <button class="btn btn-sm '.($product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled').'">
+                                        <i class="bi bi-cart-plus"></i> В корзину
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary">
+                                        <i class="bi bi-info-circle"></i> Подробнее
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>';
-            }
-            ?>
-        </div>
-        <nav aria-label="Page navigation" class="mt-4">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Назад</a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Вперед</a>
-                </li>
-            </ul>
-        </nav>
+                    </div>';
+                }
+                ?>
+            </div>
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Назад</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Вперед</a>
+                    </li>
+                </ul>
+            </nav>
+        <?php 
+        } 
+        ?>
     </div>
     <div class="specs-section mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -401,6 +501,12 @@ document.getElementById('resetFilters').addEventListener('click', function()
 document.getElementById('applyFilters').addEventListener('click', function() 
 {
     alert('Фильтры применены! (это демо, в реальном приложении здесь будет AJAX запрос)');
+});
+
+document.querySelector('.btn-outline-danger')?.addEventListener('click', function(e) 
+{
+    e.preventDefault();
+    window.location.href = '?';
 });
 </script>
 </body>

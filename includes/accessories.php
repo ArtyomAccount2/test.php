@@ -53,6 +53,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
+
+$products = [
+    ['id' => 1, 'name' => 'Чехлы на сиденья Premium', 'brand' => 'AutoStyle', 'price' => 4290, 'old_price' => 5050, 'rating' => 4.8, 'badge' => 'danger', 'badge_text' => '-15%'],
+    ['id' => 2, 'name' => 'Коврики в салон 3D', 'brand' => 'WeatherTech', 'price' => 6790, 'old_price' => 0, 'rating' => 4.9, 'badge' => 'success', 'badge_text' => 'Новинка'],
+    ['id' => 3, 'name' => 'Органайзер для багажника', 'brand' => 'CarMate', 'price' => 3490, 'old_price' => 0, 'rating' => 4.5, 'badge' => '', 'badge_text' => ''],
+    ['id' => 4, 'name' => 'Ароматизатор CS-X3', 'brand' => 'Air Spencer', 'price' => 790, 'old_price' => 0, 'rating' => 4.7, 'badge' => 'info', 'badge_text' => 'Хит'],
+    ['id' => 5, 'name' => 'Автохолодильник 12V', 'brand' => 'CoolMaster', 'price' => 8990, 'old_price' => 10500, 'rating' => 4.6, 'badge' => 'warning', 'badge_text' => 'Акция'],
+    ['id' => 6, 'name' => 'Видеорегистратор 4K', 'brand' => 'RoadEye', 'price' => 12490, 'old_price' => 0, 'rating' => 4.8, 'badge' => 'success', 'badge_text' => 'Новинка'],
+    ['id' => 7, 'name' => 'Чехол на руль из кожи', 'brand' => 'SteeringPro', 'price' => 2190, 'old_price' => 0, 'rating' => 4.4, 'badge' => 'info', 'badge_text' => 'Хит'],
+    ['id' => 8, 'name' => 'Компрессор автомобильный', 'brand' => 'AirForce', 'price' => 3590, 'old_price' => 4490, 'rating' => 4.7, 'badge' => 'danger', 'badge_text' => '-20%'],
+    ['id' => 9, 'name' => 'Держатель магнитный', 'brand' => 'PhoneMount', 'price' => 1290, 'old_price' => 0, 'rating' => 4.3, 'badge' => '', 'badge_text' => ''],
+    ['id' => 10, 'name' => 'Парктроник 8 датчиков', 'brand' => 'ParkMaster', 'price' => 7890, 'old_price' => 0, 'rating' => 4.9, 'badge' => 'success', 'badge_text' => 'Новинка'],
+    ['id' => 11, 'name' => 'Автоодеяло с подогревом', 'brand' => 'ComfortCar', 'price' => 5490, 'old_price' => 0, 'rating' => 4.6, 'badge' => 'info', 'badge_text' => 'Хит'],
+    ['id' => 12, 'name' => 'Набор автомобильных инструментов', 'brand' => 'ToolPro', 'price' => 6990, 'old_price' => 8200, 'rating' => 4.5, 'badge' => 'warning', 'badge_text' => 'Акция'],
+];
+
+$sort = $_GET['sort'] ?? 'popular';
+
+switch($sort) 
+{
+    case 'price_asc':
+        usort($products, function($a, $b) 
+        {
+            return $a['price'] - $b['price'];
+        });
+        break;
+    case 'price_desc':
+        usort($products, function($a, $b) 
+        {
+            return $b['price'] - $a['price'];
+        });
+        break;
+    case 'rating':
+        usort($products, function($a, $b) 
+        {
+            return $b['rating'] - $a['rating'];
+        });
+        break;
+    case 'new':
+        usort($products, function($a, $b) 
+        {
+            return $b['id'] - $a['id'];
+        });
+        break;
+    default:
+        usort($products, function($a, $b) 
+        {
+            return $b['rating'] - $a['rating'];
+        });
+        break;
+}
 ?>
 
 <!DOCTYPE html>
@@ -80,6 +131,14 @@ unset($_SESSION['form_data']);
         <?php 
         } 
         ?>
+
+        document.getElementById('sortSelect').addEventListener('change', function() 
+        {
+            let sortValue = this.value;
+            let url = new URL(window.location.href);
+            url.searchParams.set('sort', sortValue);
+            window.location.href = url.toString();
+        });
     });
     </script>
 </head>
@@ -198,38 +257,62 @@ unset($_SESSION['form_data']);
                     <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <div class="d-flex align-items-center mb-2 mb-md-0">
                             <span class="me-2 text-muted">Сортировка:</span>
-                            <select class="form-select form-select-sm" style="width: auto;">
-                                <option selected>По популярности</option>
-                                <option>По цене (сначала дешевые)</option>
-                                <option>По цене (сначала дорогие)</option>
-                                <option>По новизне</option>
-                                <option>По рейтингу</option>
+                            <select class="form-select form-select-sm" id="sortSelect" style="width: auto;">
+                                <option value="popular" <?php echo $sort === 'popular' ? 'selected' : ''; ?>>По популярности</option>
+                                <option value="price_asc" <?php echo $sort === 'price_asc' ? 'selected' : ''; ?>>По цене (сначала дешевые)</option>
+                                <option value="price_desc" <?php echo $sort === 'price_desc' ? 'selected' : ''; ?>>По цене (сначала дорогие)</option>
+                                <option value="new" <?php echo $sort === 'new' ? 'selected' : ''; ?>>По новизне</option>
+                                <option value="rating" <?php echo $sort === 'rating' ? 'selected' : ''; ?>>По рейтингу</option>
                             </select>
                         </div>
-                        <div class="text-muted">Найдено 42 товара</div>
+                        <div class="text-muted">Найдено <?php echo count($products); ?> товаров</div>
                     </div>
                 </div>
             </div>
             <div class="row g-4">
+                <?php 
+                foreach($products as $product)
+                {
+                ?>
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="badge bg-danger position-absolute mt-2 ms-2">-15%</div>
+                        <?php 
+                        if(!empty($product['badge']))
+                        { 
+                        ?>
+                        <div class="badge bg-<?php echo $product['badge']; ?> position-absolute mt-2 ms-2"><?php echo $product['badge_text']; ?></div>
+                        <?php 
+                        }
+                        ?>
                         <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Чехлы на сиденья">
+                            <img src="../img/no-image.png" class="img-fluid" alt="<?php echo $product['name']; ?>">
                         </div>
                         <div class="card-body pt-0">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">AutoStyle</span>
+                                <span class="text-muted small"><?php echo $product['brand']; ?></span>
                                 <div class="small">
                                     <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.8</span>
+                                    <span><?php echo $product['rating']; ?></span>
                                 </div>
                             </div>
-                            <h5 class="card-title mb-2">Чехлы на сиденья Premium</h5>
+                            <h5 class="card-title mb-2"><?php echo $product['name']; ?></h5>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="text-danger fw-bold">4 290 ₽</span>
-                                    <span class="text-decoration-line-through text-muted small ms-2">5 050 ₽</span>
+                                    <?php 
+                                    if($product['old_price'] > 0)
+                                    {
+                                    ?>
+                                        <span class="text-danger fw-bold"><?php echo number_format($product['price'], 0, '', ' '); ?> ₽</span>
+                                        <span class="text-decoration-line-through text-muted small ms-2"><?php echo number_format($product['old_price'], 0, '', ' '); ?> ₽</span>
+                                    <?php 
+                                    }
+                                    else
+                                    {
+                                    ?>
+                                        <span class="fw-bold"><?php echo number_format($product['price'], 0, '', ' '); ?> ₽</span>
+                                    <?php 
+                                    } 
+                                    ?>
                                 </div>
                                 <button class="btn btn-sm btn-outline-primary">
                                     <i class="bi bi-cart-plus"></i>
@@ -238,293 +321,9 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="badge bg-success position-absolute mt-2 ms-2">Новинка</div>
-                        <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Коврики">
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">WeatherTech</span>
-                                <div class="small">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.9</span>
-                                </div>
-                            </div>
-                            <h5 class="card-title mb-2">Коврики в салон 3D</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-bold">6 790 ₽</span>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Органайзер">
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">CarMate</span>
-                                <div class="small">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.5</span>
-                                </div>
-                            </div>
-                            <h5 class="card-title mb-2">Органайзер для багажника</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-bold">3 490 ₽</span>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="badge bg-info position-absolute mt-2 ms-2">Хит</div>
-                        <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Ароматизатор">
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">Air Spencer</span>
-                                <div class="small">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.7</span>
-                                </div>
-                            </div>
-                            <h5 class="card-title mb-2">Ароматизатор CS-X3</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-bold">790 ₽</span>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="badge bg-warning position-absolute mt-2 ms-2">Акция</div>
-                        <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Автохолодильник">
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">CoolMaster</span>
-                                <div class="small">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.6</span>
-                                </div>
-                            </div>
-                            <h5 class="card-title mb-2">Автохолодильник 12V</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="text-danger fw-bold">8 990 ₽</span>
-                                    <span class="text-decoration-line-through text-muted small ms-2">10 500 ₽</span>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="badge bg-success position-absolute mt-2 ms-2">Новинка</div>
-                        <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Видеорегистратор">
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">RoadEye</span>
-                                <div class="small">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.8</span>
-                                </div>
-                            </div>
-                            <h5 class="card-title mb-2">Видеорегистратор 4K</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-bold">12 490 ₽</span>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="badge bg-info position-absolute mt-2 ms-2">Хит</div>
-                        <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Чехол на руль">
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">SteeringPro</span>
-                                <div class="small">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.4</span>
-                                </div>
-                            </div>
-                            <h5 class="card-title mb-2">Чехол на руль из кожи</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-bold">2 190 ₽</span>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="badge bg-danger position-absolute mt-2 ms-2">-20%</div>
-                        <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Компрессор">
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">AirForce</span>
-                                <div class="small">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.7</span>
-                                </div>
-                            </div>
-                            <h5 class="card-title mb-2">Компрессор автомобильный</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="text-danger fw-bold">3 590 ₽</span>
-                                    <span class="text-decoration-line-through text-muted small ms-2">4 490 ₽</span>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Держатель для телефона">
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">PhoneMount</span>
-                                <div class="small">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.3</span>
-                                </div>
-                            </div>
-                            <h5 class="card-title mb-2">Держатель магнитный</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-bold">1 290 ₽</span>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="badge bg-success position-absolute mt-2 ms-2">Новинка</div>
-                        <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Система помощи при парковке">
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">ParkMaster</span>
-                                <div class="small">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.9</span>
-                                </div>
-                            </div>
-                            <h5 class="card-title mb-2">Парктроник 8 датчиков</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-bold">7 890 ₽</span>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="badge bg-info position-absolute mt-2 ms-2">Хит</div>
-                        <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Автоодеяло">
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">ComfortCar</span>
-                                <div class="small">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.6</span>
-                                </div>
-                            </div>
-                            <h5 class="card-title mb-2">Автоодеяло с подогревом</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="fw-bold">5 490 ₽</span>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="badge bg-warning position-absolute mt-2 ms-2">Акция</div>
-                        <div class="card-img-top p-3">
-                            <img src="../img/no-image.png" class="img-fluid" alt="Набор инструментов">
-                        </div>
-                        <div class="card-body pt-0">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="text-muted small">ToolPro</span>
-                                <div class="small">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <span>4.5</span>
-                                </div>
-                            </div>
-                            <h5 class="card-title mb-2">Набор автомобильных инструментов</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="text-danger fw-bold">6 990 ₽</span>
-                                    <span class="text-decoration-line-through text-muted small ms-2">8 200 ₽</span>
-                                </div>
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php 
+                } 
+                ?>
             </div>
             <nav class="mt-5">
                 <ul class="pagination justify-content-center">

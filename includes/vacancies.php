@@ -204,7 +204,7 @@ unset($_SESSION['form_data']);
     </div>
     <div class="row">
         <div class="col-lg-12 mx-auto">
-            <div class="about-employer p-4 mb-5 text-center">
+            <div class="about-employer p-4 mb-2 text-center">
                 <h2 class="mb-4"><i class="bi bi-building"></i> Почему стоит работать у нас?</h2>
                 <div class="benefits-grid">
                     <div class="benefit-item">
