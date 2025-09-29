@@ -152,8 +152,8 @@ function isActiveSubmenu($parent, $item = null)
                             <span class="d-none d-md-inline">Администратор</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Профиль</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Настройки</a></li>
+                            <li><a class="dropdown-item" href="admin.php"><i class="bi bi-person me-2"></i>Профиль</a></li>
+                            <li><a class="dropdown-item" href="admin.php?section=settings"><i class="bi bi-gear me-2"></i>Настройки</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item text-danger" href="../files/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Выйти</a></li>
                         </ul>

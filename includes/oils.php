@@ -80,9 +80,7 @@ if (!empty($search_query))
 {
     $filtered_products = array_filter($products, function($product) use ($search_query) 
     {
-        return stripos($product['title'], $search_query) !== false || 
-               stripos($product['art'], $search_query) !== false ||
-               stripos($product['brand'], $search_query) !== false;
+        return stripos($product['title'], $search_query) !== false || stripos($product['art'], $search_query) !== false || stripos($product['brand'], $search_query) !== false;
     });
 } 
 else 
@@ -113,7 +111,11 @@ switch ($sort_type)
     case 'popular':
         usort($filtered_products, function($a, $b) 
         {
-            if ($a['hit'] == $b['hit']) return 0;
+            if ($a['hit'] == $b['hit']) 
+            {
+                return 0;
+            }
+
             return $a['hit'] ? -1 : 1;
         });
         break;
@@ -185,15 +187,17 @@ switch ($sort_type)
         <h2 class="mb-4"><i class="bi bi-filter-square"></i> Категории</h2>
         <div class="row g-4">
             <?php
+            $base_url = '../files/categories/';
+
             $categories = [
-                ['icon' => 'bi-droplet', 'title' => 'Моторные масла', 'count' => '124 товара', 'color' => 'primary'],
-                ['icon' => 'bi-gear', 'title' => 'Трансмиссионные масла', 'count' => '56 товаров', 'color' => 'success'],
-                ['icon' => 'bi-snow', 'title' => 'Тормозные жидкости', 'count' => '23 товара', 'color' => 'danger'],
-                ['icon' => 'bi-water', 'title' => 'Охлаждающие жидкости', 'count' => '34 товара', 'color' => 'info'],
-                ['icon' => 'bi-wind', 'title' => 'Жидкости ГУР', 'count' => '18 товаров', 'color' => 'warning'],
-                ['icon' => 'bi-droplet-half', 'title' => 'Антифризы', 'count' => '42 товара', 'color' => 'secondary'],
-                ['icon' => 'bi-brightness-high', 'title' => 'Специальные жидкости', 'count' => '31 товар', 'color' => 'dark'],
-                ['icon' => 'bi-archive', 'title' => 'Комплекты', 'count' => '15 товаров', 'color' => 'primary']
+                ['icon' => 'bi-droplet', 'title' => 'Моторные масла', 'count' => '124 товара', 'color' => 'primary', 'link' => $base_url . 'motor-oils.php'],
+                ['icon' => 'bi-gear', 'title' => 'Трансмиссионные масла', 'count' => '56 товаров', 'color' => 'success', 'link' => $base_url . 'transmission-oils.php'],
+                ['icon' => 'bi-snow', 'title' => 'Тормозные жидкости', 'count' => '23 товара', 'color' => 'danger', 'link' => $base_url . 'brake-fluids.php'],
+                ['icon' => 'bi-water', 'title' => 'Охлаждающие жидкости', 'count' => '34 товара', 'color' => 'info', 'link' => $base_url . 'cooling-fluids.php'],
+                ['icon' => 'bi-wind', 'title' => 'Жидкости ГУР', 'count' => '18 товаров', 'color' => 'warning', 'link' => $base_url . 'power-steering-fluids.php'],
+                ['icon' => 'bi-droplet-half', 'title' => 'Антифризы', 'count' => '42 товара', 'color' => 'secondary', 'link' => $base_url . 'antifreeze.php'],
+                ['icon' => 'bi-brightness-high', 'title' => 'Специальные жидкости', 'count' => '31 товар', 'color' => 'dark', 'link' => $base_url . 'special-fluids.php'],
+                ['icon' => 'bi-archive', 'title' => 'Комплекты', 'count' => '15 товаров', 'color' => 'primary', 'link' => $base_url . 'categories/kits.php']
             ];
             
             foreach ($categories as $category) 
@@ -209,7 +213,7 @@ switch ($sort_type)
                             <div class="category-count text-muted small">'.$category['count'].'</div>
                         </div>
                         <div class="card-footer bg-transparent border-top-0 text-center">
-                            <a href="#" class="btn btn-sm btn-outline-'.$category['color'].' stretched-link">Смотреть</a>
+                            <a href="'.$category['link'].'" class="btn btn-sm btn-outline-'.$category['color'].' stretched-link">Смотреть</a>
                         </div>
                     </div>
                 </div>';

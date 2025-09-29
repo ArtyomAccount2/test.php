@@ -153,6 +153,295 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
         </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="premium">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Mann-Filter" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Mann-Filter</h5>
+                    <p class="brand-country">Германия</p>
+                    <div class="brand-category">Премиум</div>
+                    <p class="brand-description">Эксперты в области фильтрации для автомобильной промышленности</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 300 товаров</span>
+                        <span class="stat-item">ОЕМ поставщик</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="premium">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Brembo" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Brembo</h5>
+                    <p class="brand-country">Италия</p>
+                    <div class="brand-category">Премиум</div>
+                    <p class="brand-description">Мировой лидер в производстве тормозных систем</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 400 товаров</span>
+                        <span class="stat-item">Спорт-кар качество</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="original">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Volkswagen Original" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">VW Original</h5>
+                    <p class="brand-country">Германия</p>
+                    <div class="brand-category">Оригинальные</div>
+                    <p class="brand-description">Оригинальные запчасти Volkswagen Group</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 2000 товаров</span>
+                        <span class="stat-item">Официальный дилер</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="original">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Toyota Original" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Toyota Original</h5>
+                    <p class="brand-country">Япония</p>
+                    <div class="brand-category">Оригинальные</div>
+                    <p class="brand-description">Оригинальные запчасти Toyota Motor Corporation</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 1500 товаров</span>
+                        <span class="stat-item">Гарантия качества</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="original">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="BMW Original" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">BMW Original</h5>
+                    <p class="brand-country">Германия</p>
+                    <div class="brand-category">Оригинальные</div>
+                    <p class="brand-description">Оригинальные запчасти BMW Group</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 1200 товаров</span>
+                        <span class="stat-item">Сертифицировано</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="original">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Mercedes-Benz Original" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Mercedes Original</h5>
+                    <p class="brand-country">Германия</p>
+                    <div class="brand-category">Оригинальные</div>
+                    <p class="brand-description">Оригинальные запчасти Mercedes-Benz</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 1100 товаров</span>
+                        <span class="stat-item">Премиум качество</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="aftermarket">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Febi Bilstein" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Febi Bilstein</h5>
+                    <p class="brand-country">Германия</p>
+                    <div class="brand-category">Аналоги</div>
+                    <p class="brand-description">Качественные аналоги европейских автомобилей</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 800 товаров</span>
+                        <span class="stat-item">Соответствие OE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="aftermarket">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Blue Print" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Blue Print</h5>
+                    <p class="brand-country">Япония</p>
+                    <div class="brand-category">Аналоги</div>
+                    <p class="brand-description">Высококачественные аналоги для азиатских авто</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 600 товаров</span>
+                        <span class="stat-item">Японское качество</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="aftermarket">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="SWAG" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">SWAG</h5>
+                    <p class="brand-country">Германия</p>
+                    <div class="brand-category">Аналоги</div>
+                    <p class="brand-description">Немецкое качество по доступным ценам</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 500 товаров</span>
+                        <span class="stat-item">Германские стандарты</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="aftermarket">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Mapco" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Mapco</h5>
+                    <p class="brand-country">Германия</p>
+                    <div class="brand-category">Аналоги</div>
+                    <p class="brand-description">Надежные аналоги для европейских автомобилей</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 400 товаров</span>
+                        <span class="stat-item">Проверенное качество</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="russia">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Трек" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Трек</h5>
+                    <p class="brand-country">Россия</p>
+                    <div class="brand-category">Российские</div>
+                    <p class="brand-description">Ведущий российский производитель фильтров</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 200 товаров</span>
+                        <span class="stat-item">Лучшая цена</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="russia">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="СтартВОЛЬТ" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">СтартВОЛЬТ</h5>
+                    <p class="brand-country">Россия</p>
+                    <div class="brand-category">Российские</div>
+                    <p class="brand-description">Российские аккумуляторы премиум-класса</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 50 товаров</span>
+                        <span class="stat-item">Адаптированы к климату</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="russia">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="FENOX" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">FENOX</h5>
+                    <p class="brand-country">Беларусь/Россия</p>
+                    <div class="brand-category">Российские</div>
+                    <p class="brand-description">Качественные автокомпоненты для СНГ рынка</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 300 товаров</span>
+                        <span class="stat-item">Оптимальное соотношение</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="russia">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="БелМаг" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">БелМаг</h5>
+                    <p class="brand-country">Россия</p>
+                    <div class="brand-category">Российские</div>
+                    <p class="brand-description">Магнитолы и аудиосистемы российского производства</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 100 товаров</span>
+                        <span class="stat-item">Лучшая цена</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="premium">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Continental" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Continental</h5>
+                    <p class="brand-country">Германия</p>
+                    <div class="brand-category">Премиум</div>
+                    <p class="brand-description">Инновационные шины и автомобильные системы</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 700 товаров</span>
+                        <span class="stat-item">Немецкие технологии</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="aftermarket">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Corteco" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Corteco</h5>
+                    <p class="brand-country">Германия</p>
+                    <div class="brand-category">Аналоги</div>
+                    <p class="brand-description">Качественные уплотнители и сальники</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 350 товаров</span>
+                        <span class="stat-item">Надежность</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-6 brand-item" data-category="russia">
+            <div class="brand-card">
+                <div class="brand-logo-container">
+                    <img src="../img/no-image.png" alt="Катрен" class="brand-logo">
+                </div>
+                <div class="brand-info">
+                    <h5 class="brand-name">Катрен</h5>
+                    <p class="brand-country">Россия</p>
+                    <div class="brand-category">Российские</div>
+                    <p class="brand-description">Автохимия и технические жидкости</p>
+                    <div class="brand-stats">
+                        <span class="stat-item">Более 150 товаров</span>
+                        <span class="stat-item">Эффективность</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row mt-5">
         <div class="col-12">
