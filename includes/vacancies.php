@@ -124,22 +124,30 @@ unset($_SESSION['form_data']);
                             <li>Подбор запчастей по VIN и каталогам</li>
                             <li>Оформление заказов и работа с 1С</li>
                             <li>Ведение базы клиентов</li>
+                            <li>Работа с входящими и исходящими звонками</li>
+                            <li>Участие в инвентаризациях</li>
+                            <li>Взаимодействие с отделом закупок</li>
+                            <li>Контроль выполнения заказов</li>
                         </ul>
-                        
                         <h5>Требования:</h5>
                         <ul>
                             <li>Опыт работы в продажах от 1 года</li>
                             <li>Знание автомобилей и запчастей</li>
                             <li>Умение работать в команде</li>
                             <li>Грамотная речь</li>
+                            <li>Клиентоориентированность</li>
+                            <li>Стрессоустойчивость</li>
+                            <li>Обучаемость</li>
                         </ul>
-                        
                         <h5>Условия:</h5>
                         <ul>
                             <li>Официальное трудоустройство</li>
                             <li>График 5/2 с 9:00 до 18:00</li>
                             <li>Обучение и стажировка</li>
                             <li>Карьерный рост</li>
+                            <li>Корпоративные мероприятия</li>
+                            <li>Оформление по ТК РФ</li>
+                            <li>Премии по результатам работы</li>
                         </ul>
                     </div>
                 </div>
@@ -175,22 +183,30 @@ unset($_SESSION['form_data']);
                             <li>Техническое обслуживание</li>
                             <li>Работа с клиентами</li>
                             <li>Ведение документации</li>
+                            <li>Замена технических жидкостей</li>
+                            <li>Ремонт ходовой части</li>
+                            <li>Диагностика электронных систем</li>
+                            <li>Шиномонтажные работы</li>
                         </ul>
-                        
                         <h5>Требования:</h5>
                         <ul>
                             <li>Опыт работы автомехаником от 3 лет</li>
                             <li>Знание устройства автомобилей</li>
                             <li>Навыки работы с диагностическим оборудованием</li>
                             <li>Ответственность и аккуратность</li>
+                            <li>Наличие собственного инструмента</li>
+                            <li>Опыт работы с иномарками</li>
+                            <li>Техническое образование</li>
                         </ul>
-                        
                         <h5>Условия:</h5>
                         <ul>
                             <li>Официальное трудоустройство</li>
                             <li>График 2/2 с 9:00 до 20:00</li>
                             <li>Современное оборудование</li>
                             <li>Премии за качество работы</li>
+                            <li>Оплачиваемые больничные</li>
+                            <li>Стабильная заработная плата</li>
+                            <li>Комфортные условия труда</li>
                         </ul>
                     </div>
                 </div>
@@ -250,7 +266,7 @@ unset($_SESSION['form_data']);
             <div class="modal-body">
                 <form id="vacancyForm" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label for="vacancyPosition" class="form-label">Вакансия *</label>
+                        <label for="vacancyPosition" class="form-label">Вакансия<span class="text-danger">*</span></label>
                         <select class="form-select" id="vacancyPosition" required>
                             <option value="" selected disabled>Выберите вакансию</option>
                             <option value="Менеджер по продажам">Менеджер по продажам автозапчастей</option>
@@ -259,15 +275,15 @@ unset($_SESSION['form_data']);
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="vacancyName" class="form-label">ФИО *</label>
+                        <label for="vacancyName" class="form-label">ФИО<span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="vacancyName" required>
                     </div>
                     <div class="mb-3">
-                        <label for="vacancyPhone" class="form-label">Телефон *</label>
+                        <label for="vacancyPhone" class="form-label">Телефон<span class="text-danger">*</span></label>
                         <input type="tel" class="form-control" id="vacancyPhone" placeholder="+7 (___) ___-__-__" required>
                     </div>
                     <div class="mb-3">
-                        <label for="vacancyEmail" class="form-label">Email *</label>
+                        <label for="vacancyEmail" class="form-label">Email<span class="text-danger">*</span></label>
                         <input type="email" class="form-control" id="vacancyEmail" required>
                     </div>
                     <div class="mb-3">
@@ -275,7 +291,7 @@ unset($_SESSION['form_data']);
                         <textarea class="form-control" id="vacancyMessage" rows="3" placeholder="Расскажите о своем опыте и почему вы хотите работать у нас"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Резюме *</label>
+                        <label class="form-label">Резюме<span class="text-danger">*</span></label>
                         <div class="file-upload">
                             <label for="vacancyFile" class="file-upload-btn">
                                 <i class="bi bi-cloud-arrow-up fs-3"></i>
@@ -289,9 +305,11 @@ unset($_SESSION['form_data']);
                         <input type="checkbox" class="form-check-input" id="vacancyAgree" required>
                         <label class="form-check-label" for="vacancyAgree">Я согласен на обработку персональных данных</label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="bi bi-send"></i> Отправить отклик
-                    </button>
+                </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-send"></i> Отправить отклик
+                </button>
                 </form>
             </div>
         </div>

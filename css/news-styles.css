@@ -26,6 +26,8 @@
     height: 100%;
     background-color: white;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .news-card:hover 
@@ -76,6 +78,9 @@
 .news-body 
 {
     padding: 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .news-date 
@@ -106,6 +111,7 @@
     color: #666;
     margin-bottom: 20px;
     line-height: 1.6;
+    flex: 1;
 }
 
 .read-more 

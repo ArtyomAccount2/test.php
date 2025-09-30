@@ -129,7 +129,7 @@ unset($_SESSION['form_data']);
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-8 mx-auto">
+        <div class="col-lg-12 mx-auto">
             <div class="support-content">
                 <section id="instructions" class="mb-5">
                     <h3 class="mb-4"><i class="bi bi-book"></i> Инструкции по работе с сайтом</h3>

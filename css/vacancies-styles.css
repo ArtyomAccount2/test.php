@@ -10,6 +10,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    max-height: 600px;
 }
 
 .vacancy-card:hover 
@@ -44,6 +45,11 @@
 {
     padding: 20px;
     flex-grow: 1;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 400px;
+    padding-right: 10px;
+    margin-bottom: 15px;
 }
 
 .vacancy-footer 
@@ -199,4 +205,65 @@
     {
         margin-bottom: 20px;
     }
+}
+
+.modal-content 
+{
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+        
+.modal-body 
+{
+    overflow-y: auto;
+    max-height: calc(90vh - 120px);
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+.modal-body::-webkit-scrollbar 
+{
+    width: 6px;
+}
+        
+.modal-body::-webkit-scrollbar-track 
+{
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+        
+.modal-body::-webkit-scrollbar-thumb 
+{
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+        
+.modal-body::-webkit-scrollbar-thumb:hover 
+{
+    background: #a8a8a8;
+}
+        
+.vacancy-body::-webkit-scrollbar 
+{
+    width: 4px;
+}
+        
+.vacancy-body::-webkit-scrollbar-track 
+{
+    background: #f8f9fa;
+    border-radius: 2px;
+}
+        
+.vacancy-body::-webkit-scrollbar-thumb 
+{
+    background: #dee2e6;
+    border-radius: 2px;
+}
+        
+.vacancy-body::-webkit-scrollbar-thumb:hover 
+{
+    background: #adb5bd;
 }
