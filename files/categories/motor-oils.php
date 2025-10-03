@@ -64,7 +64,12 @@ $motor_oils = [
     ['id' => 7, 'title' => 'ZIC X9 5W-30', 'art' => 'ZX9-5W30', 'volume' => '4 л', 'price' => 2990, 'stock' => true, 'hit' => false, 'brand' => 'ZIC', 'viscosity' => '5W-30', 'type' => 'Синтетическое', 'api' => 'SN', 'acea' => 'A5/B5'],
     ['id' => 8, 'title' => 'ELF Evolution 900 NF 5W-40', 'art' => 'ELF900', 'volume' => '5 л', 'price' => 3750, 'stock' => true, 'hit' => false, 'brand' => 'ELF', 'viscosity' => '5W-40', 'type' => 'Синтетическое', 'api' => 'SN/CF', 'acea' => 'A3/B4'],
     ['id' => 9, 'title' => 'Castrol MAGNATEC 5W-30', 'art' => 'CAST567', 'volume' => '4 л', 'price' => 3250, 'stock' => true, 'hit' => true, 'brand' => 'Castrol', 'viscosity' => '5W-30', 'type' => 'Синтетическое', 'api' => 'SN', 'acea' => 'A1/B1'],
-    ['id' => 10, 'title' => 'Mobil 1 0W-40', 'art' => 'MOB1-0W40', 'volume' => '4 л', 'price' => 4450, 'stock' => true, 'hit' => false, 'brand' => 'Mobil', 'viscosity' => '0W-40', 'type' => 'Синтетическое', 'api' => 'SN', 'acea' => 'A3/B4']
+    ['id' => 10, 'title' => 'Mobil 1 0W-40', 'art' => 'MOB1-0W40', 'volume' => '4 л', 'price' => 4450, 'stock' => true, 'hit' => false, 'brand' => 'Mobil', 'viscosity' => '0W-40', 'type' => 'Синтетическое', 'api' => 'SN', 'acea' => 'A3/B4'],
+    ['id' => 11, 'title' => 'Castrol EDGE 0W-20', 'art' => '15698E5', 'volume' => '4 л', 'price' => 3990, 'stock' => true, 'hit' => false, 'brand' => 'Castrol', 'viscosity' => '0W-20', 'type' => 'Синтетическое', 'api' => 'SN/CF', 'acea' => 'A1/B1'],
+    ['id' => 12, 'title' => 'Mobil Super 3000 5W-30', 'art' => '152344', 'volume' => '4 л', 'price' => 3550, 'stock' => true, 'hit' => false, 'brand' => 'Mobil', 'viscosity' => '5W-30', 'type' => 'Синтетическое', 'api' => 'SN', 'acea' => 'A3/B4'],
+    ['id' => 13, 'title' => 'Liqui Moly Molygen 5W-40', 'art' => '1124DE', 'volume' => '5 л', 'price' => 4510, 'stock' => true, 'hit' => true, 'brand' => 'Liqui Moly', 'viscosity' => '5W-40', 'type' => 'Синтетическое', 'api' => 'SN/CF', 'acea' => 'A3/B4'],
+    ['id' => 14, 'title' => 'Shell Helix Ultra 5W-30', 'art' => '87655F', 'volume' => '4 л', 'price' => 3290, 'stock' => true, 'hit' => false, 'brand' => 'Shell', 'viscosity' => '5W-30', 'type' => 'Синтетическое', 'api' => 'SN/CF', 'acea' => 'A5/B5'],
+    ['id' => 15, 'title' => 'Total Quartz 7000 10W-40', 'art' => 'TQ7000', 'volume' => '4 л', 'price' => 2750, 'stock' => true, 'hit' => false, 'brand' => 'Total', 'viscosity' => '10W-40', 'type' => 'Полусинтетическое', 'api' => 'SN', 'acea' => 'A3/B4']
 ];
 
 $search_query = $_GET['search'] ?? '';
@@ -72,6 +77,9 @@ $sort_type = $_GET['sort'] ?? 'default';
 $brand_filter = $_GET['brand'] ?? '';
 $viscosity_filter = $_GET['viscosity'] ?? '';
 $type_filter = $_GET['type'] ?? '';
+
+$items_per_page = 8;
+$current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
 $filtered_products = $motor_oils;
 
@@ -141,6 +149,13 @@ switch ($sort_type)
     default:
         break;
 }
+
+$total_items = count($filtered_products);
+$total_pages = ceil($total_items / $items_per_page);
+$current_page = min($current_page, $total_pages);
+$offset = ($current_page - 1) * $items_per_page;
+
+$paginated_products = array_slice($filtered_products, $offset, $items_per_page);
 ?>
 
 <!DOCTYPE html>
@@ -321,7 +336,7 @@ switch ($sort_type)
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="mb-0"><i class="bi bi-funnel"></i> Фильтры</h2>
                 <div>
-                    <a href="#" class="btn btn-sm btn-outline-secondary me-2">Сбросить</a>
+                    <a href="?" class="btn btn-sm btn-outline-secondary me-2">Сбросить</a>
                     <button class="btn btn-sm btn-primary" onclick="applyFilters()">Применить</button>
                 </div>
             </div>
@@ -382,11 +397,12 @@ switch ($sort_type)
                 </div>
                 <input type="hidden" name="search" value="<?php echo htmlspecialchars($search_query); ?>">
                 <input type="hidden" name="sort" value="<?php echo $sort_type; ?>">
+                <input type="hidden" name="page" value="1">
             </form>
         </div>
         <div class="products-section mb-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="mb-0"><i class="bi bi-box-seam"></i> Товары <span class="badge bg-secondary"><?php echo count($filtered_products); ?></span></h2>
+                <h2 class="mb-0"><i class="bi bi-box-seam"></i> Товары <span class="badge bg-secondary"><?php echo $total_items; ?></span></h2>
                 <div class="d-flex">
                     <div class="dropdown me-2">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -402,11 +418,11 @@ switch ($sort_type)
                             ?>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'default']); ?>">По умолчанию</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'popular']); ?>">По популярности</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'price_asc']); ?>">По цене (возрастание)</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'price_desc']); ?>">По цене (убывание)</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'name']); ?>">По названию</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'default', 'page' => 1]); ?>">По умолчанию</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'popular', 'page' => 1]); ?>">По популярности</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'price_asc', 'page' => 1]); ?>">По цене (возрастание)</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'price_desc', 'page' => 1]); ?>">По цене (убывание)</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'name', 'page' => 1]); ?>">По названию</a></li>
                         </ul>
                     </div>
                     <form method="GET" class="d-flex">
@@ -426,11 +442,12 @@ switch ($sort_type)
                         <input type="hidden" name="viscosity" value="<?php echo $viscosity_filter; ?>">
                         <input type="hidden" name="type" value="<?php echo $type_filter; ?>">
                         <input type="hidden" name="sort" value="<?php echo $sort_type; ?>">
+                        <input type="hidden" name="page" value="1">
                     </form>
                 </div>
             </div>
             <?php 
-            if (empty($filtered_products))
+            if (empty($paginated_products))
             {
             ?>
                 <div class="alert alert-warning text-center">
@@ -443,7 +460,7 @@ switch ($sort_type)
             ?>
                 <div class="row g-4">
                     <?php
-                    foreach ($filtered_products as $product) 
+                    foreach ($paginated_products as $product) 
                     {
                         echo '
                         <div class="col-lg-3 col-md-4 col-6">
@@ -476,6 +493,79 @@ switch ($sort_type)
                     }
                     ?>
                 </div>
+                <?php if ($total_pages > 1)
+                {
+                ?>
+                <nav aria-label="Page navigation" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item <?php echo $current_page <= 1 ? 'disabled' : ''; ?>">
+                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $current_page - 1]); ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <?php 
+                        if ($current_page > 3) 
+                        {
+                        ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?<?php echo buildQueryString(['page' => 1]); ?>">1</a>
+                        </li>
+                            <?php 
+                            if ($current_page > 4) 
+                            {
+                            ?>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                            <?php 
+                            } 
+                            ?>
+                        <?php 
+                        }
+                        ?>
+                        <?php 
+                        for ($i = max(1, $current_page - 2); $i <= min($total_pages, $current_page + 2); $i++) 
+                        {
+                        ?>
+                        <li class="page-item <?php echo $i == $current_page ? 'active' : ''; ?>">
+                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $i]); ?>"><?php echo $i; ?></a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                        <?php 
+                        if ($current_page < $total_pages - 2) 
+                        {
+                        ?>
+                            <?php 
+                            if ($current_page < $total_pages - 3)
+                            {
+                            ?>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                            <?php 
+                            } 
+                            ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $total_pages]); ?>"><?php echo $total_pages; ?></a>
+                        </li>
+                        <?php 
+                        } 
+                        ?>
+                        <li class="page-item <?php echo $current_page >= $total_pages ? 'disabled' : ''; ?>">
+                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $current_page + 1]); ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="text-center text-muted mt-2">
+                        Показано <?php echo ($offset + 1); ?>-<?php echo min($offset + $items_per_page, $total_items); ?> из <?php echo $total_items; ?> товаров
+                    </div>
+                </nav>
+                <?php 
+                }
+                ?>
             <?php 
             } 
             ?>
@@ -510,6 +600,26 @@ function buildQueryString(params)
 
     return currentParams.toString();
 }
+
+document.addEventListener('DOMContentLoaded', function() 
+{
+    let paginationLinks = document.querySelectorAll('.pagination a');
+
+    paginationLinks.forEach(link => {
+        link.addEventListener('click', function(e) 
+        {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+            setTimeout(() => {
+                window.location.href = this.href;
+            }, 300);
+        });
+    });
+});
 </script>
 </body>
 </html>

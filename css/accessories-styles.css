@@ -8,7 +8,7 @@
 .product-card:hover 
 {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .product-card .card-img-top 
@@ -176,5 +176,10 @@
 
 .card-body
 {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(125, 125, 125, 0.05);
+}
+
+.accessories-container
+{
+    padding: 20px;
 }

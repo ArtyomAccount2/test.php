@@ -8,6 +8,33 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['u
     header("Location: ../files/logout.php");
 }
 
+$reviews_per_page = 4;
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+if ($current_page < 1) 
+{
+    $current_page = 1;
+}
+
+$total_reviews_stmt = $conn->prepare("SELECT COUNT(*) as total FROM reviews WHERE status = 'approved'");
+$total_reviews_stmt->execute();
+$total_reviews_result = $total_reviews_stmt->get_result();
+$total_reviews = $total_reviews_result->fetch_assoc()['total'];
+
+$total_pages = ceil($total_reviews / $reviews_per_page);
+
+if ($current_page > $total_pages && $total_pages > 0) 
+{
+    $current_page = $total_pages;
+}
+
+$offset = ($current_page - 1) * $reviews_per_page;
+
+$reviews_stmt = $conn->prepare("SELECT * FROM reviews WHERE status = 'approved' ORDER BY created_at DESC LIMIT ? OFFSET ?");
+$reviews_stmt->bind_param("ii", $reviews_per_page, $offset);
+$reviews_stmt->execute();
+$reviews_result = $reviews_stmt->get_result();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $login = $_POST['login'];
@@ -165,14 +192,39 @@ unset($_SESSION['form_data']);
                     alert('Необходимо согласие на обработку персональных данных');
                     return;
                 }
-                
-                alert('Спасибо за ваш отзыв! После модерации он будет опубликован.');
-                reviewForm.reset();
-                ratingValue.value = '0';
 
-                stars.forEach(s => {
-                    s.classList.add('bi-star');
-                    s.classList.remove('bi-star-fill', 'text-warning');
+                let formData = new FormData();
+                formData.append('name', document.getElementById('reviewName').value);
+                formData.append('email', document.getElementById('reviewEmail').value);
+                formData.append('rating', ratingValue.value);
+                formData.append('text', document.getElementById('reviewText').value);
+                formData.append('action', 'add_review');
+
+                fetch('../files/handle_review.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) 
+                    {
+                        alert('Спасибо за ваш отзыв! После модерации он будет опубликован.');
+                        reviewForm.reset();
+                        ratingValue.value = '0';
+
+                        stars.forEach(s => {
+                            s.classList.add('bi-star');
+                            s.classList.remove('bi-star-fill', 'text-warning');
+                        });
+                    } 
+                    else 
+                    {
+                        alert('Произошла ошибка: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Произошла ошибка при отправке отзыва');
                 });
             });
         }
@@ -232,108 +284,110 @@ unset($_SESSION['form_data']);
         </div>
     </div>
     <div class="row g-4 mb-5" id="reviewsContainer">
-        <div class="col-md-6">
-            <div class="review-card h-100">
-                <div class="review-header">
-                    <img src="../img/no-image.png" class="review-avatar" alt="Иван Петров">
-                    <div>
-                        <div class="review-author">Иван Петров</div>
-                        <div class="review-date">12 мая 2025</div>
+        <?php 
+        if ($reviews_result->num_rows > 0) 
+        {
+        ?>
+            <?php 
+            while($review = $reviews_result->fetch_assoc()) 
+            {
+            ?>
+                <div class="col-md-6">
+                    <div class="review-card h-100">
+                        <div class="review-header">
+                            <img src="../img/no-image.png" class="review-avatar" alt="<?php echo htmlspecialchars($review['name']); ?>">
+                            <div>
+                                <div class="review-author"><?php echo htmlspecialchars($review['name']); ?></div>
+                                <div class="review-date"><?php echo date('d.m.Y', strtotime($review['created_at'])); ?></div>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            <?php 
+                            for($i = 1; $i <= 5; $i++) 
+                            {
+                            ?>
+                                <?php 
+                                if ($i <= $review['rating']) 
+                                {
+                                ?>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                <?php 
+                                }
+                                else 
+                                {
+                                ?>
+                                    <i class="bi bi-star text-secondary"></i>
+                                <?php 
+                                } 
+                                ?>
+                            <?php 
+                            }
+                            ?>
+                        </div>
+                        <div class="review-text">
+                            <p><?php echo nl2br(htmlspecialchars($review['text'])); ?></p>
+                        </div>
                     </div>
                 </div>
-                <div class="review-rating">
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                </div>
-                <div class="review-text">
-                    <p>Отличный магазин! Покупал здесь фильтры и масло для своего Ford Focus. Консультант помог подобрать именно то, что нужно. Цены приятно удивили - дешевле, чем у конкурентов. Доставили на следующий день, хотя я живу в области. Теперь только сюда!</p>
-                </div>
+            <?php 
+            } 
+            ?>
+        <?php 
+        }
+        else
+        { 
+        ?>
+            <div class="col-12 text-center">
+                <p class="text-muted">Пока нет отзывов. Будьте первым, кто оставит отзыв!</p>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="review-card h-100">
-                <div class="review-header">
-                    <img src="../img/no-image.png" class="review-avatar" alt="Мария Семенова">
-                    <div>
-                        <div class="review-author">Мария Семенова</div>
-                        <div class="review-date">28 апреля 2025</div>
-                    </div>
-                </div>
-                <div class="review-rating">
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star text-secondary"></i>
-                </div>
-                <div class="review-text">
-                    <p>Заказывала тормозные колодки для Toyota Camry. Качество на высоте, все подошло идеально. Доставка быстрая, менеджер был на связи и ответил на все вопросы. Единственное - хотелось бы больше акций и скидок для постоянных клиентов.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="review-card h-100">
-                <div class="review-header">
-                    <img src="../img/no-image.png" class="review-avatar" alt="Алексей Ковалев">
-                    <div>
-                        <div class="review-author">Алексей Ковалев</div>
-                        <div class="review-date">15 марта 2025</div>
-                    </div>
-                </div>
-                <div class="review-rating">
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-half text-warning"></i>
-                </div>
-                <div class="review-text">
-                    <p>Хороший ассортимент автозапчастей. Нашел все что нужно для ремонта подвески. Цены адекватные, качество товара соответствует описанию. Доставка заняла 2 дня, что для нашего города очень быстро. Рекомендую!</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="review-card h-100">
-                <div class="review-header">
-                    <img src="../img/no-image.png" class="review-avatar" alt="Елена Васнецова">
-                    <div>
-                        <div class="review-author">Елена Васнецова</div>
-                        <div class="review-date">3 февраля 2025</div>
-                    </div>
-                </div>
-                <div class="review-rating">
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star text-secondary"></i>
-                    <i class="bi bi-star text-secondary"></i>
-                </div>
-                <div class="review-text">
-                    <p>Покупала лампы для фар. Товар пришел быстро, но одна лампа оказалась нерабочей. После обращения в поддержку проблему быстро решили - прислали замену без лишних вопросов. Спасибо за оперативность!</p>
-                </div>
-            </div>
-        </div>
+        <?php 
+        } 
+        ?>
     </div>
+    <?php 
+    if ($total_pages > 1) 
+    {
+    ?>
     <nav aria-label="Page navigation" class="mt-4">
         <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
+            <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+            <?php
+            $start_page = max(1, $current_page - 2);
+            $end_page = min($total_pages, $current_page + 2);
+
+            if ($start_page == 1) 
+            {
+                $end_page = min($total_pages, 5);
+            }
+
+            if ($end_page == $total_pages) 
+            {
+                $start_page = max(1, $total_pages - 4);
+            }
+            
+            for ($i = $start_page; $i <= $end_page; $i++)
+            { 
+            ?>
+                <li class="page-item <?php echo $i == $current_page ? 'active' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+            <?php 
+            }
+            ?>
+            <li class="page-item <?php echo $current_page == $total_pages ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
         </ul>
     </nav>
+    <?php 
+    }
+    ?>
 </div>
 
 <?php 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Сен 17 2025 г., 21:00
+-- Время создания: Окт 01 2025 г., 21:44
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -20,6 +20,22 @@ SET time_zone = "+00:00";
 --
 -- База данных: `CourseWork`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `rating` int(11) NOT NULL,
+  `text` text NOT NULL,
+  `status` enum('pending','approved','rejected') DEFAULT 'pending',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -63,6 +79,12 @@ INSERT INTO `users` (`id_users`, `surname_users`, `name_users`, `patronymic_user
 --
 
 --
+-- Индексы таблицы `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
@@ -71,6 +93,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT для сохранённых таблиц
 --
+
+--
+-- AUTO_INCREMENT для таблицы `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
