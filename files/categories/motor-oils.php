@@ -493,7 +493,8 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
                     }
                     ?>
                 </div>
-                <?php if ($total_pages > 1)
+                <?php 
+                if ($total_pages > 1)
                 {
                 ?>
                 <nav aria-label="Page navigation" class="mt-5">

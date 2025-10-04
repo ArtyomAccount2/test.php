@@ -575,11 +575,16 @@ function buildQueryString(params)
     let currentParams = new URLSearchParams(window.location.search);
     let keys = Object.keys(params);
     
-    for (let i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) 
+    {
         let key = keys[i];
-        if (params[key]) {
+
+        if (params[key]) 
+        {
             currentParams.set(key, params[key]);
-        } else {
+        } 
+        else 
+        {
             currentParams.delete(key);
         }
     }

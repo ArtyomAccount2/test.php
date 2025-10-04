@@ -64,7 +64,12 @@ $power_steering_fluids = [
     ['id' => 7, 'title' => 'Castrol Transmax ATF', 'art' => 'CAST-PS01', 'volume' => '1 л', 'price' => 1350, 'stock' => true, 'hit' => false, 'brand' => 'Castrol', 'type' => 'ATF', 'color' => 'Красный'],
     ['id' => 8, 'title' => 'Mobil ATF 320', 'art' => 'MOB-PS001', 'volume' => '1 л', 'price' => 1100, 'stock' => true, 'hit' => false, 'brand' => 'Mobil', 'type' => 'ATF', 'color' => 'Красный'],
     ['id' => 9, 'title' => 'Pentosin CHF 11S', 'art' => 'PENT-PS01', 'volume' => '1 л', 'price' => 1650, 'stock' => true, 'hit' => true, 'brand' => 'Pentosin', 'type' => 'CHF', 'color' => 'Зеленый'],
-    ['id' => 10, 'title' => 'Comma PSF-MV', 'art' => 'COMM-PS01', 'volume' => '1 л', 'price' => 820, 'stock' => true, 'hit' => false, 'brand' => 'Comma', 'type' => 'PSF', 'color' => 'Красный']
+    ['id' => 10, 'title' => 'Comma PSF-MV', 'art' => 'COMM-PS01', 'volume' => '1 л', 'price' => 820, 'stock' => true, 'hit' => false, 'brand' => 'Comma', 'type' => 'PSF', 'color' => 'Красный'],
+    ['id' => 11, 'title' => 'Liqui Moly ATF Synth', 'art' => 'PSF002', 'volume' => '1 л', 'price' => 1550, 'stock' => true, 'hit' => false, 'brand' => 'Liqui Moly', 'type' => 'ATF', 'color' => 'Красный'],
+    ['id' => 12, 'title' => 'Febi Hydraulic Oil', 'art' => 'FEBI-PS02', 'volume' => '1 л', 'price' => 1050, 'stock' => true, 'hit' => false, 'brand' => 'Febi', 'type' => 'PSF', 'color' => 'Зеленый'],
+    ['id' => 13, 'title' => 'Ravenol ATF Fluid', 'art' => 'RAV-PS002', 'volume' => '1 л', 'price' => 1250, 'stock' => true, 'hit' => true, 'brand' => 'Ravenol', 'type' => 'ATF', 'color' => 'Красный'],
+    ['id' => 14, 'title' => 'Motul Dexron III', 'art' => 'MOT-PS002', 'volume' => '1 л', 'price' => 1380, 'stock' => true, 'hit' => false, 'brand' => 'Motul', 'type' => 'ATF', 'color' => 'Красный'],
+    ['id' => 15, 'title' => 'Pentosin CHF 202', 'art' => 'PENT-PS02', 'volume' => '1 л', 'price' => 1750, 'stock' => true, 'hit' => true, 'brand' => 'Pentosin', 'type' => 'CHF', 'color' => 'Зеленый']
 ];
 
 $search_query = $_GET['search'] ?? '';
@@ -72,6 +77,9 @@ $sort_type = $_GET['sort'] ?? 'default';
 $brand_filter = $_GET['brand'] ?? '';
 $type_filter = $_GET['type'] ?? '';
 $color_filter = $_GET['color'] ?? '';
+
+$items_per_page = 8;
+$current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
 $filtered_products = $power_steering_fluids;
 
@@ -141,6 +149,13 @@ switch ($sort_type)
     default:
         break;
 }
+
+$total_items = count($filtered_products);
+$total_pages = ceil($total_items / $items_per_page);
+$current_page = min($current_page, $total_pages);
+$offset = ($current_page - 1) * $items_per_page;
+
+$paginated_products = array_slice($filtered_products, $offset, $items_per_page);
 ?>
 
 <!DOCTYPE html>
@@ -161,9 +176,8 @@ switch ($sort_type)
         if (isset($_SESSION['login_error'])) 
         { 
         ?>
-            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            let loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
             loginModal.show();
-
             <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 
@@ -373,11 +387,12 @@ switch ($sort_type)
                 </div>
                 <input type="hidden" name="search" value="<?php echo htmlspecialchars($search_query); ?>">
                 <input type="hidden" name="sort" value="<?php echo $sort_type; ?>">
+                <input type="hidden" name="page" value="1">
             </form>
         </div>
         <div class="products-section mb-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="mb-0"><i class="bi bi-box-seam"></i> Товары <span class="badge bg-secondary"><?php echo count($filtered_products); ?></span></h2>
+                <h2 class="mb-0"><i class="bi bi-box-seam"></i> Товары <span class="badge bg-secondary"><?php echo $total_items; ?></span></h2>
                 <div class="d-flex">
                     <div class="dropdown me-2">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -393,11 +408,11 @@ switch ($sort_type)
                             ?>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'default']); ?>">По умолчанию</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'popular']); ?>">По популярности</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'price_asc']); ?>">По цене (возрастание)</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'price_desc']); ?>">По цене (убывание)</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'name']); ?>">По названию</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'default', 'page' => 1]); ?>">По умолчанию</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'popular', 'page' => 1]); ?>">По популярности</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'price_asc', 'page' => 1]); ?>">По цене (возрастание)</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'price_desc', 'page' => 1]); ?>">По цене (убывание)</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'name', 'page' => 1]); ?>">По названию</a></li>
                         </ul>
                     </div>
                     <form method="GET" class="d-flex">
@@ -417,11 +432,12 @@ switch ($sort_type)
                         <input type="hidden" name="type" value="<?php echo $type_filter; ?>">
                         <input type="hidden" name="color" value="<?php echo $color_filter; ?>">
                         <input type="hidden" name="sort" value="<?php echo $sort_type; ?>">
+                        <input type="hidden" name="page" value="1">
                     </form>
                 </div>
             </div>
             <?php 
-            if (empty($filtered_products))
+            if (empty($paginated_products))
             {
             ?>
                 <div class="alert alert-warning text-center">
@@ -434,7 +450,7 @@ switch ($sort_type)
             ?>
                 <div class="row g-4">
                     <?php
-                    foreach ($filtered_products as $product) 
+                    foreach ($paginated_products as $product) 
                     {
                         echo '
                         <div class="col-lg-3 col-md-4 col-6">
@@ -466,6 +482,89 @@ switch ($sort_type)
                     }
                     ?>
                 </div>
+                <?php if ($total_pages > 1) 
+                { 
+                ?>
+                <nav aria-label="Page navigation" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item 
+                        <?php if ($current_page <= 1) 
+                        { 
+                            echo 'disabled'; 
+                        } 
+                        ?>">
+                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $current_page - 1]); ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <?php 
+                        if ($current_page > 3) 
+                        { 
+                        ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?<?php echo buildQueryString(['page' => 1]); ?>">1</a>
+                        </li>
+                            <?php 
+                            if ($current_page > 4) 
+                            { 
+                            ?>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                            <?php 
+                            } 
+                            ?>
+                        <?php 
+                        } 
+                        ?>
+                        <?php 
+                        for ($i = max(1, $current_page - 2); $i <= min($total_pages, $current_page + 2); $i++) 
+                        { 
+                            ?>
+                        <li class="page-item <?php if ($i == $current_page) { echo 'active'; } ?>">
+                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $i]); ?>"><?php echo $i; ?></a>
+                        </li>
+                        <?php 
+                        } 
+                        ?>
+                        <?php 
+                        if ($current_page < $total_pages - 2) 
+                        { 
+                        ?>
+                            <?php 
+                            if ($current_page < $total_pages - 3) 
+                            { 
+                            ?>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                            <?php 
+                            } 
+                            ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $total_pages]); ?>"><?php echo $total_pages; ?></a>
+                        </li>
+                        <?php 
+                        } 
+                        ?>
+                        <li class="page-item <?php 
+                        if ($current_page >= $total_pages) 
+                        { 
+                            echo 'disabled'; 
+                        } 
+                        ?>">
+                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $current_page + 1]); ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="text-center text-muted mt-2">
+                        Показано <?php echo ($offset + 1); ?>-<?php echo min($offset + $items_per_page, $total_items); ?> из <?php echo $total_items; ?> товаров
+                    </div>
+                </nav>
+                <?php 
+                } 
+                ?>
             <?php 
             } 
             ?>
@@ -486,8 +585,12 @@ function applyFilters()
 function buildQueryString(params) 
 {
     let currentParams = new URLSearchParams(window.location.search);
+    let keys = Object.keys(params);
+    
+    for (let i = 0; i < keys.length; i++) 
+    {
+        let key = keys[i];
 
-    Object.keys(params).forEach(key => {
         if (params[key]) 
         {
             currentParams.set(key, params[key]);
@@ -496,10 +599,30 @@ function buildQueryString(params)
         {
             currentParams.delete(key);
         }
-    });
-
+    }
+    
     return currentParams.toString();
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    let paginationLinks = document.querySelectorAll('.pagination a');
+    
+    for (let i = 0; i < paginationLinks.length; i++) 
+    {
+        paginationLinks[i].addEventListener('click', function(e) 
+        {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+            setTimeout(function() {
+                window.location.href = this.href;
+            }.bind(this), 300);
+        });
+    }
+});
 </script>
 </body>
 </html>
