@@ -268,6 +268,8 @@ document.addEventListener('DOMContentLoaded', function()
     initPartsCards();
     setupScrollButtons();
 
+    initCookieConsent();
+
     setTimeout(checkScrollButtonsVisibility, 100);
 
     let lastScrollTop = 0;
@@ -467,3 +469,98 @@ document.addEventListener('DOMContentLoaded', function()
         window.addEventListener('load', onScroll);
     }
 });
+
+function initCookieConsent() 
+{
+    let cookieConsent = document.getElementById('cookieConsent');
+    let cookieAccept = document.getElementById('cookieAccept');
+    let cookieReject = document.getElementById('cookieReject');
+
+    let cookieDecision = getCookie('cookie_decision');
+        
+    if (!cookieDecision) 
+    {
+        setTimeout(() => {
+            cookieConsent.style.display = 'block';
+            setTimeout(() => {
+                cookieConsent.classList.add('show');
+            }, 100);
+        }, 1000);
+    }
+
+    if (cookieAccept) 
+    {
+        cookieAccept.addEventListener('click', function() 
+        {
+            setCookie('cookie_decision', 'accepted', 365);
+            hideCookieConsent();
+        });
+    }
+
+    if (cookieReject) 
+    {
+        cookieReject.addEventListener('click', function() 
+        {
+            setCookie('cookie_decision', 'rejected', 365);
+            hideCookieConsent();
+            rejectAllCookies();
+        });
+    }
+}
+
+function setCookie(name, value, days) 
+{
+    let date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Lax";
+}
+
+function getCookie(name) 
+{
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+
+    for (let i = 0; i < ca.length; i++) 
+    {
+        let c = ca[i];
+
+        while (c.charAt(0) === ' ') 
+        {
+            c = c.substring(1, c.length);
+        }
+
+        if (c.indexOf(nameEQ) === 0) 
+        {
+            return c.substring(nameEQ.length, c.length);
+        }
+    }
+
+    return null;
+}
+
+function deleteCookie(name) 
+{
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+}
+
+function hideCookieConsent() 
+{
+    let cookieConsent = document.getElementById('cookieConsent');
+
+    if (cookieConsent) 
+    {
+        cookieConsent.classList.remove('show');
+        cookieConsent.classList.add('hide');
+            
+        setTimeout(() => {
+            cookieConsent.style.display = 'none';
+        }, 500);
+    }
+}
+
+function checkCookieConsent() 
+{
+    let decision = getCookie('cookie_decision');
+    return decision === 'accepted';
+}

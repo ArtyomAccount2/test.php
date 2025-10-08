@@ -349,6 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order']))
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/script.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() 
 {

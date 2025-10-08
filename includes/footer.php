@@ -82,3 +82,24 @@
             </div>
         </div>
     </footer>
+
+    <div id="cookieConsent" class="cookie-consent" style="display: none;">
+        <div class="cookie-container">
+            <div class="cookie-content">
+                <p class="cookie-text">
+                    Наш сайт использует cookies и сохраняет ваши персональные данные. 
+                    Нажимая <strong>"Согласен"</strong> вы принимаете условия обработки 
+                    персональных данных согласно нашей 
+                    <a href="../includes/privacy.php" class="cookie-link">Политике Конфиденциальности</a>.
+                </p>
+                <div class="cookie-buttons">
+                    <button id="cookieAccept" class="btn btn-primary btn-sm cookie-btn">
+                        Согласен
+                    </button>
+                    <button id="cookieReject" class="btn btn-outline-secondary btn-sm cookie-btn">
+                        Не согласен
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

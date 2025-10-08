@@ -237,5 +237,6 @@ $current_news = array_slice($all_news, $offset, $items_per_page);
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/script.js"></script>
 </body>
 </html>

@@ -623,6 +623,7 @@ function buildQueryString($page, $search, $category, $brand, $min_price, $max_pr
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/script.js"></script>
 <script>
 document.querySelectorAll('.filter-category').forEach(button => {
     button.addEventListener('click', function() 

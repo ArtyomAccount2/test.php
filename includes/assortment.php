@@ -394,6 +394,7 @@ function buildQueryString($page, $search, $category)
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/script.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() 
 {

@@ -622,7 +622,8 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
 ?>
 
 <?php
-function buildQueryString($page, $search, $sort, $brand, $viscosity, $type, $volume, $new_sort = null) {
+function buildQueryString($page, $search, $sort, $brand, $viscosity, $type, $volume, $new_sort = null) 
+{
     $params = [];
 
     if ($page > 1) 
@@ -669,6 +670,7 @@ function buildQueryString($page, $search, $sort, $brand, $viscosity, $type, $vol
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/script.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() 
 {
