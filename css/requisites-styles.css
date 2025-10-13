@@ -1,147 +1,363 @@
 .requisites-card 
 {
-    background: white;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    margin-bottom: 1.5rem;
-    border: 1px solid #f0f0f0;
-    display: flex;
-    flex-direction: column;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 123, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
 }
 
-.requisites-card h3 
+.requisites-card::before 
 {
-    color: #007bff;
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
-    flex-shrink: 0;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.requisites-card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 123, 255, 0.15);
+}
+
+.card-header-custom 
+{
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.card-header-custom h3 
+{
+    color: #2c3e50;
+    font-weight: 700;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.card-header-custom i 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .requisites-list 
 {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    flex-grow: 1;
+    gap: 1.25rem;
 }
 
 .requisite-item 
 {
     display: flex;
-    flex-wrap: wrap;
-    padding: 0.75rem;
-    background: #f8f9fa;
-    border-radius: 6px;
-    border-left: 3px solid #007bff;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    border-left: 4px solid #007bff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    gap: 1rem;
+}
+
+.requisite-item:hover 
+{
+    background: white;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.requisite-content 
+{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 }
 
 .requisite-label 
 {
-    font-weight: 600;
+    font-weight: 700;
     color: #495057;
-    min-width: 200px;
-    margin-right: 1rem;
+    font-size: 0.95rem;
+    min-width: 220px;
+    flex-shrink: 0;
 }
 
 .requisite-value 
 {
     color: #212529;
-    flex: 1;
+    font-weight: 500;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.requisite-item .btn 
+{
+    flex-shrink: 0;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.requisite-item .btn:hover 
+{
+    background: #007bff;
+    color: white;
+    transform: scale(1.05);
 }
 
 .documents-section 
 {
-    background: white;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 123, 255, 0.1);
+}
+
+.section-header 
+{
+    margin-bottom: 3rem;
+}
+
+.section-header h2 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .document-card 
 {
     text-align: center;
-    padding: 1.5rem;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    padding: 2.5rem 2rem;
+    border: 2px solid #e9ecef;
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     height: 100%;
     display: flex;
     flex-direction: column;
+    background: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.document-card::before 
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
 }
 
 .document-card:hover 
 {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.15);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 123, 255, 0.15);
     border-color: #007bff;
+}
+
+.document-card:hover::before 
+{
+    transform: scaleX(1);
 }
 
 .document-icon 
 {
-    font-size: 3rem;
+    font-size: 4rem;
     color: #dc3545;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.document-card:hover .document-icon 
+{
+    transform: scale(1.1) rotate(5deg);
 }
 
 .document-card h5 
 {
-    color: #007bff;
-    margin-bottom: 0.5rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-weight: 700;
     flex-shrink: 0;
 }
 
-.document-card p 
+.document-meta 
 {
     color: #6c757d;
     margin-bottom: 1rem;
+    font-size: 0.9rem;
     flex-shrink: 0;
+}
+
+.document-desc 
+{
+    color: #6c757d;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+    flex: 1;
 }
 
 .document-card .btn 
 {
     margin-top: auto;
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
     flex-shrink: 0;
 }
 
-@media (min-width: 991px) 
+.document-card .btn:hover 
 {
-    .requisites-row 
-    {
-        display: flex;
-        flex-wrap: wrap;
-    }
-    
-    .requisites-row .col-lg-6 
-    {
-        display: flex;
-    }
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+.support-section 
+{
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid rgba(0, 123, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.support-section::before 
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%23007bff" opacity="0.03"><circle cx="50" cy="50" r="2"/></svg>');
+}
+
+.company-badges .badge 
+{
+    border-radius: 25px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.company-badges .badge:hover 
+{
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.alert 
+{
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+}
+
+.btn-success 
+{
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
 }
 
 @media (max-width: 768px) 
 {
+    .requisites-card 
+    {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
     .requisite-item 
     {
         flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .requisite-content 
+    {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        width: 100%;
     }
     
     .requisite-label 
     {
         min-width: auto;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .card-header-custom 
+    {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .card-header-custom i 
+    {
         margin-right: 0;
+    }
+    
+    .documents-section 
+    {
+        padding: 2rem 1.5rem;
     }
     
     .document-card 
     {
+        padding: 2rem 1.5rem;
         margin-bottom: 1.5rem;
     }
     
-    .requisites-card 
+    .company-badges 
     {
-        padding: 1.5rem;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .support-section .btn 
+    {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (min-width: 1200px) 
+{
+    .requisites-row 
+    {
+        display: flex;
+        flex-wrap: wrap;
     }
 }
 
@@ -150,7 +366,106 @@
     align-items: stretch;
 }
 
-.col-lg-6 
+.display-4 
 {
-    display: flex;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.lead-text 
+{
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.support-section 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.support-section::before 
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%23ffffff" opacity="0.05"><circle cx="50" cy="50" r="2"/></svg>');
+}
+
+.support-section .btn-light 
+{
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    color: #007bff;
+    transition: all 0.3s ease;
+}
+
+.support-section .btn-light:hover 
+{
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+}
+
+.support-section .btn-outline-light 
+{
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.support-section .btn-outline-light:hover 
+{
+    background: white;
+    color: #007bff;
+    border-color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+}
+
+.support-section .position-absolute 
+{
+    animation: float 6s ease-in-out infinite;
+}
+
+.support-section .position-absolute:nth-child(2) 
+{
+    animation-delay: 2s;
+}
+
+@keyframes float 
+{
+    0%, 100% 
+    { 
+        transform: translateY(0px); 
+    }
+    50% 
+    { 
+        transform: translateY(-10px); 
+    }
+}
+
+.support-section a 
+{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.support-section 
+{
+    transition: transform 0.3s ease;
+}
+
+.support-section:hover 
+{
+    transform: translateY(-5px);
 }

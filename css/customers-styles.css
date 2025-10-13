@@ -1,116 +1,388 @@
 .info-card 
 {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-    border: 1px solid #f0f0f0;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0, 123, 255, 0.1);
     height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.info-card::before 
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.info-card:hover::before 
+{
+    transform: scaleX(1);
 }
 
 .info-card:hover 
 {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
-    border-color: #007bff;
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0, 123, 255, 0.15);
+    border-color: rgba(0, 123, 255, 0.3);
 }
 
 .info-icon 
 {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
     color: white;
-    font-size: 1.5rem;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+}
+
+.info-card:hover .info-icon 
+{
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
 }
 
 .faq-section .accordion-button 
 {
     font-weight: 600;
-    padding: 1rem 1.25rem;
-    background-color: #f8f9fa;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     border: 1px solid #dee2e6;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
 }
 
 .faq-section .accordion-button:not(.collapsed) 
 {
-    background-color: #007bff;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
     color: white;
     border-color: #007bff;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.faq-section .accordion-button::after 
+{
+    transition: transform 0.3s ease;
 }
 
 .faq-section .accordion-body 
 {
-    background-color: white;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border: 1px solid #dee2e6;
     border-top: none;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 12px 12px;
+    padding: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
-.benefits-list .benefit-item 
+.benefit-item 
 {
-    padding: 1rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     margin-bottom: 1rem;
-    border-left: 4px solid #007bff;
+    border-left: 5px solid #007bff;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 123, 255, 0.1);
+}
+
+.benefit-item:hover 
+{
+    transform: translateX(8px);
+    box-shadow: 0 6px 25px rgba(0, 123, 255, 0.15);
+    border-left-color: #0056b3;
 }
 
 .benefit-icon 
 {
     color: #28a745;
-    font-size: 1.2rem;
-    min-width: 30px;
+    font-size: 1.5rem;
+    min-width: 40px;
+    transition: transform 0.3s ease;
+}
+
+.benefit-item:hover .benefit-icon 
+{
+    transform: scale(1.2);
 }
 
 .guarantee-section 
 {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 12px;
-    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 123, 255, 0.1);
+    position: relative;
+    overflow: hidden;
 }
 
-.guarantee-section h5 
+.guarantee-section::before 
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.guarantee-card 
+{
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 15px;
+    border: 1px solid rgba(0, 123, 255, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.guarantee-card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.guarantee-section h4 
 {
     color: #007bff;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
 }
 
-.guarantee-section ul 
+.guarantee-section ul li 
 {
-    padding-left: 1.5rem;
-}
-
-.guarantee-section li 
-{
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
     line-height: 1.5;
+    font-size: 1rem;
+    display: flex;
+    align-items: flex-start;
+}
+
+.hero-customers 
+{
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 25px;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card 
+{
+    min-width: 140px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:hover 
+{
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.bg-gradient-primary 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.loyalty-program 
+{
+    background: linear-gradient(90deg, #007bff, #0056b3, #007bff);
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+}
+
+.loyalty-card 
+{
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid transparent;
+}
+
+.loyalty-card:hover 
+{
+    border-color: #007bff;
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.level-badge 
+{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.loyalty-cta 
+{
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.loyalty-cta:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.purchase-process 
+{
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid rgba(0, 123, 255, 0.1);
+}
+
+.process-step 
+{
+    transition: all 0.3s ease;
+}
+
+.process-step:hover 
+{
+    transform: translateY(-5px);
+}
+
+.step-number 
+{
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.lead-text 
+{
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.display-4 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 @media (max-width: 768px) 
 {
     .info-card 
     {
-        margin-bottom: 1.5rem;
+        margin-bottom: 2rem;
     }
     
     .benefit-item 
     {
         flex-direction: column;
         text-align: center;
+        padding: 1.25rem;
     }
     
     .benefit-icon 
     {
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
         margin-right: 0;
     }
+    
+    .stats-cards 
+    {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .stat-card 
+    {
+        width: 200px;
+        margin-bottom: 1rem;
+    }
+    
+    .loyalty-levels 
+    {
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 576px) 
+{
+    .hero-customers 
+    {
+        padding: 2rem 1rem;
+    }
+    
+    .faq-section .accordion-button 
+    {
+        font-size: 1rem;
+        padding: 1rem 1.25rem;
+    }
+    
+    .guarantee-section 
+    {
+        padding: 2rem 1.5rem;
+    }
+    
+    .process-step 
+    {
+        margin-bottom: 2rem;
+    }
+}
+
+.accordion-item 
+{
+    transition: all 0.3s ease;
+}
+
+.accordion-item:hover 
+{
+    transform: translateX(5px);
+}
+
+.bg-primary 
+{ 
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); 
+}
+
+.bg-success 
+{ 
+    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%); 
+}
+
+.bg-warning 
+{ 
+    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%); 
+}
+
+.bg-info 
+{ 
+    background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%); 
+}
+
+.list-unstyled 
+{
+    display: flex;
+    align-items: start;
 }
