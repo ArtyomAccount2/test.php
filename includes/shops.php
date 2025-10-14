@@ -132,20 +132,6 @@ unset($_SESSION['form_data']);
     <div class="hero-section text-center mb-5" style="padding-top: 85px;">
         <h1 class="display-4 fw-bold text-primary mb-3">Наши магазины</h1>
         <p class="lead text-muted">Сеть автомагазинов Лал-Авто в Калининграде и области</p>
-        <div class="stats-row d-flex justify-content-center gap-5 mt-4">
-            <div class="stat-item">
-                <div class="stat-number text-primary fw-bold fs-2">12</div>
-                <div class="stat-label text-muted">магазинов</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number text-primary fw-bold fs-2">8</div>
-                <div class="stat-label text-muted">лет на рынке</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number text-primary fw-bold fs-2">24/7</div>
-                <div class="stat-label text-muted">поддержка</div>
-            </div>
-        </div>
     </div>
     <div class="row g-4 mb-5">
         <div class="col-lg-6">
@@ -329,7 +315,7 @@ unset($_SESSION['form_data']);
                         </td>
                         <td>Советский пр-т, 120</td>
                         <td>+7 (4012) 54-32-10</td>
-                        <td>Пн-Пт: 8:00-21:00<br>Сб-Вс: 9:00-19:00</td>
+                        <td>Пн-Пт: 8:00-19:00<br>Сб-Вс: 9:00-17:00</td>
                         <td>
                             <span class="badge bg-primary me-1">Запчасти</span>
                             <span class="badge bg-success me-1">Сервис</span>

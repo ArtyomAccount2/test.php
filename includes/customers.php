@@ -128,25 +128,7 @@ unset($_SESSION['form_data']);
 <div class="container my-5 pt-4">
     <div class="hero-customers text-center mb-5">
         <h1 class="display-4 fw-bold text-primary mb-3" style="padding-top: 60px;">Покупателям</h1>
-        <p class="lead-text fs-5 text-muted">Всё, что нужно знать о покупках в Лал-Авто</p>
-        <div class="stats-cards d-flex justify-content-center gap-4 mt-4 flex-wrap">
-            <div class="stat-card bg-primary text-white rounded-3 p-3">
-                <div class="stat-number fw-bold fs-2">50,000+</div>
-                <div class="stat-label">товаров в каталоге</div>
-            </div>
-            <div class="stat-card bg-success text-white rounded-3 p-3">
-                <div class="stat-number fw-bold fs-2">12</div>
-                <div class="stat-label">магазинов</div>
-            </div>
-            <div class="stat-card bg-warning text-white rounded-3 p-3">
-                <div class="stat-number fw-bold fs-2">8</div>
-                <div class="stat-label">лет на рынке</div>
-            </div>
-            <div class="stat-card bg-info text-white rounded-3 p-3">
-                <div class="stat-number fw-bold fs-2">24/7</div>
-                <div class="stat-label">поддержка</div>
-            </div>
-        </div>
+        <p class="lead fs-5 text-muted">Всё, что нужно знать о покупках в Лал-Авто</p>
     </div>
     <div class="row g-4 mb-5">
         <div class="col-md-4">
@@ -181,14 +163,14 @@ unset($_SESSION['form_data']);
         </div>
     </div>
     <div class="loyalty-program bg-gradient-primary rounded-4 p-5 text-white mb-5">
-        <div class="row align-items-center">
+        <div class="row">
             <div class="col-lg-8">
                 <h2 class="fw-bold mb-3">Программа лояльности</h2>
-                <p class="fs-5 mb-4">Получайте бонусы за каждую покупку и экономьте до 15%</p>
+                <p class="lead-text fs-5 mb-4">Получайте бонусы за каждую покупку и экономьте до 15%</p>
                 <div class="loyalty-levels row g-3">
                     <div class="col-md-4">
                         <div class="loyalty-card bg-white text-dark rounded-3 p-3 text-center h-100 d-flex flex-column justify-content-around">
-                            <div class="level-badge bg-warning text-white rounded-circle mx-auto mb-3">1</div>
+                            <div class="level-badge bg-primary text-white rounded-circle mx-auto mb-3">1</div>
                             <h5 class="fw-bold">Стандарт</h5>
                             <p class="small text-muted">При покупке от 5,000 ₽</p>
                             <div class="discount fw-bold text-primary fs-4">5%</div>
@@ -196,7 +178,7 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="col-md-4">
                         <div class="loyalty-card bg-white text-dark rounded-3 p-3 text-center h-100 d-flex flex-column justify-content-around">
-                            <div class="level-badge bg-success text-white rounded-circle mx-auto mb-3">2</div>
+                            <div class="level-badge bg-primary text-white rounded-circle mx-auto mb-3">2</div>
                             <h5 class="fw-bold">Премиум</h5>
                             <p class="small text-muted">При покупке от 50,000 ₽</p>
                             <div class="discount fw-bold text-primary fs-4">10%</div>
@@ -204,7 +186,7 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="col-md-4">
                         <div class="loyalty-card bg-white text-dark rounded-3 p-3 text-center h-100 d-flex flex-column justify-content-around">
-                            <div class="level-badge bg-danger text-white rounded-circle mx-auto mb-3">3</div>
+                            <div class="level-badge bg-primary text-white rounded-circle mx-auto mb-3">3</div>
                             <h5 class="fw-bold">VIP</h5>
                             <p class="small text-muted">При покупке от 100,000 ₽</p>
                             <div class="discount fw-bold text-primary fs-4">15%</div>
@@ -213,10 +195,14 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="col-lg-4 text-center">
-                <div class="loyalty-cta bg-white rounded-3 p-4 text-dark">
+                <div class="loyalty-cta bg-white rounded-3 p-4 text-dark h-100 d-flex flex-column justify-content-center">
                     <h4 class="fw-bold mb-3">Получите карту</h4>
                     <p class="text-muted mb-4">Оформите карту лояльности в любом магазине</p>
-                    <a href="shops.php" class="btn btn-primary btn-lg w-100">Найти магазин</a>
+                    <div class="special-offer bg-light rounded-2 p-3 mb-4">
+                        <h6 class="fw-bold text-primary mb-2">🎁 Специальное предложение</h6>
+                        <p class="small text-muted mb-0">При оформлении карты сегодня - <strong>500 бонусов</strong> на счет сразу!</p>
+                    </div>
+                    <a href="shops.php" class="btn btn-primary btn-lg w-100 mt-auto">Найти магазин</a>
                 </div>
             </div>
         </div>
@@ -357,38 +343,36 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="purchase-process bg-light rounded-4 p-5">
-        <h2 class="text-center mb-5 fw-bold">Процесс покупки</h2>
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="process-step text-center">
-                    <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3">1</div>
-                    <h5 class="fw-bold">Подбор товара</h5>
-                    <p class="text-muted">Онлайн или с помощью консультанта</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="process-step text-center">
-                    <div class="step-number bg-success text-white rounded-circle mx-auto mb-3">2</div>
-                    <h5 class="fw-bold">Оформление заказа</h5>
-                    <p class="text-muted">Выбор способа доставки и оплаты</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="process-step text-center">
-                    <div class="step-number bg-warning text-white rounded-circle mx-auto mb-3">3</div>
-                    <h5 class="fw-bold">Получение товара</h5>
-                    <p class="text-muted">Самовывоз или доставка</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="process-step text-center">
-                    <div class="step-number bg-info text-white rounded-circle mx-auto mb-3">4</div>
-                    <h5 class="fw-bold">Гарантийное обслуживание</h5>
-                    <p class="text-muted">Поддержка и сервис</p>
+                <h2 class="text-center mt-5 mb-5 fw-bold">Процесс покупки</h2>
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="process-step text-center">
+                            <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3">1</div>
+                            <h5 class="fw-bold">Подбор товара</h5>
+                            <p class="text-muted">Онлайн или с помощью консультанта</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="process-step text-center">
+                            <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3">2</div>
+                            <h5 class="fw-bold">Оформление заказа</h5>
+                            <p class="text-muted">Выбор способа доставки и оплаты</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="process-step text-center">
+                            <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3">3</div>
+                            <h5 class="fw-bold">Получение товара</h5>
+                            <p class="text-muted">Самовывоз или доставка</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="process-step text-center">
+                            <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3">4</div>
+                            <h5 class="fw-bold">Гарантийное обслуживание</h5>
+                            <p class="text-muted">Поддержка и сервис</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

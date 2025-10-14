@@ -432,28 +432,6 @@
     box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
 }
 
-.support-section .position-absolute 
-{
-    animation: float 6s ease-in-out infinite;
-}
-
-.support-section .position-absolute:nth-child(2) 
-{
-    animation-delay: 2s;
-}
-
-@keyframes float 
-{
-    0%, 100% 
-    { 
-        transform: translateY(0px); 
-    }
-    50% 
-    { 
-        transform: translateY(-10px); 
-    }
-}
-
 .support-section a 
 {
     text-decoration: none;

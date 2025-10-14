@@ -127,15 +127,10 @@ unset($_SESSION['form_data']);
 ?>
 
 <div class="container my-5 pt-4">
-    <div class="row mb-5">
+    <div class="row mb-4">
         <div class="col-12 text-center">
             <h1 class="display-4 fw-bold text-primary mb-3" style="padding-top: 60px;">Реквизиты компании</h1>
             <p class="lead fs-5 text-muted">Официальная информация о компании ООО "Лал-Авто"</p>
-            <div class="company-badges d-flex justify-content-center gap-3 mt-4 flex-wrap">
-                <span class="badge bg-primary fs-6 p-3"><i class="bi bi-award me-2"></i>На рынке с 2016 года</span>
-                <span class="badge bg-success fs-6 p-3"><i class="bi bi-shield-check me-2"></i>Официальный дилер</span>
-                <span class="badge bg-info fs-6 p-3"><i class="bi bi-star me-2"></i>Премиум-сервис</span>
-            </div>
         </div>
     </div>
     <div class="alert alert-info d-flex align-items-center mb-4">
@@ -212,6 +207,9 @@ unset($_SESSION['form_data']);
                             <span class="requisite-label">ОКВЭД:</span>
                             <span class="requisite-value">45.32.1 Торговля автомобильными деталями, узлами и принадлежностями</span>
                         </div>
+                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="45.32.1 Торговля автомобильными деталями, узлами и принадлежностями">
+                            <i class="bi bi-copy"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -264,6 +262,9 @@ unset($_SESSION['form_data']);
                             <span class="requisite-label">Юридический адрес банка:</span>
                             <span class="requisite-value">117997, г. Москва, ул. Вавилова, д. 19</span>
                         </div>
+                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="117997, г. Москва, ул. Вавилова, д. 19">
+                            <i class="bi bi-copy"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -361,7 +362,7 @@ unset($_SESSION['form_data']);
             </div>
         </div>
     </div>
-    <div class="row mt-5">
+    <div class="row mt-4">
         <div class="col-12">
             <div class="documents-section">
                 <div class="section-header text-center mb-5">
@@ -415,10 +416,6 @@ unset($_SESSION['form_data']);
     <div class="row mt-5">
         <div class="col-12">
             <div class="support-section bg-primary text-white rounded-3 p-5 text-center position-relative overflow-hidden">
-                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10">
-                    <div class="position-absolute" style="top: 20%; left: 10%; font-size: 3rem;">📞</div>
-                    <div class="position-absolute" style="top: 60%; right: 15%; font-size: 2.5rem;">✉️</div>
-                </div>
                 <div class="position-relative z-1">
                     <h3 class="mb-3 fw-bold">Нужна помощь с реквизитами?</h3>
                     <p class="lead mb-4 opacity-90">Наши специалисты готовы помочь с оформлением документов и ответить на все вопросы</p>

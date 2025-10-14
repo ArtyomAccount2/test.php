@@ -8,6 +8,9 @@
     height: 100%;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .info-card::before 
@@ -178,14 +181,6 @@
     align-items: flex-start;
 }
 
-.hero-customers 
-{
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 25px;
-    padding: 3rem 2rem;
-    margin-bottom: 3rem;
-}
-
 .stat-card 
 {
     min-width: 140px;
@@ -206,7 +201,7 @@
 
 .loyalty-program 
 {
-    background: linear-gradient(90deg, #007bff, #0056b3, #007bff);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
 }
 
@@ -214,6 +209,7 @@
 {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 2px solid transparent;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
 }
 
 .loyalty-card:hover 
@@ -238,12 +234,21 @@
 {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .loyalty-cta:hover 
 {
     transform: translateY(-5px);
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.loyalty-cta .btn 
+{
+    margin-top: auto;
 }
 
 .purchase-process 
@@ -364,21 +369,6 @@
 .bg-primary 
 { 
     background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); 
-}
-
-.bg-success 
-{ 
-    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%); 
-}
-
-.bg-warning 
-{ 
-    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%); 
-}
-
-.bg-info 
-{ 
-    background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%); 
 }
 
 .list-unstyled 
