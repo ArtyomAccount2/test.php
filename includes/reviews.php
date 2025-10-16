@@ -89,7 +89,7 @@ unset($_SESSION['form_data']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Отзывы - Лал-Авто</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/reviews-styles.css">
@@ -102,7 +102,6 @@ unset($_SESSION['form_data']);
         ?>
             var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
             loginModal.show();
-
             <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 
@@ -228,6 +227,44 @@ unset($_SESSION['form_data']);
                 });
             });
         }
+
+        function equalizeReviewHeights() 
+        {
+            let reviewCards = document.querySelectorAll('.review-card');
+            let maxHeight = 0;
+
+            reviewCards.forEach(card => {
+                card.style.height = 'auto';
+            });
+
+            for (let i = 0; i < reviewCards.length; i += 2) 
+            {
+                let rowCards = [reviewCards[i]];
+                
+                if (reviewCards[i + 1])
+                { 
+                    rowCards.push(reviewCards[i + 1]);
+                }
+                
+                let rowMaxHeight = 0;
+                
+                rowCards.forEach(card => {
+                    let height = card.offsetHeight;
+
+                    if (height > rowMaxHeight) 
+                    {
+                        rowMaxHeight = height;
+                    }
+                });
+                
+                rowCards.forEach(card => {
+                    card.style.height = rowMaxHeight + 'px';
+                });
+            }
+        }
+
+        window.addEventListener('load', equalizeReviewHeights);
+        window.addEventListener('resize', equalizeReviewHeights);
     });
     </script>
 </head>
@@ -237,66 +274,79 @@ unset($_SESSION['form_data']);
     require_once("header.php"); 
 ?>
 
-<div class="container my-5 pt-4">
-    <div class="row mb-5">
-        <div class="col-12 text-center">
-            <h1 class="mb-3 display-4 fw-bold" style="padding-top: 75px; color: #2c3e50;">Отзывы наших клиентов</h1>
-            <p class="lead fs-4 text-muted">Мы ценим каждого клиента и стремимся стать лучше благодаря вашим отзывам</p>
-        </div>
+<div class="container my-4">
+    <div class="reviews-hero text-center mb-5" style="padding-top: 125px;">
+        <h1 class="reviews-title display-5 mb-3">Отзывы наших клиентов</h1>
+        <p class="reviews-subtitle text-muted">Мы ценим каждого клиента и стремимся стать лучше благодаря вашим отзывам</p>
     </div>
     <div class="row mb-5">
         <div class="col-lg-8 mx-auto">
-            <div class="review-form p-4 shadow-sm">
-                <h3 class="mb-4 text-center fw-bold"><i class="bi bi-pencil-square me-2"></i>Оставить отзыв</h3>
+            <div class="review-form-container">
+                <div class="review-form-header text-center mb-4">
+                    <h3 class="mb-2"><i class="bi bi-pencil-square me-2"></i>Оставить отзыв</h3>
+                    <p class="text-muted mb-0">Поделитесь вашим опытом сотрудничества с нами</p>
+                </div>
                 <form id="reviewForm">
-                    <div class="mb-3">
-                        <label for="reviewName" class="form-label fw-semibold">Ваше имя<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control py-2" id="reviewName" required placeholder="Как к вам обращаться?">
-                    </div>
-                    <div class="mb-3">
-                        <label for="reviewEmail" class="form-label fw-semibold">Email</label>
-                        <input type="email" class="form-control py-2" id="reviewEmail" placeholder="example@mail.com">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="reviewName" class="form-label fw-semibold">Ваше имя<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="reviewName" required placeholder="Как к вам обращаться?">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="reviewEmail" class="form-label fw-semibold">Email</label>
+                            <input type="email" class="form-control" id="reviewEmail" placeholder="example@mail.com">
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Оценка<span class="text-danger">*</span></label>
-                        <div class="rating-stars">
-                            <i class="bi bi-star rating-star fs-2" data-rating="1"></i>
-                            <i class="bi bi-star rating-star fs-2" data-rating="2"></i>
-                            <i class="bi bi-star rating-star fs-2" data-rating="3"></i>
-                            <i class="bi bi-star rating-star fs-2" data-rating="4"></i>
-                            <i class="bi bi-star rating-star fs-2" data-rating="5"></i>
+                        <div class="rating-container">
+                            <div class="rating-stars">
+                                <i class="bi bi-star rating-star" data-rating="1"></i>
+                                <i class="bi bi-star rating-star" data-rating="2"></i>
+                                <i class="bi bi-star rating-star" data-rating="3"></i>
+                                <i class="bi bi-star rating-star" data-rating="4"></i>
+                                <i class="bi bi-star rating-star" data-rating="5"></i>
+                            </div>
                             <input type="hidden" id="ratingValue" name="rating" value="0">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="reviewText" class="form-label fw-semibold">Текст отзыва<span class="text-danger">*</span></label>
-                        <textarea class="form-control py-2" id="reviewText" rows="5" required placeholder="Поделитесь вашими впечатлениями..."></textarea>
+                        <textarea class="form-control" id="reviewText" rows="4" required placeholder="Поделитесь вашими впечатлениями..."></textarea>
                     </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="agreePolicy" required>
-                        <label class="form-check-label" for="agreePolicy">Я согласен на обработку персональных данных</label>
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="agreePolicy" required>
+                            <label class="form-check-label small" for="agreePolicy">
+                                Я согласен на обработку персональных данных
+                            </label>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
                         <i class="bi bi-send me-2"></i> Отправить отзыв
                     </button>
                 </form>
             </div>
         </div>
     </div>
-    <div class="row g-4 mb-5" id="reviewsContainer">
-        <?php 
-        if ($reviews_result->num_rows > 0) 
-        {
-        ?>
+    <div class="reviews-section mb-5">
+        <h2 class="section-title text-center mb-4">Что говорят наши клиенты</h2>
+        <div class="row g-4" id="reviewsContainer">
             <?php 
-            while($review = $reviews_result->fetch_assoc()) 
+            if ($reviews_result->num_rows > 0) 
             {
+                $animation_delay = 0;
+                while($review = $reviews_result->fetch_assoc()) 
+                {
+                    $animation_delay += 0.1;
             ?>
                 <div class="col-md-6">
-                    <div class="review-card h-100">
+                    <div class="review-card" style="animation-delay: <?php echo $animation_delay; ?>s">
                         <div class="review-header">
-                            <img src="../img/no-image.png" class="review-avatar" alt="<?php echo htmlspecialchars($review['name']); ?>">
-                            <div>
+                            <div class="review-avatar">
+                                <i class="bi bi-person-circle"></i>
+                            </div>
+                            <div class="review-info">
                                 <div class="review-author"><?php echo htmlspecialchars($review['name']); ?></div>
                                 <div class="review-date"><?php echo date('d.m.Y', strtotime($review['created_at'])); ?></div>
                             </div>
@@ -305,22 +355,14 @@ unset($_SESSION['form_data']);
                             <?php 
                             for($i = 1; $i <= 5; $i++) 
                             {
-                            ?>
-                                <?php 
                                 if ($i <= $review['rating']) 
                                 {
-                                ?>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                <?php 
+                                    echo '<i class="bi bi-star-fill text-warning"></i>';
                                 }
                                 else 
                                 {
-                                ?>
-                                    <i class="bi bi-star text-secondary"></i>
-                                <?php 
+                                    echo '<i class="bi bi-star text-muted"></i>';
                                 } 
-                                ?>
-                            <?php 
                             }
                             ?>
                         </div>
@@ -330,61 +372,65 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             <?php 
+                } 
+            }
+            else
+            { 
+            ?>
+                <div class="col-12 text-center">
+                    <div class="no-reviews">
+                        <i class="bi bi-chat-quote fs-1 text-muted mb-3"></i>
+                        <p class="text-muted mb-0">Пока нет отзывов. Будьте первым, кто оставит отзыв!</p>
+                    </div>
+                </div>
+            <?php 
             } 
             ?>
-        <?php 
-        }
-        else
-        { 
-        ?>
-            <div class="col-12 text-center">
-                <p class="text-muted">Пока нет отзывов. Будьте первым, кто оставит отзыв!</p>
-            </div>
-        <?php 
-        } 
-        ?>
+        </div>
     </div>
     <?php 
     if ($total_pages > 1) 
     {
     ?>
-    <nav aria-label="Page navigation" class="mt-4">
-        <ul class="pagination justify-content-center">
-            <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <?php
-            $start_page = max(1, $current_page - 2);
-            $end_page = min($total_pages, $current_page + 2);
-
-            if ($start_page == 1) 
-            {
-                $end_page = min($total_pages, 5);
-            }
-
-            if ($end_page == $total_pages) 
-            {
-                $start_page = max(1, $total_pages - 4);
-            }
-            
-            for ($i = $start_page; $i <= $end_page; $i++)
-            { 
-            ?>
-                <li class="page-item <?php echo $i == $current_page ? 'active' : ''; ?>">
-                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+    <div class="reviews-pagination">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
                 </li>
-            <?php 
-            }
-            ?>
-            <li class="page-item <?php echo $current_page == $total_pages ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+                <?php
+                $start_page = max(1, $current_page - 2);
+                $end_page = min($total_pages, $current_page + 2);
+
+                if ($start_page == 1) 
+                {
+                    $end_page = min($total_pages, 5);
+                }
+
+                if ($end_page == $total_pages) 
+                {
+                    $start_page = max(1, $total_pages - 4);
+                }
+                
+                for ($i = $start_page; $i <= $end_page; $i++)
+                { 
+                ?>
+                    <li class="page-item <?php echo $i == $current_page ? 'active' : ''; ?>">
+                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php 
+                }
+                ?>
+                <li class="page-item <?php echo $current_page == $total_pages ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
     <?php 
     }
     ?>

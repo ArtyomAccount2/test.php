@@ -62,7 +62,7 @@ unset($_SESSION['form_data']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Поставщикам - Лал-Авто</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/suppliers-styles.css">
@@ -80,6 +80,52 @@ unset($_SESSION['form_data']);
         <?php 
         } 
         ?>
+
+        let supplierForm = document.getElementById('supplierForm');
+        supplierForm.addEventListener('submit', function(e) 
+        {
+            e.preventDefault();
+
+            if (this.checkValidity()) 
+            {
+                let submitBtn = this.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Заявка отправлена!';
+                submitBtn.classList.remove('btn-primary');
+                submitBtn.classList.add('btn-success');
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    this.reset();
+                    submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Отправить заявку';
+                    submitBtn.classList.remove('btn-success');
+                    submitBtn.classList.add('btn-primary');
+                    submitBtn.disabled = false;
+                }, 3000);
+            }
+        });
+
+        function equalizeCardsHeight() 
+        {
+            let cards = document.querySelectorAll('.cooperation-card');
+            let maxHeight = 0;
+            
+            cards.forEach(card => {
+                card.style.height = 'auto';
+                let height = card.offsetHeight;
+
+                if (height > maxHeight) 
+                {
+                    maxHeight = height;
+                }
+            });
+            
+            cards.forEach(card => {
+                card.style.height = maxHeight + 'px';
+            });
+        }
+
+        window.addEventListener('load', equalizeCardsHeight);
+        window.addEventListener('resize', equalizeCardsHeight);
     });
     </script>
 </head>
@@ -89,225 +135,250 @@ unset($_SESSION['form_data']);
     require_once("header.php"); 
 ?>
 
-<div class="container my-5 pt-4">
-    <div class="row mb-5">
-        <div class="col-12 text-center">
-            <h1 class="mb-3" style="padding-top: 60px;">Поставщикам</h1>
-            <p class="lead">Сотрудничество с компанией Лал-Авто</p>
-        </div>
+<div class="container my-5">
+    <div class="hero-section text-center mb-5" style="padding-top: 85px;">
+        <h1 class="display-5 fw-bold text-primary mb-3">Сотрудничество с поставщиками</h1>
+        <p class="lead text-muted mb-4">Станьте частью нашей сети и развивайте бизнес вместе с Лал-Авто</p>
     </div>
-    <div class="row g-4 mb-5">
-        <div class="col-md-4">
-            <div class="cooperation-card text-center p-4">
-                <div class="cooperation-icon mb-3">
-                    <i class="bi bi-graph-up"></i>
-                </div>
-                <h4>Стабильные заказы</h4>
-                <p>Регулярные поставки и стабильный объем закупок</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="cooperation-card text-center p-4">
-                <div class="cooperation-icon mb-3">
-                    <i class="bi bi-cash-coin"></i>
-                </div>
-                <h4>Своевременная оплата</h4>
-                <p>Четкие сроки оплаты и прозрачные условия расчетов</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="cooperation-card text-center p-4">
-                <div class="cooperation-icon mb-3">
-                    <i class="bi bi-shield-check"></i>
-                </div>
-                <h4>Долгосрочное партнерство</h4>
-                <p>Работаем с проверенными поставщиками годами</p>
-            </div>
-        </div>
-    </div>
-    <div class="row g-4">
-        <div class="col-lg-6">
-            <div class="requirements-section">
-                <h3 class="mb-4"><i class="bi bi-check-circle"></i> Требования к поставщикам</h3>
-                <div class="requirements-list">
-                    <div class="requirement-item">
-                        <div class="requirement-icon">
-                            <i class="bi bi-1-circle"></i>
-                        </div>
-                        <div class="requirement-content">
-                            <h5>Качество продукции</h5>
-                            <p>Соответствие ГОСТ, ТУ и международным стандартам качества</p>
-                        </div>
+    <div class="benefits-section mb-5">
+        <h2 class="text-center mb-4">Преимущества работы с нами</h2>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="cooperation-card h-100">
+                    <div class="cooperation-icon mb-3">
+                        <i class="bi bi-graph-up"></i>
                     </div>
-                    <div class="requirement-item">
-                        <div class="requirement-icon">
-                            <i class="bi bi-2-circle"></i>
-                        </div>
-                        <div class="requirement-content">
-                            <h5>Сертификация</h5>
-                            <p>Наличие всех необходимых сертификатов и разрешительной документации</p>
-                        </div>
-                    </div>
-                    <div class="requirement-item">
-                        <div class="requirement-icon">
-                            <i class="bi bi-3-circle"></i>
-                        </div>
-                        <div class="requirement-content">
-                            <h5>Стабильность поставок</h5>
-                            <p>Соблюдение согласованных сроков и объемов поставок</p>
-                        </div>
-                    </div>
-                    <div class="requirement-item">
-                        <div class="requirement-icon">
-                            <i class="bi bi-4-circle"></i>
-                        </div>
-                        <div class="requirement-content">
-                            <h5>Конкурентные цены</h5>
-                            <p>Предложение рыночных цен и гибкие условия сотрудничества</p>
-                        </div>
-                    </div>
-                    <div class="requirement-item">
-                        <div class="requirement-icon">
-                            <i class="bi bi-5-circle"></i>
-                        </div>
-                        <div class="requirement-content">
-                            <h5>Гарантийные обязательства</h5>
-                            <p>Предоставление гарантии на поставляемую продукцию и оперативное решение гарантийных случаев</p>
-                        </div>
-                    </div>
-                    <div class="requirement-item">
-                        <div class="requirement-icon">
-                            <i class="bi bi-6-circle"></i>
-                        </div>
-                        <div class="requirement-content">
-                            <h5>Логистические возможности</h5>
-                            <p>Обеспечение своевременной доставки по всей территории России</p>
-                        </div>
-                    </div>
+                    <h5 class="text-center mb-2">Стабильные заказы</h5>
+                    <p class="text-center text-muted mb-0">Регулярные поставки и предсказуемый объем закупок</p>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="cooperation-form-section">
-                <div class="d-flex align-items-center mb-4">
-                    <div class="bg-primary p-3 rounded-circle me-3">
-                        <i class="bi bi-envelope-fill text-white fs-4"></i>
+            <div class="col-md-4">
+                <div class="cooperation-card h-100">
+                    <div class="cooperation-icon mb-3">
+                        <i class="bi bi-cash-coin"></i>
                     </div>
-                    <h3 class="mb-0 text-primary">Стать поставщиком</h3>
+                    <h5 class="text-center mb-2">Своевременная оплата</h5>
+                    <p class="text-center text-muted mb-0">Четкие сроки оплаты и прозрачные условия расчетов</p>
                 </div>
-                <form id="supplierForm" class="needs-validation" novalidate>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="companyName" class="form-label fw-semibold">
-                                <i class="bi bi-building me-1"></i>Название компании<span class="text-danger">*</span>
-                            </label>
-                            <input type="text" class="form-control form-control-lg" id="companyName" required placeholder="ООО «Лал-Авто»">
-                            <div class="invalid-feedback">Пожалуйста, укажите название компании</div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="contactPerson" class="form-label fw-semibold">
-                                <i class="bi bi-person me-1"></i>Контактное лицо<span class="text-danger">*</span>
-                            </label>
-                            <input type="text" class="form-control form-control-lg" id="contactPerson" required placeholder="Иванов А.П.">
-                            <div class="invalid-feedback">Пожалуйста, укажите контактное лицо</div>
-                        </div>
+            </div>
+            <div class="col-md-4">
+                <div class="cooperation-card h-100">
+                    <div class="cooperation-icon mb-3">
+                        <i class="bi bi-shield-check"></i>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="phone" class="form-label fw-semibold">
-                                <i class="bi bi-phone me-1"></i>Телефон<span class="text-danger">*</span>
-                            </label>
-                            <input type="tel" class="form-control form-control-lg" id="phone" required placeholder="+7 (495) 123-45-67">
-                            <div class="invalid-feedback">Пожалуйста, укажите телефон</div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="email" class="form-label fw-semibold">
-                                <i class="bi bi-envelope me-1"></i>Email<span class="text-danger">*</span>
-                            </label>
-                            <input type="email" class="form-control form-control-lg" id="email" required placeholder="info@lal-avto.ru">
-                            <div class="invalid-feedback">Пожалуйста, укажите email</div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="productCategory" class="form-label fw-semibold">
-                            <i class="bi bi-tags me-1"></i>Категория товаров<span class="text-danger">*</span>
-                        </label>
-                        <select class="form-select form-select-lg" id="productCategory" required>
-                            <option value="" selected disabled>Выберите категорию</option>
-                            <option>Автозапчасти</option>
-                            <option>Масла и жидкости</option>
-                            <option>Аксессуары</option>
-                            <option>Автохимия</option>
-                            <option>Шины и диски</option>
-                            <option>Инструменты</option>
-                            <option>Другое</option>
-                        </select>
-                        <div class="invalid-feedback">Пожалуйста, выберите категорию</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="message" class="form-label fw-semibold">
-                            <i class="bi bi-chat-text me-1"></i>О компании и предлагаемой продукции
-                        </label>
-                        <textarea class="form-control form-control-lg" id="message" rows="4" 
-                                  placeholder="Расскажите о вашей компании и продукции..."></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="file" class="form-label fw-semibold">
-                            <i class="bi bi-file-earmark-text me-1"></i>Прайс-лист (опционально)
-                        </label>
-                        <input type="file" class="form-control form-control-lg" id="file">
-                        <div class="form-text">PDF, DOC, XLS до 10MB</div>
-                    </div>
-                    <div class="form-check mb-4">
-                        <input class="form-check-input" type="checkbox" id="agree" required>
-                        <label class="form-check-label small" for="agree">
-                            Я согласен на обработку персональных данных
-                        </label>
-                        <div class="invalid-feedback">Необходимо ваше согласие</div>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
-                        <i class="bi bi-send me-2"></i> Отправить заявку
-                    </button>
-                    <div class="text-center mt-3">
-                        <small class="text-muted">
-                            <i class="bi bi-info-circle me-1"></i>
-                            Мы свяжемся с вами в течение 2 рабочих дней
-                        </small>
-                    </div>
-                </form>
+                    <h5 class="text-center mb-2">Долгосрочное партнерство</h5>
+                    <p class="text-center text-muted mb-0">Работаем с проверенными поставщиками годами</p>
+                </div>
             </div>
         </div>
     </div>
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="partners-section">
-                <h3 class="mb-4 text-center"><i class="bi bi-people"></i> Наши партнеры</h3>
-                <div class="partners-grid">
-                    <div class="partner-item">
-                        <img src="../img/no-image.png" alt="Bosch" class="partner-logo">
-                        <span class="partner-name">Bosch</span>
+    <div class="main-content-section mb-5">
+        <div class="row g-4 align-items-stretch">
+            <div class="col-lg-6">
+                <div class="requirements-section h-100">
+                    <div class="section-header mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="header-icon me-3">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <h3 class="mb-0">Требования к поставщикам</h3>
+                        </div>
                     </div>
-                    <div class="partner-item">
-                        <img src="../img/no-image.png" alt="Castrol" class="partner-logo">
-                        <span class="partner-name">Castrol</span>
-                    </div>
-                    <div class="partner-item">
-                        <img src="../img/no-image.png" alt="Mobil" class="partner-logo">
-                        <span class="partner-name">Mobil</span>
-                    </div>
-                    <div class="partner-item">
-                        <img src="../img/no-image.png" alt="Brembo" class="partner-logo">
-                        <span class="partner-name">Brembo</span>
-                    </div>
-                    <div class="partner-item">
-                        <img src="../img/no-image.png" alt="Mann-Filter" class="partner-logo">
-                        <span class="partner-name">Mann-Filter</span>
-                    </div>
-                    <div class="partner-item">
-                        <img src="../img/no-image.png" alt="NGK" class="partner-logo">
-                        <span class="partner-name">NGK</span>
+                    <div class="requirements-list">
+                        <div class="requirement-item">
+                            <div class="requirement-icon">
+                                <i class="bi bi-1-circle"></i>
+                            </div>
+                            <div class="requirement-content">
+                                <h6>Качество продукции</h6>
+                                <p class="mb-0">Соответствие ГОСТ, ТУ и международным стандартам качества</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <div class="requirement-icon">
+                                <i class="bi bi-2-circle"></i>
+                            </div>
+                            <div class="requirement-content">
+                                <h6>Сертификация</h6>
+                                <p class="mb-0">Наличие всех необходимых сертификатов и разрешительной документации</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <div class="requirement-icon">
+                                <i class="bi bi-3-circle"></i>
+                            </div>
+                            <div class="requirement-content">
+                                <h6>Стабильность поставок</h6>
+                                <p class="mb-0">Соблюдение согласованных сроков и объемов поставок</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <div class="requirement-icon">
+                                <i class="bi bi-4-circle"></i>
+                            </div>
+                            <div class="requirement-content">
+                                <h6>Конкурентные цены</h6>
+                                <p class="mb-0">Предложение рыночных цен и гибкие условия сотрудничества</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <div class="requirement-icon">
+                                <i class="bi bi-5-circle"></i>
+                            </div>
+                            <div class="requirement-content">
+                                <h6>Гарантийные обязательства</h6>
+                                <p class="mb-0">Предоставление гарантии на поставляемую продукцию</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item">
+                            <div class="requirement-icon">
+                                <i class="bi bi-6-circle"></i>
+                            </div>
+                            <div class="requirement-content">
+                                <h6>Логистические возможности</h6>
+                                <p class="mb-0">Обеспечение своевременной доставки по всей территории России</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="cooperation-form-section h-100">
+                    <div class="section-header mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="header-icon me-3">
+                                <i class="bi bi-envelope-fill"></i>
+                            </div>
+                            <h3 class="mb-0">Стать поставщиком</h3>
+                        </div>
+                    </div>
+                    <div class="special-offer mb-4">
+                        <div class="alert alert-info mb-0">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-lightning-fill me-3"></i>
+                                <div>
+                                    <strong>Рассмотрение заявки за 2 дня!</strong><br>
+                                    <small>Быстрый старт сотрудничества</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="supplierForm" class="needs-validation" novalidate>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="companyName" class="form-label fw-semibold">
+                                    <i class="bi bi-building me-1"></i>Название компании<span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="companyName" required placeholder="ООО «Лал-Авто»">
+                                <div class="invalid-feedback">Пожалуйста, укажите название компании</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="contactPerson" class="form-label fw-semibold">
+                                    <i class="bi bi-person me-1"></i>Контактное лицо<span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="contactPerson" required placeholder="Иванов А.П.">
+                                <div class="invalid-feedback">Пожалуйста, укажите контактное лицо</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label fw-semibold">
+                                    <i class="bi bi-phone me-1"></i>Телефон<span class="text-danger">*</span>
+                                </label>
+                                <input type="tel" class="form-control" id="phone" required placeholder="+7 (495) 123-45-67">
+                                <div class="invalid-feedback">Пожалуйста, укажите телефон</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label fw-semibold">
+                                    <i class="bi bi-envelope me-1"></i>Email<span class="text-danger">*</span>
+                                </label>
+                                <input type="email" class="form-control" id="email" required placeholder="info@lal-avto.ru">
+                                <div class="invalid-feedback">Пожалуйста, укажите email</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productCategory" class="form-label fw-semibold">
+                                <i class="bi bi-tags me-1"></i>Категория товаров<span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="productCategory" required>
+                                <option value="" selected disabled>Выберите категорию</option>
+                                <option>Автозапчасти</option>
+                                <option>Масла и жидкости</option>
+                                <option>Аксессуары</option>
+                                <option>Автохимия</option>
+                                <option>Шины и диски</option>
+                                <option>Инструменты</option>
+                                <option>Другое</option>
+                            </select>
+                            <div class="invalid-feedback">Пожалуйста, выберите категорию</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label fw-semibold">
+                                <i class="bi bi-chat-text me-1"></i>О компании и продукции
+                            </label>
+                            <textarea class="form-control" id="message" rows="3" placeholder="Расскажите о вашей компании и продукции..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="file" class="form-label fw-semibold">
+                                <i class="bi bi-file-earmark-text me-1"></i>Прайс-лист (опционально)
+                            </label>
+                            <input type="file" class="form-control" id="file">
+                            <div class="form-text">PDF, DOC, XLS до 10MB</div>
+                        </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="agree" required>
+                            <label class="form-check-label small" for="agree">
+                                Согласен на обработку персональных данных
+                            </label>
+                            <div class="invalid-feedback">Необходимо ваше согласие</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+                            <i class="bi bi-send me-2"></i>Отправить заявку
+                        </button>
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Мы свяжемся с вами в течение 2 рабочих дней
+                            </small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="partners-section">
+        <div class="section-header text-center mb-4">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="header-icon me-3">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h3 class="mb-0">Наши партнеры</h3>
+            </div>
+        </div>
+        <div class="partners-grid">
+            <div class="partner-item">
+                <img src="../img/no-image.png" alt="Bosch" class="partner-logo">
+                <span class="partner-name">Bosch</span>
+            </div>
+            <div class="partner-item">
+                <img src="../img/no-image.png" alt="Castrol" class="partner-logo">
+                <span class="partner-name">Castrol</span>
+            </div>
+            <div class="partner-item">
+                <img src="../img/no-image.png" alt="Mobil" class="partner-logo">
+                <span class="partner-name">Mobil</span>
+            </div>
+            <div class="partner-item">
+                <img src="../img/no-image.png" alt="Brembo" class="partner-logo">
+                <span class="partner-name">Brembo</span>
+            </div>
+            <div class="partner-item">
+                <img src="../img/no-image.png" alt="Mann-Filter" class="partner-logo">
+                <span class="partner-name">Mann-Filter</span>
+            </div>
+            <div class="partner-item">
+                <img src="../img/no-image.png" alt="NGK" class="partner-logo">
+                <span class="partner-name">NGK</span>
             </div>
         </div>
     </div>

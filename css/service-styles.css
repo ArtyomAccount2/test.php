@@ -1,52 +1,231 @@
+.service-main-card 
+{
+    height: 100%;
+}
+
 .service-card 
 {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.service-card:hover 
+.card-header-custom 
 {
-    transform: translateY(-5px);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px 12px 0 0;
+    padding: 1.25rem 1.5rem;
+    border: none;
 }
 
-.service-list 
+.header-icon
 {
-    list-style: none;
-    padding-left: 0;
+    background: #007bff !important;
 }
 
-.service-list li 
+.card-header-custom .header-icon 
 {
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
 }
 
-.service-list li:last-child 
+.card-header-custom .header-icon i 
 {
-    border-bottom: none;
+    font-size: 1.25rem;
 }
 
-.service-list i 
+.card-body-custom 
 {
-    margin-right: 10px;
-    font-size: 1.2rem;
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-item 
+{
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: auto;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.service-item:hover 
+{
+    border-color: #007bff;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.service-icon 
+{
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.service-content 
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.service-content h6 
+{
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+}
+
+.service-content p 
+{
+    font-size: 0.8rem;
+    line-height: 1.3;
+    margin-bottom: 0;
+}
+
+.service-meta 
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.service-price 
+{
+    font-size: 0.9rem;
+}
+
+.service-time 
+{
+    font-size: 0.75rem;
+}
+
+.service-alert .alert 
+{
+    margin-bottom: 0;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.express-services 
+{
+    margin-top: auto;
+}
+
+.express-services h6 
+{
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.express-service 
+{
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.express-service:hover 
+{
+    border-color: #007bff;
+    background: #f8f9ff;
+}
+
+.service-name 
+{
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.service-duration 
+{
+    font-size: 0.75rem;
+    color: #28a745;
+    font-weight: 600;
+}
+
+.special-offer .alert 
+{
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0;
+}
+
+#serviceForm .form-control,
+#serviceForm .form-select 
+{
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+#serviceForm .form-control:focus,
+#serviceForm .form-select:focus 
+{
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.1);
+}
+
+#serviceForm .input-group-text 
+{
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-right: none;
+}
+
+#serviceForm .btn-primary 
+{
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-size: 0.9rem;
 }
 
 .advantage-card 
 {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s;
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem 1rem;
+    height: 100%;
+    transition: all 0.2s ease;
 }
 
 .advantage-card:hover 
 {
-    transform: translateY(-5px);
+    border-color: #007bff;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
 }
 
 .advantage-icon 
@@ -55,32 +234,126 @@
     font-size: 2rem;
 }
 
-#serviceForm .form-control, #serviceForm .form-select 
+.advantage-card h6 
 {
-    border-radius: 8px;
-    padding: 10px 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
 }
 
-#serviceForm .form-control:focus, #serviceForm .form-select:focus 
+.stat-item 
 {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    min-width: 120px;
+}
+
+.stat-number 
+{
+    font-size: 1.5rem;
+}
+
+.display-5 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 @media (max-width: 768px) 
 {
-    .service-card 
+    .service-main-card 
     {
-        margin-bottom: 20px;
+        margin-bottom: 1.5rem;
+        height: auto;
+    }
+    
+    .hero-section 
+    {
+        padding: 1.5rem 1rem;
+    }
+    
+    .stats-row 
+    {
+        gap: 1rem;
+    }
+    
+    .stat-item 
+    {
+        padding: 0.75rem 1rem;
+        min-width: 100px;
+    }
+    
+    .card-body-custom 
+    {
+        padding: 1.25rem;
+    }
+    
+    .service-item 
+    {
+        min-height: 85px;
+        padding: 0.75rem;
+    }
+    
+    .advantage-card 
+    {
+        margin-bottom: 1rem;
     }
 }
 
-.service-item 
+@media (max-width: 576px) 
 {
-    height: 120px;
-    min-height: 120px;
-    transition: all 0.3s ease;
-    cursor: pointer;
+    .service-content h6 
+    {
+        font-size: 0.85rem;
+    }
+    
+    .service-content p 
+    {
+        font-size: 0.75rem;
+    }
+    
+    .service-meta 
+    {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .card-header-custom 
+    {
+        padding: 1rem 1.25rem;
+    }
+    
+    .card-header-custom h2 
+    {
+        font-size: 1.25rem;
+    }
+}
+
+.row 
+{
+    align-items: stretch;
+}
+
+.col-lg-6,
+.col-md-3,
+.col-md-6 
+{
     display: flex;
     flex-direction: column;
+}
+
+.service-item:last-child 
+{
+    margin-bottom: 0;
+}
+
+.express-service:last-child 
+{
+    margin-bottom: 0;
 }
