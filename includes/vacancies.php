@@ -62,7 +62,7 @@ unset($_SESSION['form_data']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вакансии - Лал-Авто</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/vacancies-styles.css">
@@ -80,6 +80,91 @@ unset($_SESSION['form_data']);
         <?php 
         } 
         ?>
+
+        let fileInput = document.getElementById('vacancyFile');
+        let fileUploadBtn = document.querySelector('.file-upload-btn');
+        
+        if(fileInput && fileUploadBtn) 
+        {
+            fileInput.addEventListener('change', function(e) 
+            {
+                if(this.files && this.files[0]) 
+                {
+                    let fileName = this.files[0].name;
+                    fileUploadBtn.innerHTML = `
+                        <i class="bi bi-file-earmark-check fs-3 text-success"></i>
+                        <p class="file-name mb-1">${fileName}</p>
+                        <small class="text-muted">Нажмите для изменения файла</small>
+                    `;
+                    fileUploadBtn.classList.add('file-selected');
+                }
+            });
+
+            fileUploadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                fileInput.click();
+            });
+        }
+
+        let form = document.getElementById('vacancyForm');
+
+        if(form) 
+        {
+            form.addEventListener('submit', function(e) 
+            {
+                e.preventDefault();
+
+                if(this.checkValidity()) 
+                {
+                    let submitBtn = this.querySelector('button[type="submit"]');
+                    submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Отклик отправлен!';
+                    submitBtn.classList.remove('btn-primary');
+                    submitBtn.classList.add('btn-success');
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        let modal = bootstrap.Modal.getInstance(document.getElementById('responseModal'));
+                        modal.hide();
+                        
+                        this.reset();
+                        fileUploadBtn.innerHTML = `
+                            <i class="bi bi-cloud-arrow-up fs-3"></i>
+                            <p class="mb-1">Перетащите файл сюда или нажмите для выбора</p>
+                            <small class="text-muted">Форматы: PDF, DOC, DOCX (до 5MB)</small>
+                        `;
+                        fileUploadBtn.classList.remove('file-selected');
+                        
+                        submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Отправить отклик';
+                        submitBtn.classList.remove('btn-success');
+                        submitBtn.classList.add('btn-primary');
+                        submitBtn.disabled = false;
+                    }, 2000);
+                }
+            });
+        }
+
+        function equalizeVacancyHeights() 
+        {
+            let vacancyCards = document.querySelectorAll('.vacancy-card-main');
+            let maxHeight = 0;
+            
+            vacancyCards.forEach(card => {
+                card.style.height = 'auto';
+                let height = card.offsetHeight;
+
+                if (height > maxHeight) 
+                {
+                    maxHeight = height;
+                }
+            });
+            
+            vacancyCards.forEach(card => {
+                card.style.height = maxHeight + 'px';
+            });
+        }
+
+        window.addEventListener('load', equalizeVacancyHeights);
+        window.addEventListener('resize', equalizeVacancyHeights);
     });
     </script>
 </head>
@@ -89,228 +174,256 @@ unset($_SESSION['form_data']);
     require_once("header.php"); 
 ?>
 
-<div class="container my-5" style="padding-top: 75px;">
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="vacancies-intro">
-                <h2 class="text-center mb-4">Наши вакансии</h2>
-                <p class="text-center">Мы предлагаем стабильную работу в дружном коллективе, конкурентную зарплату и возможности для профессионального роста.</p>
-            </div>
-        </div>
+<div class="container my-5">
+    <div class="vacancies-hero text-center mb-5" style="padding-top: 85px;">
+        <h1 class="display-5 fw-bold text-primary mb-3">Карьера в Лал-Авто</h1>
+        <p class="lead text-muted mb-4">Присоединяйтесь к команде профессионалов и развивайтесь вместе с нами</p>
     </div>
     <div class="row g-4 mb-5">
         <div class="col-md-6">
-            <div class="vacancy-card">
-                <div class="vacancy-header">
-                    <h3>Менеджер по продажам автозапчастей</h3>
-                    <span class="badge bg-primary">Актуально</span>
-                </div>
-                <div class="vacancy-meta">
-                    <div class="meta-item">
-                        <i class="bi bi-geo-alt"></i> г. Калининград
+            <div class="vacancy-card-main h-100">
+                <div class="vacancy-card">
+                    <div class="vacancy-header">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h3 class="mb-2">Менеджер по продажам автозапчастей</h3>
+                            <span class="badge bg-primary">Актуально</span>
+                        </div>
+                        <div class="vacancy-meta">
+                            <div class="meta-item">
+                                <i class="bi bi-geo-alt"></i>
+                                <span>г. Калининград</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="bi bi-cash-stack"></i>
+                                <span>от 50 000 ₽ + бонусы</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="bi bi-briefcase"></i>
+                                <span>Опыт от 1 года</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="meta-item">
-                        <i class="bi bi-cash-stack"></i> от 50 000 ₽ + бонусы
+                    <div class="vacancy-body">
+                        <div class="vacancy-section">
+                            <h5><i class="bi bi-list-check text-primary me-2"></i>Обязанности:</h5>
+                            <ul>
+                                <li>Консультирование клиентов по ассортименту</li>
+                                <li>Подбор запчастей по VIN и каталогам</li>
+                                <li>Оформление заказов и работа с 1С</li>
+                                <li>Ведение базы клиентов</li>
+                                <li>Работа с входящими и исходящими звонками</li>
+                            </ul>
+                        </div>
+                        <div class="vacancy-section">
+                            <h5><i class="bi bi-person-check text-primary me-2"></i>Требования:</h5>
+                            <ul>
+                                <li>Опыт работы в продажах от 1 года</li>
+                                <li>Знание автомобилей и запчастей</li>
+                                <li>Умение работать в команде</li>
+                                <li>Грамотная речь и клиентоориентированность</li>
+                            </ul>
+                        </div>
+                        <div class="vacancy-section">
+                            <h5><i class="bi bi-star text-primary me-2"></i>Условия:</h5>
+                            <ul>
+                                <li>Официальное трудоустройство</li>
+                                <li>График 5/2 с 9:00 до 18:00</li>
+                                <li>Обучение и стажировка</li>
+                                <li>Карьерный рост и премии</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="meta-item">
-                        <i class="bi bi-briefcase"></i> Опыт от 1 года
+                    <div class="vacancy-footer">
+                        <button class="btn btn-primary w-100 py-2" data-bs-toggle="modal" data-bs-target="#responseModal">
+                            <i class="bi bi-envelope me-2"></i>Откликнуться на вакансию
+                        </button>
                     </div>
-                </div>
-                <div class="vacancy-body">
-                    <div class="vacancy-description">
-                        <h5>Обязанности:</h5>
-                        <ul>
-                            <li>Консультирование клиентов по ассортименту</li>
-                            <li>Подбор запчастей по VIN и каталогам</li>
-                            <li>Оформление заказов и работа с 1С</li>
-                            <li>Ведение базы клиентов</li>
-                            <li>Работа с входящими и исходящими звонками</li>
-                            <li>Участие в инвентаризациях</li>
-                            <li>Взаимодействие с отделом закупок</li>
-                            <li>Контроль выполнения заказов</li>
-                        </ul>
-                        <h5>Требования:</h5>
-                        <ul>
-                            <li>Опыт работы в продажах от 1 года</li>
-                            <li>Знание автомобилей и запчастей</li>
-                            <li>Умение работать в команде</li>
-                            <li>Грамотная речь</li>
-                            <li>Клиентоориентированность</li>
-                            <li>Стрессоустойчивость</li>
-                            <li>Обучаемость</li>
-                        </ul>
-                        <h5>Условия:</h5>
-                        <ul>
-                            <li>Официальное трудоустройство</li>
-                            <li>График 5/2 с 9:00 до 18:00</li>
-                            <li>Обучение и стажировка</li>
-                            <li>Карьерный рост</li>
-                            <li>Корпоративные мероприятия</li>
-                            <li>Оформление по ТК РФ</li>
-                            <li>Премии по результатам работы</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="vacancy-footer">
-                    <button class="btn btn-primary btn-lg w-100 py-3 fw-bold" data-bs-toggle="modal" data-bs-target="#responseModal">
-                        <i class="bi bi-envelope"></i> Откликнуться на вакансию
-                    </button>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="vacancy-card">
-                <div class="vacancy-header">
-                    <h3>Автомеханик</h3>
-                    <span class="badge bg-primary">Актуально</span>
-                </div>
-                <div class="vacancy-meta">
-                    <div class="meta-item">
-                        <i class="bi bi-geo-alt"></i> г. Калининград
+            <div class="vacancy-card-main h-100">
+                <div class="vacancy-card">
+                    <div class="vacancy-header">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h3 class="mb-2">Автомеханик</h3>
+                            <span class="badge bg-primary">Актуально</span>
+                        </div>
+                        <div class="vacancy-meta">
+                            <div class="meta-item">
+                                <i class="bi bi-geo-alt"></i>
+                                <span>г. Калининград</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="bi bi-cash-stack"></i>
+                                <span>от 65 000 ₽</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="bi bi-briefcase"></i>
+                                <span>Опыт от 3 лет</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="meta-item">
-                        <i class="bi bi-cash-stack"></i> от 65 000 ₽
+                    <div class="vacancy-body">
+                        <div class="vacancy-section">
+                            <h5><i class="bi bi-list-check text-primary me-2"></i>Обязанности:</h5>
+                            <ul>
+                                <li>Диагностика и ремонт автомобилей</li>
+                                <li>Техническое обслуживание</li>
+                                <li>Работа с клиентами</li>
+                                <li>Ведение документации</li>
+                                <li>Шиномонтажные работы</li>
+                            </ul>
+                        </div>
+                        <div class="vacancy-section">
+                            <h5><i class="bi bi-person-check text-primary me-2"></i>Требования:</h5>
+                            <ul>
+                                <li>Опыт работы автомехаником от 3 лет</li>
+                                <li>Знание устройства автомобилей</li>
+                                <li>Навыки работы с диагностическим оборудованием</li>
+                                <li>Ответственность и аккуратность</li>
+                            </ul>
+                        </div>
+                        <div class="vacancy-section">
+                            <h5><i class="bi bi-star text-primary me-2"></i>Условия:</h5>
+                            <ul>
+                                <li>Официальное трудоустройство</li>
+                                <li>График 2/2 с 9:00 до 20:00</li>
+                                <li>Современное оборудование</li>
+                                <li>Премии за качество работы</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="meta-item">
-                        <i class="bi bi-briefcase"></i> Опыт от 3 лет
+                    <div class="vacancy-footer">
+                        <button class="btn btn-primary w-100 py-2" data-bs-toggle="modal" data-bs-target="#responseModal">
+                            <i class="bi bi-envelope me-2"></i>Откликнуться на вакансию
+                        </button>
                     </div>
-                </div>
-                <div class="vacancy-body">
-                    <div class="vacancy-description">
-                        <h5>Обязанности:</h5>
-                        <ul>
-                            <li>Диагностика и ремонт автомобилей</li>
-                            <li>Техническое обслуживание</li>
-                            <li>Работа с клиентами</li>
-                            <li>Ведение документации</li>
-                            <li>Замена технических жидкостей</li>
-                            <li>Ремонт ходовой части</li>
-                            <li>Диагностика электронных систем</li>
-                            <li>Шиномонтажные работы</li>
-                        </ul>
-                        <h5>Требования:</h5>
-                        <ul>
-                            <li>Опыт работы автомехаником от 3 лет</li>
-                            <li>Знание устройства автомобилей</li>
-                            <li>Навыки работы с диагностическим оборудованием</li>
-                            <li>Ответственность и аккуратность</li>
-                            <li>Наличие собственного инструмента</li>
-                            <li>Опыт работы с иномарками</li>
-                            <li>Техническое образование</li>
-                        </ul>
-                        <h5>Условия:</h5>
-                        <ul>
-                            <li>Официальное трудоустройство</li>
-                            <li>График 2/2 с 9:00 до 20:00</li>
-                            <li>Современное оборудование</li>
-                            <li>Премии за качество работы</li>
-                            <li>Оплачиваемые больничные</li>
-                            <li>Стабильная заработная плата</li>
-                            <li>Комфортные условия труда</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="vacancy-footer">
-                    <button class="btn btn-primary btn-lg w-100 py-3 fw-bold" data-bs-toggle="modal" data-bs-target="#responseModal">
-                        <i class="bi bi-envelope"></i> Откликнуться на вакансию
-                    </button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12 mx-auto">
-            <div class="about-employer p-4 mb-2 text-center">
-                <h2 class="mb-4"><i class="bi bi-building"></i> Почему стоит работать у нас?</h2>
-                <div class="benefits-grid">
-                    <div class="benefit-item">
+
+    <div class="employer-benefits">
+        <div class="benefits-card">
+            <div class="benefits-header text-center mb-4">
+                <h2 class="text-primary mb-3"><i class="bi bi-building me-3"></i>Почему стоит работать у нас?</h2>
+                <p class="text-muted">Мы создаем комфортные условия для профессионального роста и развития</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">
                         <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <div class="benefit-content">
                         <h5>Конкурентная зарплата</h5>
-                        <p>Стабильные выплаты и бонусы за результаты</p>
+                        <p class="mb-0">Стабильные выплаты и бонусы за результаты работы</p>
                     </div>
-                    <div class="benefit-item">
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
                         <i class="bi bi-graph-up"></i>
+                    </div>
+                    <div class="benefit-content">
                         <h5>Карьерный рост</h5>
-                        <p>Возможности для профессионального развития</p>
+                        <p class="mb-0">Возможности для профессионального и карьерного развития</p>
                     </div>
-                    <div class="benefit-item">
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
                         <i class="bi bi-people"></i>
+                    </div>
+                    <div class="benefit-content">
                         <h5>Дружный коллектив</h5>
-                        <p>Работа в команде профессионалов</p>
+                        <p class="mb-0">Работа в команде опытных профессионалов</p>
                     </div>
-                    <div class="benefit-item">
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
                         <i class="bi bi-book"></i>
+                    </div>
+                    <div class="benefit-content">
                         <h5>Обучение</h5>
-                        <p>Корпоративные тренинги и курсы</p>
+                        <p class="mb-0">Корпоративные тренинги и курсы повышения квалификации</p>
                     </div>
                 </div>
-                <div class="mt-5">
-                    <h4>Не нашли подходящую вакансию?</h4>
-                    <p>Отправьте свое резюме на <a href="mailto:hr@lal-auto.ru">hr@lal-auto.ru</a> и мы рассмотрим вас, когда появится подходящая позиция.</p>
-                    <button class="btn btn-outline-primary mt-3" data-bs-toggle="modal" data-bs-target="#responseModal">
-                        <i class="bi bi-file-earmark-person"></i> Отправить резюме
-                    </button>
-                </div>
+            </div>
+            <div class="benefits-footer text-center mt-4">
+                <h4 class="mb-3">Не нашли подходящую вакансию?</h4>
+                <p class="text-muted mb-3">Отправьте свое резюме и мы рассмотрим вас, когда появится подходящая позиция</p>
+                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#responseModal">
+                    <i class="bi bi-file-earmark-person me-2"></i>Отправить резюме
+                </button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="responseModalLabel">Отклик на вакансию</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="vacancyForm" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="vacancyPosition" class="form-label">Вакансия<span class="text-danger">*</span></label>
-                        <select class="form-select" id="vacancyPosition" required>
-                            <option value="" selected disabled>Выберите вакансию</option>
-                            <option value="Менеджер по продажам">Менеджер по продажам автозапчастей</option>
-                            <option value="Автомеханик">Автомеханик</option>
-                            <option value="Другая">Другая вакансия</option>
-                        </select>
+                <form id="vacancyForm" class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="vacancyPosition" class="form-label fw-semibold">Вакансия <span class="text-danger">*</span></label>
+                            <select class="form-select" id="vacancyPosition" required>
+                                <option value="" selected disabled>Выберите вакансию</option>
+                                <option value="Менеджер по продажам">Менеджер по продажам автозапчастей</option>
+                                <option value="Автомеханик">Автомеханик</option>
+                                <option value="Другая">Другая вакансия</option>
+                            </select>
+                            <div class="invalid-feedback">Пожалуйста, выберите вакансию</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="vacancyName" class="form-label fw-semibold">ФИО <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="vacancyName" placeholder="Иванов Иван Иванович" required>
+                            <div class="invalid-feedback">Пожалуйста, введите ваше ФИО</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="vacancyPhone" class="form-label fw-semibold">Телефон <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="vacancyPhone" placeholder="+7 (900) 123-45-67" required>
+                            <div class="invalid-feedback">Пожалуйста, введите корректный телефон</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="vacancyEmail" class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="vacancyEmail" placeholder="example@mail.ru" required>
+                            <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label for="vacancyName" class="form-label">ФИО<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="vacancyName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="vacancyPhone" class="form-label">Телефон<span class="text-danger">*</span></label>
-                        <input type="tel" class="form-control" id="vacancyPhone" placeholder="+7 (___) ___-__-__" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="vacancyEmail" class="form-label">Email<span class="text-danger">*</span></label>
-                        <input type="email" class="form-control" id="vacancyEmail" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="vacancyMessage" class="form-label">Сопроводительное письмо</label>
+                        <label for="vacancyMessage" class="form-label fw-semibold">Сопроводительное письмо</label>
                         <textarea class="form-control" id="vacancyMessage" rows="3" placeholder="Расскажите о своем опыте и почему вы хотите работать у нас"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Резюме<span class="text-danger">*</span></label>
+                        <label class="form-label fw-semibold">Резюме <span class="text-danger">*</span></label>
                         <div class="file-upload">
                             <label for="vacancyFile" class="file-upload-btn">
                                 <i class="bi bi-cloud-arrow-up fs-3"></i>
-                                <p class="mt-2">Перетащите файл сюда или нажмите для выбора</p>
+                                <p class="mb-1">Перетащите файл сюда или нажмите для выбора</p>
                                 <small class="text-muted">Форматы: PDF, DOC, DOCX (до 5MB)</small>
                             </label>
                             <input type="file" class="form-control d-none" id="vacancyFile" accept=".pdf,.doc,.docx" required>
+                            <div class="invalid-feedback">Пожалуйста, прикрепите резюме</div>
                         </div>
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="vacancyAgree" required>
-                        <label class="form-check-label" for="vacancyAgree">Я согласен на обработку персональных данных</label>
+                        <label class="form-check-label small" for="vacancyAgree">Я согласен на обработку персональных данных</label>
+                        <div class="invalid-feedback">Необходимо ваше согласие</div>
                     </div>
-                </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary w-100">
-                    <i class="bi bi-send"></i> Отправить отклик
-                </button>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="vacancyForm" class="btn btn-primary w-100">
+                    <i class="bi bi-send me-2"></i>Отправить отклик
+                </button>
             </div>
         </div>
     </div>
@@ -322,50 +435,5 @@ unset($_SESSION['form_data']);
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() 
-{
-    let fileInput = document.getElementById('vacancyFile');
-    let fileUploadBtn = document.querySelector('.file-upload-btn');
-    
-    if(fileInput) 
-    {
-        fileInput.addEventListener('change', function(e) 
-        {
-            if(this.files && this.files[0]) 
-            {
-                let fileName = this.files[0].name;
-                fileUploadBtn.innerHTML = `
-                    <i class="bi bi-file-earmark-check fs-3 text-success"></i>
-                    <p class="mt-2">${fileName}</p>
-                    <small class="text-muted">Нажмите для изменения файла</small>
-                `;
-            }
-        });
-    }
-    
-    let form = document.getElementById('vacancyForm');
-
-    if(form) 
-    {
-        form.addEventListener('submit', function(e) 
-        {
-            e.preventDefault();
-
-            alert('Ваш отклик успешно отправлен! Мы свяжемся с вами в ближайшее время.');
-
-            let modal = bootstrap.Modal.getInstance(document.getElementById('responseModal'));
-            modal.hide();
-
-            form.reset();
-            fileUploadBtn.innerHTML = `
-                <i class="bi bi-cloud-arrow-up fs-3"></i>
-                <p class="mt-2">Перетащите файл сюда или нажмите для выбора</p>
-                <small class="text-muted">Форматы: PDF, DOC, DOCX (до 5MB)</small>
-            `;
-        });
-    }
-});
-</script>
 </body>
 </html>

@@ -204,51 +204,80 @@ sort($all_categories);
         } 
         ?>
 
-        document.getElementById('sortSelect').addEventListener('change', function() 
+        let sortSelect = document.getElementById('sortSelect');
+
+        if (sortSelect) 
         {
-            let sortValue = this.value;
-            let url = new URL(window.location.href);
-            url.searchParams.set('sort', sortValue);
-            window.location.href = url.toString();
-        });
-
-        document.getElementById('filterForm').addEventListener('submit', function(e) 
-        {
-            e.preventDefault();
-            applyFilters();
-        });
-
-        document.getElementById('resetFilters').addEventListener('click', function() 
-        {
-            window.location.href = '?';
-        });
-
-        function applyFilters() 
-        {
-            let formData = new FormData(document.getElementById('filterForm'));
-            let params = new URLSearchParams();
-
-            let urlParams = new URLSearchParams(window.location.search);
-
-            if (urlParams.has('sort')) 
+            sortSelect.addEventListener('change', function() 
             {
-                params.set('sort', urlParams.get('sort'));
-            }
-            if (urlParams.has('page')) 
-            {
-                params.set('page', urlParams.get('page'));
-            }
-
-            for (let [key, value] of formData.entries()) 
-            {
-                if (value) 
-                {
-                    params.set(key, value);
-                }
-            }
-            
-            window.location.href = '?' + params.toString();
+                let url = new URL(window.location);
+                url.searchParams.set('sort', this.value);
+                window.location.href = url.toString();
+            });
         }
+
+        let filterForm = document.getElementById('filterForm');
+
+        if (filterForm) 
+        {
+            filterForm.addEventListener('submit', function(e) 
+            {
+                e.preventDefault();
+                let formData = new FormData(this);
+                let params = new URLSearchParams();
+                
+                for (let [key, value] of formData.entries()) 
+                {
+                    if (value) 
+                    {
+                        params.set(key, value);
+                    }
+                }
+                
+                window.location.href = '?' + params.toString();
+            });
+        }
+
+        let resetFilters = document.getElementById('resetFilters');
+
+        if (resetFilters) 
+        {
+            resetFilters.addEventListener('click', function() 
+            {
+                window.location.href = '?';
+            });
+        }
+
+        let searchForm = document.getElementById('searchForm');
+
+        if (searchForm) 
+        {
+            searchForm.addEventListener('submit', function(e) 
+            {
+                e.preventDefault();
+                let formData = new FormData(this);
+                let params = new URLSearchParams();
+                
+                for (let [key, value] of formData.entries()) 
+                {
+                    if (value) 
+                    {
+                        params.set(key, value);
+                    }
+                }
+                
+                window.location.href = '?' + params.toString();
+            });
+        }
+
+        document.querySelectorAll('.filter-category').forEach(button => {
+            button.addEventListener('click', function() {
+                let category = this.getAttribute('data-category');
+                let url = new URL(window.location);
+                url.searchParams.set('category', category);
+                window.location.href = url.toString();
+            });
+        });
     });
     </script>
 </head>
@@ -258,33 +287,25 @@ sort($all_categories);
     require_once("header.php"); 
 ?>
 
-<div class="container my-5 pt-4">
-    <div class="row mb-4 align-items-center" style="padding-top: 85px;">
-        <div class="col-md-6">
-            <h1 class="mb-0">Автоаксессуары</h1>
-            <p class="text-muted">Найдите идеальные аксессуары для вашего автомобиля</p>
-        </div>
-        <div class="col-md-6 text-md-end">
-            <a href="#" class="btn btn-primary">
-                <i class="bi bi-gift-fill"></i> Подарочные сертификаты
-            </a>
-        </div>
+<div class="container my-4">
+    <div class="hero-section text-center mb-5" style="padding-top: 105px;">
+        <h1 class="display-5 fw-bold text-primary mb-3">Автоаксессуары</h1>
+        <p class="lead text-muted mb-4">Найдите идеальные аксессуары для вашего автомобиля</p>
     </div>
     <div class="row mb-4">
         <div class="col-12">
             <div class="border-0 shadow-sm">
-                <div class="card-body accessories-container">
-                    <form id="searchForm" class="row g-3">
+                <div class="card-body p-3">
+                    <form id="searchForm" class="row g-2">
                         <div class="col-md-4">
-                            <input type="text" name="search" class="form-control" placeholder="Поиск аксессуаров..." 
-                                   value="<?php echo htmlspecialchars($search_term); ?>">
+                            <input type="text" name="search" class="form-control" placeholder="Поиск аксессуаров..." value="<?php echo htmlspecialchars($search_term); ?>">
                         </div>
                         <div class="col-md-3">
                             <select name="category" class="form-select">
                                 <option value="">Все категории</option>
                                 <?php 
-                                foreach($all_categories as $category) 
-                                {
+                                foreach($all_categories as $category)
+                                { 
                                 ?>
                                     <option value="<?php echo $category; ?>" <?php echo $category_filter === $category ? 'selected' : ''; ?>>
                                         <?php echo $category; ?>
@@ -319,19 +340,61 @@ sort($all_categories);
             </div>
         </div>
     </div>
+    <?php 
+    if ($search_term !== '' || $category_filter !== '' || $brand_filter !== '' || $min_price > 0 || $max_price > 0)
+    { 
+    ?>
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="alert alert-info py-2">
+                <?php 
+                if ($search_term !== '' && $category_filter !== '' && $brand_filter !== '')
+                {
+                    echo "Найдено $total_items товаров по запросу \"" . htmlspecialchars($search_term) . "\" в категории \"" . htmlspecialchars($category_filter) . "\" бренда \"" . htmlspecialchars($brand_filter) . "\"";
+                }
+                else if ($search_term !== '' && $category_filter !== '')
+                {
+                    echo "Найдено $total_items товаров по запросу \"" . htmlspecialchars($search_term) . "\" в категории \"" . htmlspecialchars($category_filter) . "\"";
+                }
+                else if ($search_term !== '' && $brand_filter !== '')
+                {
+                    echo "Найдено $total_items товаров по запросу \"" . htmlspecialchars($search_term) . "\" бренда \"" . htmlspecialchars($brand_filter) . "\"";
+                }
+                else if ($search_term !== '')
+                {
+                    echo "Найдено $total_items товаров по запросу \"" . htmlspecialchars($search_term) . "\"";
+                }
+                else if ($category_filter !== '')
+                {
+                    echo "Найдено $total_items товаров в категории \"" . htmlspecialchars($category_filter) . "\"";
+                }
+                else if ($brand_filter !== '')
+                {
+                    echo "Найдено $total_items товаров бренда \"" . htmlspecialchars($brand_filter) . "\"";
+                }
+                else
+                {
+                    echo "Найдено $total_items товаров";
+                }
+                ?>
+                <a href="?" class="btn btn-sm btn-outline-secondary ms-2">Показать все</a>
+            </div>
+        </div>
+    </div>
+    <?php 
+    } 
+    ?>
     <div class="row">
         <div class="col-lg-3 col-md-4 mb-4">
-            <form id="filterForm">
-                <div class="border-0 shadow-sm">
-                    <div class="card-body p-3">
-                        <h5 class="card-title mb-4"><i class="bi bi-funnel"></i> Фильтры</h5>
+            <div class="border-0 shadow-sm">
+                <div class="card-body p-3">
+                    <h5 class="card-title mb-3"><i class="bi bi-funnel"></i> Фильтры</h5>
+                    <form id="filterForm">
                         <div class="mb-4">
                             <h6 class="mb-3">Цена, ₽</h6>
                             <div class="d-flex justify-content-between mb-2">
-                                <input type="number" name="min_price" class="form-control form-control-sm" placeholder="От" 
-                                       value="<?php echo $min_price ?: ''; ?>" style="width: 45%">
-                                <input type="number" name="max_price" class="form-control form-control-sm" placeholder="До" 
-                                       value="<?php echo $max_price ?: ''; ?>" style="width: 45%">
+                                <input type="number" name="min_price" class="form-control form-control-sm" placeholder="От" value="<?php echo $min_price ?: ''; ?>" style="width: 45%">
+                                <input type="number" name="max_price" class="form-control form-control-sm" placeholder="До" value="<?php echo $max_price ?: ''; ?>" style="width: 45%">
                             </div>
                         </div>
                         <div class="mb-4">
@@ -339,7 +402,7 @@ sort($all_categories);
                             <div class="list-group list-group-flush">
                                 <?php 
                                 foreach($all_categories as $category)
-                                { 
+                                {
                                     $count = count(array_filter($all_products, function($product) use ($category) 
                                     {
                                         return $product['category'] === $category;
@@ -351,11 +414,10 @@ sort($all_categories);
                                         <span class="badge bg-primary rounded-pill"><?php echo $count; ?></span>
                                     </button>
                                 <?php 
-                                }   
+                                } 
                                 ?>
                             </div>
                         </div>
-
                         <div class="mb-4">
                             <h6 class="mb-3">Бренды</h6>
                             <?php 
@@ -367,8 +429,7 @@ sort($all_categories);
                                 }));
                             ?>
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input brand-filter" type="checkbox" name="brand" value="<?php echo $brand; ?>" 
-                                           id="brand_<?php echo preg_replace('/[^a-zA-Z0-9]/', '_', $brand); ?>" 
+                                    <input class="form-check-input" type="checkbox" name="brand" value="<?php echo $brand; ?>" id="brand_<?php echo preg_replace('/[^a-zA-Z0-9]/', '_', $brand); ?>" 
                                            <?php echo $brand_filter === $brand ? 'checked' : ''; ?>>
                                     <label class="form-check-label" for="brand_<?php echo preg_replace('/[^a-zA-Z0-9]/', '_', $brand); ?>">
                                         <?php echo $brand; ?>
@@ -379,52 +440,15 @@ sort($all_categories);
                             } 
                             ?>
                         </div>
-
-                        <button type="submit" class="btn btn-primary w-100">Применить фильтры</button>
-                        <button type="button" id="resetFilters" class="btn btn-outline-secondary w-100 mt-2">Сбросить все</button>
-                    </div>
+                        <button type="submit" class="btn btn-primary w-100 mb-2">Применить фильтры</button>
+                        <button type="button" id="resetFilters" class="btn btn-outline-secondary w-100">Сбросить все</button>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
         <div class="col-lg-9 col-md-8">
-            <?php 
-            if ($search_term !== '' || $category_filter !== '' || $brand_filter !== '' || $min_price > 0 || $max_price > 0) 
-            {
-            ?>
-            <div class="alert alert-info mb-4">
-                <?php 
-                if ($search_term !== '') 
-                {
-                ?>
-                    Найдено <?php echo $total_items; ?> товаров по запросу "<?php echo htmlspecialchars($search_term); ?>"
-                <?php 
-                }
-                else if ($category_filter !== '') 
-                {
-                ?>
-                    Найдено <?php echo $total_items; ?> товаров в категории "<?php echo htmlspecialchars($category_filter); ?>"
-                <?php 
-                }
-                else if ($brand_filter !== '') 
-                {
-                ?>
-                    Найдено <?php echo $total_items; ?> товаров бренда "<?php echo htmlspecialchars($brand_filter); ?>"
-                <?php 
-                }
-                else
-                { 
-                ?>
-                    Найдено <?php echo $total_items; ?> товаров
-                <?php 
-                } 
-                ?>
-                <a href="?" class="btn btn-sm btn-outline-secondary ms-2">Показать все товары</a>
-            </div>
-            <?php 
-            } 
-            ?>
             <div class="border-0 shadow-sm mb-4">
-                <div class="card-body p-2">
+                <div class="card-body p-3">
                     <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <div class="d-flex align-items-center mb-2 mb-md-0">
                             <span class="me-2 text-muted">Сортировка:</span>
@@ -438,8 +462,8 @@ sort($all_categories);
                         </div>
                         <div class="text-muted">
                             <?php 
-                            if ($total_items > 0) 
-                            {
+                            if ($total_items > 0)
+                            { 
                             ?>
                                 Показано <?php echo ($end_index - $start_index); ?> из <?php echo $total_items; ?> товаров
                             <?php 
@@ -455,10 +479,10 @@ sort($all_categories);
                     </div>
                 </div>
             </div>
-            <div class="row g-4">
+            <div class="row g-3">
                 <?php 
-                if ($total_items > 0) 
-                {
+                if ($total_items > 0)
+                { 
                 ?>
                     <?php 
                     for ($i = $start_index; $i < $end_index; $i++)
@@ -471,26 +495,28 @@ sort($all_categories);
                             if(!empty($product['badge'])) 
                             {
                             ?>
-                            <div class="badge bg-<?php echo $product['badge']; ?> position-absolute mt-2 ms-2"><?php echo $product['badge_text']; ?></div>
+                                <div class="badge bg-<?php echo $product['badge']; ?> position-absolute top-0 start-0 m-2">
+                                    <?php echo $product['badge_text']; ?>
+                                </div>
                             <?php 
-                            }
+                            } 
                             ?>
-                            <div class="card-img-top p-3">
+                            <div class="product-image p-3">
                                 <img src="../img/no-image.png" class="img-fluid" alt="<?php echo $product['name']; ?>">
                             </div>
-                            <div class="card-body pt-0">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="text-muted small"><?php echo $product['brand']; ?></span>
                                     <div class="small">
                                         <i class="bi bi-star-fill text-warning"></i>
                                         <span><?php echo $product['rating']; ?></span>
                                     </div>
                                 </div>
-                                <h5 class="card-title mb-2"><?php echo $product['name']; ?></h5>
+                                <h6 class="card-title mb-2"><?php echo $product['name']; ?></h6>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <?php 
-                                        if($product['old_price'] > 0) 
+                                        if($product['old_price'] > 0)
                                         {
                                         ?>
                                             <span class="text-danger fw-bold"><?php echo number_format($product['price'], 0, '', ' '); ?> ₽</span>
@@ -502,7 +528,7 @@ sort($all_categories);
                                         ?>
                                             <span class="fw-bold"><?php echo number_format($product['price'], 0, '', ' '); ?> ₽</span>
                                         <?php 
-                                        }
+                                        } 
                                         ?>
                                     </div>
                                     <button class="btn btn-sm btn-outline-primary">
@@ -513,30 +539,31 @@ sort($all_categories);
                         </div>
                     </div>
                     <?php 
-                    }
+                    } 
                     ?>
                 <?php 
                 }
-                else
-                { 
+                else 
+                {
                 ?>
                     <div class="col-12 text-center py-5">
-                        <h4>Товары не найдены</h4>
-                        <p class="text-muted">Попробуйте изменить параметры поиска или фильтры</p>
+                        <i class="bi bi-search display-4 text-muted mb-3"></i>
+                        <h4 class="text-muted">Товары не найдены</h4>
+                        <p class="text-muted mb-3">Попробуйте изменить параметры поиска или фильтры</p>
                         <a href="?" class="btn btn-primary">Показать все товары</a>
                     </div>
                 <?php 
-                }
+                } 
                 ?>
             </div>
             <?php 
             if ($show_pagination) 
             {
             ?>
-            <nav class="mt-5">
+            <nav class="mt-4">
                 <ul class="pagination justify-content-center">
                     <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
-                        <a class="page-link" href="?<?php echo buildQueryString($current_page - 1, $search_term, $category_filter, $brand_filter, $min_price, $max_price, $sort); ?>" tabindex="-1" aria-disabled="true">
+                        <a class="page-link" href="?<?php echo buildQueryString($current_page - 1, $search_term, $category_filter, $brand_filter, $min_price, $max_price, $sort); ?>">
                             <i class="bi bi-chevron-left"></i>
                         </a>
                     </li>
@@ -568,7 +595,7 @@ sort($all_categories);
                 </ul>
             </nav>
             <?php 
-            }
+            } 
             ?>
         </div>
     </div>
@@ -624,38 +651,5 @@ function buildQueryString($page, $search, $category, $brand, $min_price, $max_pr
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
-<script>
-document.querySelectorAll('.filter-category').forEach(button => {
-    button.addEventListener('click', function() 
-    {
-        const category = this.getAttribute('data-category');
-        let url = new URL(window.location.href);
-        url.searchParams.set('category', category);
-        window.location.href = url.toString();
-    });
-});
-
-document.getElementById('searchForm').addEventListener('submit', function(e) 
-{
-    e.preventDefault();
-    applySearch();
-});
-
-function applySearch() 
-{
-    let formData = new FormData(document.getElementById('searchForm'));
-    let params = new URLSearchParams();
-    
-    for (let [key, value] of formData.entries()) 
-    {
-        if (value) 
-        {
-            params.set(key, value);
-        }
-    }
-    
-    window.location.href = '?' + params.toString();
-}
-</script>
 </body>
 </html>
