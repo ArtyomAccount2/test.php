@@ -215,15 +215,10 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
 ?>
 
 <div class="container my-5 pt-4">
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="../index.php">Главная</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Масла и тех. жидкости</li>
-        </ol>
-    </nav>
-    <div class="row mb-4 align-items-center">
-        <div class="col-md-6">
-            <h1 class="mb-0">Масла и технические жидкости</h1>
+    <div class="row mb-4 align-items-center" style="padding-top: 75px;">
+        <div class="col-md-8">
+            <h1 class="display-6 fw-bold text-primary mb-3">Масла и технические жидкости</h1>
+            <p class="lead text-muted mb-4">Широкий ассортимент качественных масел и жидкостей для вашего автомобиля</p>
             <?php 
             if (!empty($search_query) || !empty($brand_filter) || !empty($viscosity_filter) || !empty($type_filter) || !empty($volume_filter))
             {
@@ -257,11 +252,11 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
             } 
             ?>
         </div>
-        <div class="col-md-6 text-md-end">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#oilSelectorModal">
-                <i class="bi bi-question-circle"></i> Подобрать масло
+        <div class="col-md-4 text-md-end">
+            <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#oilSelectorModal">
+                <i class="bi bi-question-circle me-2"></i>Подобрать масло
             </button>
-        </div>
+         </div>
     </div>
     <div class="oil-categories mb-5">
         <h2 class="mb-4"><i class="bi bi-filter-square"></i> Категории</h2>
@@ -517,54 +512,6 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
         <?php 
         } 
         ?>
-    </div>
-    <div class="specs-section mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0"><i class="bi bi-card-list"></i> Спецификации масел</h2>
-            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#specsTable">
-                <i class="bi bi-arrows-collapse"></i> Свернуть/развернуть
-            </button>
-        </div>
-        <div class="collapse show" id="specsTable">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th><i class="bi bi-card-checklist"></i> Спецификация</th>
-                            <th><i class="bi bi-clipboard-data"></i> Описание</th>
-                            <th><i class="bi bi-gear"></i> Применение</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>API SN/CF</strong></td>
-                            <td>Для бензиновых и дизельных двигателей</td>
-                            <td>Современные двигатели</td>
-                        </tr>
-                        <tr>
-                            <td><strong>ACEA A3/B4</strong></td>
-                            <td>Для высоконагруженных двигателей</td>
-                            <td>Европейские автомобили</td>
-                        </tr>
-                        <tr>
-                            <td><strong>VW 502.00/505.00</strong></td>
-                            <td>Для двигателей VW, Audi, Skoda, Seat</td>
-                            <td>Германские автомобили</td>
-                        </tr>
-                        <tr>
-                            <td><strong>BMW Longlife-01</strong></td>
-                            <td>Для двигателей BMW с увеличенным интервалом замены</td>
-                            <td>BMW, Mini</td>
-                        </tr>
-                        <tr>
-                            <td><strong>MB-Approval 229.5</strong></td>
-                            <td>Для двигателей Mercedes-Benz</td>
-                            <td>Mercedes-Benz</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </div>
 

@@ -108,6 +108,46 @@ unset($_SESSION['form_data']);
         let brandItems = document.querySelectorAll('.brand-item');
         let searchInput = document.getElementById('brandSearch');
         let searchClear = document.querySelector('.search-clear');
+
+        function initializeCounters() 
+        {
+            updateCategoryCounters('all', '');
+        }
+        
+        function updateCategoryCounters(activeFilter, searchText) 
+        {
+            let categoryCounts = {
+                'all': 0,
+                'premium': 0,
+                'original': 0,
+                'aftermarket': 0,
+                'russia': 0
+            };
+
+            brandItems.forEach(item => {
+                let brandName = item.querySelector('.brand-name').textContent.toLowerCase();
+                let brandDescription = item.querySelector('.brand-description').textContent.toLowerCase();
+                let itemCategory = item.getAttribute('data-category');
+                
+                let searchMatch = !searchText || brandName.includes(searchText) || brandDescription.includes(searchText);
+                
+                if (searchMatch) 
+                {
+                    categoryCounts[itemCategory]++;
+                    categoryCounts.all++;
+                }
+            });
+
+            filterButtons.forEach(button => {
+                let filter = button.getAttribute('data-filter');
+                let badge = button.querySelector('.badge');
+
+                if (badge) 
+                {
+                    badge.textContent = categoryCounts[filter];
+                }
+            });
+        }
         
         filterButtons.forEach(button => {
             button.addEventListener('click', function() 
@@ -168,11 +208,16 @@ unset($_SESSION['form_data']);
                 }
             });
             
-            document.getElementById('visibleBrandsCount').textContent = visibleCount;
+            updateCategoryCounters(category, searchText);
             setTimeout(equalizeBrandCards, 350);
         }
-        
-        window.addEventListener('load', equalizeBrandCards);
+
+        window.addEventListener('load', function() 
+        {
+            initializeCounters();
+            equalizeBrandCards();
+        });
+
         window.addEventListener('resize', equalizeBrandCards);
         setTimeout(equalizeBrandCards, 100);
     });
@@ -218,13 +263,11 @@ unset($_SESSION['form_data']);
     </div>
     <div class="filters-section mb-4">
         <div class="d-flex flex-wrap gap-2 justify-content-center">
-            <button class="btn btn-outline-primary filter-btn active" data-filter="all">
-                Все <span class="badge bg-primary ms-1" id="visibleBrandsCount">20</span>
-            </button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="premium">Премиум</button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="original">Оригинальные</button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="aftermarket">Аналоги</button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="russia">Российские</button>
+            <button class="btn btn-outline-primary filter-btn active" data-filter="all">Все <span class="badge bg-primary ms-1">20</span></button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="premium">Премиум <span class="badge bg-primary ms-1">4</span></button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="original">Оригинальные <span class="badge bg-primary ms-1">4</span></button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="aftermarket">Аналоги <span class="badge bg-primary ms-1">4</span></button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="russia">Российские <span class="badge bg-primary ms-1">4</span></button>
         </div>
     </div>
     <div class="brands-grid-section mb-5">
