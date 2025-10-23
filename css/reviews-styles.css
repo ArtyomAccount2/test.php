@@ -367,12 +367,6 @@
     align-items: stretch;
 }
 
-.col-md-6 
-{
-    display: flex;
-    flex-direction: column;
-}
-
 .review-text p 
 {
     word-wrap: break-word;

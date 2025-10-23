@@ -381,12 +381,6 @@
     align-items: stretch;
 }
 
-.col-md-6 
-{
-    display: flex;
-    flex-direction: column;
-}
-
 .vacancy-section:last-child 
 {
     margin-bottom: 0;

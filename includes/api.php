@@ -92,8 +92,8 @@ unset($_SESSION['form_data']);
 <div class="container my-5 pt-4">
     <div class="row mb-5">
         <div class="col-12 text-center">
-            <h1 class="mb-3" style="padding-top: 60px;">API для разработчиков</h1>
-            <p class="lead">Интегрируйте наш каталог в ваши приложения</p>
+            <h1 class="display-5 fw-bold text-primary mb-3" style="padding-top: 60px;">API для разработчиков</h1>
+            <p class="lead text-muted mb-4">Интегрируйте наш каталог в ваши приложения</p>
         </div>
     </div>
     <div class="row">

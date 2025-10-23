@@ -80,6 +80,62 @@ unset($_SESSION['form_data']);
         <?php 
         } 
         ?>
+
+        let searchInput = document.getElementById('sitemapSearch');
+        let sitemapItems = document.querySelectorAll('.sitemap-list a');
+        let sections = document.querySelectorAll('.sitemap-section');
+
+        if(searchInput) 
+        {
+            searchInput.addEventListener('input', function(e) 
+            {
+                let searchTerm = e.target.value.toLowerCase().trim();
+                let foundResults = false;
+
+                sections.forEach(section => {
+                    let sectionVisible = false;
+                    let links = section.querySelectorAll('.sitemap-list a');
+                    
+                    links.forEach(link => {
+                        let text = link.textContent.toLowerCase();
+
+                        if(text.includes(searchTerm)) 
+                        {
+                            link.style.display = 'block';
+                            sectionVisible = true;
+                            foundResults = true;
+                        } 
+                        else 
+                        {
+                            link.style.display = 'none';
+                        }
+                    });
+
+                    section.style.display = sectionVisible ? 'block' : 'none';
+                });
+
+                document.getElementById('noResults').style.display = foundResults ? 'none' : 'block';
+                
+                if (searchTerm.length > 0) 
+                {
+                    document.querySelector('.sitemap-content').classList.add('search-active');
+                } 
+                else 
+                {
+                    document.querySelector('.sitemap-content').classList.remove('search-active');
+                }
+            });
+        }
+
+        let stats = {
+            totalPages: document.querySelectorAll('.sitemap-list a').length,
+            totalSections: document.querySelectorAll('.sitemap-section').length,
+            lastUpdate: new Date().toLocaleDateString('ru-RU')
+        };
+
+        document.getElementById('totalPages').textContent = stats.totalPages;
+        document.getElementById('totalSections').textContent = stats.totalSections;
+        document.getElementById('lastUpdate').textContent = stats.lastUpdate;
     });
     </script>
 </head>
@@ -90,17 +146,63 @@ unset($_SESSION['form_data']);
 ?>
 
 <div class="container my-5 pt-4">
-    <div class="row mb-5">
+    <div class="row mb-4">
         <div class="col-12 text-center">
-            <h1 class="mb-3" style="padding-top: 60px;">Карта сайта</h1>
-            <p class="lead">Полная структура сайта для удобной навигации</p>
+            <h1 class="display-5 fw-bold text-primary mb-3" style="padding-top: 60px;">Карта сайта</h1>
+            <p class="lead text-muted mb-4">Полная структура всех страниц сайта для удобной навигации</p>
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8">
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white border-primary">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" id="sitemapSearch" class="form-control border-primary" placeholder="Поиск по страницам сайта...">
+                        <button class="btn btn-outline-primary" type="button" onclick="document.getElementById('sitemapSearch').value=''; document.getElementById('sitemapSearch').dispatchEvent(new Event('input'));">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 mb-5 justify-content-center">
+                <div class="col-md-3">
+                    <div class="card border-primary h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-files text-primary mb-2" style="font-size: 2rem;"></i>
+                            <h5 class="card-title">Всего страниц</h5>
+                            <h3 class="text-primary" id="totalPages">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-success h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-folder text-success mb-2" style="font-size: 2rem;"></i>
+                            <h5 class="card-title">Разделов</h5>
+                            <h3 class="text-success" id="totalSections">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-info h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-calendar-check text-info mb-2" style="font-size: 2rem;"></i>
+                            <h5 class="card-title">Обновлено</h5>
+                            <h3 class="text-info" id="lastUpdate">-</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-10 mx-auto">
+        <div class="col-12">
             <div class="sitemap-content">
+                <div id="noResults" class="alert alert-warning text-center" style="display: none;">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    По вашему запросу ничего не найдено. Попробуйте изменить поисковый запрос.
+                </div>
                 <div class="sitemap-section">
-                    <h3 class="mb-4"><i class="bi bi-house"></i> Главные страницы</h3>
+                    <h3 class="mb-4"><i class="bi bi-house-fill"></i> Главные страницы</h3>
                     <ul class="sitemap-list">
                         <li><a href="../index.php">Главная страница</a></li>
                         <li><a href="shops.php">Магазины</a></li>
@@ -110,7 +212,7 @@ unset($_SESSION['form_data']);
                     </ul>
                 </div>
                 <div class="sitemap-section">
-                    <h3 class="mb-4"><i class="bi bi-cart"></i> Каталог и покупки</h3>
+                    <h3 class="mb-4"><i class="bi bi-cart-check"></i> Каталог и покупки</h3>
                     <ul class="sitemap-list">
                         <li><a href="oils.php">Масла и тех. жидкости</a></li>
                         <li><a href="accessories.php">Аксессуары</a></li>
@@ -120,7 +222,7 @@ unset($_SESSION['form_data']);
                     </ul>
                 </div>
                 <div class="sitemap-section">
-                    <h3 class="mb-4"><i class="bi bi-info-circle"></i> Информация</h3>
+                    <h3 class="mb-4"><i class="bi bi-info-circle-fill"></i> Информация</h3>
                     <ul class="sitemap-list">
                         <li><a href="about.php">О компании</a></li>
                         <li><a href="news.php">Новости</a></li>
@@ -131,7 +233,7 @@ unset($_SESSION['form_data']);
                     </ul>
                 </div>
                 <div class="sitemap-section">
-                    <h3 class="mb-4"><i class="bi bi-shield"></i> Правовая информация</h3>
+                    <h3 class="mb-4"><i class="bi bi-shield-check"></i> Правовая информация</h3>
                     <ul class="sitemap-list">
                         <li><a href="privacy.php">Политика конфиденциальности</a></li>
                         <li><a href="terms.php">Условия использования</a></li>
@@ -140,7 +242,7 @@ unset($_SESSION['form_data']);
                     </ul>
                 </div>
                 <div class="sitemap-section">
-                    <h3 class="mb-4"><i class="bi bi-question-circle"></i> Помощь и поддержка</h3>
+                    <h3 class="mb-4"><i class="bi bi-question-circle-fill"></i> Помощь и поддержка</h3>
                     <ul class="sitemap-list">
                         <li><a href="faq.php">Частые вопросы (FAQ)</a></li>
                         <li><a href="support.php">Поддержка сайта</a></li>

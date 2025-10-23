@@ -359,13 +359,6 @@
     align-items: stretch;
 }
 
-.col-md-4,
-.col-md-6 
-{
-    display: flex;
-    flex-direction: column;
-}
-
 .accordion-item:last-child 
 {
     margin-bottom: 0;

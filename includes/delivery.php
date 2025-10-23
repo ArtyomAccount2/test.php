@@ -157,7 +157,7 @@ unset($_SESSION['form_data']);
         </div>
         <div class="row g-4">
             <div class="col-lg-4 col-md-6">
-                <div class="delivery-method h-100">
+                <div class="delivery-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">
                             <i class="bi bi-shop"></i>
@@ -183,7 +183,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
-                <div class="delivery-method h-100">
+                <div class="delivery-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">
                             <i class="bi bi-geo-alt"></i>
@@ -209,7 +209,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
-                <div class="delivery-method h-100">
+                <div class="delivery-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">
                             <i class="bi bi-truck"></i>
@@ -234,7 +234,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-                <div class="delivery-method h-100">
+                <div class="delivery-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">
                             <i class="bi bi-box-seam"></i>
@@ -259,7 +259,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-                <div class="delivery-method h-100">
+                <div class="delivery-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">
                             <i class="bi bi-truck-flatbed"></i>
@@ -292,7 +292,7 @@ unset($_SESSION['form_data']);
         </div>
         <div class="row g-4">
             <div class="col-lg-4 col-md-6">
-                <div class="payment-method h-100">
+                <div class="payment-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">
                             <i class="bi bi-cash"></i>
@@ -317,7 +317,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
-                <div class="payment-method h-100">
+                <div class="payment-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">
                             <i class="bi bi-credit-card"></i>
@@ -342,7 +342,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
-                <div class="payment-method h-100">
+                <div class="payment-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">
                             <i class="bi bi-phone"></i>
@@ -367,7 +367,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-                <div class="payment-method h-100">
+                <div class="payment-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">
                             <i class="bi bi-building"></i>
@@ -392,7 +392,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-                <div class="payment-method h-100">
+                <div class="payment-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">
                             <i class="bi bi-credit-card-2-back"></i>
@@ -423,7 +423,6 @@ unset($_SESSION['form_data']);
             <h2><i class="bi bi-info-circle me-2"></i>Условия доставки</h2>
             <p class="text-muted">Подробная информация о сроках, зонах и условиях возврата</p>
         </div>
-        
         <div class="terms-content">
             <div class="row g-4">
                 <div class="col-lg-6">
