@@ -320,10 +320,10 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
     </div>
 
     <div class="container my-5 pt-4">
-        <div class="row mb-4 align-items-center">
-            <div class="col-md-6">
-                <h1 class="mb-0" style="padding-top: 50px;">Антифризы</h1>
-                <p class="text-muted mt-2">Современные антифризы для защиты системы охлаждения</p>
+        <div class="row mb-4 align-items-center" style="padding-top: 75px;">
+            <div class="col-md-8">
+                <h1 class="display-6 fw-bold text-primary mb-3">Антифризы</h1>
+                <p class="lead text-muted mb-4">Современные антифризы для защиты системы охлаждения</p>
             </div>
         </div>
         <div class="filter-section mb-5">

@@ -311,10 +311,10 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
     </div>
 
     <div class="container my-5 pt-4">
-        <div class="row mb-4 align-items-center">
-            <div class="col-md-6">
-                <h1 class="mb-0" style="padding-top: 50px;">Тормозные жидкости</h1>
-                <p class="text-muted mt-2">Качественные тормозные жидкости для надежной работы тормозной системы</p>
+        <div class="row mb-4 align-items-center" style="padding-top: 75px;">
+            <div class="col-md-8">
+                <h1 class="display-6 fw-bold text-primary mb-3">Тормозные жидкости</h1>
+                <p class="lead text-muted mb-4">Качественные тормозные жидкости для надежной работы тормозной системы</p>
             </div>
         </div>
         <div class="filter-section mb-5">

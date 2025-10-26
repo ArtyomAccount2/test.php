@@ -321,15 +321,10 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
     </div>
 
     <div class="container my-5 pt-4">
-        <div class="row mb-4 align-items-center">
-            <div class="col-md-6">
-                <h1 class="mb-0" style="padding-top: 50px;">Моторные масла</h1>
-                <p class="text-muted mt-2">Широкий выбор моторных масел для всех типов двигателей</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#oilSelectorModal">
-                    <i class="bi bi-question-circle"></i> Подобрать масло
-                </button>
+        <div class="row mb-4 align-items-center" style="padding-top: 75px;">
+            <div class="col-md-8">
+                <h1 class="display-6 fw-bold text-primary mb-3">Моторные масла</h1>
+                <p class="lead text-muted mb-4">Широкий выбор моторных масел для всех типов двигателей</p>
             </div>
         </div>
         <div class="filter-section mb-5">
