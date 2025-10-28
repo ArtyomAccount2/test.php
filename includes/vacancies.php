@@ -370,7 +370,7 @@ unset($_SESSION['form_data']);
                 <form id="vacancyForm" class="needs-validation" novalidate>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="vacancyPosition" class="form-label fw-semibold">Вакансия <span class="text-danger">*</span></label>
+                            <label for="vacancyPosition" class="form-label fw-semibold">Вакансия<span class="text-danger">*</span></label>
                             <select class="form-select" id="vacancyPosition" required>
                                 <option value="" selected disabled>Выберите вакансию</option>
                                 <option value="Менеджер по продажам">Менеджер по продажам автозапчастей</option>
@@ -380,19 +380,19 @@ unset($_SESSION['form_data']);
                             <div class="invalid-feedback">Пожалуйста, выберите вакансию</div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="vacancyName" class="form-label fw-semibold">ФИО <span class="text-danger">*</span></label>
+                            <label for="vacancyName" class="form-label fw-semibold">ФИО<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="vacancyName" placeholder="Иванов Иван Иванович" required>
                             <div class="invalid-feedback">Пожалуйста, введите ваше ФИО</div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="vacancyPhone" class="form-label fw-semibold">Телефон <span class="text-danger">*</span></label>
+                            <label for="vacancyPhone" class="form-label fw-semibold">Телефон<span class="text-danger">*</span></label>
                             <input type="tel" class="form-control" id="vacancyPhone" placeholder="+7 (900) 123-45-67" required>
                             <div class="invalid-feedback">Пожалуйста, введите корректный телефон</div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="vacancyEmail" class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+                            <label for="vacancyEmail" class="form-label fw-semibold">Email<span class="text-danger">*</span></label>
                             <input type="email" class="form-control" id="vacancyEmail" placeholder="example@mail.ru" required>
                             <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
                         </div>
@@ -402,7 +402,7 @@ unset($_SESSION['form_data']);
                         <textarea class="form-control" id="vacancyMessage" rows="3" placeholder="Расскажите о своем опыте и почему вы хотите работать у нас"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Резюме <span class="text-danger">*</span></label>
+                        <label class="form-label fw-semibold">Резюме<span class="text-danger">*</span></label>
                         <div class="file-upload">
                             <label for="vacancyFile" class="file-upload-btn">
                                 <i class="bi bi-cloud-arrow-up fs-3"></i>

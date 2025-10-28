@@ -90,10 +90,10 @@ unset($_SESSION['form_data']);
 ?>
 
 <div class="container my-5 pt-4">
-    <div class="row mb-5">
-        <div class="col-12">
-            <h1 class="mb-3" style="padding-top: 60px;">Политика конфиденциальности</h1>
-            <p class="text-muted">Последнее обновление: 15 мая 2025 года</p>
+    <div class="row mb-4">
+        <div class="col-12" style="padding-top: 60px;">
+            <h1 class="display-5 fw-bold text-primary mb-3">Политика конфиденциальности</h1>
+            <p class="lead text-muted">Последнее обновление: 15 мая 2025 года</p>
         </div>
     </div>
     <div class="row">
