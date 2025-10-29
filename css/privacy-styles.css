@@ -15,11 +15,12 @@
     margin-bottom: 1.5rem;
 }
 
-.privacy-content section 
+.privacy-section 
 {
     border-left: 4px solid #007bff;
     padding-left: 1.5rem;
     margin-left: -1.5rem;
+    scroll-margin-top: 100px;
 }
 
 .privacy-content p 
@@ -57,6 +58,189 @@
     color: #007bff;
 }
 
+.display-5 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.privacy-summary 
+{
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 10px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.summary-card 
+{
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.summary-card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.styled-list 
+{
+    list-style: none;
+    padding-left: 0;
+}
+
+.styled-list li 
+{
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.styled-list li:before 
+{
+    content: "•";
+    color: #007bff;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.info-box 
+{
+    background-color: #e7f3ff;
+    border-left: 4px solid #007bff;
+    border-radius: 4px;
+}
+
+.contact-info-box 
+{
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.update-info 
+{
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border: 1px dashed #dee2e6;
+}
+
+.principles-grid 
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.principle-item 
+{
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.principle-item:hover 
+{
+    background: #e9ecef;
+}
+
+.principle-item i 
+{
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.rights-grid 
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.right-item 
+{
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.right-item:hover 
+{
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border-color: #007bff;
+}
+
+.right-item i 
+{
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.right-item h6 
+{
+    color: #007bff;
+    margin-bottom: 0.5rem;
+}
+
+.protection-grid 
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.protection-item 
+{
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.protection-item:hover 
+{
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.protection-item i 
+{
+    margin-right: 0.75rem;
+    font-size: 1.25rem;
+    color: #007bff;
+}
+
+.data-category 
+{
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+
+.table th 
+{
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
 @media (max-width: 768px) 
 {
     .privacy-content 
@@ -64,7 +248,7 @@
         padding: 1.5rem;
     }
     
-    .privacy-content section 
+    .privacy-section 
     {
         padding-left: 1rem;
         margin-left: -1rem;
@@ -74,12 +258,29 @@
     {
         font-size: 1.5rem;
     }
+    
+    .principles-grid,
+    .rights-grid,
+    .protection-grid 
+    {
+        grid-template-columns: 1fr;
+    }
 }
 
-.display-5 
+@media (max-width: 576px) 
 {
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    .privacy-summary 
+    {
+        padding: 1.5rem;
+    }
+    
+    .summary-card 
+    {
+        margin-bottom: 1rem;
+    }
+    
+    .contact-info-box .row > div 
+    {
+        margin-bottom: 1.5rem;
+    }
 }
