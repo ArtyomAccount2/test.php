@@ -104,6 +104,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order']))
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/orders-styles.css">
+    <script>
+    document.addEventListener('DOMContentLoaded', function() 
+    {
+        <?php 
+        if (isset($_SESSION['login_error'])) 
+        { 
+        ?>
+            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+
+            <?php unset($_SESSION['login_error']); ?>
+        <?php 
+        } 
+        ?>
+    });
+    </script>
 </head>
 <body>
 
@@ -116,7 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order']))
         <div class="row">
             <div class="col-12">
                 <h1 class="page-title mb-4">Мои заказы</h1>
-                
                 <?php 
                 if (isset($_SESSION['success_message'])) 
                 { 
@@ -130,7 +145,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order']))
                 <?php 
                 } 
                 ?>
-                
                 <?php 
                 if (isset($_SESSION['error_message'])) 
                 { 
@@ -144,7 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order']))
                 <?php 
                 } 
                 ?>
-                
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0"><i class="bi bi-list-check me-2"></i>История заказов</h5>
@@ -247,7 +260,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order']))
                                                             $itemsStmt->execute();
                                                             $itemsResult = $itemsStmt->get_result();
                                                             ?>
-                                                            
                                                             <div class="list-group">
                                                                 <?php 
                                                                 while ($item = $itemsResult->fetch_assoc())

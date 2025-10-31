@@ -370,15 +370,18 @@ function buildQueryString($page, $search, $category)
 {
     $params = [];
 
-    if ($page > 1) {
+    if ($page > 1) 
+    {
         $params['page'] = $page;
     }
 
-    if (!empty($search)) {
+    if (!empty($search)) 
+    {
         $params['search'] = $search;
     }
 
-    if (!empty($category) && $category !== 'все категории') {
+    if (!empty($category) && $category !== 'все категории') 
+    {
         $params['category'] = $category;
     }
 

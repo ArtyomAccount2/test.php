@@ -409,7 +409,7 @@ unset($_SESSION['form_data']);
                             <div class="col-md-6">
                                 <p><strong>ООО "Лал-Авто"</strong></p>
                                 <p><i class="bi bi-envelope me-2"></i> Email: <a href="mailto:info@lal-auto.ru">info@lal-auto.ru</a></p>
-                                <p><i class="bi bi-telephone me-2"></i> Телефон: <a href="tel:+78001234567">8 (800) 123-45-67</a></p>
+                                <p><i class="bi bi-telephone me-2"></i> Телефон: <a href="tel:+78001234567">+7 (4012) 65-65-65</a></p>
                             </div>
                             <div class="col-md-6">
                                 <p><strong>Ответственный за обработку персональных данных</strong></p>

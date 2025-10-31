@@ -1,0 +1,98 @@
+.list-steps 
+{
+    list-style: none;
+    counter-reset: step-counter;
+    padding-left: 0;
+}
+
+.list-steps li 
+{
+    counter-increment: step-counter;
+    position: relative;
+    padding-left: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.list-steps li:before 
+{
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #007bff;
+    color: white;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label 
+{
+    color: #495057;
+    font-weight: 500;
+}
+
+.form-control:focus 
+{
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+}
+
+.form-check-input:checked 
+{
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.card 
+{
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+}
+
+.btn 
+{
+    transition: all 0.3s ease;
+}
+
+.btn:hover 
+{
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) 
+{
+    .card 
+    {
+        margin: 0 -15px;
+        border-radius: 0;
+    }
+    
+    .sticky-top 
+    {
+        position: static;
+    }
+}
+
+.form-switch .form-check-input:checked 
+{
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.form-switch .form-check-input:focus 
+{
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
