@@ -220,3 +220,104 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+.desktop-table 
+{
+    display: block;
+}
+
+.mobile-cards 
+{
+    display: none;
+}
+
+.shop-card-mobile 
+{
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: none;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.shop-card-mobile:hover 
+{
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.shop-card-mobile .card-header 
+{
+    background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+    color: white;
+    border-bottom: none;
+    padding: 1rem;
+}
+
+.shop-info-mobile .badge 
+{
+    font-size: 0.75rem;
+    margin: 2px;
+    display: inline-block;
+}
+
+.info-row 
+{
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-row:last-child 
+{
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.info-icon 
+{
+    color: #007bff;
+    font-size: 1.1rem;
+    margin-right: 10px;
+    margin-top: 2px;
+    min-width: 20px;
+}
+
+.info-content 
+{
+    flex: 1;
+}
+
+@media (max-width: 992px) 
+{
+    .desktop-table 
+    {
+        display: none;
+    }
+    
+    .mobile-cards 
+    {
+        display: block;
+    }
+}
+
+@media (max-width: 768px) 
+{
+    .shop-card-mobile .card-header h6 
+    {
+        font-size: 1rem;
+    }
+    
+    .info-row 
+    {
+        flex-direction: column;
+    }
+    
+    .info-icon 
+    {
+        margin-bottom: 5px;
+    }
+}

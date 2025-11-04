@@ -150,17 +150,23 @@ unset($_SESSION['form_data']);
             
             vacancyCards.forEach(card => {
                 card.style.height = 'auto';
-                let height = card.offsetHeight;
+            });
 
-                if (height > maxHeight) 
-                {
-                    maxHeight = height;
-                }
-            });
-            
-            vacancyCards.forEach(card => {
-                card.style.height = maxHeight + 'px';
-            });
+            if (window.innerWidth > 768) 
+            {
+                vacancyCards.forEach(card => {
+                    let height = card.offsetHeight;
+                    
+                    if (height > maxHeight) 
+                    {
+                        maxHeight = height;
+                    }
+                });
+                
+                vacancyCards.forEach(card => {
+                    card.style.height = maxHeight + 'px';
+                });
+            }
         }
 
         window.addEventListener('load', equalizeVacancyHeights);
@@ -360,7 +366,7 @@ unset($_SESSION['form_data']);
 </div>
 
 <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="responseModalLabel">Отклик на вакансию</h5>
@@ -435,5 +441,22 @@ unset($_SESSION['form_data']);
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() 
+{
+    var responseModal = document.getElementById('responseModal');
+
+    if (responseModal) 
+    {
+        responseModal.addEventListener('show.bs.modal', function () 
+        {
+            setTimeout(function() 
+            {
+                var modalInstance = bootstrap.Modal.getInstance(responseModal);
+            }, 10);
+        });
+    }
+});
+</script>
 </body>
 </html>

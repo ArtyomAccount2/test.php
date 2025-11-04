@@ -81,6 +81,74 @@ unset($_SESSION['form_data']);
         } 
         ?>
 
+        function generateMobileCards() 
+        {
+            let container = document.getElementById('mobile-shops-container');
+            let rows = document.querySelectorAll('.desktop-row');
+            
+            container.innerHTML = '';
+            
+            rows.forEach((row, index) => {
+                let cells = row.querySelectorAll('td');
+                let services = row.getAttribute('data-services');
+                
+                let card = document.createElement('div');
+                card.className = 'col-12 mobile-row';
+                card.setAttribute('data-services', services);
+                
+                card.innerHTML = `
+                    <div class="card shop-card-mobile h-100">
+                        <div class="card-header">
+                            <h6 class="text-white mb-0">${cells[0].innerHTML}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="shop-info-mobile">
+                                <div class="info-row">
+                                    <i class="bi bi-geo-alt-fill info-icon"></i>
+                                    <div class="info-content">
+                                        <strong>Адрес:</strong><br>
+                                        ${cells[1].textContent}
+                                    </div>
+                                </div>
+                                <div class="info-row">
+                                    <i class="bi bi-telephone-fill info-icon"></i>
+                                    <div class="info-content">
+                                        <strong>Телефон:</strong><br>
+                                        ${cells[2].textContent}
+                                    </div>
+                                </div>
+                                <div class="info-row">
+                                    <i class="bi bi-clock-fill info-icon"></i>
+                                    <div class="info-content">
+                                        <strong>Режим работы:</strong><br>
+                                        ${cells[3].innerHTML.replace(/<br>/g, ', ')}
+                                    </div>
+                                </div>
+                                <div class="info-row">
+                                    <i class="bi bi-tools info-icon"></i>
+                                    <div class="info-content">
+                                        <strong>Услуги:</strong><br>
+                                        <div class="mt-1">${cells[4].innerHTML}</div>
+                                    </div>
+                                </div>
+                                <div class="info-row">
+                                    <i class="bi bi-info-circle info-icon"></i>
+                                    <div class="info-content">
+                                        <strong>Дополнительно:</strong><br>
+                                        <div class="mt-1">${cells[5].innerHTML}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        generateMobileCards();
+
         let shopCards = document.querySelectorAll('.shop-card');
 
         shopCards.forEach(card => {
@@ -88,6 +156,7 @@ unset($_SESSION['form_data']);
             {
                 this.style.transform = 'translateY(-8px) scale(1.02)';
             });
+
             card.addEventListener('mouseleave', function() 
             {
                 this.style.transform = 'translateY(0) scale(1)';
@@ -95,17 +164,16 @@ unset($_SESSION['form_data']);
         });
 
         let filterButtons = document.querySelectorAll('.filter-btn');
-        let shopRows = document.querySelectorAll('.shop-row');
         
         filterButtons.forEach(button => {
             button.addEventListener('click', function() 
             {
                 let filter = this.getAttribute('data-filter');
-                
+
                 filterButtons.forEach(btn => btn.classList.remove('active'));
                 this.classList.add('active');
-                
-                shopRows.forEach(row => {
+
+                document.querySelectorAll('.desktop-row').forEach(row => {
                     if (filter === 'all' || row.getAttribute('data-services').includes(filter)) 
                     {
                         row.style.display = '';
@@ -117,7 +185,25 @@ unset($_SESSION['form_data']);
                         setTimeout(() => row.style.display = 'none', 300);
                     }
                 });
+
+                document.querySelectorAll('.mobile-row').forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-services').includes(filter)) 
+                    {
+                        card.style.display = 'block';
+                        setTimeout(() => card.style.opacity = '1', 50);
+                    }
+                    else 
+                    {
+                        card.style.opacity = '0';
+                        setTimeout(() => card.style.display = 'none', 300);
+                    }
+                });
             });
+        });
+
+        window.addEventListener('resize', function() 
+        {
+            generateMobileCards();
         });
     });
     </script>
@@ -171,8 +257,7 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                     <div class="shop-map">
-                        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A1234567890abcdef&amp;source=constructor" 
-                                width="100%" height="300" frameborder="0" style="border-radius: 8px;"></iframe>
+                        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A1234567890abcdef&amp;source=constructor" width="100%" height="300" frameborder="0" style="border-radius: 8px;"></iframe>
                     </div>
                 </div>
             </div>
@@ -228,106 +313,111 @@ unset($_SESSION['form_data']);
         </div>
     </div>
     <div class="additional-shops mb-5">
-        <div class="table-responsive">
-            <table class="table table-striped table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th><i class="bi bi-shop"></i> Магазин</th>
-                        <th><i class="bi bi-geo-alt"></i> Адрес</th>
-                        <th><i class="bi bi-telephone"></i> Телефон</th>
-                        <th><i class="bi bi-clock"></i> Режим работы</th>
-                        <th><i class="bi bi-tools"></i> Услуги</th>
-                        <th><i class="bi bi-info-circle"></i> Дополнительно</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="shop-row" data-services="service,tire,chemistry,tuning">
-                        <td>
-                            <strong>Центральный</strong>
-                            <div class="text-muted small">Флагманский</div>
-                        </td>
-                        <td>ул. Автомобильная, 12</td>
-                        <td>+7 (4012) 65-65-65</td>
-                        <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
-                        <td>
-                            <span class="badge bg-primary me-1">Запчасти</span>
-                            <span class="badge bg-success me-1">Сервис</span>
-                            <span class="badge bg-info me-1">Шины</span>
-                            <span class="badge bg-warning">Тюнинг</span>
-                        </td>
-                        <td>
-                            <span class="badge bg-success">Есть парковка</span>
-                        </td>
-                    </tr>
-                    <tr class="shop-row" data-services="service,tire,chemistry">
-                        <td>
-                            <strong>Московский</strong>
-                            <div class="text-muted small">Крупный</div>
-                        </td>
-                        <td>Московский пр-т, 45</td>
-                        <td>+7 (4012) 76-76-76</td>
-                        <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
-                        <td>
-                            <span class="badge bg-primary me-1">Запчасти</span>
-                            <span class="badge bg-success me-1">Сервис</span>
-                            <span class="badge bg-info">Шины</span>
-                        </td>
-                        <td>
-                            <span class="badge bg-success">Есть парковка</span>
-                        </td>
-                    </tr>
-                    <tr class="shop-row" data-services="service,tire">
-                        <td>
-                            <strong>Горького</strong>
-                            <div class="text-muted small">Стандарт</div>
-                        </td>
-                        <td>ул. Горького, 15</td>
-                        <td>+7 (4012) 87-87-87</td>
-                        <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
-                        <td>
-                            <span class="badge bg-primary me-1">Запчасти</span>
-                            <span class="badge bg-info me-1">Шины</span>
-                        </td>
-                        <td>
-                            <span class="badge bg-secondary">Ограниченная парковка</span>
-                        </td>
-                    </tr>
-                    <tr class="shop-row" data-services="chemistry">
-                        <td>
-                            <strong>Приморский</strong>
-                            <div class="text-muted small">Стандарт</div>
-                        </td>
-                        <td>ул. Приморская, 8</td>
-                        <td>+7 (4012) 98-98-98</td>
-                        <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
-                        <td>
-                            <span class="badge bg-primary me-1">Запчасти</span>
-                            <span class="badge bg-warning">Химия</span>
-                        </td>
-                        <td>
-                            <span class="badge bg-success">Есть парковка</span>
-                        </td>
-                    </tr>
-                    <tr class="shop-row" data-services="service,tire,chemistry,tuning">
-                        <td>
-                            <strong>Советский</strong>
-                            <div class="text-muted small">Крупный</div>
-                        </td>
-                        <td>Советский пр-т, 120</td>
-                        <td>+7 (4012) 54-32-10</td>
-                        <td>Пн-Пт: 8:00-19:00<br>Сб-Вс: 9:00-17:00</td>
-                        <td>
-                            <span class="badge bg-primary me-1">Запчасти</span>
-                            <span class="badge bg-success me-1">Сервис</span>
-                            <span class="badge bg-info me-1">Шины</span>
-                            <span class="badge bg-warning">Тюнинг</span>
-                        </td>
-                        <td>
-                            <span class="badge bg-success">Есть парковка</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="desktop-table">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th><i class="bi bi-shop"></i> Магазин</th>
+                            <th><i class="bi bi-geo-alt"></i> Адрес</th>
+                            <th><i class="bi bi-telephone"></i> Телефон</th>
+                            <th><i class="bi bi-clock"></i> Режим работы</th>
+                            <th><i class="bi bi-tools"></i> Услуги</th>
+                            <th><i class="bi bi-info-circle"></i> Дополнительно</th>
+                        </tr>
+                    </thead>
+                    <tbody id="desktop-shops-body">
+                        <tr class="shop-row desktop-row" data-services="service,tire,chemistry,tuning">
+                            <td>
+                                <strong>Центральный</strong>
+                                <div class="text-muted small">Флагманский</div>
+                            </td>
+                            <td>ул. Автомобильная, 12</td>
+                            <td>+7 (4012) 65-65-65</td>
+                            <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
+                            <td>
+                                <span class="badge bg-primary me-1">Запчасти</span>
+                                <span class="badge bg-success me-1">Сервис</span>
+                                <span class="badge bg-info me-1">Шины</span>
+                                <span class="badge bg-warning">Тюнинг</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-success">Есть парковка</span>
+                            </td>
+                        </tr>
+                        <tr class="shop-row desktop-row" data-services="service,tire,chemistry">
+                            <td>
+                                <strong>Московский</strong>
+                                <div class="text-muted small">Крупный</div>
+                            </td>
+                            <td>Московский пр-т, 45</td>
+                            <td>+7 (4012) 76-76-76</td>
+                            <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
+                            <td>
+                                <span class="badge bg-primary me-1">Запчасти</span>
+                                <span class="badge bg-success me-1">Сервис</span>
+                                <span class="badge bg-info">Шины</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-success">Есть парковка</span>
+                            </td>
+                        </tr>
+                        <tr class="shop-row desktop-row" data-services="service,tire">
+                            <td>
+                                <strong>Горького</strong>
+                                <div class="text-muted small">Стандарт</div>
+                            </td>
+                            <td>ул. Горького, 15</td>
+                            <td>+7 (4012) 87-87-87</td>
+                            <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
+                            <td>
+                                <span class="badge bg-primary me-1">Запчасти</span>
+                                <span class="badge bg-info me-1">Шины</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary">Ограниченная парковка</span>
+                            </td>
+                        </tr>
+                        <tr class="shop-row desktop-row" data-services="chemistry">
+                            <td>
+                                <strong>Приморский</strong>
+                                <div class="text-muted small">Стандарт</div>
+                            </td>
+                            <td>ул. Приморская, 8</td>
+                            <td>+7 (4012) 98-98-98</td>
+                            <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
+                            <td>
+                                <span class="badge bg-primary me-1">Запчасти</span>
+                                <span class="badge bg-warning">Химия</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-success">Есть парковка</span>
+                            </td>
+                        </tr>
+                        <tr class="shop-row desktop-row" data-services="service,tire,chemistry,tuning">
+                            <td>
+                                <strong>Советский</strong>
+                                <div class="text-muted small">Крупный</div>
+                            </td>
+                            <td>Советский пр-т, 120</td>
+                            <td>+7 (4012) 54-32-10</td>
+                            <td>Пн-Пт: 8:00-19:00<br>Сб-Вс: 9:00-17:00</td>
+                            <td>
+                                <span class="badge bg-primary me-1">Запчасти</span>
+                                <span class="badge bg-success me-1">Сервис</span>
+                                <span class="badge bg-info me-1">Шины</span>
+                                <span class="badge bg-warning">Тюнинг</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-success">Есть парковка</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="mobile-cards">
+            <div class="row g-3" id="mobile-shops-container"></div>
         </div>
     </div>
     <div class="features-section bg-light rounded-3 p-5 mb-5">

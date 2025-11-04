@@ -91,18 +91,27 @@ unset($_SESSION['form_data']);
             });
 
             brandCards.forEach(card => {
-                let height = card.offsetHeight;
-
-                if (height > maxHeight) 
+                if (card.offsetHeight > maxHeight) 
                 {
-                    maxHeight = height;
+                    maxHeight = card.offsetHeight;
                 }
             });
             
             brandCards.forEach(card => {
-                card.style.height = maxHeight + 'px';
+                if (card.offsetParent !== null)
+                {
+                    card.style.height = maxHeight + 'px';
+                }
             });
         }
+
+        let resizeTimeout;
+        
+        window.addEventListener('resize', function() 
+        {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(equalizeBrandCards, 250);
+        });
 
         let filterButtons = document.querySelectorAll('.filter-btn');
         let brandItems = document.querySelectorAll('.brand-item');
