@@ -224,13 +224,13 @@ print(data)
                     <h2 class="mb-4"><i class="bi bi-question-circle"></i> Поддержка разработчиков</h2>
                     <p>Если у вас возникли вопросы по работе с API, обратитесь в нашу службу поддержки:</p>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-2">
                             <div class="support-contact">
                                 <h5><i class="bi bi-envelope"></i> Email</h5>
                                 <p>api-support@lal-auto.ru</p>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-2">
                             <div class="support-contact">
                                 <h5><i class="bi bi-chat"></i> Форум</h5>
                                 <p><a href="#">Сообщество разработчиков</a></p>

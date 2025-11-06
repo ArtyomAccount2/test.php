@@ -144,7 +144,7 @@ unset($_SESSION['form_data']);
                             <span>Авторские права</span>
                         </div>
                         <div class="protection-item">
-                            <i class="bi bi-trademark"></i>
+                            <i class="bi bi-award"></i>
                             <span>Товарные знаки</span>
                         </div>
                         <div class="protection-item">

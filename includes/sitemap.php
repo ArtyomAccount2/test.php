@@ -92,30 +92,6 @@ unset($_SESSION['form_data']);
                 let searchTerm = e.target.value.toLowerCase().trim();
                 let foundResults = false;
 
-                sections.forEach(section => {
-                    let sectionVisible = false;
-                    let links = section.querySelectorAll('.sitemap-list a');
-                    
-                    links.forEach(link => {
-                        let text = link.textContent.toLowerCase();
-
-                        if(text.includes(searchTerm)) 
-                        {
-                            link.style.display = 'block';
-                            sectionVisible = true;
-                            foundResults = true;
-                        } 
-                        else 
-                        {
-                            link.style.display = 'none';
-                        }
-                    });
-
-                    section.style.display = sectionVisible ? 'block' : 'none';
-                });
-
-                document.getElementById('noResults').style.display = foundResults ? 'none' : 'block';
-                
                 if (searchTerm.length > 0) 
                 {
                     document.querySelector('.sitemap-content').classList.add('search-active');
@@ -123,7 +99,80 @@ unset($_SESSION['form_data']);
                 else 
                 {
                     document.querySelector('.sitemap-content').classList.remove('search-active');
+
+                    sections.forEach(section => {
+                        section.style.display = 'block';
+                        let links = section.querySelectorAll('.sitemap-list a');
+
+                        links.forEach(link => {
+                            link.style.display = 'block';
+                            link.parentElement.style.display = 'block';
+                        });
+                    });
+
+                    document.getElementById('noResults').style.display = 'none';
+                    return;
                 }
+
+                let visibleSectionsCount = 0;
+
+                sections.forEach(section => {
+                    let sectionVisible = false;
+                    let links = section.querySelectorAll('.sitemap-list a');
+                    let visibleLinksCount = 0;
+                    
+                    links.forEach(link => {
+                        let text = link.textContent.toLowerCase();
+
+                        if(text.includes(searchTerm)) 
+                        {
+                            link.style.display = 'block';
+                            link.parentElement.style.display = 'block';
+                            sectionVisible = true;
+                            foundResults = true;
+                            visibleLinksCount++;
+                        } 
+                        else 
+                        {
+                            link.style.display = 'none';
+                            link.parentElement.style.display = 'none';
+                        }
+                    });
+
+                    if (sectionVisible) 
+                    {
+                        section.style.display = 'block';
+                        visibleSectionsCount++;
+                    } 
+                    else 
+                    {
+                        section.style.display = 'none';
+                    }
+                });
+
+                document.getElementById('noResults').style.display = foundResults ? 'none' : 'block';
+                let visiblePages = document.querySelectorAll('.sitemap-list a[style*="display: block"]').length;
+                document.getElementById('totalPages').textContent = visiblePages;
+                document.getElementById('totalSections').textContent = visibleSectionsCount;
+            });
+
+            document.querySelector('.btn-outline-primary').addEventListener('click', function() 
+            {
+                searchInput.value = '';
+
+                sections.forEach(section => {
+                    section.style.display = 'block';
+                    let links = section.querySelectorAll('.sitemap-list a');
+                    links.forEach(link => {
+                        link.style.display = 'block';
+                        link.parentElement.style.display = 'block';
+                    });
+                });
+                
+                document.querySelector('.sitemap-content').classList.remove('search-active');
+                document.getElementById('noResults').style.display = 'none';
+                document.getElementById('totalPages').textContent = document.querySelectorAll('.sitemap-list a').length;
+                document.getElementById('totalSections').textContent = document.querySelectorAll('.sitemap-section').length;
             });
         }
 
