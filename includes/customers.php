@@ -164,7 +164,7 @@ unset($_SESSION['form_data']);
     </div>
     <div class="loyalty-program bg-gradient-primary rounded-4 p-5 text-white mb-5">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-8 mb-4">
                 <h2 class="fw-bold mb-3">Программа лояльности</h2>
                 <p class="lead-text fs-5 mb-4">Получайте бонусы за каждую покупку и экономьте до 15%</p>
                 <div class="loyalty-levels row g-3">

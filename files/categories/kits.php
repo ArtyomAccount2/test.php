@@ -416,7 +416,7 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
                     foreach ($paginated_products as $product) 
                     {
                         echo '
-                        <div class="col-lg-3 col-md-4 col-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="product-card card h-100">
                                 '.($product['hit'] ? '<span class="badge bg-danger position-absolute top-0 start-0 m-2">Хит</span>' : '').'
                                 '.($product['savings'] > 0 ? '<span class="badge bg-success position-absolute top-0 end-0 m-2">Экономия '.$product['savings'].' ₽</span>' : '').'

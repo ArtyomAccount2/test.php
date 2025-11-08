@@ -162,7 +162,8 @@
         padding: 5px 6px;
     }
     
-    #partsSearch 
+    #partsSearch, 
+    #categoryFilter
     {
         margin-bottom: 10px;
     }

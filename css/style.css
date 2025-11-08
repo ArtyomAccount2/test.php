@@ -347,6 +347,12 @@ footer
     text-decoration: none;
 }
 
+.footer-section a:not(.social-links a) 
+{
+    display: inline-block;
+    position: relative;
+}
+
 .footer-section a:not(.social-links a):after 
 {
     content: '';
@@ -354,12 +360,13 @@ footer
     width: 0;
     height: 1px;
     bottom: 0;
-    left: 0;
+    left: 50%;
     background-color: #007bff;
-    transition: width 0.3s ease;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
 }
 
-.footer-section a:hover:not(.social-links a):after 
+.footer-section a:hover:not(.social-links a):after
 {
     width: 100%;
 }

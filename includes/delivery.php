@@ -208,7 +208,7 @@ unset($_SESSION['form_data']);
                     <div class="method-badge badge bg-warning">Популярно</div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-md-12">
                 <div class="delivery-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">
@@ -341,7 +341,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-md-12">
                 <div class="payment-method d-flex flex-column justify-content-between h-100">
                     <div class="method-header">
                         <div class="method-icon">

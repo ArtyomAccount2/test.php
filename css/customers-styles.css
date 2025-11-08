@@ -376,3 +376,11 @@
     display: flex;
     align-items: start;
 }
+
+@media (max-width: 612px) 
+{
+    .list-unstyled 
+    {
+        display: block;
+    }
+}

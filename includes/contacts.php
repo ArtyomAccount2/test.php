@@ -172,7 +172,7 @@ unset($_SESSION['form_data']);
                             <div class="header-icon me-3">
                                 <i class="bi bi-info-circle"></i>
                             </div>
-                            <h2 class="mb-0">Контактная информация</h2>
+                            <h4 class="mb-0">Контактная информация</h4>
                         </div>
                     </div>
                     <div class="card-body-custom p-4">
@@ -249,7 +249,7 @@ unset($_SESSION['form_data']);
                             <div class="header-icon me-3">
                                 <i class="bi bi-chat-dots"></i>
                             </div>
-                            <h2 class="mb-0">Обратная связь</h2>
+                            <h4 class="mb-0">Обратная связь</h4>
                         </div>
                     </div>
                     <div class="card-body-custom p-4">

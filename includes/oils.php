@@ -278,7 +278,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
             foreach ($categories as $category) 
             {
                 echo '
-                <div class="col-md-3 col-6">
+                <div class="col-lg-3 col-md-6">
                     <div class="category-card card h-100 shadow">
                         <div class="card-body text-center">
                             <div class="category-icon text-'.$category['color'].' mb-3">
@@ -430,7 +430,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                 foreach ($current_page_products as $product) 
                 {
                     echo '
-                    <div class="col-lg-3 col-md-4 col-6">
+                    <div class="col-lg-3 col-md-6">
                         <div class="product-card card h-100">
                             '.($product['hit'] ? '<span class="badge bg-danger position-absolute top-0 start-0 m-2">Хит</span>' : '').'
                             <img src="../img/no-image.png" class="product-img card-img-top p-3" alt="'.$product['title'].'">

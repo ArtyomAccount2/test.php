@@ -285,11 +285,6 @@
 
 @media (max-width: 768px) 
 {
-    .hero-section 
-    {
-        padding: 2rem 1rem;
-    }
-    
     .stat-item 
     {
         padding: 1rem;

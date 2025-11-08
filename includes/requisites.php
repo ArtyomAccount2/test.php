@@ -370,7 +370,7 @@ unset($_SESSION['form_data']);
                     <p class="lead text-muted">Официальные документы для скачивания</p>
                 </div>
                 <div class="row g-4">
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <div class="document-card">
                             <div class="document-icon">
                                 <i class="bi bi-file-earmark-pdf"></i>
@@ -383,7 +383,7 @@ unset($_SESSION['form_data']);
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <div class="document-card">
                             <div class="document-icon">
                                 <i class="bi bi-file-earmark-pdf"></i>
@@ -396,7 +396,7 @@ unset($_SESSION['form_data']);
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <div class="document-card">
                             <div class="document-icon">
                                 <i class="bi bi-file-earmark-pdf"></i>

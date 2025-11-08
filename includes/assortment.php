@@ -173,7 +173,7 @@ $show_pagination = $total_pages > 1;
         <p class="lead text-muted mb-4">Более 1000 наименований оригинальных и качественных аналогов</p>
     </div> 
     <div class="row mb-4">
-        <div class="col-md-6">
+        <div class="col-md-5 col-lg-6">
             <div class="search-container position-relative">
                 <input type="text" id="partsSearch" placeholder="Поиск по каталогу..." class="form-control" 
                        value="<?php echo htmlspecialchars($search_term); ?>">
@@ -199,7 +199,7 @@ $show_pagination = $total_pages > 1;
                 <option value="рулевое управление" <?php echo $category_filter === 'рулевое управление' ? 'selected' : ''; ?>>Рулевое управление</option>
             </select>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3 col-lg-2">
             <button id="searchButton" class="btn btn-primary w-100">
                 <i class="bi bi-search"></i> Найти
             </button>

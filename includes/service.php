@@ -456,7 +456,7 @@ unset($_SESSION['form_data']);
     <div class="service-advantages mb-5">
         <h2 class="text-center mb-4">Преимущества нашего сервиса</h2>
         <div class="row g-3">
-            <div class="col-md-3">
+            <div class="col-lg-3">
                 <div class="advantage-card text-center">
                     <div class="advantage-icon mb-3">
                         <i class="bi bi-award-fill"></i>
@@ -465,7 +465,7 @@ unset($_SESSION['form_data']);
                     <p class="small text-muted mb-0">Специалисты с опытом работы от 5 лет</p>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-lg-3">
                 <div class="advantage-card text-center">
                     <div class="advantage-icon mb-3">
                         <i class="bi bi-shield-check"></i>
@@ -474,7 +474,7 @@ unset($_SESSION['form_data']);
                     <p class="small text-muted mb-0">На все виды работ и запчасти</p>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-lg-3">
                 <div class="advantage-card text-center">
                     <div class="advantage-icon mb-3">
                         <i class="bi bi-cash-coin"></i>
@@ -483,7 +483,7 @@ unset($_SESSION['form_data']);
                     <p class="small text-muted mb-0">Фиксированная стоимость без доплат</p>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-lg-3">
                 <div class="advantage-card text-center">
                     <div class="advantage-icon mb-3">
                         <i class="bi bi-clock-history"></i>

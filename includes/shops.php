@@ -330,7 +330,7 @@ unset($_SESSION['form_data']);
                         <tr class="shop-row desktop-row" data-services="service,tire,chemistry,tuning">
                             <td>
                                 <strong>Центральный</strong>
-                                <div class="text-muted small">Флагманский</div>
+                                <div class="text-secondary small">Флагманский</div>
                             </td>
                             <td>ул. Автомобильная, 12</td>
                             <td>+7 (4012) 65-65-65</td>
@@ -348,7 +348,7 @@ unset($_SESSION['form_data']);
                         <tr class="shop-row desktop-row" data-services="service,tire,chemistry">
                             <td>
                                 <strong>Московский</strong>
-                                <div class="text-muted small">Крупный</div>
+                                <div class="text-secondary small">Крупный</div>
                             </td>
                             <td>Московский пр-т, 45</td>
                             <td>+7 (4012) 76-76-76</td>
@@ -365,7 +365,7 @@ unset($_SESSION['form_data']);
                         <tr class="shop-row desktop-row" data-services="service,tire">
                             <td>
                                 <strong>Горького</strong>
-                                <div class="text-muted small">Стандарт</div>
+                                <div class="text-secondary small">Стандарт</div>
                             </td>
                             <td>ул. Горького, 15</td>
                             <td>+7 (4012) 87-87-87</td>
@@ -381,7 +381,7 @@ unset($_SESSION['form_data']);
                         <tr class="shop-row desktop-row" data-services="chemistry">
                             <td>
                                 <strong>Приморский</strong>
-                                <div class="text-muted small">Стандарт</div>
+                                <div class="text-secondary small">Стандарт</div>
                             </td>
                             <td>ул. Приморская, 8</td>
                             <td>+7 (4012) 98-98-98</td>
@@ -397,7 +397,7 @@ unset($_SESSION['form_data']);
                         <tr class="shop-row desktop-row" data-services="service,tire,chemistry,tuning">
                             <td>
                                 <strong>Советский</strong>
-                                <div class="text-muted small">Крупный</div>
+                                <div class="text-secondary small">Крупный</div>
                             </td>
                             <td>Советский пр-т, 120</td>
                             <td>+7 (4012) 54-32-10</td>
