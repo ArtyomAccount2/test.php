@@ -367,3 +367,57 @@
 {
     width: 100%;
 }
+
+.pagination-section 
+{
+    margin-top: 3rem;
+}
+
+.page-item.active .page-link 
+{
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.page-link 
+{
+    color: #007bff;
+    border: 1px solid #dee2e6;
+    padding: 0.5rem 0.75rem;
+}
+
+.page-link:hover 
+{
+    color: #0056b3;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.page-item.disabled .page-link 
+{
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+.no-results 
+{
+    display: none;
+}
+
+.no-results-icon 
+{
+    opacity: 0.5;
+}
+
+.brand-item 
+{
+    transition: all 0.3s ease;
+}
+
+.brands-grid 
+{
+    min-height: 400px;
+}

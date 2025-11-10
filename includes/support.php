@@ -161,7 +161,7 @@ unset($_SESSION['form_data']);
         <p class="lead text-muted mb-4">Помощь в работе с сайтом и техническая поддержка</p>
     </div>
     <div class="row g-3 mb-5">
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-6">
             <div class="support-card">
                 <div class="card-body-custom text-center p-4">
                     <div class="support-icon mb-3">
@@ -173,7 +173,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-6">
             <div class="support-card">
                 <div class="card-body-custom text-center p-4">
                     <div class="support-icon mb-3">
@@ -185,7 +185,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-12">
             <div class="support-card">
                 <div class="card-body-custom text-center p-4">
                     <div class="support-icon mb-3">
@@ -198,7 +198,6 @@ unset($_SESSION['form_data']);
             </div>
         </div>
     </div>
-
     <div class="support-content-wrapper">
         <div class="support-content">
             <section id="instructions" class="mb-5">
@@ -263,7 +262,6 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </section>
-
             <section id="report" class="mb-5">
                 <div class="section-header mb-4">
                     <i class="bi bi-bug section-icon"></i>
@@ -295,14 +293,12 @@ unset($_SESSION['form_data']);
                                 <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
                             </div>
                         </div>
-                        
                         <div class="mb-3">
                             <label for="problemUrl" class="form-label fw-semibold">
                                 <i class="bi bi-link me-1"></i>URL страницы (если применимо)
                             </label>
                             <input type="url" class="form-control" id="problemUrl" placeholder="https://...">
                         </div>
-                        
                         <div class="mb-3">
                             <label for="problemDescription" class="form-label fw-semibold">
                                 <i class="bi bi-chat-text me-1"></i>Описание проблемы<span class="text-danger">*</span>
@@ -312,7 +308,6 @@ unset($_SESSION['form_data']);
                                       required maxlength="1000"></textarea>
                             <div class="invalid-feedback">Пожалуйста, опишите проблему</div>
                         </div>
-                        
                         <div class="mb-4">
                             <label for="screenshot" class="form-label fw-semibold">
                                 <i class="bi bi-image me-1"></i>Скриншот (опционально)
@@ -320,7 +315,6 @@ unset($_SESSION['form_data']);
                             <input type="file" class="form-control" id="screenshot" accept="image/*">
                             <div class="form-text">Поддерживаемые форматы: JPG, PNG, GIF. Максимальный размер: 5MB</div>
                         </div>
-                        
                         <div class="form-check mb-4">
                             <input class="form-check-input" type="checkbox" id="consent" required>
                             <label class="form-check-label small" for="consent">
@@ -328,14 +322,12 @@ unset($_SESSION['form_data']);
                             </label>
                             <div class="invalid-feedback">Необходимо ваше согласие</div>
                         </div>
-                        
                         <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
                             <i class="bi bi-send me-2"></i>Отправить сообщение
                         </button>
                     </form>
                 </div>
             </section>
-
             <section class="contact-support">
                 <div class="section-header mb-4">
                     <i class="bi bi-headset section-icon"></i>

@@ -81,6 +81,28 @@ unset($_SESSION['form_data']);
         } 
         ?>
 
+        function updatePrivacyLinkText() 
+        {
+            let privacyLink = document.querySelector('a[href="privacy.php"]');
+
+            if (privacyLink) 
+            {
+                let screenWidth = window.innerWidth;
+
+                if (screenWidth >= 768 && screenWidth <= 991) 
+                {
+                    privacyLink.textContent = 'Пол. конфиденциальности';
+                } 
+                else 
+                {
+                    privacyLink.textContent = 'Политика конфиденциальности';
+                }
+            }
+        }
+
+        updatePrivacyLinkText();
+        window.addEventListener('resize', updatePrivacyLinkText);
+
         let searchInput = document.getElementById('sitemapSearch');
         let sitemapItems = document.querySelectorAll('.sitemap-list a');
         let sections = document.querySelectorAll('.sitemap-section');

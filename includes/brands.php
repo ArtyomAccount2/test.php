@@ -81,6 +81,12 @@ unset($_SESSION['form_data']);
         } 
         ?>
 
+        let CARDS_PER_PAGE = 8;
+        let currentPage = 1;
+        let totalPages = 1;
+        let allBrandItems = document.querySelectorAll('.brand-item');
+        let visibleBrandItems = [];
+
         function equalizeBrandCards() 
         {
             let brandCards = document.querySelectorAll('.brand-card');
@@ -117,6 +123,8 @@ unset($_SESSION['form_data']);
         let brandItems = document.querySelectorAll('.brand-item');
         let searchInput = document.getElementById('brandSearch');
         let searchClear = document.querySelector('.search-clear');
+        let paginationElement = document.getElementById('pagination');
+        let noResultsElement = document.getElementById('noResults');
 
         function initializeCounters() 
         {
@@ -188,7 +196,7 @@ unset($_SESSION['form_data']);
         
         function filterBrands(category, searchText) 
         {
-            let visibleCount = 0;
+            visibleBrandItems = [];
             
             brandItems.forEach(item => {
                 let brandName = item.querySelector('.brand-name').textContent.toLowerCase();
@@ -200,33 +208,119 @@ unset($_SESSION['form_data']);
                 
                 if (categoryMatch && searchMatch) 
                 {
-                    item.style.display = 'block';
-                    visibleCount++;
-                    setTimeout(() => {
-                        item.style.opacity = '1';
-                        item.style.transform = 'scale(1)';
-                    }, 50);
-                } 
-                else 
-                {
-                    item.style.opacity = '0';
-                    item.style.transform = 'scale(0.8)';
-                    setTimeout(() => {
-                        item.style.display = 'none';
-                    }, 300);
+                    visibleBrandItems.push(item);
                 }
             });
             
+            currentPage = 1;
+            updatePagination();
+            showPage(currentPage);
             updateCategoryCounters(category, searchText);
             setTimeout(equalizeBrandCards, 350);
         }
 
-        window.addEventListener('load', function() 
+        function updatePagination() 
+        {
+            totalPages = Math.ceil(visibleBrandItems.length / CARDS_PER_PAGE);
+            paginationElement.innerHTML = '';
+            
+            if (visibleBrandItems.length <= CARDS_PER_PAGE) 
+            {
+                paginationElement.style.display = 'none';
+            } 
+            else 
+            {
+                paginationElement.style.display = 'flex';
+            }
+
+            if (visibleBrandItems.length === 0) 
+            {
+                noResultsElement.style.display = 'block';
+            } 
+            else 
+            {
+                noResultsElement.style.display = 'none';
+            }
+            
+            if (totalPages > 1) 
+            {
+                let prevLi = document.createElement('li');
+                prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+                prevLi.innerHTML = `<a class="page-link" href="#" aria-label="Предыдущая">‹</a>`;
+                prevLi.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    if (currentPage > 1) 
+                    {
+                        currentPage--;
+                        showPage(currentPage);
+                    }
+                });
+                paginationElement.appendChild(prevLi);
+
+                for (let i = 1; i <= totalPages; i++) 
+                {
+                    let li = document.createElement('li');
+                    li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                    li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                    li.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage = i;
+                        showPage(currentPage);
+                    });
+                    paginationElement.appendChild(li);
+                }
+                
+                let nextLi = document.createElement('li');
+                nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+                nextLi.innerHTML = `<a class="page-link" href="#" aria-label="Следующая">›</a>`;
+                nextLi.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    if (currentPage < totalPages) 
+                    {
+                        currentPage++;
+                        showPage(currentPage);
+                    }
+                });
+                paginationElement.appendChild(nextLi);
+            }
+        }
+        
+        function showPage(page) 
+        {
+            brandItems.forEach(item => {
+                item.style.display = 'none';
+                item.style.opacity = '0';
+                item.style.transform = 'scale(0.8)';
+            });
+            
+            let startIndex = (page - 1) * CARDS_PER_PAGE;
+            let endIndex = startIndex + CARDS_PER_PAGE;
+            
+            visibleBrandItems.slice(startIndex, endIndex).forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.display = 'block';
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    }, 50);
+                }, index * 50);
+            });
+            
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            equalizeBrandCards();
+        }
+
+        function initializePage() 
         {
             initializeCounters();
+            filterBrands('all', '');
             equalizeBrandCards();
-        });
+        }
 
+        window.addEventListener('load', initializePage);
         window.addEventListener('resize', equalizeBrandCards);
         setTimeout(equalizeBrandCards, 100);
     });
@@ -281,7 +375,7 @@ unset($_SESSION['form_data']);
     </div>
     <div class="brands-grid-section mb-5">
         <div class="row g-3 brands-grid">
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="premium">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="premium">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="Bosch" class="brand-logo">
@@ -298,7 +392,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="premium">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="premium">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="Castrol" class="brand-logo">
@@ -315,7 +409,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="premium">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="premium">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="Mann-Filter" class="brand-logo">
@@ -332,7 +426,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="premium">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="premium">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="Brembo" class="brand-logo">
@@ -349,7 +443,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="original">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="original">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="Volkswagen Original" class="brand-logo">
@@ -366,7 +460,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="original">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="original">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="Toyota Original" class="brand-logo">
@@ -383,7 +477,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="original">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="original">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="BMW Original" class="brand-logo">
@@ -400,7 +494,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="original">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="original">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="Mercedes-Benz Original" class="brand-logo">
@@ -417,7 +511,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="aftermarket">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="aftermarket">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="Febi Bilstein" class="brand-logo">
@@ -434,7 +528,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="aftermarket">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="aftermarket">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="Blue Print" class="brand-logo">
@@ -451,7 +545,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="aftermarket">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="aftermarket">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="SWAG" class="brand-logo">
@@ -468,7 +562,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="aftermarket">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="aftermarket">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="Mapco" class="brand-logo">
@@ -485,7 +579,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="russia">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="russia">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="Трек" class="brand-logo">
@@ -502,7 +596,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="russia">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="russia">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="СтартВОЛЬТ" class="brand-logo">
@@ -519,7 +613,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="russia">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="russia">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="FENOX" class="brand-logo">
@@ -536,7 +630,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6 brand-item" data-category="russia">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="russia">
                 <div class="brand-card">
                     <div class="brand-logo-container">
                         <img src="../img/no-image.png" alt="БелМаг" class="brand-logo">
@@ -552,6 +646,359 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="premium">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Continental" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Continental</h5>
+                        <p class="brand-country">Германия</p>
+                        <div class="brand-category premium">Премиум</div>
+                        <p class="brand-description">Инновационные шины и автокомпоненты</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 800 товаров</span>
+                            <span class="stat-item">Немецкое качество</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="premium">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Mobil" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Mobil</h5>
+                        <p class="brand-country">США</p>
+                        <div class="brand-category premium">Премиум</div>
+                        <p class="brand-description">Высококачественные моторные масла</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 400 товаров</span>
+                            <span class="stat-item">Мировой лидер</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="original">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Hyundai Original" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Hyundai Original</h5>
+                        <p class="brand-country">Корея</p>
+                        <div class="brand-category original">Оригинальные</div>
+                        <p class="brand-description">Оригинальные запчасти Hyundai</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 900 товаров</span>
+                            <span class="stat-item">Официальный дилер</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="original">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Kia Original" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Kia Original</h5>
+                        <p class="brand-country">Корея</p>
+                        <div class="brand-category original">Оригинальные</div>
+                        <p class="brand-description">Оригинальные запчасти Kia Motors</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 850 товаров</span>
+                            <span class="stat-item">Гарантия качества</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="aftermarket">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Mahle" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Mahle</h5>
+                        <p class="brand-country">Германия</p>
+                        <div class="brand-category aftermarket">Аналоги</div>
+                        <p class="brand-description">Качественные аналоги для всех марок</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 700 товаров</span>
+                            <span class="stat-item">Немецкие стандарты</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="aftermarket">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Hella" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Hella</h5>
+                        <p class="brand-country">Германия</p>
+                        <div class="brand-category aftermarket">Аналоги</div>
+                        <p class="brand-description">Осветительные приборы и электроника</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 600 товаров</span>
+                            <span class="stat-item">Инновации</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="russia">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Кама" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Кама</h5>
+                        <p class="brand-country">Россия</p>
+                        <div class="brand-category russia">Российские</div>
+                        <p class="brand-description">Российские шины премиум-класса</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 150 товаров</span>
+                            <span class="stat-item">Адаптированы к дорогам</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="russia">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="СОАТЭ" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">СОАТЭ</h5>
+                        <p class="brand-country">Россия</p>
+                        <div class="brand-category russia">Российские</div>
+                        <p class="brand-description">Автоэлектрика и компоненты</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 200 товаров</span>
+                            <span class="stat-item">Надежность</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="premium">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Valeo" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Valeo</h5>
+                        <p class="brand-country">Франция</p>
+                        <div class="brand-category premium">Премиум</div>
+                        <p class="brand-description">Системы комфорта и безопасности</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 550 товаров</span>
+                            <span class="stat-item">Французские технологии</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="premium">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="ZF" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">ZF</h5>
+                        <p class="brand-country">Германия</p>
+                        <div class="brand-category premium">Премиум</div>
+                        <p class="brand-description">Трансмиссии и шасси</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 450 товаров</span>
+                            <span class="stat-item">Инженерное превосходство</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="original">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Ford Original" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Ford Original</h5>
+                        <p class="brand-country">США</p>
+                        <div class="brand-category original">Оригинальные</div>
+                        <p class="brand-description">Оригинальные запчасти Ford</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 1100 товаров</span>
+                            <span class="stat-item">Американское качество</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="original">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Nissan Original" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Nissan Original</h5>
+                        <p class="brand-country">Япония</p>
+                        <div class="brand-category original">Оригинальные</div>
+                        <p class="brand-description">Оригинальные запчасти Nissan</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 950 товаров</span>
+                            <span class="stat-item">Японская надежность</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="aftermarket">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Bosch Car Service" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Bosch Car Service</h5>
+                        <p class="brand-country">Германия</p>
+                        <div class="brand-category aftermarket">Аналоги</div>
+                        <p class="brand-description">Сервисные решения и компоненты</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 500 товаров</span>
+                            <span class="stat-item">Профессиональные решения</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="aftermarket">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="NGK" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">NGK</h5>
+                        <p class="brand-country">Япония</p>
+                        <div class="brand-category aftermarket">Аналоги</div>
+                        <p class="brand-description">Свечи зажигания и датчики</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 300 товаров</span>
+                            <span class="stat-item">Технологии зажигания</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="russia">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="АВТОВАЗ" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">АВТОВАЗ</h5>
+                        <p class="brand-country">Россия</p>
+                        <div class="brand-category russia">Российские</div>
+                        <p class="brand-description">Оригинальные запчасти LADA</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 2000 товаров</span>
+                            <span class="stat-item">Официальный поставщик</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="russia">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="ОМНИ" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">ОМНИ</h5>
+                        <p class="brand-country">Россия</p>
+                        <div class="brand-category russia">Российские</div>
+                        <p class="brand-description">Аккумуляторы и электрооборудование</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 180 товаров</span>
+                            <span class="stat-item">Российское качество</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="premium">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Michelin" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Michelin</h5>
+                        <p class="brand-country">Франция</p>
+                        <div class="brand-category premium">Премиум</div>
+                        <p class="brand-description">Премиальные шины мирового уровня</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 250 товаров</span>
+                            <span class="stat-item">Инновации в шинах</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="premium">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Bridgestone" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Bridgestone</h5>
+                        <p class="brand-country">Япония</p>
+                        <div class="brand-category premium">Премиум</div>
+                        <p class="brand-description">Высокотехнологичные шины</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 230 товаров</span>
+                            <span class="stat-item">Японские технологии</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="original">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Mazda Original" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Mazda Original</h5>
+                        <p class="brand-country">Япония</p>
+                        <div class="brand-category original">Оригинальные</div>
+                        <p class="brand-description">Оригинальные запчасти Mazda</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 800 товаров</span>
+                            <span class="stat-item">Технологии Zoom-Zoom</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="original">
+                <div class="brand-card">
+                    <div class="brand-logo-container">
+                        <img src="../img/no-image.png" alt="Honda Original" class="brand-logo">
+                    </div>
+                    <div class="brand-info">
+                        <h5 class="brand-name">Honda Original</h5>
+                        <p class="brand-country">Япония</p>
+                        <div class="brand-category original">Оригинальные</div>
+                        <p class="brand-description">Оригинальные запчасти Honda</p>
+                        <div class="brand-stats">
+                            <span class="stat-item">Более 850 товаров</span>
+                            <span class="stat-item">Надежность Honda</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagination-section mt-5">
+                <nav aria-label="Навигация по страницам">
+                    <ul class="pagination justify-content-center" id="pagination">
+                    </ul>
+                </nav>
+            </div>
+            <div class="no-results text-center py-5" id="noResults" style="display: none;">
+                <div class="no-results-icon mb-3">
+                    <i class="bi bi-search display-1 text-muted"></i>
+                </div>
+                <h4 class="text-muted mb-3">Бренды не найдены</h4>
+                <p class="text-muted">Попробуйте изменить параметры поиска или фильтрации</p>
             </div>
         </div>
     </div>
