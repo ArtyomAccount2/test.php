@@ -199,7 +199,7 @@ unset($_SESSION['form_data']);
                 formData.append('text', document.getElementById('reviewText').value);
                 formData.append('action', 'add_review');
 
-                fetch('../files/handle_review.php', {
+                fetch('../includes/handle_review.php', {
                     method: 'POST',
                     body: formData
                 })
@@ -215,6 +215,8 @@ unset($_SESSION['form_data']);
                             s.classList.add('bi-star');
                             s.classList.remove('bi-star-fill', 'text-warning');
                         });
+
+                        location.reload();
                     } 
                     else 
                     {

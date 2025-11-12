@@ -552,3 +552,14 @@ footer
         opacity: 0;
     }
 }
+
+.navbar .d-flex p strong 
+{
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.navbar .ms-xl-3 .d-flex p strong 
+{
+    font-weight: 600;
+}

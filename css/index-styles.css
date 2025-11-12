@@ -368,7 +368,8 @@
     color: #333;
 }
 
-#carBrandsBlock, #partsContainer 
+#carBrandsBlock, 
+#partsContainer 
 {
     overflow-x: hidden;
     height: 300px;
@@ -1303,5 +1304,13 @@
     {
         width: 100%;
         max-width: 250px;
+    }
+}
+
+@media (max-width: 1200px) 
+{
+    #catalogSearchForm
+    {
+        margin-bottom: 10px;
     }
 }
