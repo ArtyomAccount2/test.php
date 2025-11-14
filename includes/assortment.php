@@ -54,6 +54,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
 
+function enhanceBrandSearch($search_term, $products) 
+{
+    $brands = [
+        'acura', 'aixam', 'alfa romeo', 'alfa', 'aston martin', 'aston', 'audi', 'bmw', 
+        'bentley', 'buick', 'cadillac', 'chevrolet', 'chrysler', 'dodge',
+        'fiat', 'ford', 'gaz', 'honda', 'hummer', 'hyundai', 'infiniti',
+        'jaguar', 'jeep', 'kia', 'lada', 'lamborghini', 'lancia', 
+        'land rover', 'land', 'rover', 'lexus', 'lotus'
+    ];
+    
+    $search_lower = strtolower($search_term);
+    
+    foreach ($brands as $brand) 
+    {
+        if (strpos($search_lower, $brand) !== false) 
+        {
+            return array_filter($products, function($product) use ($brand) 
+            {
+                $title_lower = strtolower($product['title']);
+                return strpos($title_lower, $brand) !== false || preg_match('/\b' . preg_quote($brand, '/') . '\b/i', $title_lower);
+            });
+        }
+    }
+    
+    return $products;
+}
+
 $items_per_page = 12;
 $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
@@ -106,7 +133,18 @@ $all_products = [
     ['category' => 'фильтры', 'title' => 'Воздушный фильтр Mann C 3698', 'price' => 1850],
     ['category' => 'двигатель', 'title' => 'Крышка клапана Elring 024.492', 'price' => 4900],
     ['category' => 'трансмиссия', 'title' => 'Поддон АКПП ZF 8HP', 'price' => 8900],
-    ['category' => 'ходовая часть', 'title' => 'Опорный подшипник SKF VKBA 3564', 'price' => 3200]
+    ['category' => 'ходовая часть', 'title' => 'Опорный подшипник SKF VKBA 3564', 'price' => 3200],
+
+    ['category' => 'тормозная система', 'title' => 'Тормозные колодки Audi A4 B8', 'price' => 4500, 'badge' => 'Для Audi'],
+    ['category' => 'фильтры', 'title' => 'Масляный фильтр Audi 2.0 TFSI', 'price' => 1200, 'badge' => 'Для Audi'],
+    ['category' => 'двигатель', 'title' => 'Свечи зажигания Audi TFSI', 'price' => 3800, 'badge' => 'Для Audi'],
+    ['category' => 'кузовные детали', 'title' => 'Фара передняя BMW 3 series F30', 'price' => 18700, 'badge' => 'Для BMW'],
+    ['category' => 'тормозная система', 'title' => 'Тормозные диски BMW X5', 'price' => 8900, 'badge' => 'Для BMW'],
+    ['category' => 'электрика', 'title' => 'Аккумулятор Mercedes-Benz E-class', 'price' => 12500, 'badge' => 'Для Mercedes'],
+    ['category' => 'двигатель', 'title' => 'Ремень ГРМ Toyota Camry', 'price' => 3200, 'badge' => 'Для Toyota'],
+    ['category' => 'фильтры', 'title' => 'Воздушный фильтр Ford Focus', 'price' => 950, 'badge' => 'Для Ford'],
+    ['category' => 'ходовая часть', 'title' => 'Амортизатор Hyundai Solaris', 'price' => 3800, 'badge' => 'Для Hyundai'],
+    ['category' => 'тормозная система', 'title' => 'Тормозные колодки Kia Rio', 'price' => 2900, 'badge' => 'Для Kia']
 ];
 
 $filtered_products = $all_products;
@@ -117,10 +155,15 @@ if ($search_term !== '' || $category_filter !== '')
 {
     $filtered_products = array_filter($all_products, function($product) use ($search_term, $category_filter) 
     {
-        $matches_search = $search_term === '' || strpos(strtolower($product['title']), $search_term) !== false;
+        $matches_search = $search_term === '' || strpos(strtolower($product['title']), strtolower($search_term)) !== false;
         $matches_category = $category_filter === '' || $category_filter === 'все категории' || $product['category'] === $category_filter;
         return $matches_search && $matches_category;
     });
+
+    if ($search_term !== '') 
+    {
+        $filtered_products = enhanceBrandSearch($search_term, $filtered_products);
+    }
 
     $filtered_products = array_values($filtered_products);
 }
@@ -131,6 +174,28 @@ $start_index = ($current_page - 1) * $items_per_page;
 $end_index = min($start_index + $items_per_page, $total_items);
 
 $show_pagination = $total_pages > 1;
+
+function buildQueryString($page, $search, $category) 
+{
+    $params = [];
+
+    if ($page > 1) 
+    {
+        $params['page'] = $page;
+    }
+
+    if (!empty($search)) 
+    {
+        $params['search'] = $search;
+    }
+
+    if (!empty($category) && $category !== 'все категории') 
+    {
+        $params['category'] = $category;
+    }
+
+    return http_build_query($params);
+}
 ?>
 
 <!DOCTYPE html>
@@ -171,6 +236,25 @@ $show_pagination = $total_pages > 1;
     <div class="hero-section text-center mb-5" style="padding-top: 105px;">
         <h1 class="display-5 fw-bold text-primary mb-3">Каталог автозапчастей</h1>
         <p class="lead text-muted mb-4">Более 1000 наименований оригинальных и качественных аналогов</p>
+        <?php if ($search_term !== '') 
+        {
+        ?>
+        <div class="alert alert-info d-inline-block">
+            <i class="bi bi-search me-2"></i>
+            <?php 
+            if ($search_term !== '' && $category_filter !== '' && $category_filter !== 'все категории') 
+            {
+                echo 'Поиск: "' . htmlspecialchars($search_term) . '" в категории "' . htmlspecialchars($category_filter) . '"';
+            } 
+            else if ($search_term !== '') 
+            {
+                echo 'Результаты поиска: "' . htmlspecialchars($search_term) . '"';
+            }
+            ?>
+        </div>
+        <?php 
+        } 
+        ?>
     </div> 
     <div class="row mb-4">
         <div class="col-md-5 col-lg-6">
@@ -205,29 +289,30 @@ $show_pagination = $total_pages > 1;
             </button>
         </div>
     </div>
-    <?php if ($search_term !== '' || $category_filter !== '')
+    <?php 
+    if ($search_term !== '' || $category_filter !== '') 
     {
     ?>
     <div class="row mb-3">
         <div class="col-12">
             <div class="alert alert-info py-2">
                 <?php 
-                if ($search_term !== '' && $category_filter !== '' && $category_filter !== 'все категории')
+                if ($search_term !== '' && $category_filter !== '' && $category_filter !== 'все категории') 
                 {
                     echo 'Найдено ' . $total_items . ' товаров по запросу "' . htmlspecialchars($search_term) . '" в категории "' . htmlspecialchars($category_filter) . '"';
-                }
-                else if ($search_term !== '')
+                } 
+                else if ($search_term !== '') 
                 {
                     echo 'Найдено ' . $total_items . ' товаров по запросу "' . htmlspecialchars($search_term) . '"';
-                }
-                else if ($category_filter !== '' && $category_filter !== 'все категории')
+                } 
+                else if ($category_filter !== '' && $category_filter !== 'все категории') 
                 {
                     echo 'Найдено ' . $total_items . ' товаров в категории "' . htmlspecialchars($category_filter) . '"';
                 }
                 ?>
                 <?php 
                 if ($search_term !== '' || ($category_filter !== '' && $category_filter !== 'все категории'))
-                { 
+                {
                 ?>
                     <a href="?" class="btn btn-sm btn-outline-secondary ms-2">Показать все</a>
                 <?php 
@@ -237,64 +322,64 @@ $show_pagination = $total_pages > 1;
         </div>
     </div>
     <?php 
-    } 
+    }
     ?>
     <div class="row g-3" id="productsContainer">
         <?php 
-        if ($total_items > 0)
+        if ($total_items > 0) 
         {
         ?>
             <?php 
             for ($i = $start_index; $i < $end_index; $i++)
             {
-                $product = $filtered_products[$i];
             ?>
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="product-card">
-                    <?php 
-                    if (isset($product['badge']))
-                    {
-                    ?>
-                        <div class="product-badge"><?php echo $product['badge']; ?></div>
-                    <?php
-                    } 
-                    ?>
-                    <div class="product-image">
-                        <img src="../img/no-image.png" class="product-img" alt="<?php echo htmlspecialchars($product['title']); ?>">
-                    </div>
-                    <div class="product-body">
-                        <h6 class="product-title"><?php echo $product['title']; ?></h6>
-                        <div class="product-price">
-                            <?php 
-                            if (isset($product['old_price'])) 
-                            {
-                            ?>
-                                <span class="current-price"><?php echo number_format($product['price'], 0, '', ' '); ?> ₽</span>
-                                <span class="old-price"><?php echo number_format($product['old_price'], 0, '', ' '); ?> ₽</span>
-                            <?php 
-                            }
-                            else
-                            { 
-                            ?>
-                                <span class="current-price"><?php echo number_format($product['price'], 0, '', ' '); ?> ₽</span>
-                            <?php 
-                            } 
-                            ?>
+                <?php $product = $filtered_products[$i]; ?>
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <?php 
+                        if (isset($product['badge'])) 
+                        {
+                        ?>
+                            <div class="product-badge"><?php echo $product['badge']; ?></div>
+                        <?php 
+                        }
+                        ?>
+                        <div class="product-image">
+                            <img src="../img/no-image.png" class="product-img" alt="<?php echo htmlspecialchars($product['title']); ?>">
                         </div>
-                        <div class="product-actions">
-                            <button class="btn btn-primary btn-sm">В корзину</button>
-                            <button class="btn btn-outline-secondary btn-sm">Подробнее</button>
+                        <div class="product-body">
+                            <h6 class="product-title"><?php echo $product['title']; ?></h6>
+                            <div class="product-price">
+                                <?php 
+                                if (isset($product['old_price']))
+                                {
+                                ?>
+                                    <span class="current-price"><?php echo number_format($product['price'], 0, '', ' '); ?> ₽</span>
+                                    <span class="old-price"><?php echo number_format($product['old_price'], 0, '', ' '); ?> ₽</span>
+                                <?php 
+                                }
+                                else
+                                { 
+                                ?>
+                                    <span class="current-price"><?php echo number_format($product['price'], 0, '', ' '); ?> ₽</span>
+                                <?php 
+                                } 
+                                ?>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn btn-primary btn-sm">В корзину</button>
+                                <button class="btn btn-outline-secondary btn-sm">Подробнее</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             <?php 
             } 
             ?>
         <?php 
         }
-        else 
-        {
+        else
+        { 
         ?>
             <div class="col-12 text-center py-5">
                 <i class="bi bi-search display-4 text-muted mb-3"></i>
@@ -307,8 +392,8 @@ $show_pagination = $total_pages > 1;
         ?>
     </div>
     <?php 
-    if ($show_pagination)
-    { 
+    if ($show_pagination) 
+    {
     ?>
     <nav aria-label="Page navigation" class="mt-4">
         <ul class="pagination justify-content-center">
@@ -318,12 +403,10 @@ $show_pagination = $total_pages > 1;
             <?php
             $start_page = max(1, $current_page - 2);
             $end_page = min($total_pages, $start_page + 4);
-
-            if ($end_page - $start_page < 4) 
-            {
+            if ($end_page - $start_page < 4) {
                 $start_page = max(1, $end_page - 4);
             }
-            
+
             for ($page = $start_page; $page <= $end_page; $page++)
             {
             ?>
@@ -331,7 +414,7 @@ $show_pagination = $total_pages > 1;
                     <a class="page-link" href="?<?php echo buildQueryString($page, $search_term, $category_filter); ?>"><?php echo $page; ?></a>
                 </li>
             <?php 
-            } 
+            }
             ?>
             <li class="page-item <?php echo $current_page == $total_pages ? 'disabled' : ''; ?>">
                 <a class="page-link" href="?<?php echo buildQueryString($current_page + 1, $search_term, $category_filter); ?>">Вперед</a>
@@ -344,17 +427,17 @@ $show_pagination = $total_pages > 1;
     <?php 
     }
     else
-    { 
+    {
     ?>
         <?php 
-        if ($total_items > 0) 
+        if ($total_items > 0)
         {
         ?>
         <div class="text-center text-muted mt-3">
             Найдено <?php echo $total_items; ?> товаров
         </div>
         <?php 
-        } 
+        }
         ?>
     <?php 
     } 
@@ -363,30 +446,6 @@ $show_pagination = $total_pages > 1;
 
 <?php 
     require_once("footer.php"); 
-?>
-
-<?php
-function buildQueryString($page, $search, $category) 
-{
-    $params = [];
-
-    if ($page > 1) 
-    {
-        $params['page'] = $page;
-    }
-
-    if (!empty($search)) 
-    {
-        $params['search'] = $search;
-    }
-
-    if (!empty($category) && $category !== 'все категории') 
-    {
-        $params['category'] = $category;
-    }
-
-    return http_build_query($params);
-}
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>

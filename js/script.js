@@ -41,15 +41,37 @@ function initBrandCards()
             let card = document.createElement('div');
             card.className = 'scrollable-item';
             card.innerHTML = `
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm h-100 brand-card" data-brand="${brand.name}">
                     <img src="${brand.image}" class="card-img-top" alt="${brand.name}">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
                         <h6 class="card-title">${brand.name}</h6>
-                        <a href="#" class="btn btn-outline-primary w-100">Выбрать</a>
+                        <button class="btn btn-outline-primary w-100 select-brand-btn" data-brand="${brand.name}">
+                            Выбрать
+                        </button>
                     </div>
                 </div>
             `;
             container.appendChild(card);
+        });
+
+        document.querySelectorAll('.select-brand-btn').forEach(button => {
+            button.addEventListener('click', function(e) 
+            {
+                e.stopPropagation();
+                let brandName = this.getAttribute('data-brand');
+                goToBrandAssortment(brandName);
+            });
+        });
+
+        document.querySelectorAll('.brand-card').forEach(card => {
+            card.addEventListener('click', function(e) 
+            {
+                if (!e.target.classList.contains('select-brand-btn')) 
+                {
+                    let brandName = this.getAttribute('data-brand');
+                    goToBrandAssortment(brandName);
+                }
+            });
         });
     }
 }
@@ -57,18 +79,18 @@ function initBrandCards()
 function initPartsCards() 
 {
     let parts = [
-        { name: "Коленчатый вал", image: "img/SpareParts/image1.png" },
-        { name: "Прокладки двигателя", image: "img/SpareParts/image2.png" },
-        { name: "Топливный насос", image: "img/SpareParts/image3.png" },
-        { name: "Распределительный вал", image: "img/SpareParts/image4.png" },
-        { name: "Тормозной цилиндр", image: "img/SpareParts/image5.png" },
-        { name: "Тормозные колодки", image: "img/SpareParts/image6.png" },
-        { name: "Стабилизатор", image: "img/SpareParts/image7.png" },
-        { name: "Тормозные суппорта", image: "img/SpareParts/image8.png" },
-        { name: "Топливный фильтр", image: "img/SpareParts/image9.png" },
-        { name: "Тормозные диски", image: "img/SpareParts/image10.png" },
-        { name: "Цапфа", image: "img/SpareParts/image11.png" },
-        { name: "Сальники", image: "img/SpareParts/image12.png" }
+        { name: "Коленчатый вал", image: "img/SpareParts/image1.png", category: "двигатель" },
+        { name: "Прокладки двигателя", image: "img/SpareParts/image2.png", category: "двигатель" },
+        { name: "Топливный насос", image: "img/SpareParts/image3.png", category: "топливная система" },
+        { name: "Распределительный вал", image: "img/SpareParts/image4.png", category: "двигатель" },
+        { name: "Тормозной цилиндр", image: "img/SpareParts/image5.png", category: "тормозная система" },
+        { name: "Тормозные колодки", image: "img/SpareParts/image6.png", category: "тормозная система" },
+        { name: "Стабилизатор", image: "img/SpareParts/image7.png", category: "подвеска" },
+        { name: "Тормозные суппорта", image: "img/SpareParts/image8.png", category: "тормозная система" },
+        { name: "Топливный фильтр", image: "img/SpareParts/image9.png", category: "фильтры" },
+        { name: "Тормозные диски", image: "img/SpareParts/image10.png", category: "тормозная система" },
+        { name: "Цапфа", image: "img/SpareParts/image11.png", category: "ходовая часть" },
+        { name: "Сальники", image: "img/SpareParts/image12.png", category: "уплотнения" }
     ];
 
     let container = document.getElementById('partsContainer');
@@ -81,17 +103,90 @@ function initPartsCards()
             let card = document.createElement('div');
             card.className = 'scrollable-item';
             card.innerHTML = `
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm h-100 part-card" data-part="${part.name}" data-category="${part.category}">
                     <img src="${part.image}" class="card-img-top" alt="${part.name}">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
                         <h6 class="card-title">${part.name}</h6>
-                        <a href="#" class="btn btn-outline-primary w-100">Подробнее</a>
+                        <small class="text-muted mb-2">${getCategoryDisplayName(part.category)}</small>
+                        <button class="btn btn-outline-primary w-100 details-part-btn" data-part="${part.name}" data-category="${part.category}">
+                            Подробнее
+                        </button>
                     </div>
                 </div>
             `;
             container.appendChild(card);
         });
+
+        document.querySelectorAll('.details-part-btn').forEach(button => {
+            button.addEventListener('click', function(e) 
+            {
+                e.stopPropagation();
+                let partName = this.getAttribute('data-part');
+                let category = this.getAttribute('data-category');
+                goToPartAssortment(partName, category);
+            });
+        });
+
+        document.querySelectorAll('.part-card').forEach(card => {
+            card.addEventListener('click', function(e) 
+            {
+                if (!e.target.classList.contains('details-part-btn')) 
+                {
+                    let partName = this.getAttribute('data-part');
+                    let category = this.getAttribute('data-category');
+                    goToPartAssortment(partName, category);
+                }
+            });
+        });
     }
+}
+
+function goToBrandAssortment(brandName) 
+{
+    let encodedBrand = encodeURIComponent(brandName);
+    let url = `includes/assortement.php?search=${encodedBrand}`;
+
+    window.location.href = url;
+}
+
+function goToPartAssortment(partName, category) 
+{
+    let encodedPart = encodeURIComponent(partName);
+    let url = `includes/assortement.php?search=${encodedPart}`;
+
+    if (category && getCategoryMapping(category)) 
+    {
+        let mappedCategory = getCategoryMapping(category);
+        url += `&category=${encodeURIComponent(mappedCategory)}`;
+    }
+
+    window.location.href = url;
+}
+
+function getCategoryDisplayName(category) 
+{
+    let categoryMap = {
+        'двигатель': 'Двигатель',
+        'топливная система': 'Топливная система', 
+        'тормозная система': 'Тормозная система',
+        'подвеска': 'Подвеска',
+        'фильтры': 'Фильтры',
+        'ходовая часть': 'Ходовая часть',
+        'уплотнения': 'Уплотнения'
+    };
+    
+    return categoryMap[category] || category;
+}
+
+function getCategoryMapping(category) 
+{
+    let mapping = {
+        'топливная система': 'двигатель',
+        'подвеска': 'ходовая часть', 
+        'уплотнения': 'двигатель'
+    };
+    
+    return mapping[category] || category;
 }
 
 function setupScrollButtons() 
@@ -123,7 +218,8 @@ function filterItems(container, searchValue, noResultsId)
     
     items.forEach(item => {
         let title = item.querySelector('.card-title') ? item.querySelector('.card-title').textContent.toLowerCase() : '';
-        let isVisible = searchValue === '' || title.includes(searchValue.toLowerCase());
+        let category = item.querySelector('.text-muted') ? item.querySelector('.text-muted').textContent.toLowerCase() : '';
+        let isVisible = searchValue === '' || title.includes(searchValue.toLowerCase()) || category.includes(searchValue.toLowerCase());
         
         item.style.display = isVisible ? 'block' : 'none';
 

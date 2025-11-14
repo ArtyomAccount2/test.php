@@ -128,10 +128,10 @@ if (isset($_SESSION['message']))
                     <tr>
                         <th>ID</th>
                         <th>Пользователь</th>
-                        <th>Текст отзыва</th>
-                        <th>Оценка</th>
-                        <th>Дата</th>
-                        <th>Статус</th>
+                        <th class="d-none d-xl-table-cell">Текст отзыва</th>
+                        <th class="d-none d-md-table-cell">Оценка</th>
+                        <th class="d-none d-lg-table-cell">Дата</th>
+                        <th class="d-none d-sm-table-cell">Статус</th>
                         <th>Действия</th>
                     </tr>
                 </thead>
@@ -139,107 +139,112 @@ if (isset($_SESSION['message']))
                     <?php 
                     if ($reviews_result->num_rows > 0) 
                     {
-                    ?>
-                        <?php 
                         while($review = $reviews_result->fetch_assoc())
                         {
-                        ?>
-                        <tr>
-                            <td><?php echo $review['id']; ?></td>
-                            <td>
-                                <div class="fw-bold"><?php echo htmlspecialchars($review['name']); ?></div>
-                                <small class="text-muted"><?php echo htmlspecialchars($review['email'] ?? '-'); ?></small>
-                            </td>
-                            <td>
-                                <div class="text-truncate" style="max-width: 200px;">
-                                    <?php echo htmlspecialchars($review['text']); ?>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="text-warning">
+                    ?>
+                    <tr>
+                        <td><?php echo $review['id']; ?></td>
+                        <td>
+                            <div class="fw-bold"><?php echo htmlspecialchars($review['name']); ?></div>
+                            <small class="text-muted d-none d-md-block"><?php echo htmlspecialchars($review['email'] ?? '-'); ?></small>
+                            <div class="d-block d-sm-none">
+                                <small class="text-muted">
                                     <?php 
                                     for($i = 1; $i <= 5; $i++) 
                                     {
                                         if ($i <= $review['rating']) 
                                         {
-                                            echo '<i class="bi bi-star-fill"></i>';
+                                            echo '<i class="bi bi-star-fill text-warning"></i>';
                                         } 
                                         else 
                                         {
-                                            echo '<i class="bi bi-star"></i>';
+                                            echo '<i class="bi bi-star text-warning"></i>';
                                         }
                                     }
                                     ?>
-                                </div>
-                            </td>
-                            <td><?php echo date('d.m.Y H:i', strtotime($review['created_at'])); ?></td>
-                            <td>
-                                <?php
-                                $status_badges = [
-                                    'pending' => 'bg-warning',
-                                    'approved' => 'bg-success',
-                                    'rejected' => 'bg-danger'
-                                ];
-                                $status_labels = [
-                                    'pending' => 'На модерации',
-                                    'approved' => 'Одобрено',
-                                    'rejected' => 'Отклонено'
-                                ];
-                                ?>
+                                </small>
+                                <br>
                                 <span class="badge <?php echo $status_badges[$review['status']]; ?>">
                                     <?php echo $status_labels[$review['status']]; ?>
                                 </span>
-                            </td>
-                            <td>
-                                <div class="btn-group btn-group-sm">
-                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editReviewModal<?php echo $review['id']; ?>">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <?php 
-                                    if ($review['status'] == 'pending')
+                            </div>
+                        </td>
+                        <td class="d-none d-xl-table-cell">
+                            <div class="text-truncate" style="max-width: 200px;">
+                                <?php echo htmlspecialchars($review['text']); ?>
+                            </div>
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            <div class="text-warning">
+                                <?php 
+                                for($i = 1; $i <= 5; $i++) 
+                                {
+                                    if ($i <= $review['rating']) 
                                     {
-                                    ?>
-                                        <form method="POST" style="display: inline;">
-                                            <input type="hidden" name="action" value="approve">
-                                            <input type="hidden" name="review_id" value="<?php echo $review['id']; ?>">
-                                            <button type="submit" class="btn btn-outline-success">
-                                                <i class="bi bi-check"></i>
-                                            </button>
-                                        </form>
-                                        <form method="POST" style="display: inline;">
-                                            <input type="hidden" name="action" value="reject">
-                                            <input type="hidden" name="review_id" value="<?php echo $review['id']; ?>">
-                                            <button type="submit" class="btn btn-outline-warning">
-                                                <i class="bi bi-x"></i>
-                                            </button>
-                                        </form>
-                                    <?php 
+                                        echo '<i class="bi bi-star-fill"></i>';
+                                    } 
+                                    else 
+                                    {
+                                        echo '<i class="bi bi-star"></i>';
                                     }
-                                    ?>
-                                    <form method="POST" style="display: inline;" onsubmit="return confirm('Вы уверены, что хотите удалить этот отзыв?')">
-                                        <input type="hidden" name="action" value="delete">
-                                        <input type="hidden" name="review_id" value="<?php echo $review['id']; ?>">
-                                        <button type="submit" class="btn btn-outline-danger">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php 
-                        }
-                        ?>
+                                }
+                                ?>
+                            </div>
+                        </td>
+                        <td class="d-none d-lg-table-cell"><?php echo date('d.m.Y H:i', strtotime($review['created_at'])); ?></td>
+                        <td class="d-none d-sm-table-cell">
+                            <?php
+                            $status_badges = [
+                                'pending' => 'bg-warning',
+                                'approved' => 'bg-success',
+                                'rejected' => 'bg-danger'
+                            ];
+                            $status_labels = [
+                                'pending' => 'На модерации',
+                                'approved' => 'Одобрено',
+                                'rejected' => 'Отклонено'
+                            ];
+                            ?>
+                            <span class="badge <?php echo $status_badges[$review['status']]; ?>">
+                                <?php echo $status_labels[$review['status']]; ?>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editReviewModal<?php echo $review['id']; ?>">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <?php 
+                                if ($review['status'] == 'pending')
+                                {
+                                ?>
+                                    <button type="button" class="btn btn-outline-success" onclick="approveReview(<?php echo $review['id']; ?>)">
+                                        <i class="bi bi-check"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-warning" onclick="rejectReview(<?php echo $review['id']; ?>)">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                <?php 
+                                }
+                                ?>
+                                <button type="button" class="btn btn-outline-danger" onclick="deleteReview(<?php echo $review['id']; ?>)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
                     <?php 
-                    }
+                        }
+                    } 
                     else 
                     {
                     ?>
-                        <tr>
-                            <td colspan="7" class="text-center text-muted py-4">
-                                <i class="bi bi-chat-square fs-1 d-block mb-2"></i>
-                                Отзывы не найдены
-                            </td>
-                        </tr>
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            <i class="bi bi-chat-square fs-1 d-block mb-2"></i>
+                            Отзывы не найдены
+                        </td>
+                    </tr>
                     <?php 
                     }
                     ?>
@@ -252,69 +257,110 @@ if (isset($_SESSION['message']))
 <?php 
 if ($reviews_result->num_rows > 0)
 {
-?>
-    <?php 
     $reviews_result->data_seek(0); 
-    ?>
-    <?php 
     while($review = $reviews_result->fetch_assoc())
     {
-    ?>
-    <div class="modal fade" id="editReviewModal<?php echo $review['id']; ?>" tabindex="-1" data-bs-backdrop="static">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Редактирование отзыва #<?php echo $review['id']; ?></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST">
-                    <div class="modal-body">
-                        <input type="hidden" name="action" value="edit">
-                        <input type="hidden" name="review_id" value="<?php echo $review['id']; ?>">
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Имя</label>
-                            <input type="text" class="form-control" name="name" value="<?php echo htmlspecialchars($review['name']); ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Текст отзыва</label>
-                            <textarea class="form-control" name="text" rows="4" required><?php echo htmlspecialchars($review['text']); ?></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Оценка</label>
-                            <select class="form-select" name="rating" required>
-                                <?php 
-                                for($i = 1; $i <= 5; $i++)
-                                {
-                                ?>
-                                    <option value="<?php echo $i; ?>" <?php echo $i == $review['rating'] ? 'selected' : ''; ?>>
-                                        <?php echo $i; ?> звезд<?php echo $i > 1 ? 'ы' : 'а'; ?>
-                                    </option>
-                                <?php 
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Статус</label>
-                            <select class="form-select" name="status" required>
-                                <option value="pending" <?php echo $review['status'] == 'pending' ? 'selected' : ''; ?>>На модерации</option>
-                                <option value="approved" <?php echo $review['status'] == 'approved' ? 'selected' : ''; ?>>Одобрено</option>
-                                <option value="rejected" <?php echo $review['status'] == 'rejected' ? 'selected' : ''; ?>>Отклонено</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                        <button type="submit" class="btn btn-primary">Сохранить</button>
-                    </div>
-                </form>
+?>
+<div class="modal fade" id="editReviewModal<?php echo $review['id']; ?>" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Редактирование отзыва #<?php echo $review['id']; ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+            <form method="POST">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="edit">
+                    <input type="hidden" name="review_id" value="<?php echo $review['id']; ?>">
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Имя</label>
+                        <input type="text" class="form-control" name="name" value="<?php echo htmlspecialchars($review['name']); ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Текст отзыва</label>
+                        <textarea class="form-control" name="text" rows="4" required><?php echo htmlspecialchars($review['text']); ?></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Оценка</label>
+                        <select class="form-select" name="rating" required>
+                            <?php 
+                            for($i = 1; $i <= 5; $i++)
+                            {
+                            ?>
+                                <option value="<?php echo $i; ?>" <?php echo $i == $review['rating'] ? 'selected' : ''; ?>>
+                                    <?php echo $i; ?> звезд<?php echo $i > 1 ? 'ы' : 'а'; ?>
+                                </option>
+                            <?php 
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Статус</label>
+                        <select class="form-select" name="status" required>
+                            <option value="pending" <?php echo $review['status'] == 'pending' ? 'selected' : ''; ?>>На модерации</option>
+                            <option value="approved" <?php echo $review['status'] == 'approved' ? 'selected' : ''; ?>>Одобрено</option>
+                            <option value="rejected" <?php echo $review['status'] == 'rejected' ? 'selected' : ''; ?>>Отклонено</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
         </div>
     </div>
-    <?php 
-    }
-    ?>
+</div>
 <?php 
+    }
 }
 ?>
+
+<script>
+function approveReview(reviewId) 
+{
+    if (confirm('Вы уверены, что хотите одобрить этот отзыв?')) 
+    {
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.innerHTML = `
+            <input type="hidden" name="action" value="approve">
+            <input type="hidden" name="review_id" value="${reviewId}">
+        `;
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+
+function rejectReview(reviewId) 
+{
+    if (confirm('Вы уверены, что хотите отклонить этот отзыв?')) 
+    {
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.innerHTML = `
+            <input type="hidden" name="action" value="reject">
+            <input type="hidden" name="review_id" value="${reviewId}">
+        `;
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+
+function deleteReview(reviewId) 
+{
+    if (confirm('Вы уверены, что хотите удалить этот отзыв?')) 
+    {
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.innerHTML = `
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="review_id" value="${reviewId}">
+        `;
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
