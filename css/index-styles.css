@@ -1314,3 +1314,19 @@
         margin-bottom: 10px;
     }
 }
+
+@media (min-width: 1200px) and (max-width: 1456px) 
+{
+    #catalogSearchForm 
+    {
+        display: none !important;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1209px) 
+{
+    .ms-xl-3
+    {
+        margin-left: 0 !important;
+    }
+}

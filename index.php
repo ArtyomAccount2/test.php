@@ -52,6 +52,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
+
+function getBrandsData() 
+{
+    return [
+        ['name' => 'Acura', 'image' => 'img/Stamps/Acura.png', 'search_term' => 'acura'],
+        ['name' => 'Aixam', 'image' => 'img/Stamps/Aixam.png', 'search_term' => 'aixam'],
+        ['name' => 'Alfa Romeo', 'image' => 'img/Stamps/Alfa Romeo.png', 'search_term' => 'alfa romeo'],
+        ['name' => 'Aston Martin', 'image' => 'img/Stamps/Aston Martin.png', 'search_term' => 'aston martin'],
+        ['name' => 'Audi', 'image' => 'img/Stamps/Audi.png', 'search_term' => 'audi'],
+        ['name' => 'BMW', 'image' => 'img/Stamps/BMW.png', 'search_term' => 'bmw'],
+        ['name' => 'Bentley', 'image' => 'img/Stamps/Bentley.png', 'search_term' => 'bentley'],
+        ['name' => 'Buick', 'image' => 'img/Stamps/Buick.png', 'search_term' => 'buick'],
+        ['name' => 'Cadillac', 'image' => 'img/Stamps/Cadillac.png', 'search_term' => 'cadillac'],
+        ['name' => 'Chevrolet', 'image' => 'img/Stamps/Chevrolet.png', 'search_term' => 'chevrolet'],
+        ['name' => 'Chrysler', 'image' => 'img/Stamps/Chrysler.png', 'search_term' => 'chrysler'],
+        ['name' => 'Dodge', 'image' => 'img/Stamps/Dodge.png', 'search_term' => 'dodge'],
+        ['name' => 'Fiat', 'image' => 'img/Stamps/Fiat.png', 'search_term' => 'fiat'],
+        ['name' => 'Ford', 'image' => 'img/Stamps/Ford.png', 'search_term' => 'ford'],
+        ['name' => 'Gaz', 'image' => 'img/Stamps/Gaz.png', 'search_term' => 'gaz'],
+        ['name' => 'Honda', 'image' => 'img/Stamps/Honda.png', 'search_term' => 'honda'],
+        ['name' => 'Hummer', 'image' => 'img/Stamps/Hummer.png', 'search_term' => 'hummer'],
+        ['name' => 'Hyundai', 'image' => 'img/Stamps/Hyundai.png', 'search_term' => 'hyundai'],
+        ['name' => 'Infiniti', 'image' => 'img/Stamps/Infiniti.png', 'search_term' => 'infiniti'],
+        ['name' => 'Jaguar', 'image' => 'img/Stamps/Jaguar.png', 'search_term' => 'jaguar'],
+        ['name' => 'Jeep', 'image' => 'img/Stamps/Jeep.png', 'search_term' => 'jeep'],
+        ['name' => 'Kia', 'image' => 'img/Stamps/Kia.png', 'search_term' => 'kia'],
+        ['name' => 'Lada', 'image' => 'img/Stamps/Lada.png', 'search_term' => 'lada'],
+        ['name' => 'Lamborghini', 'image' => 'img/Stamps/Lamborghini.png', 'search_term' => 'lamborghini'],
+        ['name' => 'Lancia', 'image' => 'img/Stamps/Lancia.png', 'search_term' => 'lancia'],
+        ['name' => 'Land Rover', 'image' => 'img/Stamps/Land Rover.png', 'search_term' => 'land rover'],
+        ['name' => 'Lexus', 'image' => 'img/Stamps/Lexus.png', 'search_term' => 'lexus'],
+        ['name' => 'Lotus', 'image' => 'img/Stamps/Lotus.png', 'search_term' => 'lotus']
+    ];
+}
+
+function getPartsData() 
+{
+    return [
+        ['name' => 'Коленчатый вал', 'image' => 'img/SpareParts/image1.png', 'category' => 'двигатель', 'search_term' => 'коленчатый вал'],
+        ['name' => 'Прокладки двигателя', 'image' => 'img/SpareParts/image2.png', 'category' => 'двигатель', 'search_term' => 'прокладки двигателя'],
+        ['name' => 'Топливный насос', 'image' => 'img/SpareParts/image3.png', 'category' => 'двигатель', 'search_term' => 'топливный насос'],
+        ['name' => 'Распределительный вал', 'image' => 'img/SpareParts/image4.png', 'category' => 'двигатель', 'search_term' => 'распределительный вал'],
+        ['name' => 'Тормозной цилиндр', 'image' => 'img/SpareParts/image5.png', 'category' => 'тормозная система', 'search_term' => 'тормозной цилиндр'],
+        ['name' => 'Тормозные колодки', 'image' => 'img/SpareParts/image6.png', 'category' => 'тормозная система', 'search_term' => 'тормозные колодки'],
+        ['name' => 'Стабилизатор', 'image' => 'img/SpareParts/image7.png', 'category' => 'ходовая часть', 'search_term' => 'стабилизатор'],
+        ['name' => 'Тормозные суппорта', 'image' => 'img/SpareParts/image8.png', 'category' => 'тормозная система', 'search_term' => 'тормозные суппорта'],
+        ['name' => 'Топливный фильтр', 'image' => 'img/SpareParts/image9.png', 'category' => 'фильтры', 'search_term' => 'топливный фильтр'],
+        ['name' => 'Тормозные диски', 'image' => 'img/SpareParts/image10.png', 'category' => 'тормозная система', 'search_term' => 'тормозные диски'],
+        ['name' => 'Цапфа', 'image' => 'img/SpareParts/image11.png', 'category' => 'ходовая часть', 'search_term' => 'цапфа'],
+        ['name' => 'Сальники', 'image' => 'img/SpareParts/image12.png', 'category' => 'двигатель', 'search_term' => 'сальники']
+    ];
+}
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +112,7 @@ unset($_SESSION['form_data']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лал-Авто - Автозапчасти</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
@@ -465,6 +517,24 @@ unset($_SESSION['form_data']);
                                         <p>Ничего не найдено. Попробуйте изменить запрос</p>
                                     </div>
                                     <div class="scrollable" id="carBrandsBlock">
+                                        <?php
+                                        $brands = getBrandsData();
+                                        foreach ($brands as $brand) 
+                                        {
+                                            echo '
+                                            <div class="scrollable-item">
+                                                <div class="card shadow-sm h-100 brand-card" data-brand="' . $brand['search_term'] . '">
+                                                    <img src="' . $brand['image'] . '" class="card-img-top" alt="' . $brand['name'] . '">
+                                                    <div class="card-body d-flex flex-column justify-content-between align-items-center">
+                                                        <h6 class="card-title">' . $brand['name'] . '</h6>
+                                                        <button class="btn btn-outline-primary w-100 select-brand-btn" data-brand="' . $brand['search_term'] . '">
+                                                            Выбрать
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                                 <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
@@ -501,6 +571,26 @@ unset($_SESSION['form_data']);
                                         <p>Ничего не найдено. Попробуйте изменить запрос</p>
                                     </div>
                                     <div class="scrollable" id="partsContainer">
+                                        <?php
+                                        $parts = getPartsData();
+                                        foreach ($parts as $part) 
+                                        {
+                                            $categoryDisplay = getCategoryDisplayName($part['category']);
+                                            echo '
+                                            <div class="scrollable-item">
+                                                <div class="card shadow-sm h-100 part-card" data-part="' . $part['search_term'] . '" data-category="' . $part['category'] . '">
+                                                    <img src="' . $part['image'] . '" class="card-img-top" alt="' . $part['name'] . '">
+                                                    <div class="card-body d-flex flex-column justify-content-between align-items-center">
+                                                        <h6 class="card-title">' . $part['name'] . '</h6>
+                                                        <small class="text-muted mb-2">' . $categoryDisplay . '</small>
+                                                        <button class="btn btn-outline-primary w-100 details-part-btn" data-part="' . $part['search_term'] . '" data-category="' . $part['category'] . '">
+                                                            Подробнее
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                                 <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
@@ -623,8 +713,25 @@ unset($_SESSION['form_data']);
     </div>
 </div>
 
-<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/script.js"></script>
 <script src="files/app.js"></script>
 </body>
 </html>
+
+<?php
+function getCategoryDisplayName($category) 
+{
+    $categoryMap = [
+        'двигатель' => 'Двигатель',
+        'топливная система' => 'Топливная система', 
+        'тормозная система' => 'Тормозная система',
+        'подвеска' => 'Подвеска',
+        'фильтры' => 'Фильтры',
+        'ходовая часть' => 'Ходовая часть',
+        'уплотнения' => 'Уплотнения'
+    ];
+    
+    return isset($categoryMap[$category]) ? $categoryMap[$category] : $category;
+}
+?>

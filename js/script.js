@@ -1,34 +1,34 @@
 function initBrandCards() 
 {
     let brands = [
-        { name: "Acura", image: "img/Stamps/Acura.png" },
-        { name: "Aixam", image: "img/Stamps/Aixam.png" },
-        { name: "Alfa Romeo", image: "img/Stamps/Alfa Romeo.png" },
-        { name: "Aston Martin", image: "img/Stamps/Aston Martin.png" },
-        { name: "Audi", image: "img/Stamps/Audi.png" },
-        { name: "BMW", image: "img/Stamps/BMW.png" },
-        { name: "Bentley", image: "img/Stamps/Bentley.png" },
-        { name: "Buick", image: "img/Stamps/Buick.png" },
-        { name: "Cadillac", image: "img/Stamps/Cadillac.png" },
-        { name: "Chevrolet", image: "img/Stamps/Chevrolet.png" },
-        { name: "Chrysler", image: "img/Stamps/Chrysler.png" },
-        { name: "Dodge", image: "img/Stamps/Dodge.png" },
-        { name: "Fiat", image: "img/Stamps/Fiat.png" },
-        { name: "Ford", image: "img/Stamps/Ford.png" },
-        { name: "Gaz", image: "img/Stamps/Gaz.png" },
-        { name: "Honda", image: "img/Stamps/Honda.png" },
-        { name: "Hummer", image: "img/Stamps/Hummer.png" },
-        { name: "Hyundai", image: "img/Stamps/Hyundai.png" },
-        { name: "Infiniti", image: "img/Stamps/Infiniti.png" },
-        { name: "Jaguar", image: "img/Stamps/Jaguar.png" },
-        { name: "Jeep", image: "img/Stamps/Jeep.png" },
-        { name: "Kia", image: "img/Stamps/Kia.png" },
-        { name: "Lada", image: "img/Stamps/Lada.png" },
-        { name: "Lamborghini", image: "img/Stamps/Lamborghini.png" },
-        { name: "Lancia", image: "img/Stamps/Lancia.png" },
-        { name: "Land Rover", image: "img/Stamps/Land Rover.png" },
-        { name: "Lexus", image: "img/Stamps/Lexus.png" },
-        { name: "Lotus", image: "img/Stamps/Lotus.png" }
+        { name: "Acura", image: "img/Stamps/Acura.png", search_term: "acura" },
+        { name: "Aixam", image: "img/Stamps/Aixam.png", search_term: "aixam" },
+        { name: "Alfa Romeo", image: "img/Stamps/Alfa Romeo.png", search_term: "alfa romeo" },
+        { name: "Aston Martin", image: "img/Stamps/Aston Martin.png", search_term: "aston martin" },
+        { name: "Audi", image: "img/Stamps/Audi.png", search_term: "audi" },
+        { name: "BMW", image: "img/Stamps/BMW.png", search_term: "bmw" },
+        { name: "Bentley", image: "img/Stamps/Bentley.png", search_term: "bentley" },
+        { name: "Buick", image: "img/Stamps/Buick.png", search_term: "buick" },
+        { name: "Cadillac", image: "img/Stamps/Cadillac.png", search_term: "cadillac" },
+        { name: "Chevrolet", image: "img/Stamps/Chevrolet.png", search_term: "chevrolet" },
+        { name: "Chrysler", image: "img/Stamps/Chrysler.png", search_term: "chrysler" },
+        { name: "Dodge", image: "img/Stamps/Dodge.png", search_term: "dodge" },
+        { name: "Fiat", image: "img/Stamps/Fiat.png", search_term: "fiat" },
+        { name: "Ford", image: "img/Stamps/Ford.png", search_term: "ford" },
+        { name: "Gaz", image: "img/Stamps/Gaz.png", search_term: "gaz" },
+        { name: "Honda", image: "img/Stamps/Honda.png", search_term: "honda" },
+        { name: "Hummer", image: "img/Stamps/Hummer.png", search_term: "hummer" },
+        { name: "Hyundai", image: "img/Stamps/Hyundai.png", search_term: "hyundai" },
+        { name: "Infiniti", image: "img/Stamps/Infiniti.png", search_term: "infiniti" },
+        { name: "Jaguar", image: "img/Stamps/Jaguar.png", search_term: "jaguar" },
+        { name: "Jeep", image: "img/Stamps/Jeep.png", search_term: "jeep" },
+        { name: "Kia", image: "img/Stamps/Kia.png", search_term: "kia" },
+        { name: "Lada", image: "img/Stamps/Lada.png", search_term: "lada" },
+        { name: "Lamborghini", image: "img/Stamps/Lamborghini.png", search_term: "lamborghini" },
+        { name: "Lancia", image: "img/Stamps/Lancia.png", search_term: "lancia" },
+        { name: "Land Rover", image: "img/Stamps/Land Rover.png", search_term: "land rover" },
+        { name: "Lexus", image: "img/Stamps/Lexus.png", search_term: "lexus" },
+        { name: "Lotus", image: "img/Stamps/Lotus.png", search_term: "lotus" }
     ];
 
     let container = document.getElementById('carBrandsBlock');
@@ -41,11 +41,11 @@ function initBrandCards()
             let card = document.createElement('div');
             card.className = 'scrollable-item';
             card.innerHTML = `
-                <div class="card shadow-sm h-100 brand-card" data-brand="${brand.name}">
+                <div class="card shadow-sm h-100 brand-card" data-brand="${brand.search_term}">
                     <img src="${brand.image}" class="card-img-top" alt="${brand.name}">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
                         <h6 class="card-title">${brand.name}</h6>
-                        <button class="btn btn-outline-primary w-100 select-brand-btn" data-brand="${brand.name}">
+                        <button class="btn btn-outline-primary w-100 select-brand-btn" data-brand="${brand.search_term}">
                             Выбрать
                         </button>
                     </div>
@@ -79,18 +79,18 @@ function initBrandCards()
 function initPartsCards() 
 {
     let parts = [
-        { name: "Коленчатый вал", image: "img/SpareParts/image1.png", category: "двигатель" },
-        { name: "Прокладки двигателя", image: "img/SpareParts/image2.png", category: "двигатель" },
-        { name: "Топливный насос", image: "img/SpareParts/image3.png", category: "топливная система" },
-        { name: "Распределительный вал", image: "img/SpareParts/image4.png", category: "двигатель" },
-        { name: "Тормозной цилиндр", image: "img/SpareParts/image5.png", category: "тормозная система" },
-        { name: "Тормозные колодки", image: "img/SpareParts/image6.png", category: "тормозная система" },
-        { name: "Стабилизатор", image: "img/SpareParts/image7.png", category: "подвеска" },
-        { name: "Тормозные суппорта", image: "img/SpareParts/image8.png", category: "тормозная система" },
-        { name: "Топливный фильтр", image: "img/SpareParts/image9.png", category: "фильтры" },
-        { name: "Тормозные диски", image: "img/SpareParts/image10.png", category: "тормозная система" },
-        { name: "Цапфа", image: "img/SpareParts/image11.png", category: "ходовая часть" },
-        { name: "Сальники", image: "img/SpareParts/image12.png", category: "уплотнения" }
+        { name: "Коленчатый вал", image: "img/SpareParts/image1.png", category: "двигатель", search_term: "коленчатый вал" },
+        { name: "Прокладки двигателя", image: "img/SpareParts/image2.png", category: "двигатель", search_term: "прокладки двигателя" },
+        { name: "Топливный насос", image: "img/SpareParts/image3.png", category: "двигатель", search_term: "топливный насос" },
+        { name: "Распределительный вал", image: "img/SpareParts/image4.png", category: "двигатель", search_term: "распределительный вал" },
+        { name: "Тормозной цилиндр", image: "img/SpareParts/image5.png", category: "тормозная система", search_term: "тормозной цилиндр" },
+        { name: "Тормозные колодки", image: "img/SpareParts/image6.png", category: "тормозная система", search_term: "тормозные колодки" },
+        { name: "Стабилизатор", image: "img/SpareParts/image7.png", category: "ходовая часть", search_term: "стабилизатор" },
+        { name: "Тормозные суппорта", image: "img/SpareParts/image8.png", category: "тормозная система", search_term: "тормозные суппорта" },
+        { name: "Топливный фильтр", image: "img/SpareParts/image9.png", category: "фильтры", search_term: "топливный фильтр" },
+        { name: "Тормозные диски", image: "img/SpareParts/image10.png", category: "тормозная система", search_term: "тормозные диски" },
+        { name: "Цапфа", image: "img/SpareParts/image11.png", category: "ходовая часть", search_term: "цапфа" },
+        { name: "Сальники", image: "img/SpareParts/image12.png", category: "двигатель", search_term: "сальники" }
     ];
 
     let container = document.getElementById('partsContainer');
@@ -103,12 +103,12 @@ function initPartsCards()
             let card = document.createElement('div');
             card.className = 'scrollable-item';
             card.innerHTML = `
-                <div class="card shadow-sm h-100 part-card" data-part="${part.name}" data-category="${part.category}">
+                <div class="card shadow-sm h-100 part-card" data-part="${part.search_term}" data-category="${part.category}">
                     <img src="${part.image}" class="card-img-top" alt="${part.name}">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
                         <h6 class="card-title">${part.name}</h6>
                         <small class="text-muted mb-2">${getCategoryDisplayName(part.category)}</small>
-                        <button class="btn btn-outline-primary w-100 details-part-btn" data-part="${part.name}" data-category="${part.category}">
+                        <button class="btn btn-outline-primary w-100 details-part-btn" data-part="${part.search_term}" data-category="${part.category}">
                             Подробнее
                         </button>
                     </div>
@@ -144,7 +144,7 @@ function initPartsCards()
 function goToBrandAssortment(brandName) 
 {
     let encodedBrand = encodeURIComponent(brandName);
-    let url = `includes/assortement.php?search=${encodedBrand}`;
+    let url = `includes/assortment.php?search=${encodedBrand}`;
 
     window.location.href = url;
 }
@@ -152,7 +152,7 @@ function goToBrandAssortment(brandName)
 function goToPartAssortment(partName, category) 
 {
     let encodedPart = encodeURIComponent(partName);
-    let url = `includes/assortement.php?search=${encodedPart}`;
+    let url = `includes/assortment.php?search=${encodedPart}`;
 
     if (category && getCategoryMapping(category)) 
     {
