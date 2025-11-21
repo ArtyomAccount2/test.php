@@ -80,6 +80,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
+
+$is_logged_in = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
+
+if ($is_logged_in && isset($_GET['show_review']) && $_GET['show_review'] == 'true') 
+{
+    $_SESSION['show_review_form'] = true;
+    
+    $clean_url = str_replace(['?show_review=true', '&show_review=true'], '', $_SERVER['REQUEST_URI']);
+    $clean_url = preg_replace('/[?&]$/', '', $clean_url);
+    
+    header("Location: " . $clean_url);
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -107,57 +120,35 @@ unset($_SESSION['form_data']);
         } 
         ?>
 
+        function showReviewForm() 
+        {
+            document.getElementById('reviewFormContainer').style.display = 'block';
+            document.getElementById('loginToReview').style.display = 'none';
+        }
+
+        <?php 
+        if ($is_logged_in && isset($_SESSION['show_review_form'])) 
+        {
+        ?>
+            showReviewForm();
+            <?php unset($_SESSION['show_review_form']); ?>
+        <?php 
+        }
+        ?>
+
         let stars = document.querySelectorAll('.rating-star');
         let ratingValue = document.getElementById('ratingValue');
         
-        stars.forEach(star => {
-            star.addEventListener('click', function() 
-            {
-                let rating = this.getAttribute('data-rating');
-                ratingValue.value = rating;
-                
-                stars.forEach((s, index) => {
-                    if (index < rating) 
-                    {
-                        s.classList.add('bi-star-fill', 'text-warning');
-                        s.classList.remove('bi-star');
-                    } 
-                    else 
-                    {
-                        s.classList.add('bi-star');
-                        s.classList.remove('bi-star-fill', 'text-warning');
-                    }
-                });
-            });
-            
-            star.addEventListener('mouseover', function() 
-            {
-                let hoverRating = this.getAttribute('data-rating');
-
-                stars.forEach((s, index) => {
-                    if (index < hoverRating && !ratingValue.value) 
-                    {
-                        s.classList.add('bi-star-fill', 'text-warning');
-                        s.classList.remove('bi-star');
-                    }
-                });
-            });
-            
-            star.addEventListener('mouseout', function() 
-            {
-                if (!ratingValue.value) 
+        if (stars.length > 0 && ratingValue) 
+        {
+            stars.forEach(star => {
+                star.addEventListener('click', function() 
                 {
-                    stars.forEach(s => {
-                        s.classList.add('bi-star');
-                        s.classList.remove('bi-star-fill', 'text-warning');
-                    });
-                } 
-                else 
-                {
-                    let currentRating = ratingValue.value;
-
+                    let rating = this.getAttribute('data-rating');
+                    ratingValue.value = rating;
+                    
                     stars.forEach((s, index) => {
-                        if (index < currentRating) 
+                        if (index < rating) 
                         {
                             s.classList.add('bi-star-fill', 'text-warning');
                             s.classList.remove('bi-star');
@@ -168,9 +159,50 @@ unset($_SESSION['form_data']);
                             s.classList.remove('bi-star-fill', 'text-warning');
                         }
                     });
-                }
+                });
+                
+                star.addEventListener('mouseover', function() 
+                {
+                    let hoverRating = this.getAttribute('data-rating');
+
+                    stars.forEach((s, index) => {
+                        if (index < hoverRating && !ratingValue.value) 
+                        {
+                            s.classList.add('bi-star-fill', 'text-warning');
+                            s.classList.remove('bi-star');
+                        }
+                    });
+                });
+                
+                star.addEventListener('mouseout', function() 
+                {
+                    if (!ratingValue.value) 
+                    {
+                        stars.forEach(s => {
+                            s.classList.add('bi-star');
+                            s.classList.remove('bi-star-fill', 'text-warning');
+                        });
+                    } 
+                    else 
+                    {
+                        let currentRating = ratingValue.value;
+
+                        stars.forEach((s, index) => {
+                            if (index < currentRating) 
+                            {
+                                s.classList.add('bi-star-fill', 'text-warning');
+                                s.classList.remove('bi-star');
+                            } 
+                            else 
+                            {
+                                s.classList.add('bi-star');
+                                s.classList.remove('bi-star-fill', 'text-warning');
+                            }
+                        });
+                    }
+                });
             });
-        });
+        }
 
         let reviewForm = document.getElementById('reviewForm');
 
@@ -230,6 +262,48 @@ unset($_SESSION['form_data']);
             });
         }
 
+        function setReviewRedirect() 
+        {
+            setTimeout(function() 
+            {
+                let redirectInput = document.querySelector('#loginModal input[name="redirect_url"]');
+
+                if (redirectInput) 
+                {
+                    let currentUrl = '<?php echo $_SERVER['REQUEST_URI']; ?>';
+                    currentUrl = currentUrl.replace(/([?&])show_review=true&?/, '$1');
+                    currentUrl = currentUrl.replace(/[?&]$/, '');
+                    let separator = currentUrl.includes('?') ? '&' : '?';
+                    redirectInput.value = currentUrl + separator + 'show_review=true';
+                }
+            }, 100);
+        }
+
+        <?php 
+        if ($is_logged_in && isset($_SESSION['show_review_form'])) 
+        {
+        ?>
+            document.addEventListener('DOMContentLoaded', function() 
+            {
+                let loginToReview = document.getElementById('loginToReview');
+                let reviewFormContainer = document.getElementById('reviewFormContainer');
+                
+                if (loginToReview) 
+                {
+                    loginToReview.style.display = 'none';
+                }
+
+                if (reviewFormContainer) 
+                {
+                    reviewFormContainer.style.display = 'block';
+                }
+            });
+
+            <?php unset($_SESSION['show_review_form']); ?>
+        <?php 
+        }
+        ?>
+
         function equalizeReviewHeights() 
         {
             let reviewCards = document.querySelectorAll('.review-card');
@@ -283,7 +357,11 @@ unset($_SESSION['form_data']);
     </div>
     <div class="row mb-5">
         <div class="col-lg-8 mx-auto">
-            <div class="review-form-container">
+            <?php 
+            if ($is_logged_in)
+            {
+            ?>
+            <div class="review-form-container" id="reviewFormContainer">
                 <div class="review-form-header text-center mb-4">
                     <h3 class="mb-2"><i class="bi bi-pencil-square me-2"></i>Оставить отзыв</h3>
                     <p class="text-muted mb-0">Поделитесь вашим опытом сотрудничества с нами</p>
@@ -329,6 +407,27 @@ unset($_SESSION['form_data']);
                     </button>
                 </form>
             </div>
+            <?php 
+            }
+            else
+            { 
+            ?>
+            <div class="review-form-container text-center" id="loginToReview">
+                <div class="review-form-header text-center mb-4">
+                    <h3 class="mb-2"><i class="bi bi-pencil-square me-2"></i>Оставить отзыв</h3>
+                    <p class="text-muted mb-3">Чтобы оставить отзыв, необходимо авторизоваться</p>
+                </div>
+                <div class="py-4">
+                    <i class="bi bi-person-check display-1 text-muted mb-3"></i>
+                    <p class="mb-4">Войдите в свой аккаунт, чтобы поделиться впечатлениями о нашей работе</p>
+                    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#loginModal" onclick="setReviewRedirect()">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Войти и оставить отзыв
+                    </button>
+                </div>
+            </div>
+            <?php 
+            } 
+            ?>
         </div>
     </div>
     <div class="reviews-section mb-5">
