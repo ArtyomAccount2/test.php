@@ -358,14 +358,111 @@ function checkScrollButtonsVisibility()
     });
 }
 
+function initEnhancedCarousel() 
+{
+    let carousel = document.getElementById('mainCarousel');
+    
+    if (!carousel)
+    {
+        return;
+    }
+    
+    function applyZoomEffect(slide) 
+    {
+        let img = slide.querySelector('.carousel-image');
+
+        if (img) 
+        {
+            img.style.transition = 'transform 12s ease-in-out';
+            img.style.transform = 'scale(1.05)';
+        }
+    }
+    
+    function resetZoomEffect(slide) 
+    {
+        let img = slide.querySelector('.carousel-image');
+
+        if (img) 
+        {
+            img.style.transition = 'transform 1.5s ease-in-out';
+            img.style.transform = 'scale(1)';
+        }
+    }
+    
+    let activeSlide = carousel.querySelector('.carousel-item.active');
+
+    if (activeSlide) 
+    {
+        setTimeout(() => {
+            applyZoomEffect(activeSlide);
+        }, 500);
+    }
+
+    carousel.addEventListener('slide.bs.carousel', function (e) 
+    {
+        let currentSlide = e.relatedTarget;
+        resetZoomEffect(currentSlide);
+    });
+
+    carousel.addEventListener('slid.bs.carousel', function (e) 
+    {
+        let activeSlide = e.relatedTarget;
+        setTimeout(() => {
+            applyZoomEffect(activeSlide);
+        }, 100);
+    });
+
+    let indicators = carousel.querySelector('.carousel-indicators');
+
+    if (indicators) 
+    {
+        indicators.style.display = 'none';
+    }
+    
+    let prevButton = carousel.querySelector('.carousel-control-prev');
+    let nextButton = carousel.querySelector('.carousel-control-next');
+    
+    if (prevButton) 
+    {
+        prevButton.style.zIndex = '1000';
+        prevButton.style.pointerEvents = 'auto';
+        
+        prevButton.addEventListener('click', function() 
+        {
+            let activeSlide = carousel.querySelector('.carousel-item.active');
+
+            if (activeSlide) 
+            {
+                resetZoomEffect(activeSlide);
+            }
+        });
+    }
+    
+    if (nextButton) 
+    {
+        nextButton.style.zIndex = '1000';
+        nextButton.style.pointerEvents = 'auto';
+        
+        nextButton.addEventListener('click', function() 
+        {
+            let activeSlide = carousel.querySelector('.carousel-item.active');
+
+            if (activeSlide) 
+                {
+                resetZoomEffect(activeSlide);
+            }
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() 
 {
     initBrandCards();
     initPartsCards();
     setupScrollButtons();
-
     initCookieConsent();
-
+    initEnhancedCarousel();
+    
     setTimeout(checkScrollButtonsVisibility, 100);
 
     let lastScrollTop = 0;

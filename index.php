@@ -272,35 +272,131 @@ function getPartsData()
         </div>
     </div>
 
-    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="img/1.jpg" class="d-block w-100" alt="Слайд 1">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5 id="slider_body">Лучшие автозапчасти</h5>
-                    <p id="slider_body">Найдите запчасти для вашего автомобиля.</p>
+                <div class="carousel-image-container">
+                    <img src="img/1.jpg" class="carousel-image" alt="Лучшие автозапчасти">
+                    <div class="carousel-overlay"></div>
+                </div>
+                <div class="carousel-caption">
+                    <div class="container">
+                        <div class="caption-content">
+                            <h1 class="caption-title animate-slide-down">Лучшие автозапчасти</h1>
+                            <p class="caption-text animate-slide-up">Более 50,000 качественных запчастей для вашего автомобиля</p>
+                            <div class="caption-features animate-fade-in">
+                                <div class="feature-item">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <span>Гарантия качества</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <span>Быстрая доставка</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <span>Оригинальные бренды</span>
+                                </div>
+                            </div>
+                            <div class="caption-actions animate-slide-up">
+                                <a href="includes/assortment.php" class="btn btn-primary btn-lg me-3">
+                                    <i class="bi bi-cart-plus me-2"></i>Перейти к покупкам
+                                </a>
+                                <a href="#aboutUs" class="btn btn-outline-light btn-lg">
+                                    <i class="bi bi-info-circle me-2"></i>Узнать больше
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="img/2.jpg" class="d-block w-100" alt="Слайд 2">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5 id="slider_body">Качество и надежность</h5>
-                    <p id="slider_body">Мы предлагаем только проверенные запчасти.</p>
+                <div class="carousel-image-container">
+                    <img src="img/2.jpg" class="carousel-image" alt="Качество и надежность">
+                    <div class="carousel-overlay"></div>
+                </div>
+                <div class="carousel-caption">
+                    <div class="container">
+                        <div class="caption-content">
+                            <h1 class="caption-title animate-slide-down">Качество и надежность</h1>
+                            <p class="caption-text animate-slide-up">Только проверенные производители с гарантией</p>
+                            <div class="stats-container animate-fade-in">
+                                <div class="stat-card">
+                                    <div class="stat-number">100+</div>
+                                    <div class="stat-label">Брендов</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">12</div>
+                                    <div class="stat-label">Лет на рынке</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">50000+</div>
+                                    <div class="stat-label">Товаров</div>
+                                </div>
+                            </div>
+                            <div class="caption-actions animate-slide-up">
+                                <a href="includes/brands.php" class="btn btn-primary btn-lg me-3">
+                                    <i class="bi bi-tags me-2"></i>Все бренды
+                                </a>
+                                <a href="#nextSection" class="btn btn-outline-light btn-lg">
+                                    <i class="bi bi-search me-2"></i>Найти запчасть
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="img/3.jpeg" class="d-block w-100" alt="Слайд 3">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5 id="slider_body">Быстрая доставка</h5>
-                    <p id="slider_body">Получите свои запчасти в кратчайшие сроки.</p>
+                <div class="carousel-image-container">
+                    <img src="img/3.jpeg" class="carousel-image" alt="Доставка по России">
+                    <div class="carousel-overlay"></div>
+                </div>
+                <div class="carousel-caption">
+                    <div class="container">
+                        <div class="caption-content">
+                            <h1 class="caption-title animate-slide-down">Доставка по России</h1>
+                            <p class="caption-text animate-slide-up">Быстрая доставка в любой регион страны</p>
+                            <div class="stats-container animate-fade-in">
+                                <div class="stat-card">
+                                    <i class="bi bi-truck"></i>
+                                    <div>
+                                        <div class="stat-number">1-3 дня</div>
+                                        <div class="stat-label">по всей России</div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <div>
+                                        <div class="stat-number">Самовывоз</div>
+                                        <div class="stat-label">из 5 магазинов</div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <i class="bi bi-credit-card"></i>
+                                    <div>
+                                        <div class="stat-number">Оплата</div>
+                                        <div class="stat-label">любым способом</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption-actions animate-slide-up">
+                                <a href="includes/delivery.php" class="btn btn-primary btn-lg me-3">
+                                    <i class="bi bi-truck me-2"></i>Условия доставки
+                                </a>
+                                <a href="includes/shops.php" class="btn btn-outline-light btn-lg">
+                                    <i class="bi bi-shop me-2"></i>Наши магазины
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Предыдущий</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Следующий</span>
         </button>
