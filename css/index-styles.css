@@ -6,18 +6,6 @@
     -webkit-filter: blur(8px);
 }
 
-.carousel-caption 
-{
-    bottom: 20%;
-}
-
-#slider_body 
-{
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-    font-size: 24px;
-    font-weight: 700;
-}
-
 #aboutUs 
 {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9f9ff 100%);
@@ -1335,8 +1323,10 @@
 {
     position: relative;
     height: 100vh;
-    min-height: 600px;
+    min-height: 500px;
+    max-height: 800px;
     overflow: hidden;
+    margin-top: 0;
 }
 
 .carousel-inner 
@@ -1367,9 +1357,7 @@
     object-fit: cover;
     filter: brightness(0.7);
     transition: transform 12s ease-in-out;
-    transform: scale(1);
 }
-
 
 .carousel-overlay 
 {
@@ -1390,43 +1378,54 @@
     height: 100%;
     display: flex;
     align-items: center;
-    text-align: left;
+    justify-content: center;
+    text-align: center;
     z-index: 2;
 }
 
 .caption-content 
 {
-    max-width: 800px;
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
     padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .caption-title 
 {
-    font-size: 3.2rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 700;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     color: white;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
     line-height: 1.2;
     word-wrap: break-word;
+    hyphens: auto;
+    text-align: center;
 }
 
 .caption-text 
 {
-    font-size: 1.3rem;
-    margin-bottom: 2rem;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    margin-bottom: 1.5rem;
     color: rgba(255, 255, 255, 0.9);
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
-    line-height: 1.6;
+    line-height: 1.5;
     max-width: 90%;
+    text-align: center;
 }
 
 .caption-features 
 {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: center;
 }
 
 .feature-item 
@@ -1436,14 +1435,14 @@
     color: white;
     font-weight: 500;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
 }
 
 .feature-item i 
 {
     color: #28a745;
     margin-right: 0.5rem;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 .caption-actions 
@@ -1451,15 +1450,17 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    justify-content: center;
 }
 
 .caption-actions .btn 
 {
     border-radius: 50px;
-    padding: 0.75rem 2rem;
+    padding: clamp(0.6rem, 2vw, 0.75rem) clamp(1.5rem, 4vw, 2rem);
     font-weight: 600;
     transition: all 0.3s ease;
     border-width: 2px;
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
 }
 
 .caption-actions .btn:hover 
@@ -1471,9 +1472,10 @@
 .stats-container 
 {
     display: flex;
-    gap: 2rem;
-    margin-bottom: 2.5rem;
+    gap: clamp(1rem, 3vw, 2rem);
+    margin-bottom: 2rem;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .stat-card 
@@ -1481,15 +1483,15 @@
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
     border-radius: 15px;
-    padding: 1.5rem;
+    padding: clamp(1rem, 2vw, 1.5rem);
     text-align: center;
-    min-width: 120px;
+    min-width: clamp(80px, 15vw, 120px);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .stat-card .stat-number 
 {
-    font-size: 2.2rem;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
     font-weight: 700;
     color: white;
     margin-bottom: 0.5rem;
@@ -1499,8 +1501,59 @@
 .stat-card .stat-label 
 {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
     font-weight: 500;
+}
+
+.delivery-info 
+{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    max-width: 400px;
+    align-items: center;
+}
+
+.delivery-item 
+{
+    display: flex;
+    align-items: center;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.delivery-item i 
+{
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
+    margin-right: clamp(0.75rem, 2vw, 1rem);
+    color: #007bff;
+    flex-shrink: 0;
+}
+
+.delivery-item div 
+{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.delivery-item strong 
+{
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    margin-bottom: 0.25rem;
+}
+
+.delivery-item span 
+{
+    color: rgba(255, 255, 255, 0.8);
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
 }
 
 .animate-slide-down 
@@ -1561,14 +1614,14 @@
 .carousel-control-prev,
 .carousel-control-next 
 {
-    width: 60px;
-    height: 60px;
+    width: clamp(40px, 8vw, 60px);
+    height: clamp(40px, 8vw, 60px);
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
     border-radius: 50%;
     top: 50%;
     transform: translateY(-50%);
-    margin: 0 20px;
+    margin: 0 clamp(10px, 3vw, 20px);
     border: 2px solid rgba(255, 255, 255, 0.3);
     transition: all 0.3s ease;
     opacity: 0.7;
@@ -1585,33 +1638,35 @@
 
 .carousel-control-prev 
 {
-    left: 20px;
+    left: clamp(10px, 3vw, 20px);
 }
 
 .carousel-control-next 
 {
-    right: 20px;
+    right: clamp(10px, 3vw, 20px);
 }
 
-@media (max-width: 768px)
+.carousel-control-prev-icon,
+.carousel-control-next-icon 
+{
+    background-size: clamp(20px, 4vw, 30px) clamp(20px, 4vw, 30px);
+    width: clamp(20px, 4vw, 30px);
+    height: clamp(20px, 4vw, 30px);
+    filter: brightness(0) invert(1);
+}
+
+@media (max-width: 768px) 
 {
     #mainCarousel 
     {
-        height: 70vh;
-        min-height: 500px;
+        height: 60vh;
+        min-height: 400px;
     }
     
-    .caption-title 
+    .carousel-caption 
     {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-    }
-    
-    .caption-text 
-    {
-        font-size: 1.1rem;
-        margin-bottom: 1.5rem;
-        max-width: 100%;
+        padding-top: 70px;
+        padding-bottom: 70px;
     }
     
     .caption-content 
@@ -1620,62 +1675,32 @@
         padding: 1rem;
     }
     
+    .caption-text,
+    .caption-features,
+    .stats-container,
+    .delivery-info 
+    {
+        display: none !important;
+    }
+
+    .caption-title 
+    {
+        display: block !important;
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+    
     .caption-actions 
     {
-        justify-content: center;
-    }
-    
-    .caption-actions .btn 
-    {
-        padding: 0.6rem 1.5rem;
-        font-size: 0.9rem;
-    }
-    
-    .stats-container 
-    {
+        display: flex !important;
         justify-content: center;
         gap: 1rem;
     }
     
-    .stat-card 
+    .caption-actions .btn 
     {
-        padding: 1rem;
-        min-width: 100px;
-    }
-    
-    .stat-card .stat-number 
-    {
-        font-size: 1.8rem;
-    }
-    
-    .carousel-control-prev,
-    .carousel-control-next 
-    {
-        width: 45px;
-        height: 45px;
-        margin: 0 10px;
-    }
-    
-    .delivery-info 
-    {
-        max-width: 100%;
-    }
-    
-    .delivery-item 
-    {
-        padding: 0.75rem 1rem;
-    }
-    
-    .delivery-item i 
-    {
-        font-size: 1.5rem;
-        margin-right: 0.75rem;
-    }
-    
-    .feature-item 
-    {
+        padding: 0.8rem 1.5rem;
         font-size: 1rem;
-        justify-content: center;
     }
 }
 
@@ -1683,53 +1708,49 @@
 {
     #mainCarousel 
     {
-        height: 60vh;
-        min-height: 400px;
+        height: 50vh;
+        min-height: 350px;
+    }
+    
+    .carousel-caption 
+    {
+        padding-top: 60px;
+        padding-bottom: 60px;
     }
     
     .caption-title 
     {
-        font-size: 1.6rem;
-    }
-    
-    .caption-text 
-    {
-        font-size: 1rem;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
     }
     
     .caption-actions 
     {
         flex-direction: column;
         align-items: center;
+        gap: 0.75rem;
     }
     
     .caption-actions .btn 
     {
         width: 100%;
         max-width: 250px;
+        padding: 0.7rem 1.2rem;
+    }
+}
+
+@media (max-width: 360px) 
+{
+    .caption-title 
+    {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
     }
     
-    .stats-container 
+    .caption-actions .btn 
     {
-        gap: 0.5rem;
-    }
-    
-    .stat-card 
-    {
-        min-width: 80px;
-        padding: 0.75rem;
-    }
-    
-    .stat-card .stat-number 
-    {
-        font-size: 1.4rem;
-    }
-    
-    .caption-features 
-    {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
     }
 }
 
