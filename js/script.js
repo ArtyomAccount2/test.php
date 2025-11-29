@@ -45,6 +45,7 @@ function initBrandCards()
                     <img src="${brand.image}" class="card-img-top" alt="${brand.name}">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
                         <h6 class="card-title">${brand.name}</h6>
+                        <small class="text-muted mb-2">Автомобиль</small>
                         <button class="btn btn-outline-primary w-100 select-brand-btn" data-brand="${brand.search_term}">
                             Выбрать
                         </button>
@@ -73,6 +74,12 @@ function initBrandCards()
                 }
             });
         });
+
+        setTimeout(() => {
+            document.querySelectorAll('.scrollable-item').forEach((item, index) => {
+                item.style.animationDelay = `${index * 0.1}s`;
+            });
+        }, 100);
     }
 }
 
@@ -138,6 +145,12 @@ function initPartsCards()
                 }
             });
         });
+
+        setTimeout(() => {
+            document.querySelectorAll('#partsContainer .scrollable-item').forEach((item, index) => {
+                item.style.animationDelay = `${index * 0.1}s`;
+            });
+        }, 100);
     }
 }
 
@@ -192,16 +205,18 @@ function getCategoryMapping(category)
 function setupScrollButtons() 
 {
     document.querySelectorAll('.scroll-button').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function() 
+        {
             let direction = this.classList.contains('scroll-left') ? -1 : 1;
-            let container = this.closest('.position-relative').querySelector('.scrollable');
-
-            let scrollAmount = window.innerWidth <= 768 ? 350 : 450;
+            let container = this.closest('.scrollable-container-wrapper').querySelector('.scrollable');
+            let scrollAmount = window.innerWidth <= 768 ? 300 : 400;
             
             container.scrollBy({
                 left: direction * scrollAmount,
                 behavior: 'smooth'
             });
+            
+            setTimeout(checkScrollButtonsVisibility, 300);
         });
     });
 }
@@ -347,13 +362,19 @@ function checkScrollButtonsVisibility()
 {
     document.querySelectorAll('.scrollable-container').forEach(container => {
         let scrollable = container.querySelector('.scrollable');
-        let scrollLeftBtn = container.querySelector('.scroll-left');
-        let scrollRightBtn = container.querySelector('.scroll-right');
+        let scrollLeftBtn = container.parentElement.querySelector('.scroll-left');
+        let scrollRightBtn = container.parentElement.querySelector('.scroll-right');
         
         if (scrollable && scrollLeftBtn && scrollRightBtn) 
         {
-            scrollLeftBtn.style.display = scrollable.scrollLeft > 0 ? 'flex' : 'none';
-            scrollRightBtn.style.display = scrollable.scrollLeft < (scrollable.scrollWidth - scrollable.clientWidth - 10) ? 'flex' : 'none';
+            let isAtStart = scrollable.scrollLeft <= 10;
+            let isAtEnd = scrollable.scrollLeft >= (scrollable.scrollWidth - scrollable.clientWidth - 10);
+            
+            scrollLeftBtn.style.opacity = isAtStart ? '0.5' : '1';
+            scrollLeftBtn.style.pointerEvents = isAtStart ? 'none' : 'all';
+            
+            scrollRightBtn.style.opacity = isAtEnd ? '0.5' : '1';
+            scrollRightBtn.style.pointerEvents = isAtEnd ? 'none' : 'all';
         }
     });
 }
@@ -571,7 +592,7 @@ document.addEventListener('DOMContentLoaded', function()
     initCookieConsent();
     initEnhancedCarousel();
     
-    setTimeout(checkScrollButtonsVisibility, 100);
+    setTimeout(checkScrollButtonsVisibility, 500);
 
     let lastScrollTop = 0;
     let navbar = document.querySelector('.navbar');

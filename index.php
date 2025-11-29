@@ -586,18 +586,18 @@ function getPartsData()
     </div>
 
     <section class="container-fluid" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9f9ff 100%); position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);">
-        <div class="position-absolute top-0 start-0 w-100 h-100">
-            <div class="about-bg-circle circle-1"></div>
-            <div class="about-bg-circle circle-2"></div>
-        </div>
-        <div class="container">
+            <div class="position-absolute top-0 start-0 w-100 h-100">
+                <div class="about-bg-circle circle-1"></div>
+                <div class="about-bg-circle circle-2"></div>
+            </div>
+            <div class="container">
             <section class="container my-5" id="nextSection">
                 <div class="search-section">
                     <div class="section-header text-center mb-5">
-                        <h2 class="mb-3">Поиск по марке автомобиля</h2>
-                        <p class="lead text-muted">Найдите запчасти для вашего автомобиля</p>
-                        <div class="search-container position-relative mx-auto" style="max-width: 500px;">
-                            <input type="text" id="brandSearch" placeholder="Начните вводить марку..." class="form-control form-control-lg search-input">
+                        <h2 class="mb-3">Найдите запчасти для вашего автомобиля</h2>
+                        <p class="lead text-muted">Более 50,000 оригинальных запчастей в наличии</p>
+                        <div class="search-container position-relative mx-auto" style="max-width: 600px;">
+                            <input type="text" id="brandSearch" placeholder="Введите марку автомобиля..." class="form-control form-control-lg search-input">
                             <button class="btn btn-link search-clear" type="button" style="display: none;">
                                 <i class="bi bi-x"></i>
                             </button>
@@ -606,11 +606,18 @@ function getPartsData()
                     </div>
                     <div class="brands-container">
                         <div class="position-relative">
+                            <div class="section-subheader d-flex justify-content-between align-items-center mb-4">
+                                <h4 class="mb-0">Популярные марки</h4>
+                                <a href="includes/brands.php" class="btn btn-outline-primary btn-sm">
+                                    Все марки <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
                             <div class="scrollable-container-wrapper">
                                 <div id="carBrandsList" class="scrollable-container">
                                     <div id="no-results-brands" class="no-results-message">
-                                        <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
-                                        <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                                        <i class="bi bi-exclamation-circle" style="font-size: 2rem;"></i>
+                                        <p class="mt-2">Марка не найдена</p>
+                                        <small class="text-muted">Попробуйте изменить запрос или посмотреть все марки</small>
                                     </div>
                                     <div class="scrollable" id="carBrandsBlock">
                                         <?php
@@ -619,13 +626,17 @@ function getPartsData()
                                         {
                                             echo '
                                             <div class="scrollable-item">
-                                                <div class="card shadow-sm h-100 brand-card" data-brand="' . $brand['search_term'] . '">
-                                                    <img src="' . $brand['image'] . '" class="card-img-top" alt="' . $brand['name'] . '">
-                                                    <div class="card-body d-flex flex-column justify-content-between align-items-center">
-                                                        <h6 class="card-title">' . $brand['name'] . '</h6>
-                                                        <button class="btn btn-outline-primary w-100 select-brand-btn" data-brand="' . $brand['search_term'] . '">
-                                                            Выбрать
-                                                        </button>
+                                                <div class="card brand-card h-100" data-brand="' . $brand['search_term'] . '">
+                                                    <div class="card-img-container">
+                                                        <img src="' . $brand['image'] . '" class="card-img-top" alt="' . $brand['name'] . '">
+                                                        <div class="card-overlay">
+                                                            <button class="btn btn-primary select-brand-btn" data-brand="' . $brand['search_term'] . '">
+                                                                Выбрать <i class="bi bi-chevron-right ms-1"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body text-center">
+                                                        <h6 class="card-title mb-0">' . $brand['name'] . '</h6>
                                                     </div>
                                                 </div>
                                             </div>';
@@ -648,9 +659,9 @@ function getPartsData()
             <section class="container my-5" id="nextSection2">
                 <div class="search-section">
                     <div class="section-header text-center mb-5">
-                        <h2 class="mb-3">Популярные запчасти</h2>
-                        <p class="lead text-muted">Широкий ассортимент качественных автозапчастей</p>
-                        <div class="search-container position-relative mx-auto" style="max-width: 500px;">
+                        <h2 class="mb-3">Популярные автозапчасти</h2>
+                        <p class="lead text-muted">Качественные комплектующие от проверенных производителей</p>
+                        <div class="search-container position-relative mx-auto" style="max-width: 600px;">
                             <input type="text" id="partsSearch" placeholder="Найдите нужную запчасть..." class="form-control form-control-lg search-input">
                             <button class="btn btn-link search-clear" type="button" style="display: none;">
                                 <i class="bi bi-x"></i>
@@ -660,11 +671,18 @@ function getPartsData()
                     </div>
                     <div class="parts-container">
                         <div class="position-relative">
+                            <div class="section-subheader d-flex justify-content-between align-items-center mb-4">
+                                <h4 class="mb-0">Часто покупаемые запчасти</h4>
+                                <a href="includes/assortment.php" class="btn btn-outline-primary btn-sm">
+                                    Весь каталог <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
                             <div class="scrollable-container-wrapper">
                                 <div id="popularParts" class="scrollable-container">
                                     <div id="no-results-parts" class="no-results-message">
-                                        <i class="bi bi-exclamation-circle" style="font-size: 1.5rem;"></i>
-                                        <p>Ничего не найдено. Попробуйте изменить запрос</p>
+                                        <i class="bi bi-exclamation-circle" style="font-size: 2rem;"></i>
+                                        <p class="mt-2">Запчасть не найдена</p>
+                                        <small class="text-muted">Попробуйте изменить запрос или посмотреть весь каталог</small>
                                     </div>
                                     <div class="scrollable" id="partsContainer">
                                         <?php
@@ -674,14 +692,28 @@ function getPartsData()
                                             $categoryDisplay = getCategoryDisplayName($part['category']);
                                             echo '
                                             <div class="scrollable-item">
-                                                <div class="card shadow-sm h-100 part-card" data-part="' . $part['search_term'] . '" data-category="' . $part['category'] . '">
-                                                    <img src="' . $part['image'] . '" class="card-img-top" alt="' . $part['name'] . '">
-                                                    <div class="card-body d-flex flex-column justify-content-between align-items-center">
+                                                <div class="card part-card h-100" data-part="' . $part['search_term'] . '" data-category="' . $part['category'] . '">
+                                                    <div class="card-img-container">
+                                                        <img src="' . $part['image'] . '" class="card-img-top" alt="' . $part['name'] . '">
+                                                        <div class="card-badge">' . $categoryDisplay . '</div>
+                                                        <div class="card-overlay">
+                                                            <button class="btn btn-primary details-part-btn" data-part="' . $part['search_term'] . '" data-category="' . $part['category'] . '">
+                                                                Подробнее <i class="bi bi-arrow-right ms-1"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
                                                         <h6 class="card-title">' . $part['name'] . '</h6>
-                                                        <small class="text-muted mb-2">' . $categoryDisplay . '</small>
-                                                        <button class="btn btn-outline-primary w-100 details-part-btn" data-part="' . $part['search_term'] . '" data-category="' . $part['category'] . '">
-                                                            Подробнее
-                                                        </button>
+                                                        <div class="card-features">
+                                                            <span class="feature-item">
+                                                                <i class="bi bi-check-circle-fill text-success"></i>
+                                                                В наличии
+                                                            </span>
+                                                            <span class="feature-item">
+                                                                <i class="bi bi-truck text-primary"></i>
+                                                                Доставка 1-3 дня
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>';
