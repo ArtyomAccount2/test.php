@@ -52,58 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
-
-function getBrandsData() 
-{
-    return [
-        ['name' => 'Acura', 'image' => 'img/Stamps/Acura.png', 'search_term' => 'acura'],
-        ['name' => 'Aixam', 'image' => 'img/Stamps/Aixam.png', 'search_term' => 'aixam'],
-        ['name' => 'Alfa Romeo', 'image' => 'img/Stamps/Alfa Romeo.png', 'search_term' => 'alfa romeo'],
-        ['name' => 'Aston Martin', 'image' => 'img/Stamps/Aston Martin.png', 'search_term' => 'aston martin'],
-        ['name' => 'Audi', 'image' => 'img/Stamps/Audi.png', 'search_term' => 'audi'],
-        ['name' => 'BMW', 'image' => 'img/Stamps/BMW.png', 'search_term' => 'bmw'],
-        ['name' => 'Bentley', 'image' => 'img/Stamps/Bentley.png', 'search_term' => 'bentley'],
-        ['name' => 'Buick', 'image' => 'img/Stamps/Buick.png', 'search_term' => 'buick'],
-        ['name' => 'Cadillac', 'image' => 'img/Stamps/Cadillac.png', 'search_term' => 'cadillac'],
-        ['name' => 'Chevrolet', 'image' => 'img/Stamps/Chevrolet.png', 'search_term' => 'chevrolet'],
-        ['name' => 'Chrysler', 'image' => 'img/Stamps/Chrysler.png', 'search_term' => 'chrysler'],
-        ['name' => 'Dodge', 'image' => 'img/Stamps/Dodge.png', 'search_term' => 'dodge'],
-        ['name' => 'Fiat', 'image' => 'img/Stamps/Fiat.png', 'search_term' => 'fiat'],
-        ['name' => 'Ford', 'image' => 'img/Stamps/Ford.png', 'search_term' => 'ford'],
-        ['name' => 'Gaz', 'image' => 'img/Stamps/Gaz.png', 'search_term' => 'gaz'],
-        ['name' => 'Honda', 'image' => 'img/Stamps/Honda.png', 'search_term' => 'honda'],
-        ['name' => 'Hummer', 'image' => 'img/Stamps/Hummer.png', 'search_term' => 'hummer'],
-        ['name' => 'Hyundai', 'image' => 'img/Stamps/Hyundai.png', 'search_term' => 'hyundai'],
-        ['name' => 'Infiniti', 'image' => 'img/Stamps/Infiniti.png', 'search_term' => 'infiniti'],
-        ['name' => 'Jaguar', 'image' => 'img/Stamps/Jaguar.png', 'search_term' => 'jaguar'],
-        ['name' => 'Jeep', 'image' => 'img/Stamps/Jeep.png', 'search_term' => 'jeep'],
-        ['name' => 'Kia', 'image' => 'img/Stamps/Kia.png', 'search_term' => 'kia'],
-        ['name' => 'Lada', 'image' => 'img/Stamps/Lada.png', 'search_term' => 'lada'],
-        ['name' => 'Lamborghini', 'image' => 'img/Stamps/Lamborghini.png', 'search_term' => 'lamborghini'],
-        ['name' => 'Lancia', 'image' => 'img/Stamps/Lancia.png', 'search_term' => 'lancia'],
-        ['name' => 'Land Rover', 'image' => 'img/Stamps/Land Rover.png', 'search_term' => 'land rover'],
-        ['name' => 'Lexus', 'image' => 'img/Stamps/Lexus.png', 'search_term' => 'lexus'],
-        ['name' => 'Lotus', 'image' => 'img/Stamps/Lotus.png', 'search_term' => 'lotus']
-    ];
-}
-
-function getPartsData() 
-{
-    return [
-        ['name' => 'Коленчатый вал', 'image' => 'img/SpareParts/image1.png', 'category' => 'двигатель', 'search_term' => 'коленчатый вал'],
-        ['name' => 'Прокладки двигателя', 'image' => 'img/SpareParts/image2.png', 'category' => 'двигатель', 'search_term' => 'прокладки двигателя'],
-        ['name' => 'Топливный насос', 'image' => 'img/SpareParts/image3.png', 'category' => 'двигатель', 'search_term' => 'топливный насос'],
-        ['name' => 'Распределительный вал', 'image' => 'img/SpareParts/image4.png', 'category' => 'двигатель', 'search_term' => 'распределительный вал'],
-        ['name' => 'Тормозной цилиндр', 'image' => 'img/SpareParts/image5.png', 'category' => 'тормозная система', 'search_term' => 'тормозной цилиндр'],
-        ['name' => 'Тормозные колодки', 'image' => 'img/SpareParts/image6.png', 'category' => 'тормозная система', 'search_term' => 'тормозные колодки'],
-        ['name' => 'Стабилизатор', 'image' => 'img/SpareParts/image7.png', 'category' => 'ходовая часть', 'search_term' => 'стабилизатор'],
-        ['name' => 'Тормозные суппорта', 'image' => 'img/SpareParts/image8.png', 'category' => 'тормозная система', 'search_term' => 'тормозные суппорта'],
-        ['name' => 'Топливный фильтр', 'image' => 'img/SpareParts/image9.png', 'category' => 'фильтры', 'search_term' => 'топливный фильтр'],
-        ['name' => 'Тормозные диски', 'image' => 'img/SpareParts/image10.png', 'category' => 'тормозная система', 'search_term' => 'тормозные диски'],
-        ['name' => 'Цапфа', 'image' => 'img/SpareParts/image11.png', 'category' => 'ходовая часть', 'search_term' => 'цапфа'],
-        ['name' => 'Сальники', 'image' => 'img/SpareParts/image12.png', 'category' => 'двигатель', 'search_term' => 'сальники']
-    ];
-}
 ?>
 
 <!DOCTYPE html>
@@ -619,30 +567,7 @@ function getPartsData()
                                         <p class="mt-2">Марка не найдена</p>
                                         <small class="text-muted">Попробуйте изменить запрос или посмотреть все марки</small>
                                     </div>
-                                    <div class="scrollable" id="carBrandsBlock">
-                                        <?php
-                                        $brands = getBrandsData();
-                                        foreach ($brands as $brand) 
-                                        {
-                                            echo '
-                                            <div class="scrollable-item">
-                                                <div class="card brand-card h-100" data-brand="' . $brand['search_term'] . '">
-                                                    <div class="card-img-container">
-                                                        <img src="' . $brand['image'] . '" class="card-img-top" alt="' . $brand['name'] . '">
-                                                        <div class="card-overlay">
-                                                            <button class="btn btn-primary select-brand-btn" data-brand="' . $brand['search_term'] . '">
-                                                                Выбрать <i class="bi bi-chevron-right ms-1"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body text-center">
-                                                        <h6 class="card-title mb-0">' . $brand['name'] . '</h6>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                        }
-                                        ?>
-                                    </div>
+                                    <div class="scrollable" id="carBrandsBlock"></div>
                                 </div>
                                 <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
                                     <i class="bi bi-chevron-left"></i>
@@ -684,42 +609,7 @@ function getPartsData()
                                         <p class="mt-2">Запчасть не найдена</p>
                                         <small class="text-muted">Попробуйте изменить запрос или посмотреть весь каталог</small>
                                     </div>
-                                    <div class="scrollable" id="partsContainer">
-                                        <?php
-                                        $parts = getPartsData();
-                                        foreach ($parts as $part) 
-                                        {
-                                            $categoryDisplay = getCategoryDisplayName($part['category']);
-                                            echo '
-                                            <div class="scrollable-item">
-                                                <div class="card part-card h-100" data-part="' . $part['search_term'] . '" data-category="' . $part['category'] . '">
-                                                    <div class="card-img-container">
-                                                        <img src="' . $part['image'] . '" class="card-img-top" alt="' . $part['name'] . '">
-                                                        <div class="card-badge">' . $categoryDisplay . '</div>
-                                                        <div class="card-overlay">
-                                                            <button class="btn btn-primary details-part-btn" data-part="' . $part['search_term'] . '" data-category="' . $part['category'] . '">
-                                                                Подробнее <i class="bi bi-arrow-right ms-1"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <h6 class="card-title">' . $part['name'] . '</h6>
-                                                        <div class="card-features">
-                                                            <span class="feature-item">
-                                                                <i class="bi bi-check-circle-fill text-success"></i>
-                                                                В наличии
-                                                            </span>
-                                                            <span class="feature-item">
-                                                                <i class="bi bi-truck text-primary"></i>
-                                                                Доставка 1-3 дня
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                        }
-                                        ?>
-                                    </div>
+                                    <div class="scrollable" id="partsContainer"></div>
                                 </div>
                                 <button class="scroll-button scroll-left" aria-label="Прокрутить влево">
                                     <i class="bi bi-chevron-left"></i>

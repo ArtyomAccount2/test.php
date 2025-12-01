@@ -492,7 +492,9 @@
 .scrollable-container-wrapper 
 {
     position: relative;
-    padding: 0 60px;
+    padding: 0 50px;
+    margin: 0 auto;
+    max-width: 100%;
 }
 
 .scrollable-container 
@@ -501,18 +503,26 @@
     min-height: 320px;
     display: flex;
     align-items: center;
+    overflow: hidden;
 }
 
 .scrollable 
 {
     display: flex;
     gap: 24px;
-    padding: 20px 10px;
+    padding: 20px 5px;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     width: 100%;
     overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 24px;
+}
+
+.scrollable::-webkit-scrollbar 
+{
+    display: none;
 }
 
 .scrollable-item 
@@ -520,6 +530,8 @@
     flex: 0 0 auto;
     width: 220px;
     height: 280px;
+    scroll-snap-align: start;
+    transition: transform 0.3s ease;
 }
 
 .scroll-button 
@@ -541,9 +553,11 @@
     transition: all 0.3s ease;
     color: #007bff;
     font-size: 1.2rem;
+    opacity: 1;
+    pointer-events: all;
 }
 
-.scroll-button:hover 
+.scroll-button:hover:not(:disabled) 
 {
     background: #007bff;
     border-color: #007bff;
@@ -557,6 +571,13 @@
     transform: translateY(-50%) scale(0.95);
 }
 
+.scroll-button:disabled 
+{
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .scroll-left 
 {
     left: 10px;
@@ -565,6 +586,74 @@
 .scroll-right 
 {
     right: 10px;
+}
+
+@media (max-width: 1400px) 
+{
+    .scrollable-item 
+    {
+        width: 200px;
+        height: 260px;
+    }
+    
+    .scrollable-container-wrapper 
+    {
+        padding: 0 45px;
+    }
+}
+
+@media (max-width: 1200px) 
+{
+    .scrollable-item 
+    {
+        width: 180px;
+        height: 240px;
+    }
+    
+    .scrollable 
+    {
+        gap: 20px;
+    }
+    
+    .scrollable-container-wrapper 
+    {
+        padding: 0 40px;
+    }
+}
+
+
+@media (max-width: 992px) 
+{
+    .scrollable-item 
+    {
+        width: 160px;
+        height: 220px;
+    }
+    
+    .scrollable 
+    {
+        gap: 16px;
+        padding: 15px 5px;
+    }
+    
+    .scrollable-container-wrapper 
+    {
+        padding: 0 35px;
+    }
+}
+
+@keyframes fadeInUp 
+{
+    from 
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to 
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .no-results-message 
@@ -667,15 +756,37 @@
         font-size: 2rem;
     }
     
-    .scrollable-container-wrapper 
-    {
-        padding: 0 50px;
-    }
-    
     .scrollable-item 
     {
-        width: 200px;
-        height: 260px;
+        width: 140px;
+        height: 200px;
+    }
+    
+    .scrollable 
+    {
+        gap: 12px;
+    }
+    
+    .scrollable-container-wrapper 
+    {
+        padding: 0 30px;
+    }
+    
+    .scroll-button 
+    {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .scroll-left 
+    {
+        left: 5px;
+    }
+    
+    .scroll-right 
+    {
+        right: 5px;
     }
     
     .card-img-container 
@@ -687,23 +798,6 @@
     .card-img-top 
     {
         height: 70px;
-    }
-    
-    .scroll-button 
-    {
-        width: 44px;
-        height: 44px;
-        font-size: 1.1rem;
-    }
-    
-    .scroll-left 
-    {
-        left: 5px;
-    }
-    
-    .scroll-right 
-    {
-        right: 5px;
     }
     
     .section-subheader 
@@ -737,15 +831,27 @@
 
 @media (max-width: 576px) 
 {
-    .scrollable-container-wrapper 
-    {
-        padding: 0 40px;
-    }
-    
     .scrollable-item 
     {
-        width: 180px;
-        height: 240px;
+        width: 130px;
+        height: 190px;
+    }
+    
+    .scrollable 
+    {
+        gap: 10px;
+    }
+    
+    .scrollable-container-wrapper 
+    {
+        padding: 0 25px;
+    }
+    
+    .scroll-button 
+    {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
     }
     
     .card-body 
@@ -758,17 +864,29 @@
         font-size: 0.9rem;
     }
     
-    .scroll-button 
-    {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-    
     .search-input 
     {
         height: 50px;
         font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 400px) 
+{
+    .scrollable-item 
+    {
+        width: 120px;
+        height: 180px;
+    }
+    
+    .scrollable 
+    {
+        gap: 8px;
+    }
+    
+    .scrollable-container-wrapper 
+    {
+        padding: 0 20px;
     }
 }
 
@@ -777,7 +895,7 @@
     from 
     {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(20px);
     }
     to 
     {
@@ -788,7 +906,7 @@
 
 .scrollable-item 
 {
-    animation: fadeInUp 0.6s ease-out;
+    animation: fadeInUp 0.5s ease-out;
 }
 
 .scrollable-item:nth-child(odd) 

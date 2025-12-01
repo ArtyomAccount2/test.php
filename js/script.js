@@ -44,7 +44,7 @@ function initBrandCards()
                 <div class="card shadow-sm h-100 brand-card" data-brand="${brand.search_term}">
                     <img src="${brand.image}" class="card-img-top" alt="${brand.name}">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
-                        <h6 class="card-title">${brand.name}</h6>
+                        <h6 class="card-title text-center">${brand.name}</h6>
                         <small class="text-muted mb-2">Автомобиль</small>
                         <button class="btn btn-outline-primary w-100 select-brand-btn" data-brand="${brand.search_term}">
                             Выбрать
@@ -86,18 +86,18 @@ function initBrandCards()
 function initPartsCards() 
 {
     let parts = [
-        { name: "Коленчатый вал", image: "img/SpareParts/image1.png", category: "двигатель", search_term: "коленчатый вал" },
-        { name: "Прокладки двигателя", image: "img/SpareParts/image2.png", category: "двигатель", search_term: "прокладки двигателя" },
-        { name: "Топливный насос", image: "img/SpareParts/image3.png", category: "двигатель", search_term: "топливный насос" },
-        { name: "Распределительный вал", image: "img/SpareParts/image4.png", category: "двигатель", search_term: "распределительный вал" },
-        { name: "Тормозной цилиндр", image: "img/SpareParts/image5.png", category: "тормозная система", search_term: "тормозной цилиндр" },
-        { name: "Тормозные колодки", image: "img/SpareParts/image6.png", category: "тормозная система", search_term: "тормозные колодки" },
-        { name: "Стабилизатор", image: "img/SpareParts/image7.png", category: "ходовая часть", search_term: "стабилизатор" },
-        { name: "Тормозные суппорта", image: "img/SpareParts/image8.png", category: "тормозная система", search_term: "тормозные суппорта" },
-        { name: "Топливный фильтр", image: "img/SpareParts/image9.png", category: "фильтры", search_term: "топливный фильтр" },
-        { name: "Тормозные диски", image: "img/SpareParts/image10.png", category: "тормозная система", search_term: "тормозные диски" },
-        { name: "Цапфа", image: "img/SpareParts/image11.png", category: "ходовая часть", search_term: "цапфа" },
-        { name: "Сальники", image: "img/SpareParts/image12.png", category: "двигатель", search_term: "сальники" }
+        { name: "Коленчатый вал", short_name: "Коленч. вал", image: "img/SpareParts/image1.png", category: "двигатель", search_term: "коленчатый вал" },
+        { name: "Прокладки двигателя", short_name: "Прок. двиг.", image: "img/SpareParts/image2.png", category: "двигатель", search_term: "прокладки двигателя" },
+        { name: "Топливный насос", short_name: "Топл. насос", image: "img/SpareParts/image3.png", category: "двигатель", search_term: "топливный насос" },
+        { name: "Распределительный вал", short_name: "Распр. вал", image: "img/SpareParts/image4.png", category: "двигатель", search_term: "распределительный вал" },
+        { name: "Тормозной цилиндр", short_name: "Торм. цил.", image: "img/SpareParts/image5.png", category: "тормозная система", search_term: "тормозной цилиндр" },
+        { name: "Тормозные колодки", short_name: "Торм. кол.", image: "img/SpareParts/image6.png", category: "тормозная система", search_term: "тормозные колодки" },
+        { name: "Стабилизатор", short_name: "Стабилизатор", image: "img/SpareParts/image7.png", category: "ходовая часть", search_term: "стабилизатор" },
+        { name: "Тормозные суппорта", short_name: "Торм. супп.", image: "img/SpareParts/image8.png", category: "тормозная система", search_term: "тормозные суппорта" },
+        { name: "Топливный фильтр", short_name: "Топл. фил.", image: "img/SpareParts/image9.png", category: "фильтры", search_term: "топливный фильтр" },
+        { name: "Тормозные диски", short_name: "Торм. диски", image: "img/SpareParts/image10.png", category: "тормозная система", search_term: "тормозные диски" },
+        { name: "Цапфа", short_name: "Цапфа", image: "img/SpareParts/image11.png", category: "ходовая часть", search_term: "цапфа" },
+        { name: "Сальники", short_name: "Сальники", image: "img/SpareParts/image12.png", category: "двигатель", search_term: "сальники" }
     ];
 
     let container = document.getElementById('partsContainer');
@@ -113,7 +113,9 @@ function initPartsCards()
                 <div class="card shadow-sm h-100 part-card" data-part="${part.search_term}" data-category="${part.category}">
                     <img src="${part.image}" class="card-img-top" alt="${part.name}">
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
-                        <h6 class="card-title">${part.name}</h6>
+                        <h6 class="card-title text-center part-title" data-full-text="${part.name}" data-short-text="${part.short_name}">
+                            ${part.name}
+                        </h6>
                         <small class="text-muted mb-2">${getCategoryDisplayName(part.category)}</small>
                         <button class="btn btn-outline-primary w-100 details-part-btn" data-part="${part.search_term}" data-category="${part.category}">
                             Подробнее
@@ -123,6 +125,9 @@ function initPartsCards()
             `;
             container.appendChild(card);
         });
+
+        updatePartTitles();
+        window.addEventListener('resize', debounce(updatePartTitles, 150));
 
         document.querySelectorAll('.details-part-btn').forEach(button => {
             button.addEventListener('click', function(e) 
@@ -152,6 +157,20 @@ function initPartsCards()
             });
         }, 100);
     }
+}
+
+function initScrollButtons() 
+{
+    setupScrollButtons();
+    checkScrollButtonsVisibility();
+
+    document.querySelectorAll('.scrollable').forEach(scrollable => {
+        scrollable.addEventListener('scroll', debounce(checkScrollButtonsVisibility, 100));
+    });
+
+    window.addEventListener('resize', debounce(() => {
+        checkScrollButtonsVisibility();
+    }, 200));
 }
 
 function goToBrandAssortment(brandName) 
@@ -205,17 +224,41 @@ function getCategoryMapping(category)
 function setupScrollButtons() 
 {
     document.querySelectorAll('.scroll-button').forEach(button => {
-        button.addEventListener('click', function() 
+        button.addEventListener('click', function(e) 
         {
-            let direction = this.classList.contains('scroll-left') ? -1 : 1;
-            let container = this.closest('.scrollable-container-wrapper').querySelector('.scrollable');
-            let scrollAmount = window.innerWidth <= 768 ? 300 : 400;
+            e.preventDefault();
+            e.stopPropagation();
             
-            container.scrollBy({
+            let direction = this.classList.contains('scroll-left') ? -1 : 1;
+            let containerWrapper = this.closest('.scrollable-container-wrapper');
+            let scrollableContainer = containerWrapper.querySelector('.scrollable-container');
+            let scrollable = containerWrapper.querySelector('.scrollable');
+            
+            if (!scrollable || !scrollableContainer) 
+            {
+                return;
+            }
+
+            let visibleItemsCount = getVisibleItemsCount(scrollableContainer);
+            let item = scrollable.querySelector('.scrollable-item');
+
+            if (!item) 
+            {
+                return;
+            }
+            
+            let itemStyle = window.getComputedStyle(item);
+            let itemWidth = item.offsetWidth;
+            let marginLeft = parseInt(itemStyle.marginLeft) || 0;
+            let marginRight = parseInt(itemStyle.marginRight) || 0;
+            let itemTotalWidth = itemWidth + marginLeft + marginRight;
+            let scrollAmount = itemTotalWidth * visibleItemsCount;
+
+            scrollable.scrollBy({
                 left: direction * scrollAmount,
                 behavior: 'smooth'
             });
-            
+
             setTimeout(checkScrollButtonsVisibility, 300);
         });
     });
@@ -369,12 +412,49 @@ function checkScrollButtonsVisibility()
         {
             let isAtStart = scrollable.scrollLeft <= 10;
             let isAtEnd = scrollable.scrollLeft >= (scrollable.scrollWidth - scrollable.clientWidth - 10);
-            
+
             scrollLeftBtn.style.opacity = isAtStart ? '0.5' : '1';
             scrollLeftBtn.style.pointerEvents = isAtStart ? 'none' : 'all';
-            
+            scrollLeftBtn.style.cursor = isAtStart ? 'not-allowed' : 'pointer';
+
             scrollRightBtn.style.opacity = isAtEnd ? '0.5' : '1';
             scrollRightBtn.style.pointerEvents = isAtEnd ? 'none' : 'all';
+            scrollRightBtn.style.cursor = isAtEnd ? 'not-allowed' : 'pointer';
+
+            let allVisible = scrollable.scrollWidth <= scrollable.clientWidth;
+
+            if (allVisible) 
+            {
+                scrollLeftBtn.style.visibility = 'hidden';
+                scrollRightBtn.style.visibility = 'hidden';
+            } 
+            else 
+            {
+                scrollLeftBtn.style.visibility = 'visible';
+                scrollRightBtn.style.visibility = 'visible';
+            }
+        }
+    });
+}
+
+function updatePartTitles() 
+{
+    let breakpoint = 992;
+    let isMobile = window.innerWidth <= breakpoint;
+    
+    document.querySelectorAll('.part-title').forEach(titleElement => {
+        let fullText = titleElement.getAttribute('data-full-text');
+        let shortText = titleElement.getAttribute('data-short-text');
+        
+        if (isMobile && shortText && shortText !== fullText) 
+        {
+            titleElement.textContent = shortText;
+            titleElement.classList.add('text-short');
+        } 
+        else 
+        {
+            titleElement.textContent = fullText;
+            titleElement.classList.remove('text-short');
         }
     });
 }
@@ -584,15 +664,52 @@ function initEnhancedCarousel()
     }, 1500);
 }
 
+function getVisibleItemsCount(container) 
+{
+    let scrollable = container.querySelector('.scrollable');
+
+    if (!scrollable || scrollable.children.length === 0) 
+    {
+        return 1;
+    }
+    
+    let firstItem = scrollable.querySelector('.scrollable-item');
+
+    if (!firstItem) 
+    {
+        return 1;
+    }
+    
+    let containerWidth = container.clientWidth;
+    let itemWidth = firstItem.offsetWidth;
+    let itemStyle = window.getComputedStyle(firstItem);
+    let marginLeft = parseInt(itemStyle.marginLeft) || 0;
+    let marginRight = parseInt(itemStyle.marginRight) || 0;
+    let itemTotalWidth = itemWidth + marginLeft + marginRight;
+    let visibleCount = Math.floor(containerWidth / itemTotalWidth);
+    
+    return Math.max(1, visibleCount);
+}
+
 document.addEventListener('DOMContentLoaded', function() 
 {
     initBrandCards();
     initPartsCards();
-    setupScrollButtons();
+    initScrollButtons();
     initCookieConsent();
     initEnhancedCarousel();
+
+    setTimeout(() => {
+        initScrollButtons();
+    }, 500);
     
+    setTimeout(updatePartTitles, 100);
     setTimeout(checkScrollButtonsVisibility, 500);
+
+    window.addEventListener('resize', debounce(() => {
+        updatePartTitles();
+        checkScrollButtonsVisibility();
+    }, 150));
 
     let lastScrollTop = 0;
     let navbar = document.querySelector('.navbar');
@@ -885,4 +1002,19 @@ function checkCookieConsent()
 {
     let decision = getCookie('cookie_decision');
     return decision === 'accepted';
+}
+
+function debounce(func, wait) 
+{
+    let timeout;
+    
+    return function executedFunction(...args) 
+    {
+        let later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
