@@ -1,0 +1,371 @@
+/* Стили для страницы всех марок автомобилей */
+.car-brands-grid-section {
+    margin-bottom: 2rem;
+}
+
+.car-brand-item {
+    display: block;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.car-brand-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.car-brand-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 123, 255, 0.15);
+    border-color: #007bff;
+}
+
+.car-brand-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.car-brand-card:hover::before {
+    opacity: 1;
+}
+
+.car-brand-logo-container {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #f1f3f4;
+    transition: all 0.3s ease;
+}
+
+.car-brand-card:hover .car-brand-logo-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+    border-color: #bbdefb;
+}
+
+.car-brand-logo {
+    max-width: 100%;
+    max-height: 80px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.car-brand-card:hover .car-brand-logo {
+    transform: scale(1.05);
+}
+
+.car-brand-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.car-brand-name {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    line-height: 1.3;
+}
+
+.car-brand-country {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.car-brand-country i {
+    font-size: 0.85rem;
+    margin-right: 4px;
+}
+
+.car-brand-category {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+    border: 2px solid transparent;
+}
+
+.car-brand-category.premium {
+    background: #e3f2fd;
+    color: #1565c0;
+    border-color: #bbdefb;
+}
+
+.car-brand-category.luxury {
+    background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+    color: #7b1fa2;
+    border-color: #ce93d8;
+}
+
+.car-brand-category.mass {
+    background: #e8f5e8;
+    color: #2e7d32;
+    border-color: #c8e6c9;
+}
+
+.car-brand-category.offroad {
+    background: #fff3e0;
+    color: #ef6c00;
+    border-color: #ffe0b2;
+}
+
+.car-brand-category.sport {
+    background: linear-gradient(135deg, #ffebee, #ffcdd2);
+    color: #c62828;
+    border-color: #ef9a9a;
+}
+
+.car-brand-category.electric {
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    color: #2e7d32;
+    border-color: #a5d6a7;
+}
+
+.car-brand-category.commercial {
+    background: #f3e5f5;
+    color: #7b1fa2;
+    border-color: #e1bee7;
+}
+
+.car-brand-category.special {
+    background: #e0f7fa;
+    color: #006064;
+    border-color: #b2ebf2;
+}
+
+.car-brand-description {
+    color: #5a6c7d;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    flex: 1;
+    max-height: 3.9em;
+    overflow: hidden;
+    position: relative;
+}
+
+.car-brand-description::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30%;
+    height: 1.4em;
+    background: linear-gradient(90deg, transparent, #ffffff 50%);
+}
+
+.car-brand-models {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f3f4;
+}
+
+.models-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.model-tag {
+    background: #f8f9fa;
+    color: #495057;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+.car-brand-card:hover .model-tag {
+    background: #e3f2fd;
+    border-color: #bbdefb;
+    color: #1565c0;
+}
+
+.car-brand-card .btn {
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border-width: 2px;
+}
+
+.car-brand-card:hover .btn {
+    background: #007bff;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.car-brand-card .btn i {
+    transition: transform 0.3s ease;
+}
+
+.car-brand-card:hover .btn i {
+    transform: translateX(3px);
+}
+
+/* Hero section для автомобильных марок */
+.hero-section {
+    background: linear-gradient(135deg, #f8fcff 0%, #ffffff 100%);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 123, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: url('../img/car-icon.png') no-repeat center center;
+    background-size: contain;
+    opacity: 0.05;
+}
+
+.hero-section .display-5 {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    min-width: 100px;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Фильтры для автомобильных марок */
+.filters-section .filter-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.filters-section .filter-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #007bff;
+    transition: width 0.3s ease;
+}
+
+.filters-section .filter-btn.active::after {
+    width: 100%;
+}
+
+/* Поиск для автомобильных марок */
+.search-section .search-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-section .search-input {
+    border-radius: 12px;
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    font-size: 1rem;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.search-section .search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);
+}
+
+.search-section .search-icon {
+    left: 1rem;
+    color: #007bff;
+}
+
+.search-section .search-clear {
+    right: 1rem;
+}
+
+/* Анимация появления */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Для грида */
+#modelsGrid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+/* Эффект при наведении на карточку */
+.car-brand-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.car-brand-card:hover {
+    transform: translateY(-8px) scale(1.02);
+}

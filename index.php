@@ -556,7 +556,7 @@ unset($_SESSION['form_data']);
                         <div class="position-relative">
                             <div class="section-subheader d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="mb-0">Популярные марки</h4>
-                                <a href="includes/brands.php" class="btn btn-outline-primary btn-sm">
+                                <a href="includes/car-brands.php" class="btn btn-outline-primary btn-sm">
                                     Все марки <i class="bi bi-arrow-right ms-1"></i>
                                 </a>
                             </div>
@@ -738,18 +738,22 @@ unset($_SESSION['form_data']);
 </html>
 
 <?php
-function getCategoryDisplayName($category) 
+function getCategoryDisplayName($category, $short = false) 
 {
     $categoryMap = [
-        'двигатель' => 'Двигатель',
-        'топливная система' => 'Топливная система', 
-        'тормозная система' => 'Тормозная система',
-        'подвеска' => 'Подвеска',
-        'фильтры' => 'Фильтры',
-        'ходовая часть' => 'Ходовая часть',
-        'уплотнения' => 'Уплотнения'
+        'двигатель' => ['full' => 'Двигатель', 'short' => 'Двиг.'],
+        'топливная система' => ['full' => 'Топливная система', 'short' => 'Топл.'], 
+        'тормозная система' => ['full' => 'Тормозная система', 'short' => 'Торм.'],
+        'подвеска' => ['full' => 'Подвеска', 'short' => 'Подв.'],
+        'фильтры' => ['full' => 'Фильтры', 'short' => 'Фильтр'],
+        'ходовая часть' => ['full' => 'Ходовая часть', 'short' => 'Ход.'],
+        'уплотнения' => ['full' => 'Уплотнения', 'short' => 'Упл.']
     ];
     
-    return isset($categoryMap[$category]) ? $categoryMap[$category] : $category;
+    if ($short && isset($categoryMap[$category]['short'])) {
+        return $categoryMap[$category]['short'];
+    }
+    
+    return isset($categoryMap[$category]['full']) ? $categoryMap[$category]['full'] : $category;
 }
 ?>

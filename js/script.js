@@ -46,7 +46,7 @@ function initBrandCards()
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
                         <h6 class="card-title text-center">${brand.name}</h6>
                         <small class="text-muted mb-2">Автомобиль</small>
-                        <button class="btn btn-outline-primary w-100 select-brand-btn" data-brand="${brand.search_term}">
+                        <button class="btn btn-outline-primary select-brand-btn" data-brand="${brand.search_term}">
                             Выбрать
                         </button>
                     </div>
@@ -86,18 +86,65 @@ function initBrandCards()
 function initPartsCards() 
 {
     let parts = [
-        { name: "Коленчатый вал", short_name: "Коленч. вал", image: "img/SpareParts/image1.png", category: "двигатель", search_term: "коленчатый вал" },
-        { name: "Прокладки двигателя", short_name: "Прок. двиг.", image: "img/SpareParts/image2.png", category: "двигатель", search_term: "прокладки двигателя" },
-        { name: "Топливный насос", short_name: "Топл. насос", image: "img/SpareParts/image3.png", category: "двигатель", search_term: "топливный насос" },
-        { name: "Распределительный вал", short_name: "Распр. вал", image: "img/SpareParts/image4.png", category: "двигатель", search_term: "распределительный вал" },
-        { name: "Тормозной цилиндр", short_name: "Торм. цил.", image: "img/SpareParts/image5.png", category: "тормозная система", search_term: "тормозной цилиндр" },
-        { name: "Тормозные колодки", short_name: "Торм. кол.", image: "img/SpareParts/image6.png", category: "тормозная система", search_term: "тормозные колодки" },
-        { name: "Стабилизатор", short_name: "Стабилизатор", image: "img/SpareParts/image7.png", category: "ходовая часть", search_term: "стабилизатор" },
-        { name: "Тормозные суппорта", short_name: "Торм. супп.", image: "img/SpareParts/image8.png", category: "тормозная система", search_term: "тормозные суппорта" },
-        { name: "Топливный фильтр", short_name: "Топл. фил.", image: "img/SpareParts/image9.png", category: "фильтры", search_term: "топливный фильтр" },
-        { name: "Тормозные диски", short_name: "Торм. диски", image: "img/SpareParts/image10.png", category: "тормозная система", search_term: "тормозные диски" },
-        { name: "Цапфа", short_name: "Цапфа", image: "img/SpareParts/image11.png", category: "ходовая часть", search_term: "цапфа" },
-        { name: "Сальники", short_name: "Сальники", image: "img/SpareParts/image12.png", category: "двигатель", search_term: "сальники" }
+        { name: "Коленчатый вал", short_name: "Коленч. вал", 
+          image: "img/SpareParts/image1.png", 
+          category: "двигатель", category_short: "Двиг.",
+          search_term: "коленчатый вал" },
+        
+        { name: "Прокладки двигателя", short_name: "Прокл. двиг.", 
+          image: "img/SpareParts/image2.png", 
+          category: "двигатель", category_short: "Двиг.",
+          search_term: "прокладки двигателя" },
+        
+        { name: "Топливный насос", short_name: "Топл. насос", 
+          image: "img/SpareParts/image3.png", 
+          category: "двигатель", category_short: "Двиг.",
+          search_term: "топливный насос" },
+        
+        { name: "Распределительный вал", short_name: "Распред. вал", 
+          image: "img/SpareParts/image4.png", 
+          category: "двигатель", category_short: "Двиг.",
+          search_term: "распределительный вал" },
+        
+        { name: "Тормозной цилиндр", short_name: "Торм. цилиндр", 
+          image: "img/SpareParts/image5.png", 
+          category: "тормозная система", category_short: "Торм.",
+          search_term: "тормозной цилиндр" },
+        
+        { name: "Тормозные колодки", short_name: "Торм. колодки", 
+          image: "img/SpareParts/image6.png", 
+          category: "тормозная система", category_short: "Торм.",
+          search_term: "тормозные колодки" },
+        
+        { name: "Стабилизатор", short_name: "Стабилизатор", 
+          image: "img/SpareParts/image7.png", 
+          category: "ходовая часть", category_short: "Ход.",
+          search_term: "стабилизатор" },
+        
+        { name: "Тормозные суппорта", short_name: "Торм. суппорта", 
+          image: "img/SpareParts/image8.png", 
+          category: "тормозная система", category_short: "Торм.",
+          search_term: "тормозные суппорта" },
+        
+        { name: "Топливный фильтр", short_name: "Топл. фильтр", 
+          image: "img/SpareParts/image9.png", 
+          category: "фильтры", category_short: "Фильтр",
+          search_term: "топливный фильтр" },
+        
+        { name: "Тормозные диски", short_name: "Торм. диски", 
+          image: "img/SpareParts/image10.png", 
+          category: "тормозная система", category_short: "Торм.",
+          search_term: "тормозные диски" },
+        
+        { name: "Цапфа", short_name: "Цапфа", 
+          image: "img/SpareParts/image11.png", 
+          category: "ходовая часть", category_short: "Ход.",
+          search_term: "цапфа" },
+        
+        { name: "Сальники", short_name: "Сальники", 
+          image: "img/SpareParts/image12.png", 
+          category: "двигатель", category_short: "Двиг.",
+          search_term: "сальники" }
     ];
 
     let container = document.getElementById('partsContainer');
@@ -107,18 +154,27 @@ function initPartsCards()
         container.innerHTML = '';
 
         parts.forEach(part => {
+            let categoryFull = getCategoryDisplayName(part.category);
+            let categoryShort = part.category_short || getCategoryDisplayName(part.category, true);
+            
             let card = document.createElement('div');
             card.className = 'scrollable-item';
             card.innerHTML = `
                 <div class="card shadow-sm h-100 part-card" data-part="${part.search_term}" data-category="${part.category}">
                     <img src="${part.image}" class="card-img-top" alt="${part.name}">
+                    <div class="card-badge" data-full-text="${categoryFull}" data-short-text="${categoryShort}">
+                        ${categoryFull}
+                    </div>
                     <div class="card-body d-flex flex-column justify-content-between align-items-center">
-                        <h6 class="card-title text-center part-title" data-full-text="${part.name}" data-short-text="${part.short_name}">
+                        <h6 class="card-title part-title" data-full-text="${part.name}" data-short-text="${part.short_name}">
                             ${part.name}
                         </h6>
-                        <small class="text-muted mb-2">${getCategoryDisplayName(part.category)}</small>
-                        <button class="btn btn-outline-primary w-100 details-part-btn" data-part="${part.search_term}" data-category="${part.category}">
-                            Подробнее
+                        <small class="text-muted mb-2 part-category" data-full-text="${categoryFull}" data-short-text="${categoryShort}">
+                            ${categoryFull}
+                        </small>
+                        <button class="btn btn-outline-primary details-part-btn" data-part="${part.search_term}" data-category="${part.category}">
+                            <span class="btn-text-full">Подробнее</span>
+                            <span class="btn-text-short">Подроб.</span>
                         </button>
                     </div>
                 </div>
@@ -126,8 +182,8 @@ function initPartsCards()
             container.appendChild(card);
         });
 
-        updatePartTitles();
-        window.addEventListener('resize', debounce(updatePartTitles, 150));
+        updatePartCardTexts();
+        window.addEventListener('resize', debounce(updatePartCardTexts, 150));
 
         document.querySelectorAll('.details-part-btn').forEach(button => {
             button.addEventListener('click', function(e) 
@@ -195,19 +251,24 @@ function goToPartAssortment(partName, category)
     window.location.href = url;
 }
 
-function getCategoryDisplayName(category) 
+function getCategoryDisplayName(category, short = false) 
 {
     let categoryMap = {
-        'двигатель': 'Двигатель',
-        'топливная система': 'Топливная система', 
-        'тормозная система': 'Тормозная система',
-        'подвеска': 'Подвеска',
-        'фильтры': 'Фильтры',
-        'ходовая часть': 'Ходовая часть',
-        'уплотнения': 'Уплотнения'
+        'двигатель': { full: 'Двигатель', short: 'Двиг.' },
+        'топливная система': { full: 'Топливная система', short: 'Топл.' },
+        'тормозная система': { full: 'Тормозная система', short: 'Торм.' },
+        'подвеска': { full: 'Подвеска', short: 'Подв.' },
+        'фильтры': { full: 'Фильтры', short: 'Фильтр' },
+        'ходовая часть': { full: 'Ходовая часть', short: 'Ход.' },
+        'уплотнения': { full: 'Уплотнения', short: 'Упл.' }
     };
     
-    return categoryMap[category] || category;
+    if (short && categoryMap[category] && categoryMap[category].short) 
+    {
+        return categoryMap[category].short;
+    }
+    
+    return categoryMap[category] ? categoryMap[category].full : category;
 }
 
 function getCategoryMapping(category) 
@@ -437,8 +498,7 @@ function checkScrollButtonsVisibility()
     });
 }
 
-function updatePartTitles() 
-{
+function updatePartCardTexts() {
     let breakpoint = 992;
     let isMobile = window.innerWidth <= breakpoint;
     
@@ -449,12 +509,70 @@ function updatePartTitles()
         if (isMobile && shortText && shortText !== fullText) 
         {
             titleElement.textContent = shortText;
-            titleElement.classList.add('text-short');
         } 
         else 
         {
             titleElement.textContent = fullText;
-            titleElement.classList.remove('text-short');
+        }
+    });
+    
+    document.querySelectorAll('.part-category').forEach(categoryElement => {
+        let fullText = categoryElement.getAttribute('data-full-text');
+        let shortText = categoryElement.getAttribute('data-short-text');
+        
+        if (isMobile && shortText && shortText !== fullText) 
+        {
+            categoryElement.textContent = shortText;
+        } 
+        else 
+        {
+            categoryElement.textContent = fullText;
+        }
+    });
+    
+    document.querySelectorAll('.card-badge').forEach(badgeElement => {
+        let fullText = badgeElement.getAttribute('data-full-text') || badgeElement.getAttribute('data-full-badge');
+        let shortText = badgeElement.getAttribute('data-short-text') || badgeElement.getAttribute('data-short-badge');
+        
+        if (isMobile && shortText && shortText !== fullText) 
+        {
+            badgeElement.textContent = shortText;
+        } 
+        else if (fullText) 
+        {
+            badgeElement.textContent = fullText;
+        }
+    });
+    
+    document.querySelectorAll('.details-part-btn').forEach(button => {
+        let fullTextSpans = button.querySelectorAll('.btn-text-full');
+        let shortTextSpans = button.querySelectorAll('.btn-text-short');
+        
+        if (isMobile) 
+        {
+            fullTextSpans.forEach(span => span.style.display = 'none');
+            shortTextSpans.forEach(span => span.style.display = 'inline');
+        } 
+        else 
+        {
+            fullTextSpans.forEach(span => span.style.display = 'inline');
+            shortTextSpans.forEach(span => span.style.display = 'none');
+        }
+    });
+
+    document.querySelectorAll('.card-overlay .details-part-btn').forEach(button => {
+        let fullTextSpans = button.querySelectorAll('.btn-text-full');
+        let shortTextSpans = button.querySelectorAll('.btn-text-short');
+        
+        if (isMobile) 
+        {
+            fullTextSpans.forEach(span => span.style.display = 'none');
+            shortTextSpans.forEach(span => span.style.display = 'inline');
+        } 
+        else 
+        {
+            fullTextSpans.forEach(span => span.style.display = 'inline');
+            shortTextSpans.forEach(span => span.style.display = 'none');
         }
     });
 }
@@ -703,11 +821,11 @@ document.addEventListener('DOMContentLoaded', function()
         initScrollButtons();
     }, 500);
     
-    setTimeout(updatePartTitles, 100);
+    setTimeout(updatePartCardTexts, 100);
     setTimeout(checkScrollButtonsVisibility, 500);
 
     window.addEventListener('resize', debounce(() => {
-        updatePartTitles();
+        updatePartCardTexts();
         checkScrollButtonsVisibility();
     }, 150));
 
