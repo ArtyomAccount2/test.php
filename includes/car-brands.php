@@ -473,7 +473,6 @@ $carBrands = [
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/brands-styles.css">
     <link rel="stylesheet" href="../css/car-brands-styles.css">
     <script>
     document.addEventListener('DOMContentLoaded', function() 
@@ -496,24 +495,48 @@ $carBrands = [
         let allBrandItems = document.querySelectorAll('.car-brand-item');
         let visibleBrandItems = [];
         let resizeTimeout;
-        
-        window.addEventListener('resize', function() 
-        {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(equalizeBrandCards, 250);
-        });
-
+        let isInitialized = false;
         let filterButtons = document.querySelectorAll('.filter-btn');
-        let brandItems = document.querySelectorAll('.car-brand-item');
+        let brandItems = Array.from(allBrandItems);
         let searchInput = document.getElementById('brandSearch');
         let searchClear = document.querySelector('.search-clear');
         let paginationElement = document.getElementById('pagination');
         let noResultsElement = document.getElementById('noResults');
         let modelsGridElement = document.getElementById('modelsGrid');
-
-        function initializeCounters() 
+        
+        function equalizeBrandCards() 
         {
-            updateCategoryCounters('all', '');
+            if (!modelsGridElement) 
+            {
+                return;
+            }
+
+            let cards = document.querySelectorAll('.car-brand-card');
+
+            cards.forEach(card => {
+                card.style.height = 'auto';
+            });
+            
+            setTimeout(() => {
+                let maxHeight = 0;
+                let visibleCards = document.querySelectorAll('.car-brand-item[style*="display: block"] .car-brand-card');
+
+                visibleCards.forEach(card => {
+                    let height = card.offsetHeight;
+
+                    if (height > maxHeight) 
+                    {
+                        maxHeight = height;
+                    }
+                });
+                
+                if (maxHeight > 0) 
+                {
+                    visibleCards.forEach(card => {
+                        card.style.height = maxHeight + 'px';
+                    });
+                }
+            }, 100);
         }
         
         function updateCategoryCounters(activeFilter, searchText) 
@@ -547,41 +570,13 @@ $carBrands = [
             filterButtons.forEach(button => {
                 let filter = button.getAttribute('data-filter');
                 let badge = button.querySelector('.badge');
-
+                
                 if (badge) 
                 {
-                    badge.textContent = categoryCounts[filter];
+                    badge.textContent = categoryCounts[filter] || 0;
                 }
             });
         }
-        
-        filterButtons.forEach(button => {
-            button.addEventListener('click', function() 
-            {
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                
-                let filter = this.getAttribute('data-filter');
-                filterBrands(filter, searchInput.value.toLowerCase());
-            });
-        });
-        
-        searchInput.addEventListener('input', function() 
-        {
-            let searchText = this.value.toLowerCase();
-            searchClear.style.display = searchText ? 'block' : 'none';
-            
-            let activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
-            filterBrands(activeFilter, searchText);
-        });
-        
-        searchClear.addEventListener('click', function() 
-        {
-            searchInput.value = '';
-            searchClear.style.display = 'none';
-            let activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
-            filterBrands(activeFilter, '');
-        });
         
         function filterBrands(category, searchText) 
         {
@@ -599,15 +594,22 @@ $carBrands = [
                 {
                     visibleBrandItems.push(item);
                 }
+
+                item.style.display = 'none';
+                item.style.opacity = '0';
+                item.style.transform = 'scale(0.8)';
             });
-            
+
             currentPage = 1;
             updatePagination();
             showPage(currentPage);
             updateCategoryCounters(category, searchText);
-            setTimeout(equalizeBrandCards, 350);
-        }
 
+            setTimeout(() => {
+                equalizeBrandCards();
+            }, 350);
+        }
+        
         function updatePagination() 
         {
             totalPages = Math.ceil(visibleBrandItems.length / CARDS_PER_PAGE);
@@ -625,12 +627,20 @@ $carBrands = [
             if (visibleBrandItems.length === 0) 
             {
                 noResultsElement.style.display = 'block';
-                modelsGridElement.style.display = 'none';
+
+                if (modelsGridElement) 
+                {
+                    modelsGridElement.style.display = 'none';
+                }
             } 
             else 
             {
                 noResultsElement.style.display = 'none';
-                modelsGridElement.style.display = 'grid';
+
+                if (modelsGridElement) 
+                {
+                    modelsGridElement.style.display = 'grid';
+                }
             }
             
             if (totalPages > 1) 
@@ -652,6 +662,7 @@ $carBrands = [
                 for (let i = 1; i <= totalPages; i++) 
                 {
                     let li = document.createElement('li');
+
                     li.className = `page-item ${i === currentPage ? 'active' : ''}`;
                     li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
                     li.addEventListener('click', (e) => {
@@ -688,30 +699,112 @@ $carBrands = [
             
             let startIndex = (page - 1) * CARDS_PER_PAGE;
             let endIndex = startIndex + CARDS_PER_PAGE;
+            let itemsToShow = visibleBrandItems.slice(startIndex, endIndex);
             
-            visibleBrandItems.slice(startIndex, endIndex).forEach((item, index) => {
+            itemsToShow.forEach((item, index) => {
                 setTimeout(() => {
                     item.style.display = 'block';
                     setTimeout(() => {
                         item.style.opacity = '1';
                         item.style.transform = 'scale(1)';
                     }, 50);
-                }, index * 50);
+                }, index * 30);
             });
-            
-            updatePagination();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
 
+            updatePagination();
+
+            setTimeout(() => {
+                equalizeBrandCards();
+
+                if (page > 1) 
+                {
+                    window.scrollTo({
+                        top: modelsGridElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 350);
+        }
+        
         function initializePage() 
         {
-            initializeCounters();
+            if (isInitialized) 
+            {
+                return;
+            }
+            
+            updateCategoryCounters('all', '');
             filterBrands('all', '');
+            
+            setTimeout(equalizeBrandCards, 500);
+            
+            isInitialized = true;
+        }
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() 
+            {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                let filter = this.getAttribute('data-filter');
+                filterBrands(filter, searchInput.value.toLowerCase());
+            });
+        });
+        
+        if (searchInput) 
+        {
+            searchInput.addEventListener('input', function() 
+            {
+                let searchText = this.value.toLowerCase();
+
+                if (searchClear) 
+                {
+                    searchClear.style.display = searchText ? 'block' : 'none';
+                }
+                
+                let activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+                filterBrands(activeFilter, searchText);
+            });
+        }
+        
+        if (searchClear) 
+        {
+            searchClear.addEventListener('click', function() 
+            {
+                searchInput.value = '';
+                searchClear.style.display = 'none';
+
+                let activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+                filterBrands(activeFilter, '');
+            });
         }
 
-        window.addEventListener('load', initializePage);
-        window.addEventListener('resize', equalizeBrandCards);
-        setTimeout(equalizeBrandCards, 100);
+        window.addEventListener('resize', function() 
+        {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                equalizeBrandCards();
+            }, 250);
+        });
+        
+        window.addEventListener('load', function() 
+        {
+            initializePage();
+
+            setTimeout(() => {
+                equalizeBrandCards();
+            }, 1000);
+        });
+
+        if (document.readyState === 'complete') 
+        {
+            initializePage();
+        } 
+        else 
+        {
+            window.addEventListener('load', initializePage);
+        }
     });
     </script>
 </head>
