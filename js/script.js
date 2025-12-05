@@ -28,7 +28,24 @@ function initBrandCards()
         { name: "Lancia", image: "img/Stamps/Lancia.png", search_term: "lancia" },
         { name: "Land Rover", image: "img/Stamps/Land Rover.png", search_term: "land rover" },
         { name: "Lexus", image: "img/Stamps/Lexus.png", search_term: "lexus" },
-        { name: "Lotus", image: "img/Stamps/Lotus.png", search_term: "lotus" }
+        { name: "Lotus", image: "img/Stamps/Lotus.png", search_term: "lotus" },
+        { name: "Mazda", image: "img/no-image.png", search_term: "mazda" },
+        { name: "Mercedes-Benz", image: "img/no-image.png", search_term: "mercedes-benz" },
+        { name: "Mini", image: "img/no-image.png", search_term: "mini" },
+        { name: "Mitsubishi", image: "img/no-image.png", search_term: "mitsubishi" },
+        { name: "Nissan", image: "img/no-image.png", search_term: "nissan" },
+        { name: "Opel", image: "img/no-image.png", search_term: "opel" },
+        { name: "Peugeot", image: "img/no-image.png", search_term: "peugeot" },
+        { name: "Porsche", image: "img/no-image.png", search_term: "porsche" },
+        { name: "Renault", image: "img/no-image.png", search_term: "renault" },
+        { name: "Skoda", image: "img/no-image.png", search_term: "skoda" },
+        { name: "Subaru", image: "img/no-image.png", search_term: "subaru" },
+        { name: "Suzuki", image: "img/no-image.png", search_term: "suzuki" },
+        { name: "Tesla", image: "img/no-image.png", search_term: "tesla" },
+        { name: "Toyota", image: "img/no-image.png", search_term: "toyota" },
+        { name: "Volkswagen", image: "img/no-image.png", search_term: "volkswagen" },
+        { name: "Volvo", image: "img/no-image.png", search_term: "volvo" },
+        { name: "UAZ", image: "img/no-image.png", search_term: "uaz" }
     ];
 
     let container = document.getElementById('carBrandsBlock');

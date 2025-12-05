@@ -537,7 +537,7 @@
 .scrollable-item 
 {
     flex: 0 0 auto;
-    width: 220px;
+    width: 252.5px;
     height: 280px;
     scroll-snap-align: start;
     transition: transform 0.3s ease;
@@ -601,7 +601,7 @@
 {
     .scrollable-item 
     {
-        width: 200px;
+        width: 198.5px;
         height: 260px;
     }
     
@@ -615,7 +615,7 @@
 {
     .scrollable-item 
     {
-        width: 180px;
+        width: 168.5px;
         height: 240px;
     }
     
@@ -635,7 +635,7 @@
 {
     .scrollable-item 
     {
-        width: 180px;
+        width: 175px;
         height: 240px;
     }
     
@@ -812,7 +812,7 @@
     
     .scrollable-item 
     {
-        width: 160px;
+        width: 172.5px;
         height: 220px;
     }
     
@@ -898,7 +898,7 @@
 {
     .scrollable-item 
     {
-        width: 140px;
+        width: 170px;
         height: 200px;
     }
     
@@ -946,7 +946,7 @@
 {
     .scrollable-item 
     {
-        width: 120px;
+        width: 235px;
         height: 180px;
     }
     

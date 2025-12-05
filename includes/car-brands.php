@@ -314,7 +314,7 @@ $carBrands = [
         'category_name' => 'Массовый',
         'description' => 'Японский производитель автомобилей',
         'models' => ['3', '6', 'CX-5', 'MX-5'],
-        'image' => '../img/Stamps/Mazda.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Mercedes-Benz',
@@ -323,7 +323,7 @@ $carBrands = [
         'category_name' => 'Люкс',
         'description' => 'Немецкий производитель автомобилей премиум-класса',
         'models' => ['C-класс', 'E-класс', 'S-класс', 'GLE'],
-        'image' => '../img/Stamps/Mercedes.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Mini',
@@ -332,7 +332,7 @@ $carBrands = [
         'category_name' => 'Премиум',
         'description' => 'Британский производитель малолитражных автомобилей',
         'models' => ['Cooper', 'Countryman', 'Clubman'],
-        'image' => '../img/Stamps/Mini.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Mitsubishi',
@@ -341,7 +341,7 @@ $carBrands = [
         'category_name' => 'Массовый',
         'description' => 'Японский производитель автомобилей',
         'models' => ['Outlander', 'Pajero Sport', 'Lancer'],
-        'image' => '../img/Stamps/Mitsubishi.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Nissan',
@@ -350,7 +350,7 @@ $carBrands = [
         'category_name' => 'Массовый',
         'description' => 'Японский производитель автомобилей',
         'models' => ['Qashqai', 'X-Trail', 'Note', 'GT-R'],
-        'image' => '../img/Stamps/Nissan.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Opel',
@@ -359,7 +359,7 @@ $carBrands = [
         'category_name' => 'Массовый',
         'description' => 'Немецкий производитель автомобилей',
         'models' => ['Astra', 'Corsa', 'Insignia', 'Mokka'],
-        'image' => '../img/Stamps/Opel.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Peugeot',
@@ -368,7 +368,7 @@ $carBrands = [
         'category_name' => 'Массовый',
         'description' => 'Французский производитель автомобилей',
         'models' => ['308', '3008', '508', '2008'],
-        'image' => '../img/Stamps/Peugeot.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Porsche',
@@ -377,7 +377,7 @@ $carBrands = [
         'category_name' => 'Люкс',
         'description' => 'Немецкий производитель спортивных автомобилей',
         'models' => ['911', 'Cayenne', 'Panamera', 'Macan'],
-        'image' => '../img/Stamps/Porsche.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Renault',
@@ -386,7 +386,7 @@ $carBrands = [
         'category_name' => 'Массовый',
         'description' => 'Французский производитель автомобилей',
         'models' => ['Logan', 'Sandero', 'Duster', 'Kaptur'],
-        'image' => '../img/Stamps/Renault.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Skoda',
@@ -395,7 +395,7 @@ $carBrands = [
         'category_name' => 'Массовый',
         'description' => 'Чешский производитель автомобилей',
         'models' => ['Octavia', 'Kodiaq', 'Karoq', 'Superb'],
-        'image' => '../img/Stamps/Skoda.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Subaru',
@@ -404,7 +404,7 @@ $carBrands = [
         'category_name' => 'Массовый',
         'description' => 'Японский производитель автомобилей',
         'models' => ['Forester', 'Outback', 'Impreza', 'XV'],
-        'image' => '../img/Stamps/Subaru.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Suzuki',
@@ -413,7 +413,7 @@ $carBrands = [
         'category_name' => 'Массовый',
         'description' => 'Японский производитель автомобилей',
         'models' => ['Vitara', 'Swift', 'SX4', 'Jimny'],
-        'image' => '../img/Stamps/Suzuki.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Tesla',
@@ -422,7 +422,7 @@ $carBrands = [
         'category_name' => 'Электрический',
         'description' => 'Американский производитель электромобилей',
         'models' => ['Model 3', 'Model S', 'Model X', 'Model Y'],
-        'image' => '../img/Stamps/Tesla.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Toyota',
@@ -431,7 +431,7 @@ $carBrands = [
         'category_name' => 'Массовый',
         'description' => 'Японский производитель автомобилей',
         'models' => ['Camry', 'RAV4', 'Land Cruiser', 'Corolla'],
-        'image' => '../img/Stamps/Toyota.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Volkswagen',
@@ -440,7 +440,7 @@ $carBrands = [
         'category_name' => 'Массовый',
         'description' => 'Немецкий производитель автомобилей',
         'models' => ['Passat', 'Tiguan', 'Polo', 'Golf'],
-        'image' => '../img/Stamps/VW.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'Volvo',
@@ -449,7 +449,7 @@ $carBrands = [
         'category_name' => 'Премиум',
         'description' => 'Шведский производитель автомобилей',
         'models' => ['XC90', 'XC60', 'S90', 'V90'],
-        'image' => '../img/Stamps/Volvo.png'
+        'image' => '../img/no-image.png'
     ],
     [
         'name' => 'UAZ',
@@ -458,7 +458,7 @@ $carBrands = [
         'category_name' => 'Внедорожник',
         'description' => 'Российский производитель внедорожников',
         'models' => ['Patriot', 'Hunter', 'Pickup', 'Profi'],
-        'image' => '../img/Stamps/UAZ.png'
+        'image' => '../img/no-image.png'
     ]
 ];
 ?>
