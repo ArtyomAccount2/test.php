@@ -1712,3 +1712,29 @@
 {
     display: none !important;
 }
+
+.scroll-button 
+{
+    transition: all 0.3s ease;
+}
+
+.scroll-button:hover:not(.disabled) 
+{
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+}
+
+.scroll-button.at-edge 
+{
+    background: rgba(0, 123, 255, 0.2);
+    border-color: rgba(0, 123, 255, 0.3);
+}
+
+.scroll-button.at-edge:hover 
+{
+    background: #007bff;
+    border-color: #007bff;
+}
