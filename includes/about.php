@@ -103,7 +103,7 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="col-lg-6">
                         <div class="about-hero-image">
-                            <img src="../img/no-image.png" alt="Лал-Авто" class="img-fluid rounded">
+                            <img src="../img/company.jpg" alt="Лал-Авто" class="img-fluid rounded">
                         </div>
                     </div>
                 </div>

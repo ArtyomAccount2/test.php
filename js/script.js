@@ -317,45 +317,25 @@ function setupScrollButtons()
                 return;
             }
 
-            let isAtStart = scrollable.scrollLeft <= 10;
-            let isAtEnd = scrollable.scrollLeft >= (scrollable.scrollWidth - scrollable.clientWidth - 10);
+            let visibleItemsCount = getVisibleItemsCount(scrollableContainer);
+            let item = scrollable.querySelector('.scrollable-item');
 
-            if (isAtStart && direction === -1) 
+            if (!item) 
             {
-                scrollable.scrollTo({
-                    left: scrollable.scrollWidth,
-                    behavior: 'smooth'
-                });
+                return;
             }
-            else if (isAtEnd && direction === 1) 
-            {
-                scrollable.scrollTo({
-                    left: 0,
-                    behavior: 'smooth'
-                });
-            }
-            else 
-            {
-                let visibleItemsCount = getVisibleItemsCount(scrollableContainer);
-                let item = scrollable.querySelector('.scrollable-item');
+            
+            let itemStyle = window.getComputedStyle(item);
+            let itemWidth = item.offsetWidth;
+            let marginLeft = parseInt(itemStyle.marginLeft) || 0;
+            let marginRight = parseInt(itemStyle.marginRight) || 0;
+            let itemTotalWidth = itemWidth + marginLeft + marginRight;
+            let scrollAmount = itemTotalWidth * visibleItemsCount;
 
-                if (!item) 
-                {
-                    return;
-                }
-                
-                let itemStyle = window.getComputedStyle(item);
-                let itemWidth = item.offsetWidth;
-                let marginLeft = parseInt(itemStyle.marginLeft) || 0;
-                let marginRight = parseInt(itemStyle.marginRight) || 0;
-                let itemTotalWidth = itemWidth + marginLeft + marginRight;
-                let scrollAmount = itemTotalWidth * visibleItemsCount;
-
-                scrollable.scrollBy({
-                    left: direction * scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
+            scrollable.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
 
             setTimeout(checkScrollButtonsVisibility, 300);
         });
@@ -510,37 +490,14 @@ function checkScrollButtonsVisibility()
         {
             let isAtStart = scrollable.scrollLeft <= 10;
             let isAtEnd = scrollable.scrollLeft >= (scrollable.scrollWidth - scrollable.clientWidth - 10);
-            
-            if (isAtStart) 
-            {
-                scrollLeftBtn.style.opacity = '1';
-                scrollLeftBtn.style.cursor = 'pointer';
-                scrollLeftBtn.title = 'Прокрутить к концу списка';
-            } 
-            else 
-            {
-                scrollLeftBtn.style.opacity = '1';
-                scrollLeftBtn.style.cursor = 'pointer';
-                scrollLeftBtn.title = 'Прокрутить влево';
-            }
 
-            if (isAtEnd) 
-            {
-                scrollRightBtn.style.opacity = '1';
-                scrollRightBtn.style.cursor = 'pointer';
-                scrollRightBtn.title = 'Прокрутить к началу списка';
-            } 
-            else 
-            {
-                scrollRightBtn.style.opacity = '1';
-                scrollRightBtn.style.cursor = 'pointer';
-                scrollRightBtn.title = 'Прокрутить вправо';
-            }
+            scrollLeftBtn.style.opacity = isAtStart ? '0.5' : '1';
+            scrollLeftBtn.style.pointerEvents = isAtStart ? 'none' : 'all';
+            scrollLeftBtn.style.cursor = isAtStart ? 'not-allowed' : 'pointer';
 
-            scrollLeftBtn.style.visibility = 'visible';
-            scrollRightBtn.style.visibility = 'visible';
-            scrollLeftBtn.style.pointerEvents = 'auto';
-            scrollRightBtn.style.pointerEvents = 'auto';
+            scrollRightBtn.style.opacity = isAtEnd ? '0.5' : '1';
+            scrollRightBtn.style.pointerEvents = isAtEnd ? 'none' : 'all';
+            scrollRightBtn.style.cursor = isAtEnd ? 'not-allowed' : 'pointer';
 
             let allVisible = scrollable.scrollWidth <= scrollable.clientWidth;
 
@@ -548,8 +505,11 @@ function checkScrollButtonsVisibility()
             {
                 scrollLeftBtn.style.visibility = 'hidden';
                 scrollRightBtn.style.visibility = 'hidden';
-                scrollLeftBtn.style.pointerEvents = 'none';
-                scrollRightBtn.style.pointerEvents = 'none';
+            } 
+            else 
+            {
+                scrollLeftBtn.style.visibility = 'visible';
+                scrollRightBtn.style.visibility = 'visible';
             }
         }
     });

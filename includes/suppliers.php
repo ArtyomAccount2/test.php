@@ -357,28 +357,28 @@ unset($_SESSION['form_data']);
         </div>
         <div class="partners-grid">
             <div class="partner-item">
-                <img src="../img/no-image.png" alt="Bosch" class="partner-logo">
-                <span class="partner-name">Bosch</span>
+                <img src="../img/Manufacturers/BOGE.jpg" alt="Boge" class="partner-logo">
+                <span class="partner-name">BOGE</span>
             </div>
             <div class="partner-item">
-                <img src="../img/no-image.png" alt="Castrol" class="partner-logo">
-                <span class="partner-name">Castrol</span>
+                <img src="../img/Manufacturers/fag.jpg" alt="Fag" class="partner-logo">
+                <span class="partner-name">FAG</span>
             </div>
             <div class="partner-item">
-                <img src="../img/no-image.png" alt="Mobil" class="partner-logo">
-                <span class="partner-name">Mobil</span>
+                <img src="../img/Manufacturers/GKN.png" alt="Gkn" class="partner-logo">
+                <span class="partner-name">GKN</span>
             </div>
             <div class="partner-item">
-                <img src="../img/no-image.png" alt="Brembo" class="partner-logo">
-                <span class="partner-name">Brembo</span>
+                <img src="../img/Manufacturers/Jurid-logo.png" alt="Jurid" class="partner-logo">
+                <span class="partner-name">JURID</span>
             </div>
             <div class="partner-item">
-                <img src="../img/no-image.png" alt="Mann-Filter" class="partner-logo">
-                <span class="partner-name">Mann-Filter</span>
+                <img src="../img/Manufacturers/KNF.png" alt="Knf" class="partner-logo">
+                <span class="partner-name">KNF</span>
             </div>
             <div class="partner-item">
-                <img src="../img/no-image.png" alt="NGK" class="partner-logo">
-                <span class="partner-name">NGK</span>
+                <img src="../img/Manufacturers/sasic.jpg" alt="Sasic" class="partner-logo">
+                <span class="partner-name">SASIC</span>
             </div>
         </div>
     </div>
