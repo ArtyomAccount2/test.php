@@ -533,6 +533,20 @@ unset($_SESSION['form_data']);
         </div>
     </div>
 
+    <div id="socialFloat" class="social-float-container">
+        <button id="socialToggle" class="social-toggle-btn" title="Социальные сети">
+            <i class="bi bi-chevron-up"></i>
+        </button>
+        <div class="social-icons-container">
+            <a href="https://vk.com/lalauto" class="social-icon-float" target="_blank" title="ВКонтакте">
+                <img src="img/image 33.png" alt="VK" width="32" height="32">
+            </a>
+            <a href="https://t.me/s/lalauto" class="social-icon-float" target="_blank" title="Telegram">
+                <img src="img/image 32.png" alt="Telegram" width="32" height="32">
+            </a>
+        </div>
+    </div>
+
     <section class="container-fluid" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9f9ff 100%); position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);">
             <div class="position-absolute top-0 start-0 w-100 h-100">
                 <div class="about-bg-circle circle-1"></div>
@@ -713,19 +727,10 @@ unset($_SESSION['form_data']);
 <div id="cookieConsent" class="cookie-consent" style="display: none;">
     <div class="cookie-container">
         <div class="cookie-content">
-            <p class="cookie-text">
-                Наш сайт использует cookies и сохраняет ваши персональные данные. 
-                Нажимая <strong>"Согласен"</strong> вы принимаете условия обработки 
-                персональных данных согласно нашей 
-                <a href="includes/privacy.php" class="cookie-link">Политике Конфиденциальности</a>.
-            </p>
+            <p class="cookie-text">Наш сайт использует cookies и сохраняет ваши персональные данные. Нажимая <strong>"Согласен"</strong> вы принимаете условия обработки персональных данных согласно нашей <a href="includes/privacy.php" class="cookie-link">Политике Конфиденциальности</a>.</p>
             <div class="cookie-buttons">
-                <button id="cookieAccept" class="btn btn-primary btn-sm cookie-btn">
-                    Согласен
-                </button>
-                <button id="cookieReject" class="btn btn-outline-secondary btn-sm cookie-btn">
-                    Не согласен
-                </button>
+                <button id="cookieAccept" class="btn btn-primary btn-sm cookie-btn">Согласен</button>
+                <button id="cookieReject" class="btn btn-outline-secondary btn-sm cookie-btn">Не согласен</button>
             </div>
         </div>
     </div>

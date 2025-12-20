@@ -317,7 +317,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                         </a>
                     </div>
                 </div>
-                <div class="stats-widget card shadow-sm mt-5">
+                <div class="stats-widget card shadow-sm mt-4">
                     <div class="card-header bg-transparent">
                         <h6 class="mb-0"><i class="bi bi-graph-up me-2"></i>Статистика</h6>
                     </div>
@@ -429,7 +429,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                 </div>
                             </div>
                         </div>
-                        <div class="card shadow-sm mt-4">
+                        <div class="card shadow-sm mt-2">
                             <div class="card-header bg-transparent">
                                 <h6 class="mb-0"><i class="bi bi-clock-history me-2"></i>Недавняя активность</h6>
                             </div>
@@ -599,6 +599,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             </div>
         </div>
     </div>
+
+    <div id="socialFloat" class="social-float-container">
+        <button id="socialToggle" class="social-toggle-btn" title="Социальные сети">
+            <i class="bi bi-chevron-up"></i>
+        </button>
+        <div class="social-icons-container">
+            <a href="https://vk.com/lalauto" class="social-icon-float" target="_blank" title="ВКонтакте">
+                <img src="img/image 33.png" alt="VK" width="32" height="32">
+            </a>
+            <a href="https://t.me/s/lalauto" class="social-icon-float" target="_blank" title="Telegram">
+                <img src="img/image 32.png" alt="Telegram" width="32" height="32">
+            </a>
+        </div>
+    </div>
 </div>
 
 <footer class="footer-section bg-dark text-white pt-5 pb-3">
@@ -686,6 +700,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 </footer>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="js/script.js"></script>
 <script src="js/profile.js"></script>
 </body>
 </html>

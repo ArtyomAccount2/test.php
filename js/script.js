@@ -1043,6 +1043,97 @@ document.addEventListener('DOMContentLoaded', function()
         window.addEventListener('scroll', onScroll);
         window.addEventListener('load', onScroll);
     }
+
+    let socialFloat = document.getElementById('socialFloat');
+    let socialToggle = document.getElementById('socialToggle');
+    let socialIcons = document.querySelector('.social-icons-container');
+    let socialIconsList = document.querySelectorAll('.social-icon-float');
+    
+    setTimeout(() => {
+        socialFloat.style.display = 'flex';
+    }, 1000);
+    
+    if (socialToggle) 
+    {
+        socialToggle.addEventListener('click', function(e) 
+        {
+            e.stopPropagation();
+            
+            let isActive = socialToggle.classList.contains('active');
+            
+            if (isActive) 
+            {
+                socialToggle.classList.remove('active');
+                socialIcons.classList.remove('show');
+                socialIcons.classList.add('social-float-out');
+                
+                setTimeout(() => {
+                    socialIcons.classList.remove('social-float-out');
+                }, 400);
+                
+            } 
+            else 
+            {
+                socialToggle.classList.add('active');
+                socialIcons.classList.add('show');
+                socialIcons.classList.add('social-float-in');
+                
+                setTimeout(() => {
+                    socialIcons.classList.remove('social-float-in');
+                }, 400);
+            }
+        });
+    }
+
+    document.addEventListener('click', function(e) 
+    {
+        if (!socialFloat.contains(e.target) && socialToggle.classList.contains('active')) 
+        {
+            socialToggle.classList.remove('active');
+            socialIcons.classList.remove('show');
+            socialIcons.classList.add('social-float-out');
+            
+            setTimeout(() => {
+                socialIcons.classList.remove('social-float-out');
+            }, 400);
+        }
+    });
+
+    document.addEventListener('keydown', function(e) 
+    {
+        if (e.key === 'Escape' && socialToggle.classList.contains('active')) 
+        {
+            socialToggle.click();
+        }
+    });
+    
+    let scrollTimer;
+    
+    window.addEventListener('scroll', function() 
+    {
+        if (window.innerWidth <= 768 && socialToggle.classList.contains('active')) 
+        {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                if (socialToggle.classList.contains('active')) 
+                {
+                    socialToggle.click();
+                }
+            }, 300);
+        }
+    });
+
+    socialIconsList.forEach(icon => {
+        icon.addEventListener('mouseenter', function() 
+        {
+            this.style.transition = 'all 0.25s ease';
+        });
+        
+        icon.addEventListener('mouseleave', function() 
+        {
+            this.style.transition = 'all 0.3s ease';
+        });
+    });
 });
 
 function initCookieConsent() 

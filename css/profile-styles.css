@@ -675,12 +675,6 @@
     flex-wrap: wrap;
 }
 
-.row > [class*='col-'] 
-{
-    display: flex;
-    flex-direction: column;
-}
-
 .stat-card:hover 
 {
     transform: translateY(-5px);

@@ -563,3 +563,285 @@ footer
 {
     font-weight: 600;
 }
+
+.social-float-container 
+{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.social-toggle-btn 
+{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: 3px solid white;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    position: relative;
+}
+
+.social-toggle-btn:hover 
+{
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.social-toggle-btn.active 
+{
+    background: linear-gradient(135deg, #0056b3, #003d82);
+}
+
+.social-toggle-btn.active i 
+{
+    transform: rotate(180deg);
+}
+
+.social-toggle-btn i 
+{
+    transition: transform 0.4s ease;
+}
+
+.social-icons-container 
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    position: absolute;
+    bottom: 75px;
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.social-icons-container.show 
+{
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+.social-icon-float 
+{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    transform: translateY(10px);
+    opacity: 0;
+    text-decoration: none;
+}
+
+.social-icons-container.show .social-icon-float 
+{
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.social-icons-container.show .social-icon-float:nth-child(1) 
+{
+    transition-delay: 0.1s;
+}
+
+.social-icons-container.show .social-icon-float:nth-child(2) 
+{
+    transition-delay: 0.2s;
+}
+
+.social-icon-float:hover 
+{
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.social-icon-float img 
+{
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+.social-icon-float:hover img 
+{
+    filter: brightness(1.1);
+}
+
+@keyframes floatIn 
+{
+    from 
+    {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to 
+    {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes floatOut 
+{
+    from 
+    {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to 
+    {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+}
+
+.social-float-in 
+{
+    animation: floatIn 0.4s ease forwards;
+}
+
+.social-float-out 
+{
+    animation: floatOut 0.4s ease forwards;
+}
+
+@media (max-width: 768px) 
+{
+    .social-float-container 
+    {
+        bottom: 25px;
+        right: 25px;
+    }
+    
+    .social-toggle-btn 
+    {
+        width: 55px;
+        height: 55px;
+        font-size: 1.4rem;
+    }
+    
+    .social-icons-container 
+    {
+        bottom: 70px;
+        gap: 12px;
+    }
+    
+    .social-icon-float 
+    {
+        width: 46px;
+        height: 46px;
+    }
+    
+    .social-icon-float img 
+    {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+@media (max-width: 480px) 
+{
+    .social-float-container 
+    {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .social-toggle-btn 
+    {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+        border-width: 2px;
+    }
+    
+    .social-icons-container 
+    {
+        bottom: 65px;
+        gap: 10px;
+    }
+    
+    .social-icon-float 
+    {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .social-icon-float img 
+    {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 360px) 
+{
+    .social-float-container 
+    {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .social-toggle-btn 
+    {
+        width: 46px;
+        height: 46px;
+        font-size: 1.2rem;
+    }
+    
+    .social-icons-container 
+    {
+        bottom: 60px;
+    }
+    
+    .social-icon-float 
+    {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .social-icon-float img 
+    {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+.social-float-container 
+{
+    animation: slideInUp 0.5s ease-out 1s forwards;
+    transform: translateY(100px);
+    opacity: 0;
+}
+
+@keyframes slideInUp 
+{
+    to 
+    {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
