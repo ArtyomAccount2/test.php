@@ -571,9 +571,9 @@ footer
     right: 20px;
     z-index: 1000;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: center;
-    gap: 15px;
+    gap: 0;
 }
 
 .social-toggle-btn 
@@ -629,6 +629,24 @@ footer
     visibility: hidden;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
+    background: white;
+    padding: 10px 5px 35px 5px;
+    border-radius: 15px 15px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    margin-bottom: -42px;
+    z-index: 1000;
+}
+
+.social-icons-container::before 
+{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: inherit;
+    z-index: -1;
 }
 
 .social-icons-container.show 
@@ -653,6 +671,8 @@ footer
     transform: translateY(10px);
     opacity: 0;
     text-decoration: none;
+    position: relative;
+    z-index: 2;
 }
 
 .social-icons-container.show .social-icon-float 
@@ -732,8 +752,8 @@ footer
 {
     .social-float-container 
     {
-        bottom: 25px;
-        right: 25px;
+        bottom: 15px;
+        right: 15px;
     }
     
     .social-toggle-btn 
@@ -745,8 +765,15 @@ footer
     
     .social-icons-container 
     {
-        bottom: 70px;
+        bottom: 65px;
         gap: 12px;
+        padding: 15px 7px 30px 7px;
+        margin-bottom: -32px;
+    }
+    
+    .social-icons-container::before 
+    {
+        height: 25px;
     }
     
     .social-icon-float 
@@ -766,8 +793,8 @@ footer
 {
     .social-float-container 
     {
-        bottom: 20px;
-        right: 20px;
+        bottom: 10px;
+        right: 10px;
     }
     
     .social-toggle-btn 
@@ -780,8 +807,16 @@ footer
     
     .social-icons-container 
     {
-        bottom: 65px;
+        bottom: 60px;
         gap: 10px;
+        padding: 12px 6px 25px 6px;
+        margin-bottom: -27px;
+        border-radius: 12px 12px 0 0;
+    }
+    
+    .social-icons-container::before 
+    {
+        height: 20px;
     }
     
     .social-icon-float 
@@ -801,8 +836,8 @@ footer
 {
     .social-float-container 
     {
-        bottom: 15px;
-        right: 15px;
+        bottom: 8px;
+        right: 8px;
     }
     
     .social-toggle-btn 
@@ -814,7 +849,15 @@ footer
     
     .social-icons-container 
     {
-        bottom: 60px;
+        bottom: 55px;
+        padding: 10px 8px 20px 8px;
+        margin-bottom: -15px;
+        border-radius: 10px 10px 0 0;
+    }
+    
+    .social-icons-container::before 
+    {
+        height: 15px;
     }
     
     .social-icon-float 

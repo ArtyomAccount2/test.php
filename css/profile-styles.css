@@ -801,3 +801,13 @@
     position: relative;
     display: inline-block;
 }
+
+.profile-container .container > .row 
+{
+    min-height: calc(100vh - 300px);
+}
+
+.d-flex.flex-column > .h-100 
+{
+    flex: 1 1 auto;
+}
