@@ -7,7 +7,7 @@
         <div class="col-lg-12">
             <div class="shadow-lg border-0 rounded-3 overflow-hidden">
                 <div class="row g-0">
-                    <div class="col-md-7 p-4 p-lg-5">
+                    <div class="col-lg-7 p-4 p-lg-5">
                         <div class="text-center mb-4">
                             <h2 class="fw-bold text-primary">Регистрация для юридических лиц и ИП</h2>
                             <p class="text-muted">Создайте корпоративный аккаунт для бизнеса</p>
@@ -129,8 +129,8 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-md-5 bg-light p-4 p-lg-5">
-                        <div class="sticky-top" style="top: 100px;">
+                    <div class="col-lg-5 bg-light p-4 p-lg-5">
+                        <div style="top: 100px;">
                             <h4 class="fw-bold mb-4">Преимущества для бизнеса</h4>
                             <div class="d-flex align-items-start mb-4">
                                 <div class="bg-primary text-white rounded-circle p-2 me-3 mt-1">

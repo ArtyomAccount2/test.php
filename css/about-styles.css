@@ -17,7 +17,7 @@
 
 .about-hero 
 {
-    padding: 60px 0;
+    padding: 30px 0;
     background: #f8f9fa;
 }
 
@@ -86,7 +86,7 @@
 .about-features
 {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9f9ff 100%);
-    padding: 80px 0;
+    padding: 40px 0;
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -192,6 +192,7 @@
     background: #007bff;
     color: white;
     border-radius: 50%;
+    border: 2px solid black;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -250,7 +251,7 @@
 
 .about-stats 
 {
-    padding: 60px 0;
+    padding: 20px 0;
     background: white;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
@@ -320,4 +321,94 @@
     {
         margin-bottom: 30px;
     }
+}
+
+.about-cta 
+{
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9f9ff 100%);
+    color: white;
+    text-align: center;
+}
+
+.about-cta h2 
+{
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+}
+
+.about-cta .lead 
+{
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: black;
+}
+
+.about-cta .btn 
+{
+    background: #007bff;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.about-cta .btn:hover 
+{
+    background: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.about-values 
+{
+    padding: 40px 0;
+    background: white;
+}
+
+.value-card 
+{
+    text-align: center;
+    padding: 40px 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.value-card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.value-card i 
+{
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.value-card h4 
+{
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+    flex-shrink: 0;
+}
+
+.value-card p 
+{
+    color: #6c757d;
+    line-height: 1.6;
+    flex-grow: 1;
+    margin-bottom: 0;
 }

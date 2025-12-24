@@ -89,114 +89,159 @@ unset($_SESSION['form_data']);
     require_once("header.php"); 
 ?>
 
-        <section class="about-hero" style="margin-top: 100px;">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6">
-                        <h1 class="about-title">О компании Лал-Авто</h1>
-                        <p class="about-subtitle">Ваш надежный партнер в мире автозапчастей с 2010 года</p>
-                        <p class="about-description">
-                            Мы специализируемся на поставках оригинальных и качественных автозапчастей 
-                            от ведущих мировых производителей. Наша миссия - обеспечить автовладельцев 
-                            надежными комплектующими по доступным ценам.
-                        </p>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="about-hero-image">
-                            <img src="../img/company.jpg" alt="Лал-Авто" class="img-fluid rounded">
-                        </div>
-                    </div>
+<section class="about-hero" style="margin-top: 100px;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="about-title">О компании Лал-Авто</h1>
+                <p class="about-subtitle">Ваш надежный партнер в мире автозапчастей с 2010 года</p>
+                <p class="about-description">
+                    Мы специализируемся на поставках оригинальных и качественных автозапчастей 
+                    от ведущих мировых производителей. Наша миссия - обеспечить автовладельцев 
+                    надежными комплектующими по доступным ценам.
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-hero-image">
+                    <img src="../img/company.jpg" alt="Лал-Авто" class="img-fluid rounded">
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
 
-        <section class="about-features py-5 position-relative overflow-hidden">
-            <div class="container position-relative">
-                <h2 class="section-title text-center">Наши преимущества</h2>
-                <div class="row g-4 justify-content-center">
-                    <div class="col-lg-4 col-md-6 feature-item">
-                        <div class="feature-icon">
-                            <i class="bi bi-award"></i>
-                        </div>
-                        <h3>Качество</h3>
-                        <p>Только оригинальные запчасти от проверенных производителей с гарантией качества</p>
-                    </div>
-                    <div class="col-lg-4 col-md-6 feature-item">
-                        <div class="feature-icon">
-                            <i class="bi bi-truck"></i>
-                        </div>
-                        <h3>Доставка</h3>
-                        <p>Быстрая доставка по всему региону. 95% заказов доставляются в течение 1-3 дней</p>
-                    </div>
-                    <div class="col-lg-4 col-md-6 feature-item">
-                        <div class="feature-icon">
-                            <i class="bi bi-headset"></i>
-                        </div>
-                        <h3>Поддержка</h3>
-                        <p>Квалифицированные специалисты готовы помочь с подбором запчастей 24/7</p>
-                    </div>
-                </div>
+<section class="about-stats">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 stat-item">
+                <div class="stat-number">13+</div>
+                <div class="stat-label">Лет опыта</div>
             </div>
-        </section>
+            <div class="col-md-3 stat-item">
+                <div class="stat-number">5000+</div>
+                <div class="stat-label">Товаров</div>
+            </div>
+            <div class="col-md-3 stat-item">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Брендов</div>
+            </div>
+            <div class="col-md-3 stat-item">
+                <div class="stat-number">10000+</div>
+                <div class="stat-label">Клиентов</div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <section class="about-history">
-            <div class="container">
-                <h2 class="section-title">Наша история</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-year">2010</div>
-                        <div class="timeline-content">
-                            <h3>Основание компании</h3>
-                            <p>Начало работы с небольшим ассортиментом запчастей для отечественных автомобилей</p>
-                        </div>
+<section class="about-features">
+    <div class="container">
+        <h2 class="section-title text-center">Почему выбирают нас</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex">
+                <div class="feature-item w-100">
+                    <div class="feature-icon">
+                        <i class="bi bi-award-fill"></i>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">2013</div>
-                        <div class="timeline-content">
-                            <h3>Расширение ассортимента</h3>
-                            <p>Добавление запчастей для иномарок и открытие первого автосервиса</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">2018</div>
-                        <div class="timeline-content">
-                            <h3>Запуск интернет-магазина</h3>
-                            <p>Создание современного онлайн-каталога с возможностью заказа через сайт</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">2023</div>
-                        <div class="timeline-content">
-                            <h3>Лидер рынка</h3>
-                            <p>Становление одним из крупнейших поставщиков автозапчастей в регионе</p>
-                        </div>
-                    </div>
+                    <h3>Гарантия качества</h3>
+                    <p>Все запчасти проходят многоуровневую проверку качества. Гарантия на все товары от 1 года</p>
                 </div>
             </div>
-        </section>
+            <div class="col-lg-4 col-md-6 d-flex">
+                <div class="feature-item w-100">
+                    <div class="feature-icon">
+                        <i class="bi bi-truck"></i>
+                    </div>
+                    <h3>Быстрая доставка</h3>
+                    <p>Доставка по городу за 2 часа, по области - 1-2 дня. Самовывоз из 5 пунктов выдачи</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12 d-flex">
+                <div class="feature-item w-100">
+                    <div class="feature-icon">
+                        <i class="bi bi-headset"></i>
+                    </div>
+                    <h3>Экспертная поддержка</h3>
+                    <p>Наши специалисты с опытом от 5 лет помогут подобрать оптимальное решение</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <section class="about-stats">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3 stat-item">
-                        <div class="stat-number">21</div>
-                        <div class="stat-label">Лет на рынке</div>
-                    </div>
-                    <div class="col-md-3 stat-item">
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">Товаров в каталоге</div>
-                    </div>
-                    <div class="col-md-3 stat-item">
-                        <div class="stat-number">39+</div>
-                        <div class="stat-label">Брендов партнеров</div>
-                    </div>
-                    <div class="col-md-3 stat-item">
-                        <div class="stat-number">10000+</div>
-                        <div class="stat-label">Довольных клиентов</div>
-                    </div>
+<section class="about-history">
+    <div class="container">
+        <h2 class="section-title text-center">Наш путь к успеху</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">2010</div>
+                <div class="timeline-content">
+                    <h3>Начало пути</h3>
+                    <p>Основание компании с небольшим складом запчастей для отечественных автомобилей</p>
                 </div>
             </div>
-        </section>
+            <div class="timeline-item">
+                <div class="timeline-year">2014</div>
+                <div class="timeline-content">
+                    <h3>Расширение</h3>
+                    <p>Открытие первого розничного магазина и начало работы с европейскими брендами</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2018</div>
+                <div class="timeline-content">
+                    <h3>Цифровизация</h3>
+                    <p>Запуск интернет-магазина и системы онлайн-заказов</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2023</div>
+                <div class="timeline-content">
+                    <h3>Лидерство</h3>
+                    <p>Стали официальным дилером 10+ мировых брендов</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about-values">
+    <div class="container">
+        <h2 class="section-title text-center">Наши ценности</h2>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-12 d-flex">
+                <div class="value-card w-100">
+                    <i class="bi bi-heart-fill text-primary mb-3"></i>
+                    <h4>Клиентоориентированность</h4>
+                    <p>Клиент всегда на первом месте. Мы стремимся превзойти ожидания каждого покупателя</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 d-flex">
+                <div class="value-card w-100">
+                    <i class="bi bi-shield-check text-primary mb-3"></i>
+                    <h4>Надежность</h4>
+                    <p>Мы гарантируем качество каждой детали и выполняем обещания в срок</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 d-flex">
+                <div class="value-card w-100">
+                    <i class="bi bi-arrow-repeat text-primary mb-3"></i>
+                    <h4>Развитие</h4>
+                    <p>Постоянно улучшаем сервис, расширяем ассортимент и внедряем новые технологии</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about-cta">
+    <div class="container text-center">
+        <h2>Готовы найти нужные запчасти?</h2>
+        <p class="lead">Наш каталог содержит более 5000 позиций от ведущих производителей</p>
+        <a href="../includes/assortment.php" class="btn btn-primary btn-lg px-5">
+            <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
+        </a>
+    </div>
+</section>
 
 <?php 
     require_once("footer.php"); 
