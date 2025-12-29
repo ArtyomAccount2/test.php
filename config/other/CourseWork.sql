@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 03 2025 г., 18:46
+-- Время создания: Дек 29 2025 г., 19:54
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -20,6 +20,67 @@ SET time_zone = "+00:00";
 --
 -- База данных: `CourseWork`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `cart`
+--
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_image` varchar(255) DEFAULT 'no-image.png',
+  `price` decimal(10,2) NOT NULL,
+  `quantity` int(11) DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `cart`
+--
+
+INSERT INTO `cart` (`id`, `user_id`, `product_id`, `product_name`, `product_image`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
+(6, 2, 0, 'Фильтр масляный Audi A4 B8 2.0 TFSI', '../img/no-image.png', '1250.00', 1, '2025-12-29 16:30:35', '2025-12-29 16:30:35'),
+(7, 2, 0, 'Тормозные колодки Audi A6 C7', '../img/no-image.png', '3890.00', 1, '2025-12-29 16:30:51', '2025-12-29 16:30:51'),
+(8, 2, 0, 'Свечи зажигания Audi Q5 2.0 TDI', '../img/no-image.png', '850.00', 2, '2025-12-29 16:30:53', '2025-12-29 16:33:55'),
+(9, 2, 0, 'Сцепление Audi A3 8V', '../img/no-image.png', '12500.00', 1, '2025-12-29 16:31:09', '2025-12-29 16:31:09');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `order_number` varchar(50) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `total_amount` decimal(10,2) NOT NULL,
+  `status` enum('pending','processing','completed','cancelled') DEFAULT 'pending',
+  `order_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `shipping_address` text,
+  `phone` varchar(20) DEFAULT NULL,
+  `notes` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -90,6 +151,28 @@ INSERT INTO `users` (`id_users`, `surname_users`, `name_users`, `patronymic_user
 --
 
 --
+-- Индексы таблицы `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Индексы таблицы `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `order_number` (`order_number`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Индексы таблицы `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`);
+
+--
 -- Индексы таблицы `reviews`
 --
 ALTER TABLE `reviews`
@@ -106,6 +189,24 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT для таблицы `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `reviews`
 --
 ALTER TABLE `reviews`
@@ -116,6 +217,28 @@ ALTER TABLE `reviews`
 --
 ALTER TABLE `users`
   MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Ограничения внешнего ключа сохраненных таблиц
+--
+
+--
+-- Ограничения внешнего ключа таблицы `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

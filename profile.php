@@ -170,6 +170,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         exit();
     }
 }
+
+$cartItems = [];
+$cartTotal = 0;
+$cartCount = 0;
+
+if ($userId) 
+{
+    $cartSql = "SELECT * FROM cart WHERE user_id = ? ORDER BY created_at DESC";
+    $cartStmt = $conn->prepare($cartSql);
+    
+    if ($cartStmt) 
+    {
+        $cartStmt->bind_param("i", $userId);
+        $cartStmt->execute();
+        $cartResult = $cartStmt->get_result();
+        
+        while ($item = $cartResult->fetch_assoc()) 
+        {
+            $cartItems[] = $item;
+            $cartTotal += $item['price'] * $item['quantity'];
+            $cartCount += $item['quantity'];
+        }
+        $cartStmt->close();
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId) 
+{
+    if (isset($_POST['update_cart_item'])) 
+    {
+        $itemId = $_POST['item_id'] ?? 0;
+        $quantity = $_POST['quantity'] ?? 1;
+        
+        if ($quantity <= 0) 
+        {
+            $deleteSql = "DELETE FROM cart WHERE id = ? AND user_id = ?";
+            $deleteStmt = $conn->prepare($deleteSql);
+            $deleteStmt->bind_param("ii", $itemId, $userId);
+            $deleteStmt->execute();
+            $deleteStmt->close();
+            $_SESSION['success_message'] = "Товар удален из корзины!";
+        } 
+        else 
+        {
+            $updateSql = "UPDATE cart SET quantity = ? WHERE id = ? AND user_id = ?";
+            $updateStmt = $conn->prepare($updateSql);
+            $updateStmt->bind_param("iii", $quantity, $itemId, $userId);
+            $updateStmt->execute();
+            $updateStmt->close();
+            $_SESSION['success_message'] = "Корзина обновлена!";
+        }
+        
+        header("Location: profile.php");
+        exit();
+    }
+    
+    if (isset($_POST['remove_cart_item'])) 
+    {
+        $itemId = $_POST['item_id'] ?? 0;
+        
+        $deleteSql = "DELETE FROM cart WHERE id = ? AND user_id = ?";
+        $deleteStmt = $conn->prepare($deleteSql);
+        $deleteStmt->bind_param("ii", $itemId, $userId);
+        $deleteStmt->execute();
+        $deleteStmt->close();
+        
+        $_SESSION['success_message'] = "Товар удален из корзины!";
+        header("Location: profile.php");
+        exit();
+    }
+    
+    if (isset($_POST['clear_cart_profile'])) 
+    {
+        $clearSql = "DELETE FROM cart WHERE user_id = ?";
+        $clearStmt = $conn->prepare($clearSql);
+        $clearStmt->bind_param("i", $userId);
+        $clearStmt->execute();
+        $clearStmt->close();
+        
+        $_SESSION['success_message'] = "Корзина очищена!";
+        header("Location: profile.php");
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -215,7 +299,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person me-2"></i>Профиль</a></li>
-                        <li><a class="dropdown-item" href="includes/orders.php"><i class="bi bi-cart3 me-2"></i>Заказы</a></li>
+                        <li><a class="dropdown-item" href="includes/orders.php"><i class="bi bi-list-check me-2"></i>Заказы</a></li>
+                        <li><a class="dropdown-item" href="includes/cart.php"><i class="bi bi-cart3 me-2"></i>Корзина</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger" href="files/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Выйти</a></li>
                     </ul>
@@ -297,14 +382,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                 <i class="bi bi-person me-2"></i>Профиль
                             </a>
                             <a href="#orders" class="list-group-item list-group-item-action" data-bs-toggle="tab">
-                                <i class="bi bi-cart3 me-2"></i>Мои заказы
+                                <i class="bi bi-list-check me-2"></i>Мои заказы
                                 <?php 
-                                if ($orderStats['pending_orders'] > 0) 
+                                if ($orderStats['pending_orders'] > 0)
                                 {
                                 ?>
-                                    <span class="badge bg-danger float-end"><?= $orderStats['pending_orders'] ?></span>
+                                    <span class="badge bg-warning float-end"><?= $orderStats['pending_orders'] ?></span>
                                 <?php 
-                                } 
+                                }
+                                ?>
+                            </a>
+                            <a href="#cart" class="list-group-item list-group-item-action" data-bs-toggle="tab">
+                                <i class="bi bi-cart3 me-2"></i>Корзина
+                                <?php 
+                                if ($cartCount > 0)
+                                {
+                                ?>
+                                    <span class="badge bg-danger float-end"><?= $cartCount ?></span>
+                                <?php 
+                                }
                                 ?>
                             </a>
                             <a href="#wishlist" class="list-group-item list-group-item-action" data-bs-toggle="tab">
@@ -416,7 +512,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                     <div class="stat-card card text-center h-100">
                                         <div class="card-body d-flex flex-column justify-content-center">
                                             <i class="bi bi-truck stat-icon text-info mb-2"></i>
-                                            <h3 class="stat-number"><?= $orderStats['pending_orders'] ?></h3>
+                                            <h3 class="stat-number"><?= isset($orderStats['pending_orders']) ? $orderStats['pending_orders'] : 0 ?></h3>
                                             <p class="stat-label">Активные<br>заказы</p>
                                         </div>
                                     </div>
@@ -504,6 +600,123 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                     </div>
                                 <?php 
                                 } 
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade h-100" id="cart">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-primary text-dark">
+                                <h5 class="mb-0"><i class="bi bi-cart3 me-2"></i>Корзина</h5>
+                            </div>
+                            <div class="card-body">
+                                <?php 
+                                if (!empty($cartItems))
+                                {
+                                ?>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Товар</th>
+                                                    <th class="text-center">Цена</th>
+                                                    <th class="text-center">Кол-во</th>
+                                                    <th class="text-center">Сумма</th>
+                                                    <th class="text-center">Действия</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php 
+                                                foreach ($cartItems as $item) 
+                                                {
+                                                ?>
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <?php 
+                                                            if (!empty($item['product_image']))
+                                                            {
+                                                            ?>
+                                                                <img src="<?= htmlspecialchars($item['product_image']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>" class="m-2" width="50" height="50">
+                                                            <?php 
+                                                            }
+                                                            else
+                                                            {
+                                                            ?>
+                                                                <img src="img/no-image.png" alt="<?= htmlspecialchars($item['product_name']) ?>" class="m-2" width="50" height="50">
+                                                            <?php 
+                                                            }
+                                                            ?>
+                                                            <div>
+                                                                <h6 class="mb-0" style="font-size: 0.9rem;"><?= htmlspecialchars($item['product_name']) ?></h6>
+                                                                <?php 
+                                                                if ($item['product_id']) 
+                                                                {
+                                                                ?>
+                                                                    <small class="text-muted">Код: <?= $item['product_id'] ?></small>
+                                                                <?php 
+                                                                }
+                                                                ?>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center align-middle">
+                                                        <?= number_format($item['price'], 0, ',', ' ') ?> ₽
+                                                    </td>
+                                                    <td class="text-center align-middle">
+                                                        <form method="POST" class="d-inline">
+                                                            <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
+                                                            <div class="input-group input-group-sm" style="width: 100px;">
+                                                                <input type="number" name="quantity" value="<?= $item['quantity'] ?>" min="1" max="99" class="form-control text-center">
+                                                            </div>
+                                                            <button type="submit" name="update_cart_item" class="btn btn-link btn-sm mt-1">
+                                                                Обновить
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <td class="text-center align-middle fw-bold">
+                                                        <?= number_format($item['price'] * $item['quantity'], 0, ',', ' ') ?> ₽
+                                                    </td>
+                                                    <td class="text-center align-middle">
+                                                        <form method="POST" class="d-inline">
+                                                            <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
+                                                            <button type="submit" name="remove_cart_item" class="btn btn-sm btn-outline-danger" onclick="return confirm('Удалить товар из корзины?')">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                <?php 
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div class="fw-bold fs-5">Итого: <?= number_format($cartTotal, 0, ',', ' ') ?> ₽</div>
+                                        <div>
+                                            <form method="POST" class="d-inline">
+                                                <button type="submit" name="clear_cart_profile" class="btn btn-outline-danger btn-sm me-2"onclick="return confirm('Очистить всю корзину?')">
+                                                    Очистить корзину
+                                                </button>
+                                            </form>
+                                            <a href="includes/cart.php" class="btn btn-primary">
+                                                <i class="bi bi-arrow-right me-1"></i>Оформить заказ
+                                            </a>
+                                        </div>
+                                    </div>
+                                <?php 
+                                }
+                                else
+                                {
+                                ?>
+                                    <div class="text-center py-5 h-100 d-flex flex-column justify-content-center">
+                                        <i class="bi bi-cart display-1 text-muted"></i>
+                                        <p class="text-muted mt-3">Ваша корзина пуста</p>
+                                        <a href="includes/assortment.php" class="btn btn-primary mt-2">Перейти в каталог</a>
+                                    </div>
+                                <?php
+                                }
                                 ?>
                             </div>
                         </div>

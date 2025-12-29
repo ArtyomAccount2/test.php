@@ -541,7 +541,31 @@ function buildQueryString($page, $search, $category)
                                 ?>
                             </div>
                             <div class="product-actions">
-                                <button class="btn btn-primary btn-sm">В корзину</button>
+                                <?php 
+                                if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true)
+                                {
+                                ?>
+                                    <form method="POST" action="cart.php" class="d-inline">
+                                        <input type="hidden" name="product_id" value="<?= isset($product['id']) ? $product['id'] : 0 ?>">
+                                        <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['title']) ?>">
+                                        <input type="hidden" name="product_image" value="../img/no-image.png">
+                                        <input type="hidden" name="price" value="<?= $product['price'] ?>">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" name="add_to_cart" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-cart-plus"></i> В корзину
+                                        </button>
+                                    </form>
+                                <?php 
+                                }
+                                else
+                                {
+                                ?>
+                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                        <i class="bi bi-cart-plus"></i> В корзину
+                                    </button>
+                                <?php 
+                                }
+                                ?>
                                 <button class="btn btn-outline-secondary btn-sm">Подробнее</button>
                             </div>
                         </div>
