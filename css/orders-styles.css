@@ -87,3 +87,13 @@
         margin-bottom: 15px;
     }
 }
+
+.card 
+{
+    transition: none;
+}
+
+.card:hover 
+{
+    transform: none;
+}

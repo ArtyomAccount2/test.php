@@ -439,6 +439,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/script.js"></script>
 <script src="../js/cart.js"></script>
 </body>
 </html>

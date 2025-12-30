@@ -545,14 +545,16 @@ function buildQueryString($page, $search, $category)
                                 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true)
                                 {
                                 ?>
-                                    <form method="POST" action="cart.php" class="d-inline">
+                                    <form method="POST" action="cart.php" class="d-inline add-to-cart-form">
                                         <input type="hidden" name="product_id" value="<?= isset($product['id']) ? $product['id'] : 0 ?>">
                                         <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['title']) ?>">
                                         <input type="hidden" name="product_image" value="../img/no-image.png">
                                         <input type="hidden" name="price" value="<?= $product['price'] ?>">
                                         <input type="hidden" name="quantity" value="1">
-                                        <button type="submit" name="add_to_cart" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-cart-plus"></i> В корзину
+                                        <button type="submit" name="add_to_cart" class="btn btn-primary btn-sm add-to-cart-btn">
+                                            <span class="btn-text">
+                                                <i class="bi bi-cart-plus"></i> В корзину
+                                            </span>
                                         </button>
                                     </form>
                                 <?php 
@@ -643,6 +645,10 @@ function buildQueryString($page, $search, $category)
     } 
     ?>
 </div>
+<div id="cartNotification" class="notification">
+    <i class="bi bi-check-circle-fill"></i>
+    <span>Товар добавлен в корзину!</span>
+</div>
 
 <?php 
     require_once("footer.php"); 
@@ -705,6 +711,133 @@ document.addEventListener('DOMContentLoaded', function()
     if (document.getElementById('partsSearch').value) 
     {
         document.querySelector('.search-clear').style.display = 'block';
+    }
+
+    let addToCartForms = document.querySelectorAll('.add-to-cart-form');
+
+    addToCartForms.forEach(form => {
+        form.addEventListener('submit', function(e) 
+        {
+            e.preventDefault();
+            
+            let submitButton = this.querySelector('.add-to-cart-btn');
+
+            if (!submitButton) 
+            {
+                return;
+            }
+
+            let originalWidth = submitButton.offsetWidth + 'px';
+            let originalHeight = submitButton.offsetHeight + 'px';
+            let originalHtml = submitButton.innerHTML;
+            let originalDisabled = submitButton.disabled;
+
+            submitButton.style.minWidth = originalWidth;
+            submitButton.style.minHeight = originalHeight;
+            submitButton.style.width = originalWidth;
+            submitButton.classList.add('btn-loading');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="btn-text">Добавляем...</span>';
+            
+            showNotification('Товар добавляется...', 'info');
+            
+            let formData = new FormData(this);
+
+            fetch('ajax_add_to_cart.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) 
+                {
+                    showNotification(data.message, 'success');
+                    updateCartCounter(data.cart_count);
+                } 
+                else 
+                {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Ошибка сети', 'error');
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    submitButton.classList.remove('btn-loading');
+                    submitButton.disabled = originalDisabled;
+                    submitButton.innerHTML = originalHtml;
+                    submitButton.style.minWidth = '';
+                    submitButton.style.minHeight = '';
+                    submitButton.style.width = '';
+                }, 1500);
+            });
+        });
+    });
+    
+    function showNotification(message, type = 'success') 
+    {
+        let notification = document.getElementById('cartNotification');
+        
+        if (!notification) 
+        {
+            notification = document.createElement('div');
+            notification.id = 'cartNotification';
+            notification.className = 'notification';
+            document.body.appendChild(notification);
+        }
+
+        let icon = 'bi-check-circle-fill';
+        let bgColor = '#28a745';
+        let textColor = 'white';
+        
+        if (type === 'error') 
+        {
+            icon = 'bi-exclamation-triangle-fill';
+            bgColor = '#dc3545';
+        } 
+        else if (type === 'info') 
+        {
+            icon = 'bi-info-circle-fill';
+            bgColor = '#17a2b8';
+        }
+        
+        notification.innerHTML = `<i class="bi ${icon}"></i><span>${message}</span>`;
+        notification.style.background = bgColor;
+        notification.style.color = textColor;
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+    
+    function updateCartCounter(newCount = null) 
+    {
+        let cartCounter = document.getElementById('cartCounter');
+
+        if (cartCounter) 
+        {
+            if (newCount !== null) 
+            {
+                cartCounter.textContent = newCount;
+            } 
+            else 
+            {
+                let currentCount = parseInt(cartCounter.textContent) || 0;
+                cartCounter.textContent = currentCount + 1;
+            }
+
+            cartCounter.style.transform = 'scale(1.3)';
+            
+            setTimeout(() => {
+                cartCounter.style.transform = 'scale(1)';
+            }, 300);
+        }
     }
 });
 </script>

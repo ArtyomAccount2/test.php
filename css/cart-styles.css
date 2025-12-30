@@ -31,17 +31,6 @@
     font-size: 1.1rem;
 }
 
-.input-group 
-{
-    width: 120px;
-}
-
-.input-group .btn 
-{
-    width: 40px;
-    padding: 0.25rem 0.5rem;
-}
-
 .quantity-input 
 {
     text-align: center;
@@ -298,4 +287,14 @@
 {
     background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
     border-left: 4px solid #dc3545;
+}
+
+.card 
+{
+    transition: none;
+}
+
+.card:hover 
+{
+    transform: none;
 }
