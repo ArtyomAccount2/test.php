@@ -200,6 +200,58 @@ document.addEventListener('DOMContentLoaded', function()
         });
     };
 
+    let initCartControls = () => {
+        document.querySelectorAll('.minus-btn, .plus-btn').forEach(button => {
+            button.addEventListener('click', function(e) 
+            {
+                e.preventDefault();
+
+                let form = this.closest('form');
+                let input = form.querySelector('.quantity-input');
+                let value = parseInt(input.value);
+                
+                if (this.classList.contains('minus-btn')) 
+                {
+                    if (value > 1) 
+                    {
+                        value--;
+                    } 
+                    else 
+                    {
+                        if (confirm('Удалить товар из корзины?')) 
+                        {
+                            form.querySelector('button[name="remove_cart_item"]').click();
+                            return;
+                        }
+                    }
+                } 
+                else if (this.classList.contains('plus-btn')) 
+                {
+                    if (value < 99) 
+                    {
+                        value++;
+                    }
+                }
+                
+                input.value = value;
+                setTimeout(() => {
+                    form.querySelector('button[name="update_cart_item"]').click();
+                }, 300);
+            });
+        });
+
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('change', function() 
+            {
+                let form = this.closest('form');
+                
+                setTimeout(() => {
+                    form.querySelector('button[name="update_cart_item"]').click();
+                }, 300);
+            });
+        });
+    };
+
     let init = () => {
         initTools();
         animateStatistics();
@@ -207,6 +259,7 @@ document.addEventListener('DOMContentLoaded', function()
         handleTabs();
         handleNotifications();
         initWishlist();
+        initCartControls();
         setTimeout(() => {
             animateTabContent('profile');
         }, 500);

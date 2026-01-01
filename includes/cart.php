@@ -259,22 +259,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                     <?php unset($_SESSION['error_message']); ?>
                 <?php 
                 } 
-                ?>
+                ?>  
                 <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0"><i class="bi bi-cart3 me-2"></i>Товары в корзине</h5>
+                        <?php 
+                        if ($cartCount > 0) 
+                        {
+                        ?>
+                            <span class="badge bg-light text-primary"><?= $cartCount ?> товар(ов)</span>
+                        <?php 
+                        }
+                        ?>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <?php 
                         if (empty($cartItems))
                         {
                         ?>
-                            <div class="text-center py-5">
-                                <i class="bi bi-cart-x display-1 text-muted"></i>
-                                <h5 class="mt-3">Ваша корзина пуста</h5>
-                                <p class="text-muted">Начните покупки в нашем каталоге</p>
-                                <a href="assortment.php" class="btn btn-primary mt-2">
-                                    <i class="bi bi-arrow-right me-1"></i>Перейти в каталог
+                            <div class="text-center py-5 flex-grow-1 d-flex flex-column justify-content-center">
+                                <i class="bi bi-cart-x display-1 text-muted mb-4"></i>
+                                <h5 class="text-muted mb-3">Ваша корзина пуста</h5>
+                                <p class="text-muted mb-4">Начните покупки в нашем каталоге</p>
+                                <a href="assortment.php" class="btn btn-primary">
+                                    <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
                                 </a>
                             </div>
                         <?php 
@@ -282,9 +290,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                         else
                         {
                         ?>
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <div class="table-responsive">
+                            <div class="row flex-grow-1">
+                                <div class="col-lg-8 d-flex flex-column">
+                                    <div class="table-responsive flex-grow-1">
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
@@ -303,7 +311,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                                 ?>
                                                 <tr>
                                                     <td>
-                                                        <img src="../<?= htmlspecialchars($item['product_image']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>" class="cart-item-image">
+                                                        <img src="../<?= htmlspecialchars($item['product_image']) ?>" 
+                                                             alt="<?= htmlspecialchars($item['product_name']) ?>" 
+                                                             class="cart-item-image">
                                                     </td>
                                                     <td>
                                                         <h6 class="mb-1"><?= htmlspecialchars($item['product_name']) ?></h6>

@@ -1,8 +1,3 @@
-.cart-container 
-{
-    min-height: calc(100vh - 200px);
-}
-
 .page-title 
 {
     padding-bottom: 10px;
@@ -297,4 +292,123 @@
 .card:hover 
 {
     transform: none;
+}
+
+.cart-container .card-body 
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-container .table-responsive 
+{
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(125vh - 50px);
+    min-height: 300px;
+}
+
+.cart-container .table-responsive::-webkit-scrollbar 
+{
+    width: 8px;
+}
+
+.cart-container .table-responsive::-webkit-scrollbar-track 
+{
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.cart-container .table-responsive::-webkit-scrollbar-thumb 
+{
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.cart-container .table-responsive::-webkit-scrollbar-thumb:hover 
+{
+    background: #a8a8a8;
+}
+
+.cart-container .table 
+{
+    margin-bottom: 0;
+}
+
+.cart-container .row > .col-lg-8 
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-container .mt-3 
+{
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.cart-container .text-center.py-5 
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+
+@media (max-width: 992px) 
+{
+    .cart-container .table-responsive 
+    {
+        max-height: calc(100vh - 500px);
+    }
+
+    .cart-container .mt-3 
+    {
+        padding-bottom: 1rem;
+    }
+}
+
+@media (max-width: 768px) 
+{
+    .cart-container .table-responsive 
+    {
+        max-height: calc(100vh - 550px);
+    }
+}
+
+@media (max-width: 576px) 
+{
+    .cart-container .table-responsive 
+    {
+        max-height: calc(100vh - 600px);
+        overflow-y: visible;
+    }
+    
+    .cart-container .table-responsive::-webkit-scrollbar 
+    {
+        display: none;
+    }
+    
+    .cart-container .table-responsive 
+    {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    .cart-container .row 
+    {
+        flex-direction: column;
+    }
+    
+    .cart-container .col-lg-4 
+    {
+        margin-top: 1.5rem;
+    }
+
+    .cart-container .mt-3 
+    {
+        padding-bottom: 0;
+    }
 }

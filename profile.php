@@ -593,10 +593,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
                                 else 
                                 { 
                                 ?>
-                                    <div class="text-center py-5 h-100 d-flex flex-column justify-content-center">
-                                        <i class="bi bi-cart-x display-1 text-muted"></i>
-                                        <p class="text-muted mt-3">У вас пока нет заказов</p>
-                                        <a href="includes/assortment.php" class="btn btn-primary mt-2">Перейти в каталог</a>
+                                    <div class="text-center py-5 flex-grow-1 d-flex flex-column justify-content-center">
+                                        <i class="bi bi-cart-x display-1 text-muted mb-4"></i>
+                                        <h5 class="text-muted mb-3">Нет ваших заказов</h5>
+                                        <p class="text-muted mb-4">У вас пока нет заказов</p>
+                                        <a href="includes/assortment.php" class="btn btn-primary">
+                                            <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
+                                        </a>
                                     </div>
                                 <?php 
                                 } 
@@ -606,18 +609,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
                     </div>
                     <div class="tab-pane fade h-100" id="cart">
                         <div class="card shadow-sm h-100">
-                            <div class="card-header bg-primary text-dark">
+                            <div class="card-header bg-primary text-dark d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0"><i class="bi bi-cart3 me-2"></i>Корзина</h5>
+                                <?php 
+                                if ($cartCount > 0)
+                                {
+                                ?>
+                                    <span class="badge bg-danger"><?= $cartCount ?> товар(ов)</span>
+                                <?php 
+                                }
+                                ?>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body d-flex flex-column">
                                 <?php 
                                 if (!empty($cartItems))
                                 {
                                 ?>
                                     <div class="table-responsive">
-                                        <table class="table table-sm">
+                                        <table class="table table-hover">
                                             <thead>
                                                 <tr>
+                                                    <th style="width: 100px;">Фото</th>
                                                     <th>Товар</th>
                                                     <th class="text-center">Цена</th>
                                                     <th class="text-center">Кол-во</th>
@@ -632,55 +644,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
                                                 ?>
                                                 <tr>
                                                     <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <?php 
-                                                            if (!empty($item['product_image']))
-                                                            {
-                                                            ?>
-                                                                <img src="<?= htmlspecialchars($item['product_image']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>" class="m-2" width="50" height="50">
-                                                            <?php 
-                                                            }
-                                                            else
-                                                            {
-                                                            ?>
-                                                                <img src="img/no-image.png" alt="<?= htmlspecialchars($item['product_name']) ?>" class="m-2" width="50" height="50">
-                                                            <?php 
-                                                            }
-                                                            ?>
-                                                            <div>
-                                                                <h6 class="mb-0" style="font-size: 0.9rem;"><?= htmlspecialchars($item['product_name']) ?></h6>
-                                                                <?php 
-                                                                if ($item['product_id']) 
-                                                                {
-                                                                ?>
-                                                                    <small class="text-muted">Код: <?= $item['product_id'] ?></small>
-                                                                <?php 
-                                                                }
-                                                                ?>
-                                                            </div>
-                                                        </div>
+                                                        <img src="<?= htmlspecialchars($item['product_image']) ?>" 
+                                                            alt="<?= htmlspecialchars($item['product_name']) ?>" 
+                                                            class="cart-item-image">
                                                     </td>
-                                                    <td class="text-center align-middle">
-                                                        <?= number_format($item['price'], 0, ',', ' ') ?> ₽
+                                                    <td>
+                                                        <h6 class="mb-1"><?= htmlspecialchars($item['product_name']) ?></h6>
+                                                        <?php 
+                                                        if ($item['product_id']) 
+                                                        {
+                                                        ?>
+                                                            <small class="text-muted">Код: <?= $item['product_id'] ?></small>
+                                                        <?php 
+                                                        }
+                                                        ?>
                                                     </td>
-                                                    <td class="text-center align-middle">
+                                                    <td class="text-center">
+                                                        <span class="cart-item-price"><?= number_format($item['price'], 0, ',', ' ') ?> ₽</span>
+                                                    </td>
+                                                    <td class="text-center">
                                                         <form method="POST" class="d-inline">
                                                             <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                                                            <div class="input-group input-group-sm" style="width: 100px;">
-                                                                <input type="number" name="quantity" value="<?= $item['quantity'] ?>" min="1" max="99" class="form-control text-center">
+                                                            <div class="input-group input-group-sm" style="width: 120px;">
+                                                                <button class="btn btn-outline-secondary minus-btn" type="button">-</button>
+                                                                <input type="number" name="quantity" value="<?= $item['quantity'] ?>" 
+                                                                    min="1" max="99" class="form-control text-center quantity-input">
+                                                                <button class="btn btn-outline-secondary plus-btn" type="button">+</button>
                                                             </div>
-                                                            <button type="submit" name="update_cart_item" class="btn btn-link btn-sm mt-1">
+                                                            <button type="submit" name="update_cart_item" class="btn btn-link btn-sm mt-1" style="display: none;">
                                                                 Обновить
                                                             </button>
                                                         </form>
                                                     </td>
-                                                    <td class="text-center align-middle fw-bold">
-                                                        <?= number_format($item['price'] * $item['quantity'], 0, ',', ' ') ?> ₽
+                                                    <td class="text-center">
+                                                        <span class="cart-item-total fw-bold">
+                                                            <?= number_format($item['price'] * $item['quantity'], 0, ',', ' ') ?> ₽
+                                                        </span>
                                                     </td>
-                                                    <td class="text-center align-middle">
+                                                    <td class="text-center">
                                                         <form method="POST" class="d-inline">
                                                             <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                                                            <button type="submit" name="remove_cart_item" class="btn btn-sm btn-outline-danger" onclick="return confirm('Удалить товар из корзины?')">
+                                                            <button type="submit" name="remove_cart_item" 
+                                                                    class="btn btn-sm btn-outline-danger"
+                                                                    onclick="return confirm('Удалить товар из корзины?')">
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </form>
@@ -692,17 +698,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <div class="fw-bold fs-5">Итого: <?= number_format($cartTotal, 0, ',', ' ') ?> ₽</div>
-                                        <div>
-                                            <form method="POST" class="d-inline">
-                                                <button type="submit" name="clear_cart_profile" class="btn btn-outline-danger btn-sm me-2"onclick="return confirm('Очистить всю корзину?')">
-                                                    Очистить корзину
-                                                </button>
-                                            </form>
-                                            <a href="includes/cart.php" class="btn btn-primary">
-                                                <i class="bi bi-arrow-right me-1"></i>Оформить заказ
-                                            </a>
+                                    <div class="mt-3 pt-3 border-top">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6 mb-3 mb-md-0 button-active">
+                                                <div class="fw-bold fs-5">Итого: <?= number_format($cartTotal, 0, ',', ' ') ?> ₽</div>
+                                                <small class="text-muted">Товаров: <?= $cartCount ?> шт.</small>
+                                            </div>
+                                            <div class="col-md-6 text-md-end button-active">
+                                                <form method="POST" class="d-inline-block me-2">
+                                                    <button type="submit" name="clear_cart_profile" class="btn btn-outline-danger btn-sm" onclick="return confirm('Очистить всю корзину?')">
+                                                        <i class="bi bi-trash me-1"></i>Очистить корзину
+                                                    </button>
+                                                </form>
+                                                <a href="includes/cart.php" class="btn btn-primary">
+                                                    <i class="bi bi-arrow-right me-1"></i>Оформить заказ
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 <?php 
@@ -710,10 +721,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
                                 else
                                 {
                                 ?>
-                                    <div class="text-center py-5 h-100 d-flex flex-column justify-content-center">
-                                        <i class="bi bi-cart display-1 text-muted"></i>
-                                        <p class="text-muted mt-3">Ваша корзина пуста</p>
-                                        <a href="includes/assortment.php" class="btn btn-primary mt-2">Перейти в каталог</a>
+                                    <div class="text-center py-5 flex-grow-1 d-flex flex-column justify-content-center">
+                                        <i class="bi bi-cart display-1 text-muted mb-4"></i>
+                                        <h5 class="text-muted mb-3">Ваша корзина пуста</h5>
+                                        <p class="text-muted mb-4">Добавьте товары из каталога</p>
+                                        <a href="includes/assortment.php" class="btn btn-primary">
+                                            <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
+                                        </a>
                                     </div>
                                 <?php
                                 }
