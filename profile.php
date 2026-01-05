@@ -254,6 +254,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
         exit();
     }
 }
+
+$ordersList = [];
+
+if ($userId) 
+{
+    $ordersSql = "SELECT o.id, o.order_number, o.order_date, o.total_amount, o.status, o.shipping_address, o.phone, COUNT(oi.id) as items_count
+    FROM orders o
+    LEFT JOIN order_items oi ON o.id = oi.order_id
+    WHERE o.user_id = ?
+    GROUP BY o.id
+    ORDER BY o.order_date DESC";
+    
+    $ordersStmt = $conn->prepare($ordersSql);
+    
+    if ($ordersStmt) 
+    {
+        $ordersStmt->bind_param("i", $userId);
+        $ordersStmt->execute();
+        $ordersResult = $ordersStmt->get_result();
+        
+        while ($row = $ordersResult->fetch_assoc()) 
+        {
+            $ordersList[] = $row;
+        }
+
+        $ordersStmt->close();
+    }
+}
+
+if (isset($_POST['cancel_order'])) 
+{
+    $orderId = $_POST['order_id'] ?? 0;
+    
+    if ($orderId && $userId) 
+    {
+        $updateSql = "UPDATE orders SET status = 'cancelled' WHERE id = ? AND user_id = ?";
+        $updateStmt = $conn->prepare($updateSql);
+        
+        if ($updateStmt) 
+        {
+            $updateStmt->bind_param("ii", $orderId, $userId);
+            
+            if ($updateStmt->execute()) 
+            {
+                $_SESSION['success_message'] = "Заказ успешно отменен!";
+            }
+
+            $updateStmt->close();
+        }
+        
+        header("Location: profile.php");
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -563,7 +617,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
                             </div>
                             <div class="card-body">
                                 <?php 
-                                if ($orderStats['total_orders'] > 0) 
+                                if (!empty($ordersList)) 
                                 {
                                 ?>
                                     <div class="table-responsive">
@@ -572,26 +626,181 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
                                                 <tr>
                                                     <th>№ Заказа</th>
                                                     <th>Дата</th>
+                                                    <th>Кол-во товаров</th>
                                                     <th>Сумма</th>
                                                     <th>Статус</th>
                                                     <th>Действия</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>#12345</td>
-                                                    <td>12.01.2024</td>
-                                                    <td>12,450 ₽</td>
-                                                    <td><span class="badge bg-success">Выполнен</span></td>
-                                                    <td><button class="btn btn-sm btn-outline-primary">Подробнее</button></td>
-                                                </tr>
+                                                <?php 
+                                                foreach ($ordersList as $order)
+                                                {
+                                                ?>
+                                                    <tr>
+                                                        <td>#<?= htmlspecialchars($order['order_number']) ?></td>
+                                                        <td><?= date('d.m.Y', strtotime($order['order_date'])) ?></td>
+                                                        <td><?= $order['items_count'] ?></td>
+                                                        <td><?= number_format($order['total_amount'], 0, ',', ' ') ?> ₽</td>
+                                                        <td>
+                                                            <?php
+                                                            $statusClass = '';
+                                                            switch ($order['status']) {
+                                                                case 'pending':
+                                                                    $statusClass = 'warning';
+                                                                    $statusText = 'В обработке';
+                                                                    break;
+                                                                case 'processing':
+                                                                    $statusClass = 'info';
+                                                                    $statusText = 'В процессе';
+                                                                    break;
+                                                                case 'completed':
+                                                                    $statusClass = 'success';
+                                                                    $statusText = 'Завершен';
+                                                                    break;
+                                                                case 'cancelled':
+                                                                    $statusClass = 'danger';
+                                                                    $statusText = 'Отменен';
+                                                                    break;
+                                                                default:
+                                                                    $statusClass = 'secondary';
+                                                                    $statusText = $order['status'];
+                                                            }
+                                                            ?>
+                                                            <span class="badge bg-<?= $statusClass ?>"><?= $statusText ?></span>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary view-order-details" 
+                                                                    data-order-id="<?= $order['id'] ?>">
+                                                                <i class="bi bi-eye me-1"></i>Подробнее
+                                                            </button>
+                                                            <?php 
+                                                            if ($order['status'] == 'pending' || $order['status'] == 'processing')
+                                                            {
+                                                            ?>
+                                                                <form method="POST" class="d-inline-block ms-1">
+                                                                    <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
+                                                                    <button type="submit" name="cancel_order" class="btn btn-sm btn-outline-danger" 
+                                                                            onclick="return confirm('Вы уверены, что хотите отменить заказ?')">
+                                                                        <i class="bi bi-x-circle me-1"></i>Отменить
+                                                                    </button>
+                                                                </form>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="order-details-row" id="details-<?= $order['id'] ?>" style="display: none;">
+                                                        <td colspan="6">
+                                                            <div class="order-details p-3 bg-light rounded">
+                                                                <h6 class="mb-3">Детали заказа #<?= htmlspecialchars($order['order_number']) ?></h6>
+                                                                <div class="row mb-3">
+                                                                    <div class="col-md-6 h-100">
+                                                                        <strong>Дата заказа:</strong> <?= date('d.m.Y H:i', strtotime($order['order_date'])) ?>
+                                                                    </div>
+                                                                    <div class="col-md-6 h-100">
+                                                                        <strong>Статус:</strong> <span class="badge bg-<?= $statusClass ?>"><?= $statusText ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="order-items mb-3">
+                                                                    <h6 class="mb-2">Товары в заказе:</h6>
+                                                                    <?php
+                                                                    $itemsSql = "SELECT oi.* FROM order_items oi WHERE oi.order_id = ?";
+                                                                    $itemsStmt = $conn->prepare($itemsSql);
+                                                                    $itemsStmt->bind_param("i", $order['id']);
+                                                                    $itemsStmt->execute();
+                                                                    $itemsResult = $itemsStmt->get_result();
+                                                                    ?>
+                                                                    <div class="list-group">
+                                                                        <?php 
+                                                                        while ($item = $itemsResult->fetch_assoc())
+                                                                        {
+                                                                        ?>
+                                                                            <div class="list-group-item">
+                                                                                <div class="d-flex justify-content-between align-items-center w-100">
+                                                                                    <div class="d-flex align-items-center">
+                                                                                        <img src="img/no-image.png" 
+                                                                                            alt="<?= htmlspecialchars($item['product_name']) ?>" 
+                                                                                            class="me-3" width="60" height="60">
+                                                                                        <div>
+                                                                                            <h6 class="mb-0"><?= htmlspecialchars($item['product_name']) ?></h6>
+                                                                                            <small class="text-muted">Код: <?= $item['product_id'] ?></small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="text-end">
+                                                                                        <div class="fw-bold"><?= number_format($item['price'], 0, ',', ' ') ?> ₽</div>
+                                                                                        <div class="text-muted">Кол-во: <?= $item['quantity'] ?></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        <?php 
+                                                                        }
+                                                                        ?>
+                                                                    </div>
+                                                                    <?php $itemsStmt->close(); ?>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-6 h-100">
+                                                                        <div class="card" style="height: 180px">
+                                                                            <div class="card-header">
+                                                                                <h6 class="mb-0">Информация о доставке</h6>
+                                                                            </div>
+                                                                            <div class="card-body d-flex flex-column justify-content-around">
+                                                                                <?php 
+                                                                                if (!empty($order['shipping_address']))
+                                                                                {
+                                                                                ?>
+                                                                                    <p class="mb-1"><strong>Адрес:</strong> <?= htmlspecialchars($order['shipping_address']) ?></p>
+                                                                                <?php 
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                ?>
+                                                                                    <p class="mb-1"><strong>Адрес:</strong> г. Калининград, ул. Автомобильная, 12</p>
+                                                                                <?php 
+                                                                                }
+                                                                                ?>
+                                                                                <p class="mb-1"><strong>Способ:</strong> Самовывоз</p>
+                                                                                <p class="mb-0"><strong>Телефон:</strong> <?= !empty($order['phone']) ? htmlspecialchars($order['phone']) : '+7 (4012) 65-65-65' ?></p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6 h-100">
+                                                                        <div class="card" style="height: 180px">
+                                                                            <div class="card-header">
+                                                                                <h6 class="mb-0">Итоговая сумма</h6>
+                                                                            </div>
+                                                                            <div class="card-body">
+                                                                                <div class="d-flex justify-content-between mb-2">
+                                                                                    <span>Товары:</span>
+                                                                                    <span><?= number_format($order['total_amount'], 0, ',', ' ') ?> ₽</span>
+                                                                                </div>
+                                                                                <div class="d-flex justify-content-between mb-2">
+                                                                                    <span>Доставка:</span>
+                                                                                    <span>0 ₽</span>
+                                                                                </div>
+                                                                                <hr>
+                                                                                <div class="d-flex justify-content-between fw-bold">
+                                                                                    <span>Итого:</span>
+                                                                                    <span><?= number_format($order['total_amount'], 0, ',', ' ') ?> ₽</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php 
+                                                }
+                                                ?>
                                             </tbody>
                                         </table>
                                     </div>
                                 <?php 
-                                } 
-                                else 
-                                { 
+                                }
+                                else
+                                {
                                 ?>
                                     <div class="text-center py-5 flex-grow-1 d-flex flex-column justify-content-center">
                                         <i class="bi bi-cart-x display-1 text-muted mb-4"></i>
@@ -602,7 +811,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
                                         </a>
                                     </div>
                                 <?php 
-                                } 
+                                }
                                 ?>
                             </div>
                         </div>
@@ -932,5 +1141,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="js/script.js"></script>
 <script src="js/profile.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() 
+{
+    let viewButtons = document.querySelectorAll('.view-order-details');
+
+    viewButtons.forEach(button => {
+        button.addEventListener('click', function() 
+        {
+            let orderId = this.getAttribute('data-order-id');
+            let detailsRow = document.getElementById('details-' + orderId);
+            
+            if (detailsRow.style.display === 'none') 
+            {
+                detailsRow.style.display = 'table-row';
+                this.innerHTML = '<i class="bi bi-eye-slash me-1"></i>Скрыть';
+            } 
+            else 
+            {
+                detailsRow.style.display = 'none';
+                this.innerHTML = '<i class="bi bi-eye me-1"></i>Подробнее';
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

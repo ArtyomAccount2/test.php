@@ -163,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
         $orderSql = "INSERT INTO orders (order_number, user_id, total_amount, shipping_address, phone, notes) VALUES (?, ?, ?, ?, ?, ?)";
         $orderStmt = $conn->prepare($orderSql);
-        $orderStmt->bind_param("sidis", $orderNumber, $userId, $cartTotal, $shippingAddress, $phone, $notes);
+        $orderStmt->bind_param("sidsss", $orderNumber, $userId, $cartTotal, $shippingAddress, $phone, $notes);
         
         if ($orderStmt->execute()) 
         {

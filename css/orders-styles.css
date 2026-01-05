@@ -92,3 +92,111 @@
 {
     transform: none;
 }
+
+body 
+{
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9f9ff 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+        
+.orders-container 
+{
+    flex: 1;
+    padding-top: 80px;
+}
+        
+.alert 
+{
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+        
+.alert-success 
+{
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border-left: 4px solid #28a745;
+}
+        
+.alert-danger 
+{
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    border-left: 4px solid #dc3545;
+}
+        
+.order-details-row 
+{
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+}
+        
+.order-details 
+{
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+        
+.order-items .list-group-item 
+{
+    border: 1px solid #dee2e6;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+        
+.order-items .list-group-item:hover 
+{
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+        
+.order-items img 
+{
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+        
+.view-order-details
+{
+    transition: all 0.2s ease;
+}
+        
+.view-order-details:hover 
+{
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+        
+@keyframes fadeInRow 
+{
+    from 
+    {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to 
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+        
+.table tbody tr 
+{
+    animation: fadeInRow 0.3s ease forwards;
+}
+        
+.table tbody tr:nth-child(even) 
+{
+    background-color: #f8f9fa;
+}
+        
+.btn-close 
+{
+    filter: invert(1);
+}

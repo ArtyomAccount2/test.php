@@ -82,19 +82,43 @@ unset($_SESSION['form_data']);
         } 
         ?>
 
-        let animatedElements = document.querySelectorAll('.feature-item-compact, .timeline-item-compact, .value-card-compact');
+        let statNumbers = document.querySelectorAll('.stat-number');
 
-        let elementObserver = new IntersectionObserver((entries) => {
+        statNumbers.forEach(stat => {
+            let finalValue = parseInt(stat.textContent);
+            let currentValue = 0;
+            let increment = finalValue / 50;
+            
+            let timer = setInterval(() => {
+                currentValue += increment;
+
+                if (currentValue >= finalValue) 
+                {
+                    currentValue = finalValue;
+                    clearInterval(timer);
+                }
+
+                stat.textContent = Math.floor(currentValue);
+            }, 30);
+        });
+
+        let observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        let observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) 
                 {
                     entry.target.classList.add('animate__animated', 'animate__fadeInUp');
-                    elementObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1 });
+        }, observerOptions);
 
-        animatedElements.forEach(el => elementObserver.observe(el));
+        document.querySelectorAll('.about-card, .stat-item, .feature-item, .timeline-item, .value-card').forEach(el => {
+            observer.observe(el);
+        });
     });
     </script>
 </head>
@@ -104,185 +128,226 @@ unset($_SESSION['form_data']);
     require_once("header.php"); 
 ?>
 
-<section class="about-hero" style="margin-top: 100px;">
+<section class="about-hero-section" style="margin-top: 80px;">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 order-one">
-                <span class="badge bg-primary mb-3 px-3 py-2 rounded-pill">С 2010 года</span>
-                <h1 class="about-title">
+        <div class="row align-items-center container-hero">
+            <div class="col-lg-6 mb-5 mb-lg-0 container-hero-badge">
+                <div class="hero-badge mb-4">С 2010 года</div>
+                <h1 class="hero-title mb-4">
                     <span class="text-primary">Лал-Авто</span> - ваш надежный партнер в мире автозапчастей
                 </h1>
-                <p class="about-subtitle">Мы не просто продаем запчасти - мы обеспечиваем уверенность в каждой поездке. Более 13 лет доверия тысяч автомобилистов.</p>
-                <div class="d-flex justify-content-between flex-wrap gap-3 mt-4">
-                    <a href="../includes/assortment.php" class="btn btn-primary btn-lg px-4 py-2 weight-45">
+                <p class="hero-subtitle mb-5">
+                    Мы не просто продаем запчасти - мы обеспечиваем уверенность в каждой поездке. 
+                    Более 13 лет доверия тысяч автомобилистов по всей России.
+                </p>
+                <div class="hero-actions">
+                    <a href="../includes/assortment.php" class="btn btn-primary btn-lg px-4 py-3 me-3 mb-3">
                         <i class="bi bi-search me-2"></i>Найти запчасти
                     </a>
-                    <a href="#stats" class="btn btn-outline-primary btn-lg px-4 py-2 weight-45">
+                    <a href="#stats" class="btn btn-outline-primary btn-lg px-4 py-3 mb-3">
                         <i class="bi bi-graph-up me-2"></i>Наши достижения
                     </a>
                 </div>
             </div>
-            <div class="col-lg-6 order-two">
-                <div class="about-hero-image">
-                    <img src="../img/company.jpg" alt="Лал-Авто" class="img-fluid rounded">
+            <div class="col-lg-6 container-hero-badge">
+                <div class="hero-image-container">
+                    <img src="../img/company.jpg" alt="Лал-Авто" class="hero-image img-fluid rounded-3">
+                    <div class="image-overlay"></div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section id="stats" class="about-stats compact-stats">
+<section id="stats" class="about-stats-section">
     <div class="container">
-        <div class="section-header text-center mb-4">
-            <h2 class="section-title">Цифры, которые говорят сами за себя</h2>
-            <p class="text-muted mb-4">Мы гордимся тем, что делаем, и можем это подтвердить</p>
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title mb-3">Цифры, которые говорят сами за себя</h2>
+            <p class="section-subtitle">Мы гордимся тем, что делаем, и можем это подтвердить</p>
         </div>
         <div class="row">
-            <div class="col-md-3 col-6 stat-item-compact">
-                <div class="stat-number-compact">13+</div>
-                <div class="stat-label-compact">Лет успешной работы</div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item text-center">
+                    <div class="stat-icon mb-3">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <div class="stat-number mb-2">13</div>
+                    <div class="stat-label">Лет успешной работы</div>
+                </div>
             </div>
-            <div class="col-md-3 col-6 stat-item-compact">
-                <div class="stat-number-compact">5000+</div>
-                <div class="stat-label-compact">Позиций в каталоге</div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item text-center">
+                    <div class="stat-icon mb-3">
+                        <i class="bi bi-box-seam"></i>
+                    </div>
+                    <div class="stat-number mb-2">5000</div>
+                    <div class="stat-label">Позиций в каталоге</div>
+                </div>
             </div>
-            <div class="col-md-3 col-6 stat-item-compact">
-                <div class="stat-number-compact">50+</div>
-                <div class="stat-label-compact">Официальных брендов</div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item text-center">
+                    <div class="stat-icon mb-3">
+                        <i class="bi bi-award"></i>
+                    </div>
+                    <div class="stat-number mb-2">50</div>
+                    <div class="stat-label">Официальных брендов</div>
+                </div>
             </div>
-            <div class="col-md-3 col-6 stat-item-compact">
-                <div class="stat-number-compact">10000+</div>
-                <div class="stat-label-compact">Довольных клиентов</div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item text-center">
+                    <div class="stat-icon mb-3">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div class="stat-number mb-2">10000</div>
+                    <div class="stat-label">Довольных клиентов</div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="about-features compact-features">
+<section class="about-features-section">
     <div class="container">
-        <div class="section-header text-center mb-4">
-            <h2 class="section-title">Преимущества, которые вы оцените</h2>
-            <p class="text-muted mb-4">Мы делаем покупку автозапчастей простой и надежной</p>
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title mb-3">Преимущества, которые вы оцените</h2>
+            <p class="section-subtitle">Мы делаем покупку автозапчастей простой и надежной</p>
         </div>
-        <div class="row g-4 justify-content-center">
-            <div class="col-lg-4 col-md-6 d-flex">
-                <div class="feature-item-compact w-100">
-                    <div class="feature-icon-compact">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-item about-card">
+                    <div class="feature-icon mb-4">
                         <i class="bi bi-award-fill"></i>
                     </div>
-                    <h3>Гарантированное качество</h3>
-                    <p class="small">Каждая запчасть проходит тройной контроль качества. Оригинальные комплектующие с гарантией от 1 года.</p>
+                    <h3 class="feature-title mb-3">Гарантированное качество</h3>
+                    <p class="feature-description">
+                        Каждая запчасть проходит тройной контроль качества. 
+                        Оригинальные комплектующие с гарантией от 1 года.
+                    </p>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 d-flex">
-                <div class="feature-item-compact w-100">
-                    <div class="feature-icon-compact">
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-item about-card">
+                    <div class="feature-icon mb-4">
                         <i class="bi bi-lightning-charge-fill"></i>
                     </div>
-                    <h3>Молниеносная доставка</h3>
-                    <p class="small">Доставка по городу за 2 часа, 5 пунктов самовывоза. Отправка по РФ в день заказа.</p>
+                    <h3 class="feature-title mb-3">Молниеносная доставка</h3>
+                    <p class="feature-description">
+                        Доставка по городу за 2 часа, 5 пунктов самовывоза. 
+                        Отправка по РФ в день заказа.
+                    </p>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-12 d-flex">
-                <div class="feature-item-compact w-100">
-                    <div class="feature-icon-compact">
+            <div class="col-lg-4 col-md-12">
+                <div class="feature-item about-card">
+                    <div class="feature-icon mb-4">
                         <i class="bi bi-person-check-fill"></i>
                     </div>
-                    <h3>Экспертная поддержка</h3>
-                    <p class="small">Специалисты с опытом от 5 лет. Круглосуточная поддержка и бесплатная консультация.</p>
+                    <h3 class="feature-title mb-3">Экспертная поддержка</h3>
+                    <p class="feature-description">
+                        Специалисты с опытом от 5 лет. Круглосуточная поддержка 
+                        и бесплатная консультация.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="about-history">
+<section class="about-history-section">
     <div class="container">
-        <div class="section-header text-center mb-4">
-            <h2 class="section-title">Наш путь к успеху</h2>
-            <p class="text-muted mb-4">От небольшого склада до ведущего поставщика автозапчастей</p>
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title mb-3">Наш путь к успеху</h2>
+            <p class="section-subtitle">От небольшого склада до ведущего поставщика автозапчастей</p>
         </div>
-        <div class="timeline-compact">
-            <div class="timeline-item-compact">
-                <div class="timeline-year-compact">2010</div>
-                <div class="timeline-content-compact">
-                    <h4>Основание компании</h4>
-                    <p class="small">Открытие первого склада с 200 позициями запчастей для отечественных автомобилей</p>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">2010</div>
+                <div class="timeline-content">
+                    <h4 class="mb-2">Основание компании</h4>
+                    <p class="mb-0">Открытие первого склада с 200 позициями запчастей для отечественных автомобилей</p>
                 </div>
             </div>
-            <div class="timeline-item-compact">
-                <div class="timeline-year-compact">2014</div>
-                <div class="timeline-content-compact">
-                    <h4>Первый магазин</h4>
-                    <p class="small">Открытие розничного магазина и начало работы с европейскими производителями</p>
+            <div class="timeline-item">
+                <div class="timeline-year">2014</div>
+                <div class="timeline-content">
+                    <h4 class="mb-2">Первый магазин</h4>
+                    <p class="mb-0">Открытие розничного магазина и начало работы с европейскими производителями</p>
                 </div>
             </div>
-            <div class="timeline-item-compact">
-                <div class="timeline-year-compact">2018</div>
-                <div class="timeline-content-compact">
-                    <h4>Цифровизация</h4>
-                    <p class="small">Запуск интернет-магазина и системы онлайн-заказов</p>
+            <div class="timeline-item">
+                <div class="timeline-year">2018</div>
+                <div class="timeline-content">
+                    <h4 class="mb-2">Цифровизация</h4>
+                    <p class="mb-0">Запуск интернет-магазина и системы онлайн-заказов</p>
                 </div>
             </div>
-            <div class="timeline-item-compact">
-                <div class="timeline-year-compact">2023</div>
-                <div class="timeline-content-compact">
-                    <h4>Официальный дилер</h4>
-                    <p class="small">Стали официальным дилером 15+ мировых брендов автозапчастей</p>
+            <div class="timeline-item">
+                <div class="timeline-year">2023</div>
+                <div class="timeline-content">
+                    <h4 class="mb-2">Официальный дилер</h4>
+                    <p class="mb-0">Стали официальным дилером 15+ мировых брендов автозапчастей</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="about-values compact-values">
+<section class="about-values-section">
     <div class="container">
-        <div class="section-header text-center mb-4">
-            <h2 class="section-title">Наши ценности</h2>
-            <p class="text-muted mb-4">Принципы, которые лежат в основе нашей работы</p>
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title mb-3">Наши ценности</h2>
+            <p class="section-subtitle">Принципы, которые лежат в основе нашей работы</p>
         </div>
-        <div class="row g-3">
-            <div class="col-lg-3 col-md-6 d-flex">
-                <div class="value-card-compact w-100">
-                    <i class="bi bi-heart-fill text-primary mb-2"></i>
-                    <h5>Клиент на первом месте</h5>
-                    <p class="small">Каждый клиент для нас уникален. Мы не просто продаем запчасти - мы решаем проблемы.</p>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="value-card about-card">
+                    <div class="value-icon mb-3">
+                        <i class="bi bi-heart-fill"></i>
+                    </div>
+                    <h5 class="mb-3">Клиент на первом месте</h5>
+                    <p class="mb-0">Каждый клиент для нас уникален. Мы не просто продаем запчасти - мы решаем проблемы.</p>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 d-flex">
-                <div class="value-card-compact w-100">
-                    <i class="bi bi-shield-check text-primary mb-2"></i>
-                    <h5>Честность и прозрачность</h5>
-                    <p class="small">Никаких скрытых платежей. Цена на сайте - окончательная цена.</p>
+            <div class="col-lg-3 col-md-6">
+                <div class="value-card about-card">
+                    <div class="value-icon mb-3">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h5 class="mb-3">Честность и прозрачность</h5>
+                    <p class="mb-0">Никаких скрытых платежей. Цена на сайте - окончательная цена.</p>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 d-flex">
-                <div class="value-card-compact w-100">
-                    <i class="bi bi-lightbulb text-primary mb-2"></i>
-                    <h5>Инновации</h5>
-                    <p class="small">Постоянно внедряем новые технологии для вашего удобства.</p>
+            <div class="col-lg-3 col-md-6">
+                <div class="value-card about-card">
+                    <div class="value-icon mb-3">
+                        <i class="bi bi-lightbulb"></i>
+                    </div>
+                    <h5 class="mb-3">Инновации</h5>
+                    <p class="mb-0">Постоянно внедряем новые технологии для вашего удобства.</p>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 d-flex">
-                <div class="value-card-compact w-100">
-                    <i class="bi bi-people text-primary mb-2"></i>
-                    <h5>Командный дух</h5>
-                    <p class="small">Наша сила - в слаженной работе профессиональной команды.</p>
+            <div class="col-lg-3 col-md-6">
+                <div class="value-card about-card">
+                    <div class="value-icon mb-3">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h5 class="mb-3">Командный дух</h5>
+                    <p class="mb-0">Наша сила - в слаженной работе профессиональной команды.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="about-cta">
+<section class="about-cta-section">
     <div class="container text-center">
-        <h2>Готовы обновить ваше авто?</h2>
-        <p class="lead">Более 5000 качественных запчастей уже ждут вас в каталоге</p>
-        <div class="d-flex flex-wrap gap-3 justify-content-center">
-            <a href="../includes/assortment.php" class="btn btn-primary btn-lg px-5">
+        <h2 class="cta-title mb-4">Готовы обновить ваше авто?</h2>
+        <p class="cta-subtitle mb-5">Более 5000 качественных запчастей уже ждут вас в каталоге</p>
+        <div class="cta-actions">
+            <a href="../includes/assortment.php" class="btn btn-primary btn-lg px-5 py-3 me-3 mb-3">
                 <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
             </a>
-            <a href="tel:+78001234567" class="btn btn-outline-primary btn-lg px-5">
+            <a href="tel:+78001234567" class="btn btn-outline-primary btn-lg px-5 py-3 mb-3">
                 <i class="bi bi-telephone me-2"></i>8-800-123-45-67
             </a>
         </div>

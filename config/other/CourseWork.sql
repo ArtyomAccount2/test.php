@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Янв 01 2026 г., 19:39
+-- Время создания: Янв 05 2026 г., 18:43
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -44,10 +44,10 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `product_id`, `product_name`, `product_image`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
-(16, 2, 0, 'Тормозные колодки BMW 1 series F20', '../img/no-image.png', '5200.00', 2, '2026-01-01 15:40:10', '2026-01-01 15:56:40'),
-(17, 2, 0, 'Ремень ГРМ BMW 7 series G11', '../img/no-image.png', '3200.00', 1, '2026-01-01 15:56:39', '2026-01-01 15:56:39'),
-(18, 2, 0, 'Аккумулятор BMW 5 series F10', '../img/no-image.png', '12500.00', 1, '2026-01-01 15:56:39', '2026-01-01 15:56:39'),
-(19, 2, 0, 'Генератор Audi A4 B9', '../img/no-image.png', '15600.00', 1, '2026-01-01 15:56:44', '2026-01-01 15:56:44');
+(20, 3, 0, 'Фильтр масляный Audi A4 B8 2.0 TFSI', '../img/no-image.png', '1250.00', 1, '2026-01-05 15:19:41', '2026-01-05 15:19:41'),
+(21, 3, 0, 'Тормозные колодки Audi A6 C7', '../img/no-image.png', '3890.00', 1, '2026-01-05 15:19:42', '2026-01-05 15:19:42'),
+(22, 3, 0, 'Свечи зажигания Audi Q5 2.0 TDI', '../img/no-image.png', '850.00', 1, '2026-01-05 15:19:43', '2026-01-05 15:19:43'),
+(23, 3, 0, 'Сцепление Audi A3 8V', '../img/no-image.png', '12500.00', 2, '2026-01-05 15:19:43', '2026-01-05 15:19:50');
 
 -- --------------------------------------------------------
 
@@ -67,6 +67,13 @@ CREATE TABLE `orders` (
   `notes` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Дамп данных таблицы `orders`
+--
+
+INSERT INTO `orders` (`id`, `order_number`, `user_id`, `total_amount`, `status`, `order_date`, `shipping_address`, `phone`, `notes`) VALUES
+(1, 'ORD-20260105-5A3C6597', 2, '41700.00', 'pending', '2026-01-05 15:00:31', '', '89113456789', '');
+
 -- --------------------------------------------------------
 
 --
@@ -81,6 +88,16 @@ CREATE TABLE `order_items` (
   `price` decimal(10,2) NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_name`, `price`, `quantity`) VALUES
+(1, 1, 0, 'Генератор Audi A4 B9', '15600.00', 1),
+(2, 1, 0, 'Ремень ГРМ BMW 7 series G11', '3200.00', 1),
+(3, 1, 0, 'Аккумулятор BMW 5 series F10', '12500.00', 1),
+(4, 1, 0, 'Тормозные колодки BMW 1 series F20', '5200.00', 2);
 
 -- --------------------------------------------------------
 
@@ -192,19 +209,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `reviews`

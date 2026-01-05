@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function()
         let elements = {
             'profile': '.stat-card, .activity-item',
             'orders': 'table tr',
+            'cart': 'table tr',
             'wishlist': '.wishlist-item',
             'notifications': '.notification-item'
         };

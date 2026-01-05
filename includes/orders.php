@@ -38,13 +38,7 @@ if (isset($_SESSION['user']))
 
 if ($userId) 
 {
-    $orderSql = "SELECT 
-        o.id, 
-        o.order_number, 
-        o.order_date, 
-        o.total_amount, 
-        o.status,
-        COUNT(oi.id) as items_count
+    $orderSql = "SELECT o.id, o.order_number, o.order_date, o.total_amount, o.status, o.shipping_address, o.phone, COUNT(oi.id) as items_count
     FROM orders o
     LEFT JOIN order_items oi ON o.id = oi.order_id
     WHERE o.user_id = ?
@@ -127,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order']))
     require_once("header.php"); 
 ?>
 
-<div class="orders-container" style="margin-top: 100px;">
+<div class="orders-container">
     <div class="container py-5">
         <div class="row">
             <div class="col-12">
@@ -251,10 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order']))
                                                         <div class="order-items mb-3">
                                                             <h6 class="mb-2">Товары в заказе:</h6>
                                                             <?php
-                                                            $itemsSql = "SELECT oi.*, p.name as product_name, p.image as product_image 
-                                                                        FROM order_items oi 
-                                                                        LEFT JOIN products p ON oi.product_id = p.id 
-                                                                        WHERE oi.order_id = ?";
+                                                            $itemsSql = "SELECT oi.* FROM order_items oi WHERE oi.order_id = ?";
                                                             $itemsStmt = $conn->prepare($itemsSql);
                                                             $itemsStmt->bind_param("i", $order['id']);
                                                             $itemsStmt->execute();
@@ -268,7 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order']))
                                                                     <div class="list-group-item">
                                                                         <div class="d-flex justify-content-between align-items-center">
                                                                             <div class="d-flex align-items-center">
-                                                                                <img src="../img/products/<?= !empty($item['product_image']) ? $item['product_image'] : 'no-image.png' ?>" 
+                                                                                <img src="../img/no-image.png" 
                                                                                      alt="<?= htmlspecialchars($item['product_name']) ?>" 
                                                                                      class="me-3" width="60" height="60">
                                                                                 <div>
@@ -289,20 +280,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order']))
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="card">
+                                                            <div class="col-md-6 h-100">
+                                                                <div class="card" style="height: 180px">
                                                                     <div class="card-header">
                                                                         <h6 class="mb-0">Информация о доставке</h6>
                                                                     </div>
-                                                                    <div class="card-body">
-                                                                        <p class="mb-1"><strong>Адрес:</strong> г. Калининград, ул. Автомобильная, 12</p>
+                                                                    <div class="card-body d-flex flex-column justify-content-between">
+                                                                        <?php 
+                                                                        if (!empty($order['shipping_address']))
+                                                                        {
+                                                                        ?>
+                                                                            <p class="mb-1"><strong>Адрес:</strong> <?= htmlspecialchars($order['shipping_address']) ?></p>
+                                                                        <?php 
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                        ?>
+                                                                            <p class="mb-1"><strong>Адрес:</strong> г. Калининград, ул. Автомобильная, 12</p>
+                                                                        <?php 
+                                                                        }
+                                                                        ?>
                                                                         <p class="mb-1"><strong>Способ:</strong> Самовывоз</p>
-                                                                        <p class="mb-0"><strong>Телефон:</strong> +7 (4012) 65-65-65</p>
+                                                                        <p class="mb-0"><strong>Телефон:</strong> <?= !empty($order['phone']) ? htmlspecialchars($order['phone']) : '+7 (4012) 65-65-65' ?></p>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <div class="card">
+                                                            <div class="col-md-6 h-100">
+                                                                <div class="card" style="height: 180px">
                                                                     <div class="card-header">
                                                                         <h6 class="mb-0">Итоговая сумма</h6>
                                                                     </div>
@@ -384,6 +388,45 @@ document.addEventListener('DOMContentLoaded', function()
             }
         });
     });
+    
+    let tableRows = document.querySelectorAll('.table tbody tr');
+    tableRows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            row.style.transition = 'all 0.4s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) 
+    {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    document.querySelectorAll('.alert .btn-close').forEach(button => {
+        button.addEventListener('click', function() {
+            let alert = this.closest('.alert');
+            alert.style.opacity = '0';
+            setTimeout(() => {
+                alert.remove();
+            }, 300);
+        });
+    });
+
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(alert => {
+            if (!alert.classList.contains('alert-dismissible')) 
+            {
+                alert.style.opacity = '0';
+                setTimeout(() => {
+                    alert.remove();
+                }, 300);
+            }
+        });
+    }, 5000);
 });
 </script>
 </body>
