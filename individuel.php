@@ -111,6 +111,7 @@
                                     </label>
                                 </div>
                             </div>
+                            <input type="hidden" name="user_type" value="physical">
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary btn-lg fw-semibold py-3">
                                     <i class="bi bi-person-plus me-2"></i> Зарегистрироваться

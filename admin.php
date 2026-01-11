@@ -9,6 +9,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION
 }
 
 $current_section = isset($_GET['section']) ? $_GET['section'] : 'users_list';
+$current_tab = isset($_GET['tab']) ? $_GET['tab'] : 'general';
 
 $users = [];
 
@@ -21,6 +22,76 @@ if ($current_section === 'users_list')
     while ($row = $result->fetch_assoc()) 
     {
         $users[] = $row;
+    }
+}
+
+$products = [];
+
+if ($current_section === 'products_catalog') 
+{
+    $stmt = $conn->prepare("SELECT * FROM `products` ORDER BY id DESC");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    while ($row = $result->fetch_assoc()) 
+    {
+        $products[] = $row;
+    }
+}
+
+$categories = [];
+
+if ($current_section === 'products_categories') 
+{
+    $stmt = $conn->prepare("SELECT * FROM `categories` ORDER BY id DESC");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    while ($row = $result->fetch_assoc()) 
+    {
+        $categories[] = $row;
+    }
+}
+
+$shops = [];
+
+if ($current_section === 'shops') 
+{
+    $stmt = $conn->prepare("SELECT * FROM `shops` ORDER BY id DESC");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    while ($row = $result->fetch_assoc()) 
+    {
+        $shops[] = $row;
+    }
+}
+
+$news = [];
+
+if ($current_section === 'news') 
+{
+    $stmt = $conn->prepare("SELECT * FROM `news` ORDER BY id DESC");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    while ($row = $result->fetch_assoc()) 
+    {
+        $news[] = $row;
+    }
+}
+
+$services = [];
+
+if ($current_section === 'service') 
+{
+    $stmt = $conn->prepare("SELECT * FROM `services` ORDER BY id DESC");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    while ($row = $result->fetch_assoc()) 
+    {
+        $services[] = $row;
     }
 }
 
@@ -41,6 +112,18 @@ function isActiveSubmenu($parent, $item = null)
 
     return strpos($current_section, $parent) === 0 ? 'active' : '';
 }
+
+if (isset($_GET['export']) && $current_section === 'users_list') 
+{
+    include 'files/export_users.php';
+    exit();
+}
+
+if (isset($_GET['export']) && $current_section === 'products_catalog') 
+{
+    include 'files/export_products_catalog.php';
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -54,6 +137,10 @@ function isActiveSubmenu($parent, $item = null)
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/admin-styles.css">
+    <script>
+        var currentSection = '<?= $current_section ?>';
+        var userId = null;
+    </script>
 </head>
 <body class="admin-body">
 
@@ -195,6 +282,9 @@ function isActiveSubmenu($parent, $item = null)
                     break;
                 case 'settings':
                     include 'sections/settings.php';
+                    break;
+                case 'edit_products':
+                    include 'files/edit_products.php';
                     break;
                 default:
                     include 'sections/users_list.php';

@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $address = $_POST['address'];
     $phone = $_POST['phone'];
     $organizationType = $_POST['organizationType'];
+    $user_type = 'legal';
 
-    $sql = "INSERT INTO `users` (organization_users, TIN_users, person_users, login_users, password_users, email_users, discountСardNumber_users, region_users, city_users, address_users, organizationType_users) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO users (login_users, password_users, email_users, discountСardNumber_users, region_users, city_users, address_users, phone_users, TIN_users, person_users, organization_users, organizationType_users, user_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
     
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         die("Ошибка подготовки запроса: " . mysqli_error($conn));
     }
     
-    $stmt->bind_param("sssssssssssss", $organization, $inn, $person, $login, $password, $email, $discountCardNumber, $region, $city, $address, $phone, $organizationType);
+    $stmt->bind_param("sssssssssssss", $login, $hashed_password, $email, $discountCardNumber, $region, $city, $address, $phone, $TIN, $person, $organization, $organizationType, $user_type);
 
     if ($stmt->execute()) 
     {

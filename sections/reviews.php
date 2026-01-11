@@ -1,13 +1,6 @@
 <?php
-if (!isset($_SESSION['loggedin']) || $_SESSION['user'] !== 'admin') 
-{
-    header("Location: ../files/logout.php");
-    exit();
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) 
 {
-    
     $action = $_POST['action'];
     $review_id = isset($_POST['review_id']) ? (int)$_POST['review_id'] : 0;
     
@@ -39,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']))
             $text = trim($_POST['text']);
             $rating = (int)$_POST['rating'];
             $status = $_POST['status'];
+            $email = trim($_POST['email'] ?? '');
             
             $stmt = $conn->prepare("UPDATE reviews SET name = ?, text = ?, rating = ?, status = ? WHERE id = ?");
             $stmt->bind_param("ssisi", $name, $text, $rating, $status, $review_id);
@@ -52,26 +46,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']))
 }
 
 $filter_status = $_GET['status'] ?? 'all';
-$query = "SELECT * FROM reviews";
+$search = $_GET['search'] ?? '';
+
+$where_conditions = [];
 $params = [];
+$types = '';
 
 if ($filter_status !== 'all') 
 {
-    $query .= " WHERE status = ?";
+    $where_conditions[] = "status = ?";
     $params[] = $filter_status;
+    $types .= 's';
 }
 
-$query .= " ORDER BY created_at DESC";
+if (!empty($search)) 
+{
+    $where_conditions[] = "(name LIKE ? OR email LIKE ? OR text LIKE ?)";
+    $search_param = "%$search%";
+    $params = array_merge($params, [$search_param, $search_param, $search_param]);
+    $types .= 'sss';
+}
 
+$where_sql = '';
+if (!empty($where_conditions)) 
+{
+    $where_sql = 'WHERE ' . implode(' AND ', $where_conditions);
+}
+
+$query = "SELECT * FROM reviews $where_sql ORDER BY created_at DESC";
 $stmt = $conn->prepare($query);
 
 if (!empty($params)) 
 {
-    $stmt->bind_param("s", $params[0]);
+    $stmt->bind_param($types, ...$params);
 }
 
 $stmt->execute();
 $reviews_result = $stmt->get_result();
+
+$stats_stmt = $conn->query("SELECT COUNT(*) as total, SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending, SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) as approved, SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as rejected, AVG(CASE WHEN status = 'approved' THEN rating ELSE NULL END) as avg_rating FROM reviews");
+$stats = $stats_stmt->fetch_assoc();
 ?>
 
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
@@ -100,6 +114,17 @@ $reviews_result = $stmt->get_result();
                 <li><a class="dropdown-item" href="admin.php?section=reviews&status=rejected">Отклоненные</a></li>
             </ul>
         </div>
+        
+        <form method="GET" action="admin.php" class="d-flex">
+            <input type="hidden" name="section" value="reviews">
+            <input type="hidden" name="status" value="<?= $filter_status ?>">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Поиск..." value="<?= htmlspecialchars($search) ?>">
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -111,11 +136,45 @@ if (isset($_SESSION['message']))
     <?php echo $_SESSION['message']; ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
-
-<?php unset($_SESSION['message']); ?>
 <?php 
+unset($_SESSION['message']);  
 } 
 ?>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Всего</h5>
+                <h2 class="text-primary"><?= $stats['total'] ?></h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">На модерации</h5>
+                <h2 class="text-warning"><?= $stats['pending'] ?></h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Одобренные</h5>
+                <h2 class="text-success"><?= $stats['approved'] ?></h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Средний рейтинг</h5>
+                <h2 class="text-info"><?= number_format($stats['avg_rating'] ?? 0, 1) ?></h2>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="card shadow-sm">
     <div class="card-header bg-white">
@@ -141,37 +200,35 @@ if (isset($_SESSION['message']))
                     {
                         while($review = $reviews_result->fetch_assoc())
                         {
+                            $status_badges = [
+                                'pending' => ['bg-warning', 'На модерации'],
+                                'approved' => ['bg-success', 'Одобрено'],
+                                'rejected' => ['bg-danger', 'Отклонено']
+                            ];
                     ?>
                     <tr>
-                        <td><?php echo $review['id']; ?></td>
+                        <td><?= $review['id'] ?></td>
                         <td>
-                            <div class="fw-bold"><?php echo htmlspecialchars($review['name']); ?></div>
-                            <small class="text-muted d-none d-md-block"><?php echo htmlspecialchars($review['email'] ?? '-'); ?></small>
+                            <div class="fw-bold"><?= htmlspecialchars($review['name']) ?></div>
+                            <small class="text-muted d-none d-md-block"><?= htmlspecialchars($review['email'] ?? '-') ?></small>
                             <div class="d-block d-sm-none">
                                 <small class="text-muted">
                                     <?php 
                                     for($i = 1; $i <= 5; $i++) 
                                     {
-                                        if ($i <= $review['rating']) 
-                                        {
-                                            echo '<i class="bi bi-star-fill text-warning"></i>';
-                                        } 
-                                        else 
-                                        {
-                                            echo '<i class="bi bi-star text-warning"></i>';
-                                        }
+                                        echo $i <= $review['rating'] ? '<i class="bi bi-star-fill text-warning"></i>' : '<i class="bi bi-star text-warning"></i>';
                                     }
                                     ?>
                                 </small>
                                 <br>
-                                <span class="badge <?php echo $status_badges[$review['status']]; ?>">
-                                    <?php echo $status_labels[$review['status']]; ?>
+                                <span class="badge <?= $status_badges[$review['status']][0] ?>">
+                                    <?= $status_badges[$review['status']][1] ?>
                                 </span>
                             </div>
                         </td>
                         <td class="d-none d-xl-table-cell">
                             <div class="text-truncate" style="max-width: 200px;">
-                                <?php echo htmlspecialchars($review['text']); ?>
+                                <?= htmlspecialchars($review['text']) ?>
                             </div>
                         </td>
                         <td class="d-none d-md-table-cell">
@@ -179,55 +236,37 @@ if (isset($_SESSION['message']))
                                 <?php 
                                 for($i = 1; $i <= 5; $i++) 
                                 {
-                                    if ($i <= $review['rating']) 
-                                    {
-                                        echo '<i class="bi bi-star-fill"></i>';
-                                    } 
-                                    else 
-                                    {
-                                        echo '<i class="bi bi-star"></i>';
-                                    }
+                                    echo $i <= $review['rating'] ? '<i class="bi bi-star-fill"></i>' : '<i class="bi bi-star"></i>';
                                 }
                                 ?>
+                                <small class="text-muted ms-1"><?= $review['rating'] ?>/5</small>
                             </div>
                         </td>
                         <td class="d-none d-lg-table-cell"><?php echo date('d.m.Y H:i', strtotime($review['created_at'])); ?></td>
                         <td class="d-none d-sm-table-cell">
-                            <?php
-                            $status_badges = [
-                                'pending' => 'bg-warning',
-                                'approved' => 'bg-success',
-                                'rejected' => 'bg-danger'
-                            ];
-                            $status_labels = [
-                                'pending' => 'На модерации',
-                                'approved' => 'Одобрено',
-                                'rejected' => 'Отклонено'
-                            ];
-                            ?>
-                            <span class="badge <?php echo $status_badges[$review['status']]; ?>">
-                                <?php echo $status_labels[$review['status']]; ?>
+                            <span class="badge <?= $status_badges[$review['status']][0] ?>">
+                                <?= $status_badges[$review['status']][1] ?>
                             </span>
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editReviewModal<?php echo $review['id']; ?>">
+                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editReviewModal<?= $review['id'] ?>">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <?php 
                                 if ($review['status'] == 'pending')
                                 {
                                 ?>
-                                    <button type="button" class="btn btn-outline-success" onclick="approveReview(<?php echo $review['id']; ?>)">
+                                    <button type="button" class="btn btn-outline-success" onclick="approveReview(<?= $review['id'] ?>)">
                                         <i class="bi bi-check"></i>
                                     </button>
-                                    <button type="button" class="btn btn-outline-warning" onclick="rejectReview(<?php echo $review['id']; ?>)">
+                                    <button type="button" class="btn btn-outline-warning" onclick="rejectReview(<?= $review['id'] ?>)">
                                         <i class="bi bi-x"></i>
                                     </button>
                                 <?php 
                                 }
                                 ?>
-                                <button type="button" class="btn btn-outline-danger" onclick="deleteReview(<?php echo $review['id']; ?>)">
+                                <button type="button" class="btn btn-outline-danger" onclick="deleteReview(<?= $review['id'] ?>)">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
@@ -251,6 +290,30 @@ if (isset($_SESSION['message']))
                 </tbody>
             </table>
         </div>
+        <?php 
+        if ($reviews_result->num_rows > 0)
+        {
+        ?>
+        <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&page=1">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&page=2">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <?php 
+        }
+        ?>
     </div>
 </div>
 
@@ -321,7 +384,7 @@ if ($reviews_result->num_rows > 0)
 <script>
 function approveReview(reviewId) 
 {
-    if (confirm('Вы уверены, что хотите одобрить этот отзыв?')) 
+    if (confirm('Одобрить этот отзыв?')) 
     {
         let form = document.createElement('form');
         form.method = 'POST';
@@ -336,7 +399,7 @@ function approveReview(reviewId)
 
 function rejectReview(reviewId) 
 {
-    if (confirm('Вы уверены, что хотите отклонить этот отзыв?')) 
+    if (confirm('Отклонить этот отзыв?')) 
     {
         let form = document.createElement('form');
         form.method = 'POST';
@@ -351,7 +414,7 @@ function rejectReview(reviewId)
 
 function deleteReview(reviewId) 
 {
-    if (confirm('Вы уверены, что хотите удалить этот отзыв?')) 
+    if (confirm('Удалить этот отзыв?')) 
     {
         let form = document.createElement('form');
         form.method = 'POST';
@@ -363,4 +426,16 @@ function deleteReview(reviewId)
         form.submit();
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() 
+{
+    setTimeout(function() {
+        let alerts = document.querySelectorAll('.alert');
+        
+        alerts.forEach(function(alert) {
+            let bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 5000);
+});
 </script>

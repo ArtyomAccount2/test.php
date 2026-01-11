@@ -12,7 +12,7 @@
                             <h2 class="fw-bold text-primary">Регистрация для юридических лиц и ИП</h2>
                             <p class="text-muted">Создайте корпоративный аккаунт для бизнеса</p>
                         </div>
-                        <form action="files/registerForm.php" method="POST" id="registrationForm" onsubmit="return validateForm();">
+                        <form action="files/registerAltFrom.php" method="POST" id="registrationForm" onsubmit="return validateForm();">
                             <div class="mb-4">
                                 <label class="form-label fw-semibold" for="organizationType">Наименование организации<span class="text-danger">*</span></label>
                                 <div class="row g-2">
@@ -122,6 +122,7 @@
                                     </label>
                                 </div>
                             </div>
+                            <input type="hidden" name="user_type" value="legal">
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary btn-lg fw-semibold py-3">
                                     <i class="bi bi-building me-2"></i> Зарегистрировать организацию
