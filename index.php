@@ -8,10 +8,35 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['u
     header("Location: ../files/logout.php");
 }
 
+if (!isset($_SESSION['loggedin']) && isset($_COOKIE['remember_token'])) 
+{
+    $token = $_COOKIE['remember_token'];
+    $stmt = $conn->prepare("SELECT u.* FROM users u INNER JOIN remember_tokens rt ON u.id_users = rt.user_id WHERE rt.token = ? AND rt.expires_at > NOW()");
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) 
+    {
+        $row = $result->fetch_assoc();
+        $_SESSION['loggedin'] = true;
+        $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+        $_SESSION['user_id'] = $row['id_users'];
+        unset($_SESSION['login_error']);
+        unset($_SESSION['error_message']);
+
+        $updateStmt = $conn->prepare("UPDATE remember_tokens SET expires_at = DATE_ADD(NOW(), INTERVAL 30 DAY) WHERE token = ?");
+        $updateStmt->bind_param("s", $token);
+        $updateStmt->execute();
+        setcookie('remember_token', $token, time() + 30 * 24 * 3600, '/', '', false, true);
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $login = $_POST['login'];
     $password = $_POST['password'];
+    $rememberMe = isset($_POST['rememberMe']) ? $_POST['rememberMe'] : false;
 
     if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
     {
@@ -19,6 +44,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $_SESSION['user'] = 'admin';
         unset($_SESSION['login_error']);
         unset($_SESSION['error_message']);
+
+        if ($rememberMe) 
+        {
+            $token = bin2hex(random_bytes(32));
+            $expires = date('Y-m-d H:i:s', time() + 30 * 24 * 3600);
+            setcookie('remember_token', $token, time() + 30 * 24 * 3600, '/', '', false, true);
+        }
+        
         header("Location: admin.php");
         exit();
     }
@@ -34,8 +67,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $row = $result->fetch_assoc();
             $_SESSION['loggedin'] = true;
             $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+            $_SESSION['user_id'] = $row['id_users'];
             unset($_SESSION['login_error']);
             unset($_SESSION['error_message']);
+
+            if ($rememberMe) 
+            {
+                $token = bin2hex(random_bytes(32));
+                $expires = date('Y-m-d H:i:s', time() + 30 * 24 * 3600);
+                $deleteStmt = $conn->prepare("DELETE FROM remember_tokens WHERE user_id = ?");
+                $deleteStmt->bind_param("i", $row['id_users']);
+                $deleteStmt->execute();
+                $insertStmt = $conn->prepare("INSERT INTO remember_tokens (user_id, token, expires_at) VALUES (?, ?, ?)");
+                $insertStmt->bind_param("iss", $row['id_users'], $token, $expires);
+                $insertStmt->execute();
+                setcookie('remember_token', $token, time() + 30 * 24 * 3600, '/', '', false, true);
+            }
+            
             header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         } 
@@ -208,7 +256,7 @@ unset($_SESSION['form_data']);
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-box-arrow-in-right"></i> Войти
                         </button>
-                        <a href="#" class="btn btn-link">Забыли пароль?</a>
+                        <a href="includes/forgot_password.php" class="btn btn-link">Забыли пароль?</a>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -481,7 +529,6 @@ unset($_SESSION['form_data']);
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content prize-modal-content">
                 <div id="confetti-container"></div>
-                
                 <div class="modal-header prize-modal-header justify-content-center position-relative">
                     <div class="prize-ribbon position-absolute">
                         <i class="bi bi-gift-fill" style="color: #333;"></i>

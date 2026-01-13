@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Янв 11 2026 г., 17:27
+-- Время создания: Янв 13 2026 г., 12:32
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -210,6 +210,29 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_name`, `pric
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `short_token` varchar(10) DEFAULT NULL,
+  `expires_at` datetime NOT NULL,
+  `used` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `password_resets`
+--
+
+INSERT INTO `password_resets` (`id`, `user_id`, `token`, `short_token`, `expires_at`, `used`, `created_at`) VALUES
+(20, 4, 'aa261e316f214a318e91e660bd08ccc86a73def1d906eeb0fbc0e71d751b3d69', 'iZ6U6x', '2026-01-13 12:55:17', 1, '2026-01-13 08:55:17');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `products`
 --
 
@@ -236,6 +259,20 @@ INSERT INTO `products` (`id`, `name`, `description`, `category`, `price`, `quant
 (2, 'Воздушный фильтр', 'Воздушный фильтр для легковых автомобилей', 'Запчасти', '800.00', 23, 'AF-001', 'uploads/products/696392655986c.png', 'low', '2026-01-07 17:51:40', '2026-01-11 12:08:17'),
 (3, 'Тормозные колодки', 'Передние тормозные колодки', 'Запчасти', '3200.00', 15, 'TB-001', 'uploads/products/696392655986c.png', 'available', '2026-01-07 17:51:40', '2026-01-11 12:08:09'),
 (4, 'Аккумулятор 60Ah', 'Свинцово-кислотный аккумулятор 60Ah', 'Аксессуары', '5500.00', 8, 'BAT-60', 'uploads/products/696392655986c.png', 'available', '2026-01-07 17:51:40', '2026-01-11 12:08:01');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `remember_tokens`
+--
+
+CREATE TABLE `remember_tokens` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -498,7 +535,7 @@ INSERT INTO `users` (`id_users`, `surname_users`, `name_users`, `patronymic_user
 (1, NULL, NULL, NULL, 'admin', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
 (2, 'Иванов', 'Иван', 'Иванович', 'user1', 'user1', 'user1@gmail.com', '223344', 'Калининградская область', 'Калининград', 'Малый переулок, 3', 89113456789, 'uploads/avatars/avatar_2_1758131749.jpg', NULL, NULL, NULL, NULL, 'physical'),
 (3, NULL, NULL, NULL, 'user2', 'user2', 'user2@gmail.com', NULL, 'Калининградская область', 'Калининград', 'Уральская улица, 20', 89114567891, NULL, 2222455179, 'Наталья Евгеньевна Графарова', 'Дизель-мастер', 'ООО', 'legal'),
-(4, NULL, NULL, NULL, 'user3', 'user3', 'user3@gmail.com', '556677', 'Калининградская область', 'Балтийск', 'Киркенесская улица, 20', 89115678912, NULL, 5552431142, 'Иван Иванович Иванов', 'КлассикАвто', 'ЗАО', 'legal'),
+(4, NULL, NULL, NULL, 'user3', 'user3new', 'user3@gmail.com', '556677', 'Калининградская область', 'Балтийск', 'Киркенесская улица, 20', 89115678912, NULL, 5552431142, 'Иван Иванович Иванов', 'КлассикАвто', 'ЗАО', 'legal'),
 (5, 'Рожков', 'Олег', 'Константинович', 'user4', 'user4', 'user4@gmail.com', NULL, 'Калининградская область', 'Черняховск', 'улица Советская, 5', 89116789123, NULL, NULL, NULL, NULL, NULL, 'physical');
 
 --
@@ -566,6 +603,16 @@ ALTER TABLE `order_items`
   ADD KEY `order_id` (`order_id`);
 
 --
+-- Индексы таблицы `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `idx_short_token` (`short_token`),
+  ADD KEY `idx_token` (`token`),
+  ADD KEY `idx_user_id` (`user_id`),
+  ADD KEY `idx_expires` (`expires_at`);
+
+--
 -- Индексы таблицы `products`
 --
 ALTER TABLE `products`
@@ -573,6 +620,14 @@ ALTER TABLE `products`
   ADD KEY `idx_category` (`category`),
   ADD KEY `idx_status` (`status`),
   ADD KEY `idx_price` (`price`);
+
+--
+-- Индексы таблицы `remember_tokens`
+--
+ALTER TABLE `remember_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_user_id` (`user_id`),
+  ADD KEY `idx_token` (`token`);
 
 --
 -- Индексы таблицы `reviews`
@@ -678,10 +733,22 @@ ALTER TABLE `order_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT для таблицы `password_resets`
+--
+ALTER TABLE `password_resets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT для таблицы `remember_tokens`
+--
+ALTER TABLE `remember_tokens`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `reviews`
@@ -711,13 +778,13 @@ ALTER TABLE `shops`
 -- AUTO_INCREMENT для таблицы `system_versions`
 --
 ALTER TABLE `system_versions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `update_logs`
 --
 ALTER TABLE `update_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
@@ -752,6 +819,18 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `order_items`
   ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD CONSTRAINT `fk_password_resets_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `remember_tokens`
+--
+ALTER TABLE `remember_tokens`
+  ADD CONSTRAINT `fk_remember_tokens_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

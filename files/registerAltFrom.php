@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         die("Ошибка подготовки запроса: " . mysqli_error($conn));
     }
     
-    $stmt->bind_param("sssssssssssss", $login, $hashed_password, $email, $discountCardNumber, $region, $city, $address, $phone, $TIN, $person, $organization, $organizationType, $user_type);
+    $stmt->bind_param("sssssssssssss", $login, $password, $email, $discountCardNumber, $region, $city, $address, $phone, $TIN, $person, $organization, $organizationType, $user_type);
 
     if ($stmt->execute()) 
     {
