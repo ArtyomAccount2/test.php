@@ -20,6 +20,68 @@ $userId = null;
 if (isset($_SESSION['user'])) 
 {
     $username = $_SESSION['user'];
+    $sql = "SELECT id_users FROM users WHERE CONCAT(surname_users, ' ', name_users, ' ', patronymic_users) = ? OR person_users = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $username, $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) 
+    {
+        $userData = $result->fetch_assoc();
+        $userId = $userData['id_users'];
+    }
+
+    $stmt->close();
+}
+
+$wishlistItems = [];
+$wishlistCount = 0;
+
+if ($userId) 
+{
+    $sql = "SELECT * FROM wishlist WHERE user_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) 
+    {
+        $wishlistItems[] = $row;
+    }
+
+    $wishlistCount = count($wishlistItems);
+    $stmt->close();
+}
+
+$notifications = [];
+$unreadCount = 0;
+
+if ($userId) 
+{
+    $sql = "SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT 10";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) 
+    {
+        $notifications[] = $row;
+
+        if (!$row['is_read']) 
+        {
+            $unreadCount++;
+        }
+    }
+
+    $stmt->close();
+}
+
+if (isset($_SESSION['user'])) 
+{
+    $username = $_SESSION['user'];
 
     $sql = "SELECT * FROM users WHERE CONCAT(surname_users, ' ', name_users, ' ', patronymic_users) = ? OR person_users = ?";
     $stmt = $conn->prepare($sql);
@@ -166,6 +228,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $_SESSION['error_message'] = "Пожалуйста, заполните все поля корректно!";
         }
         
+        header("Location: profile.php");
+        exit();
+    }
+
+    if (isset($_POST['wishlist_action'])) 
+    {
+        $productName = $_POST['product_name'] ?? '';
+        $productImage = $_POST['product_image'] ?? 'img/no-image.png';
+        $price = $_POST['price'] ?? 0;
+        
+        if ($productName && $userId) 
+        {
+            $checkSql = "SELECT id FROM wishlist WHERE user_id = ? AND product_name = ?";
+            $checkStmt = $conn->prepare($checkSql);
+            $checkStmt->bind_param("is", $userId, $productName);
+            $checkStmt->execute();
+            $result = $checkStmt->get_result();
+            
+            if ($result->num_rows > 0) 
+            {
+                $row = $result->fetch_assoc();
+                $deleteSql = "DELETE FROM wishlist WHERE id = ?";
+                $deleteStmt = $conn->prepare($deleteSql);
+                $deleteStmt->bind_param("i", $row['id']);
+                $deleteStmt->execute();
+                $_SESSION['success_message'] = "Удалено из избранного";
+            } 
+            else 
+            {
+                $insertSql = "INSERT INTO wishlist (user_id, product_name, product_image, price) VALUES (?, ?, ?, ?)";
+                $insertStmt = $conn->prepare($insertSql);
+                $insertStmt->bind_param("issd", $userId, $productName, $productImage, $price);
+                $insertStmt->execute();
+                $_SESSION['success_message'] = "Добавлено в избранное";
+            }
+        }
+
+        header("Location: profile.php");
+        exit();
+    }
+
+    if (isset($_POST['remove_from_wishlist'])) 
+    {
+        $wishlistId = $_POST['wishlist_id'] ?? 0;
+
+        if ($wishlistId && $userId) 
+        {
+            $sql = "DELETE FROM wishlist WHERE id = ? AND user_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ii", $wishlistId, $userId);
+            $stmt->execute();
+            $_SESSION['success_message'] = "Удалено из избранного";
+        }
+
+        header("Location: profile.php");
+        exit();
+    }
+
+    if (isset($_POST['mark_notification_read'])) 
+    {
+        $notificationId = $_POST['notification_id'] ?? 0;
+
+        if ($notificationId && $userId) 
+        {
+            $sql = "UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ii", $notificationId, $userId);
+            $stmt->execute();
+        }
+
         header("Location: profile.php");
         exit();
     }
@@ -459,11 +591,25 @@ if (isset($_POST['cancel_order']))
                             </a>
                             <a href="#wishlist" class="list-group-item list-group-item-action" data-bs-toggle="tab">
                                 <i class="bi bi-heart me-2"></i>Избранное
-                                <span class="badge bg-primary float-end">12</span>
+                                <?php 
+                                if ($wishlistCount > 0)
+                                {
+                                ?>
+                                    <span class="badge bg-primary float-end"><?= $wishlistCount ?></span>
+                                <?php 
+                                }
+                                ?>
                             </a>
                             <a href="#notifications" class="list-group-item list-group-item-action" data-bs-toggle="tab">
                                 <i class="bi bi-bell me-2"></i>Уведомления
-                                <span class="badge bg-warning float-end">3</span>
+                                <?php 
+                                if ($unreadCount > 0)
+                                {
+                                ?>
+                                    <span class="badge bg-warning float-end"><?= $unreadCount ?></span>
+                                <?php
+                                }
+                                ?>
                             </a>
                         </div>
                     </div>
@@ -950,46 +1096,52 @@ if (isset($_POST['cancel_order']))
                                 <h5 class="mb-0"><i class="bi bi-heart me-2"></i>Избранное</h5>
                             </div>
                             <div class="card-body">
-                                <div class="wishlist-items">
-                                    <div class="wishlist-item d-flex align-items-center">
-                                        <img src="img/no-image.png" alt="Моторное масло" class="wishlist-item-img me-3">
-                                        <div class="flex-grow-1">
-                                            <h6 class="mb-1">Моторное масло Castrol 5W-40</h6>
-                                            <p class="text-muted mb-1">Артикул: CAST-5W40-4L</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="wishlist-item-price">3,450 ₽</span>
-                                                <span class="badge bg-success">В наличии</span>
+                                <?php 
+                                if (!empty($wishlistItems))
+                                {
+                                ?>
+                                    <div class="wishlist-items">
+                                        <?php 
+                                        foreach ($wishlistItems as $item)
+                                        {
+                                        ?>
+                                            <div class="wishlist-item d-flex align-items-center mb-3 p-3 border rounded">
+                                                <img src="<?= $item['product_image'] ?: 'img/no-image.png' ?>" 
+                                                    alt="Товар" class="wishlist-item-img me-3" style="width: 80px; height: 80px;">
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1"><?= htmlspecialchars($item['product_name']) ?></h6>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span class="text-success fw-bold"><?= number_format($item['price'], 0, ',', ' ') ?> ₽</span>
+                                                        <form method="POST" class="d-inline">
+                                                            <input type="hidden" name="wishlist_id" value="<?= $item['id'] ?>">
+                                                            <button type="submit" name="remove_from_wishlist" 
+                                                                    class="btn btn-sm btn-outline-danger">
+                                                                <i class="bi bi-trash"></i> Удалить
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="ms-3">
-                                            <a href="includes/assortment.php" class="btn btn-primary btn-sm me-2">
-                                                <i class="bi bi-cart-plus"></i>
-                                            </a>
-                                            <button class="btn btn-outline-danger btn-sm btn-remove-wishlist">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
+                                        <?php 
+                                        }
+                                        ?>
                                     </div>
-                                    <div class="wishlist-item d-flex align-items-center">
-                                        <img src="img/no-image.png" alt="Воздушный фильтр" class="wishlist-item-img me-3">
-                                        <div class="flex-grow-1">
-                                            <h6 class="mb-1">Воздушный фильтр Mann</h6>
-                                            <p class="text-muted mb-1">Артикул: MANN-FILTER</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="wishlist-item-price">1,890 ₽</span>
-                                                <span class="badge bg-warning">Под заказ</span>
-                                            </div>
-                                        </div>
-                                        <div class="ms-3">
-                                            <a href="includes/assortment.php" class="btn btn-primary btn-sm me-2">
-                                                <i class="bi bi-cart-plus"></i>
-                                            </a>
-                                            <button class="btn btn-outline-danger btn-sm btn-remove-wishlist">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
+                                <?php 
+                                }
+                                else
+                                { 
+                                ?>
+                                    <div class="text-center py-5">
+                                        <i class="bi bi-heart display-1 text-muted mb-3"></i>
+                                        <h5>Список избранного пуст</h5>
+                                        <p class="text-muted">Добавляйте товары кнопкой ❤️ в каталоге</p>
+                                        <a href="includes/assortment.php" class="btn btn-primary mt-2">
+                                            Перейти в каталог
+                                        </a>
                                     </div>
-                                </div>
+                                <?php 
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -998,39 +1150,71 @@ if (isset($_POST['cancel_order']))
                             <div class="card-header bg-primary text-dark">
                                 <h5 class="mb-0"><i class="bi bi-bell me-2"></i>Уведомления</h5>
                             </div>
-                            <div class="card-body">
-                                <div class="notification-list">
-                                    <div class="notification-item alert alert-info">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <div>
-                                                <h6 class="mb-1">Новое поступление</h6>
-                                                <p class="mb-1">Появились в наличии запчасти для Toyota Camry</p>
-                                                <small class="text-muted">2 часа назад</small>
+                            <div class="card-body" id="notificationsContainer">
+                                <?php 
+                                if (!empty($notifications))
+                                {
+                                ?>
+                                    <div class="notification-list">
+                                        <?php 
+                                        foreach ($notifications as $notification)
+                                        {
+                                            if (!$notification['is_read']) 
+                                            {
+                                                $alertClass = 'alert-info';
+                                                $bgClass = '';
+                                            } 
+                                            else 
+                                            {
+                                                $alertClass = '';
+                                                $bgClass = 'bg-light';
+                                            }
+                                            ?>
+                                            <div class="notification-item alert <?= $alertClass ?> <?= $bgClass ?> mb-3 p-3 rounded" 
+                                                data-id="<?= $notification['id'] ?>"
+                                                data-read="<?= $notification['is_read'] ? '1' : '0' ?>">
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div>
+                                                        <h6 class="mb-1"><?= htmlspecialchars($notification['title']) ?></h6>
+                                                        <p class="mb-1"><?= htmlspecialchars($notification['message']) ?></p>
+                                                        <small class="text-muted">
+                                                            <?= date('d.m.Y H:i', strtotime($notification['created_at'])) ?>
+                                                        </small>
+                                                    </div>
+                                                    <div class="notification-actions">
+                                                        <?php 
+                                                        if (!$notification['is_read'])
+                                                        {
+                                                        ?>
+                                                            <button class="btn btn-sm btn-outline-success mark-as-read-btn" data-id="<?= $notification['id'] ?>">
+                                                                Прочитано
+                                                            </button>
+                                                        <?php 
+                                                        }
+                                                        ?>
+                                                        <button class="btn btn-sm btn-outline-danger delete-notification-btn" data-id="<?= $notification['id'] ?>">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <button class="btn btn-sm btn-outline-secondary">Прочитано</button>
-                                        </div>
+                                        <?php 
+                                        }
+                                        ?>
                                     </div>
-                                    <div class="notification-item alert alert-warning">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <div>
-                                                <h6 class="mb-1">Заказ готов к выдаче</h6>
-                                                <p class="mb-1">Ваш заказ #12345 готов к получению</p>
-                                                <small class="text-muted">Вчера, 15:30</small>
-                                            </div>
-                                            <button class="btn btn-sm btn-outline-secondary">Прочитано</button>
-                                        </div>
+                                <?php 
+                                }
+                                else
+                                {
+                                ?>
+                                    <div class="text-center py-5" id="noNotifications">
+                                        <i class="bi bi-bell-slash display-1 text-muted mb-3"></i>
+                                        <h5>Уведомлений пока нет</h5>
+                                        <p class="text-muted">Здесь будут появляться ваши уведомления</p>
                                     </div>
-                                    <div class="notification-item alert alert-success">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <div>
-                                                <h6 class="mb-1">Скидка 15%</h6>
-                                                <p class="mb-1">Специальное предложение для вас действует до конца недели</p>
-                                                <small class="text-muted">3 дня назад</small>
-                                            </div>
-                                            <button class="btn btn-sm btn-outline-secondary">Прочитано</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php 
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -1038,7 +1222,6 @@ if (isset($_POST['cancel_order']))
             </div>
         </div>
     </div>
-
     <div id="socialFloat" class="social-float-container">
         <button id="socialToggle" class="social-toggle-btn" title="Социальные сети">
             <i class="bi bi-chevron-up"></i>
@@ -1164,6 +1347,172 @@ document.addEventListener('DOMContentLoaded', function()
             }
         });
     });
+
+    document.addEventListener('click', function(e) 
+    {
+        if (e.target.classList.contains('mark-as-read-btn') || e.target.closest('.mark-as-read-btn')) 
+        {
+            
+            let button = e.target.classList.contains('mark-as-read-btn') ? e.target : e.target.closest('.mark-as-read-btn');
+            let notificationId = button.getAttribute('data-id');
+            let notificationItem = button.closest('.notification-item');
+            
+            if (!notificationId || !notificationItem) 
+            {
+                return;
+            }
+
+            notificationItem.classList.add('marked-read');
+            button.style.display = 'none';
+
+            fetch('includes/ajax_notifications.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'action': 'mark_as_read',
+                    'notification_id': notificationId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) 
+                {
+                    updateNotificationBadge(data.unread_count);
+
+                    setTimeout(() => {
+                        notificationItem.classList.add('read');
+                    }, 500);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+
+                notificationItem.classList.remove('marked-read');
+                button.style.display = '';
+            });
+            
+            e.preventDefault();
+        }
+
+        if (e.target.classList.contains('delete-notification-btn') || e.target.closest('.delete-notification-btn')) {
+            
+            let button = e.target.classList.contains('delete-notification-btn') ? e.target : e.target.closest('.delete-notification-btn');
+            let notificationId = button.getAttribute('data-id');
+            let notificationItem = button.closest('.notification-item');
+            
+            if (!notificationId || !notificationItem) 
+            {
+                return;
+            }
+            
+            notificationItem.classList.add('fade-out');
+
+            fetch('includes/ajax_notifications.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'action': 'delete',
+                    'notification_id': notificationId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateNotificationBadge(data.unread_count);
+
+                    setTimeout(() => {
+                        notificationItem.remove();
+                        let notifications = document.querySelectorAll('.notification-item');
+
+                        if (notifications.length === 0) 
+                        {
+                            showNoNotificationsMessage();
+                        }
+                    }, 300);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                notificationItem.classList.remove('fade-out');
+            });
+            
+            e.preventDefault();
+        }
+    });
+    
+    function updateNotificationBadge(count) 
+    {
+        let badge = document.querySelector('a[href="#notifications"] .badge');
+        
+        if (count > 0) 
+        {
+            if (!badge) 
+            {
+                let link = document.querySelector('a[href="#notifications"]');
+
+                badge = document.createElement('span');
+                badge.className = 'badge bg-warning float-end';
+                link.appendChild(badge);
+            }
+
+            badge.textContent = count;
+        } 
+        else if (badge) 
+        {
+            badge.remove();
+        }
+    }
+    
+    function showNoNotificationsMessage() 
+    {
+        let container = document.getElementById('notificationsContainer');
+
+        if (container) 
+        {
+            container.innerHTML = `
+                <div class="text-center py-5" id="noNotifications">
+                    <i class="bi bi-bell-slash display-1 text-muted mb-3"></i>
+                    <h5>Уведомлений пока нет</h5>
+                    <p class="text-muted">Здесь будут появляться ваши уведомления</p>
+                </div>
+            `;
+        }
+    }
+
+    function initNotifications() 
+    {
+        let notificationItems = document.querySelectorAll('.notification-item');
+        
+        notificationItems.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                item.style.transition = 'all 0.4s ease';
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    }
+
+    let notificationsTab = document.querySelector('a[href="#notifications"]');
+
+    if (notificationsTab) 
+    {
+        notificationsTab.addEventListener('click', function() 
+        {
+            setTimeout(initNotifications, 100);
+        });
+    }
+
+    if (window.location.hash === '#notifications') 
+    {
+        setTimeout(initNotifications, 100);
+    }
 });
 </script>
 </body>

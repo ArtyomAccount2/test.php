@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             setcookie('remember_token', $token, time() + 30 * 24 * 3600, '/', '', false, true);
         }
         
-        header("Location: admin.php");
+        header("Location: admin.php?section=users_list");
         exit();
     }
     else

@@ -45,6 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']))
     exit();
 }
 
+$limit = 10;
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$offset = ($page - 1) * $limit;
+
 $filter_status = $_GET['status'] ?? 'all';
 $search = $_GET['search'] ?? '';
 
@@ -68,17 +72,36 @@ if (!empty($search))
 }
 
 $where_sql = '';
+
 if (!empty($where_conditions)) 
 {
     $where_sql = 'WHERE ' . implode(' AND ', $where_conditions);
 }
 
-$query = "SELECT * FROM reviews $where_sql ORDER BY created_at DESC";
-$stmt = $conn->prepare($query);
+$count_query = "SELECT COUNT(*) as total FROM reviews $where_sql";
+$count_stmt = $conn->prepare($count_query);
 
 if (!empty($params)) 
 {
-    $stmt->bind_param($types, ...$params);
+    $count_stmt->bind_param($types, ...$params);
+}
+
+$count_stmt->execute();
+$count_result = $count_stmt->get_result();
+$total_reviews = $count_result->fetch_assoc()['total'];
+$total_pages = ceil($total_reviews / $limit);
+
+$query = "SELECT * FROM reviews $where_sql ORDER BY created_at DESC LIMIT ? OFFSET ?";
+$params_for_data = $params;
+$types_for_data = $types . 'ii';
+$params_for_data[] = $limit;
+$params_for_data[] = $offset;
+
+$stmt = $conn->prepare($query);
+
+if (!empty($params_for_data)) 
+{
+    $stmt->bind_param($types_for_data, ...$params_for_data);
 }
 
 $stmt->execute();
@@ -179,6 +202,7 @@ unset($_SESSION['message']);
 <div class="card shadow-sm">
     <div class="card-header bg-white">
         <h5 class="mb-0">Список отзывов</h5>
+        <small class="text-muted">Показано <?= min($limit, $reviews_result->num_rows) ?> из <?= $total_reviews ?> отзывов</small>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -290,23 +314,53 @@ unset($_SESSION['message']);
                 </tbody>
             </table>
         </div>
+        
         <?php 
-        if ($reviews_result->num_rows > 0)
+        if ($total_pages > 1) 
         {
+            $visible_pages = 5;
+            $half_visible = floor($visible_pages / 2);
+            
+            $start_page = max(1, $page - $half_visible);
+            $end_page = min($total_pages, $start_page + $visible_pages - 1);
+
+            if ($end_page - $start_page + 1 < $visible_pages) 
+            {
+                $start_page = max(1, $end_page - $visible_pages + 1);
+            }
         ?>
         <nav aria-label="Page navigation" class="mt-3">
             <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&page=1">
+                <li class="page-item <?= $page == 1 ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&search=<?= urlencode($search) ?>&page=1">
+                        <i class="bi bi-chevron-bar-left"></i>
+                    </a>
+                </li>
+                <li class="page-item <?= $page == 1 ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&search=<?= urlencode($search) ?>&page=<?= max(1, $page - 1) ?>">
                         <i class="bi bi-chevron-left"></i>
                     </a>
                 </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&page=2">
+                <?php 
+                for ($i = $start_page; $i <= $end_page; $i++)
+                {
+                ?>
+                <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&search=<?= urlencode($search) ?>&page=<?= $i ?>">
+                        <?= $i ?>
+                    </a>
+                </li>
+                <?php 
+                }
+                ?>
+                <li class="page-item <?= $page == $total_pages ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&search=<?= urlencode($search) ?>&page=<?= min($total_pages, $page + 1) ?>">
                         <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                <li class="page-item <?= $page == $total_pages ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&search=<?= urlencode($search) ?>&page=<?= $total_pages ?>">
+                        <i class="bi bi-chevron-bar-right"></i>
                     </a>
                 </li>
             </ul>

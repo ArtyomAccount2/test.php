@@ -545,6 +545,15 @@ function buildQueryString($page, $search, $category)
                                 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true)
                                 {
                                 ?>
+                                    <form method="POST" action="../profile.php" class="d-inline me-1">
+                                        <input type="hidden" name="wishlist_action" value="1">
+                                        <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['title']) ?>">
+                                        <input type="hidden" name="product_image" value="../img/no-image.png">
+                                        <input type="hidden" name="price" value="<?= $product['price'] ?>">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="bi bi-heart"></i>
+                                        </button>
+                                    </form>
                                     <form method="POST" action="cart.php" class="d-inline add-to-cart-form">
                                         <input type="hidden" name="product_id" value="<?= isset($product['id']) ? $product['id'] : 0 ?>">
                                         <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['title']) ?>">

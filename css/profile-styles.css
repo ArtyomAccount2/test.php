@@ -1138,3 +1138,46 @@
 {
     background-color: #f8f9fa;
 }
+
+.wishlist-item-img 
+{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.notification-item 
+{
+    transition: all 0.3s ease;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification-item:hover 
+{
+    transform: translateX(5px);
+}
+
+.notification-item.fade-out 
+{
+    opacity: 0;
+    transform: translateX(-100px);
+    height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.notification-item.marked-read 
+{
+    background-color: #f8f9fa !important;
+    opacity: 0.7;
+    transition: all 0.5s ease;
+}
+
+.notification-actions 
+{
+    display: flex;
+    gap: 5px;
+}

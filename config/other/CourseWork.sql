@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Янв 13 2026 г., 12:32
+-- Время создания: Янв 15 2026 г., 18:45
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -157,6 +157,46 @@ CREATE TABLE `news` (
   `published_at` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Дамп данных таблицы `news`
+--
+
+INSERT INTO `news` (`id`, `title`, `content`, `author`, `status`, `created_at`, `published_at`) VALUES
+(1, 'Открытие нового магазина в Москве', 'Рады сообщить, что мы открыли новый магазин автозапчастей в центре Москвы! Теперь у наших клиентов есть еще одна удобная точка для покупки качественных запчастей и аксессуаров для автомобилей. В новом магазине представлен расширенный ассортимент товаров, а также работает профессиональная консультационная служба. Ждем вас по адресу: ул. Тверская, 25.', 'Администратор', 'published', '2026-01-10 07:30:00', '2026-01-10'),
+(2, 'Новые поступления моторных масел', 'В нашем магазине появились новые виды моторных масел от ведущих производителей: Shell, Mobil, Castrol. Все масла соответствуют современным стандартам качества и подходят для различных типов двигателей. Специально для наших клиентов мы подготовили выгодные предложения при покупке от 5 литров. Акция действует до конца месяца.', 'Менеджер', 'published', '2026-01-11 11:20:00', '2026-01-11'),
+(3, 'Скидки на тормозные системы', 'С 15 января по 15 февраля действуют специальные скидки на все комплектующие тормозных систем. Тормозные колодки, диски, суппорты - все со скидкой до 25%! Не упустите возможность обновить тормозную систему вашего автомобиля с выгодой. Гарантия на все товары - 12 месяцев.', 'Администратор', 'draft', '2026-01-12 06:15:00', NULL),
+(4, 'Обновление сервисного центра', 'Завершилась модернизация нашего сервисного центра. Теперь мы предлагаем еще более качественный и быстрый сервис по ремонту и обслуживанию автомобилей. Установлено новое диагностическое оборудование, расширен штат специалистов. Записаться на обслуживание можно онлайн или по телефону.', 'Технический директор', 'draft', '2026-01-13 08:45:00', NULL),
+(5, 'Работа в праздничные дни', 'Уважаемые клиенты! Сообщаем о графике работы в праздничные дни. 1-2 января - выходные дни. С 3 января магазины и сервисный центр работают в обычном режиме. Онлайн-заказы принимаются круглосуточно. С наступающим Новым годом!', 'Администратор', 'published', '2026-01-14 13:30:00', '2026-01-14'),
+(6, 'Мастер-класс по замене фильтров', 'Приглашаем всех желающих на бесплатный мастер-класс \"Самостоятельная замена воздушного и салонного фильтров\", который состоится 20 января в 18:00 в нашем сервисном центре. Наши специалисты покажут, как правильно выполнить замену, и ответят на все вопросы. Количество мест ограничено, требуется предварительная регистрация.', 'Сервисный менеджер', 'published', '2026-01-15 05:20:00', '2026-01-15'),
+(7, 'Расширение ассортимента аккумуляторов', 'Теперь в нашем магазине представлены аккумуляторы новых брендов: Varta, Bosch, Tudor. Все аккумуляторы проходят предпродажную проверку и имеют гарантию 24 месяца. Для постоянных клиентов - дополнительные скидки. Также доступна услуга профессиональной установки.', 'Менеджер по закупкам', 'published', '2026-01-16 10:10:00', '2026-01-16'),
+(8, 'Система лояльности для клиентов', 'Запускаем новую программу лояльности! Теперь за каждую покупку вы получаете бонусные баллы, которые можно использовать для оплаты следующих покупок. Регистрируйтесь в нашей программе и получайте дополнительные преимущества: персональные скидки, приоритетное обслуживание, информацию о новинках.', 'Маркетолог', 'published', '2026-01-17 14:40:00', '2026-01-17');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `is_read` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `user_id`, `title`, `message`, `is_read`, `created_at`) VALUES
+(1, 2, 'Новое поступление', 'Появились в наличии запчасти для Toyota Camry', 0, '2026-01-15 13:29:33'),
+(2, 2, 'Заказ готов к выдаче', 'Ваш заказ #12345 готов к получению', 0, '2026-01-15 13:29:33'),
+(3, 3, 'Скидка 15%', 'Специальное предложение для вас действует до конца недели', 0, '2026-01-15 13:29:33'),
+(4, 4, 'Изменение графика работы', 'В праздничные дни магазин работает с 10:00 до 18:00', 1, '2026-01-15 13:29:33'),
+(5, 5, 'Бонусные баллы', 'На ваш счет начислено 100 бонусных баллов', 1, '2026-01-15 13:29:33');
+
 -- --------------------------------------------------------
 
 --
@@ -256,7 +296,7 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `name`, `description`, `category`, `price`, `quantity`, `article`, `image`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Моторное масло 5W-40', 'Синтетическое моторное масло для всех типов двигателей', 'Масла', '2500.00', 45, 'MO-5W40-001', 'uploads/products/696392655986c.png', 'available', '2026-01-07 17:51:40', '2026-01-11 12:08:27'),
-(2, 'Воздушный фильтр', 'Воздушный фильтр для легковых автомобилей', 'Запчасти', '800.00', 23, 'AF-001', 'uploads/products/696392655986c.png', 'low', '2026-01-07 17:51:40', '2026-01-11 12:08:17'),
+(2, 'Воздушный фильтр', 'Воздушный фильтр для легковых автомобилей', 'Запчасти', '800.00', 23, 'AF-001', 'uploads/products/696392655986c.png', 'low', '2026-01-07 17:51:40', '2026-01-15 15:04:42'),
 (3, 'Тормозные колодки', 'Передние тормозные колодки', 'Запчасти', '3200.00', 15, 'TB-001', 'uploads/products/696392655986c.png', 'available', '2026-01-07 17:51:40', '2026-01-11 12:08:09'),
 (4, 'Аккумулятор 60Ah', 'Свинцово-кислотный аккумулятор 60Ah', 'Аксессуары', '5500.00', 8, 'BAT-60', 'uploads/products/696392655986c.png', 'available', '2026-01-07 17:51:40', '2026-01-11 12:08:01');
 
@@ -538,6 +578,32 @@ INSERT INTO `users` (`id_users`, `surname_users`, `name_users`, `patronymic_user
 (4, NULL, NULL, NULL, 'user3', 'user3new', 'user3@gmail.com', '556677', 'Калининградская область', 'Балтийск', 'Киркенесская улица, 20', 89115678912, NULL, 5552431142, 'Иван Иванович Иванов', 'КлассикАвто', 'ЗАО', 'legal'),
 (5, 'Рожков', 'Олег', 'Константинович', 'user4', 'user4', 'user4@gmail.com', NULL, 'Калининградская область', 'Черняховск', 'улица Советская, 5', 89116789123, NULL, NULL, NULL, NULL, NULL, 'physical');
 
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `wishlist`
+--
+
+CREATE TABLE `wishlist` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_image` varchar(255) DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `wishlist`
+--
+
+INSERT INTO `wishlist` (`id`, `user_id`, `product_name`, `product_image`, `price`, `created_at`) VALUES
+(1, 2, 'Моторное масло Castrol 5W-40', 'img/no-image.png', '3450.00', '2026-01-15 13:29:33'),
+(2, 2, 'Воздушный фильтр Mann', 'img/no-image.png', '1890.00', '2026-01-15 13:29:33'),
+(3, 3, 'Свечи зажигания NGK BKR6E', 'img/no-image.png', '850.00', '2026-01-15 13:29:33'),
+(4, 4, 'Тормозные колодки Brembo P85115', 'img/no-image.png', '3890.00', '2026-01-15 13:29:33'),
+(5, 5, 'Фильтр масляный Mann W914/2', 'img/no-image.png', '1250.00', '2026-01-15 13:29:33');
+
 --
 -- Индексы сохранённых таблиц
 --
@@ -586,6 +652,13 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `news`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Индексы таблицы `orders`
@@ -681,6 +754,13 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id_users`);
 
 --
+-- Индексы таблицы `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- AUTO_INCREMENT для сохранённых таблиц
 --
 
@@ -718,7 +798,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT для таблицы `news`
 --
 ALTER TABLE `news`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT для таблицы `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `orders`
@@ -736,7 +822,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT для таблицы `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT для таблицы `products`
@@ -793,6 +879,12 @@ ALTER TABLE `users`
   MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT для таблицы `wishlist`
+--
+ALTER TABLE `wishlist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- Ограничения внешнего ключа сохраненных таблиц
 --
 
@@ -807,6 +899,12 @@ ALTER TABLE `action_logs`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `orders`
@@ -831,6 +929,12 @@ ALTER TABLE `password_resets`
 --
 ALTER TABLE `remember_tokens`
   ADD CONSTRAINT `fk_remember_tokens_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
