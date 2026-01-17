@@ -54,7 +54,7 @@ if (isset($_GET['delete_id']))
 }
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$per_page = 10;
+$per_page = 1;
 $offset = ($page - 1) * $per_page;
 
 $region_filter = $_GET['region'] ?? '';

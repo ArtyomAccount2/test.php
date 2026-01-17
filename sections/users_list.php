@@ -53,9 +53,9 @@ switch ($sort_by)
         break;
 }
 
-$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$limit = 10;
-$offset = ($page - 1) * $limit;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$per_page = 3;
+$offset = ($page - 1) * $per_page;
 
 $count_query = "SELECT COUNT(*) as total FROM users $where_sql";
 $count_stmt = $conn->prepare($count_query);
@@ -68,10 +68,10 @@ if (!empty($params))
 $count_stmt->execute();
 $count_result = $count_stmt->get_result();
 $total_users = $count_result->fetch_assoc()['total'];
-$total_pages = ceil($total_users / $limit);
+$total_pages = ceil($total_users / $per_page);
 
 $query = "SELECT * FROM users $where_sql ORDER BY $order_by LIMIT ? OFFSET ?";
-$params[] = $limit;
+$params[] = $per_page;
 $params[] = $offset;
 $types .= 'ii';
 
@@ -313,7 +313,7 @@ $stats = $stats_stmt->fetch_assoc();
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm" role="group">
-                                <a href="files/edit_user.php?id=<?= $user['id_users'] ?>" class="btn btn-outline-primary" title="Редактировать">
+                                <a href="files/edit_user.php?id=<?= $user['id_users'] ?>&page=<?= $page ?>" class="btn btn-outline-primary" title="Редактировать">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 <button type="button" class="btn btn-outline-info" title="Подробнее"
@@ -351,64 +351,47 @@ $stats = $stats_stmt->fetch_assoc();
         if ($total_pages > 1)
         {
         ?>
-        <nav aria-label="Page navigation" class="mt-3">
-            <ul class="pagination justify-content-center">
-                <li class="page-item <?= $page == 1 ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=users_list&page=<?= $page - 1 ?>&search=<?= urlencode($search) ?>&type=<?= $user_type ?>&sort=<?= $sort_by ?>">
+        <nav aria-label="Page navigation" class="mt-3 p-3">
+            <ul class="pagination justify-content-center mb-0">
+                <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=users_list&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $user_type !== 'all' ? '&type=' . urlencode($user_type) : '' ?><?= !empty($sort_by) ? '&sort=' . urlencode($sort_by) : '' ?>">
+                        <i class="bi bi-chevron-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=users_list&page=<?= $page - 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $user_type !== 'all' ? '&type=' . urlencode($user_type) : '' ?><?= !empty($sort_by) ? '&sort=' . urlencode($sort_by) : '' ?>">
                         <i class="bi bi-chevron-left"></i>
                     </a>
                 </li>
-                <?php 
+                <?php
                 $start_page = max(1, $page - 2);
                 $end_page = min($total_pages, $page + 2);
-
-                if ($start_page > 1)
-                {
-                ?>
-                <li class="page-item"><a class="page-link" href="admin.php?section=users_list&page=1&search=<?= urlencode($search) ?>&type=<?= $user_type ?>&sort=<?= $sort_by ?>">1</a></li>
-                    <?php 
-                    if ($start_page > 2)
-                    {
-                    ?>
-                        <li class="page-item disabled"><span class="page-link">...</span></li>
-                <?php 
-                    }
-                } 
-
+                
                 for ($i = $start_page; $i <= $end_page; $i++)
                 {
                 ?>
                 <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                    <a class="page-link" href="admin.php?section=users_list&page=<?= $i ?>&search=<?= urlencode($search) ?>&type=<?= $user_type ?>&sort=<?= $sort_by ?>">
+                    <a class="page-link" href="admin.php?section=users_list&page=<?= $i ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $user_type !== 'all' ? '&type=' . urlencode($user_type) : '' ?><?= !empty($sort_by) ? '&sort=' . urlencode($sort_by) : '' ?>">
                         <?= $i ?>
-                    </a>
-                </li>
-                <?php 
-                } 
-                
-                if ($end_page < $total_pages)
-                {
-                    if ($end_page < $total_pages - 1)
-                    {
-                    ?>
-                        <li class="page-item disabled"><span class="page-link">...</span></li>
-                    <?php 
-                    }
-                    ?>
-                <li class="page-item">
-                    <a class="page-link" href="admin.php?section=users_list&page=<?= $total_pages ?>&search=<?= urlencode($search) ?>&type=<?= $user_type ?>&sort=<?= $sort_by ?>">
-                        <?= $total_pages ?>
                     </a>
                 </li>
                 <?php 
                 }
                 ?>
-                <li class="page-item <?= $page == $total_pages ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=users_list&page=<?= $page + 1 ?>&search=<?= urlencode($search) ?>&type=<?= $user_type ?>&sort=<?= $sort_by ?>">
+                <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=users_list&page=<?= $page + 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $user_type !== 'all' ? '&type=' . urlencode($user_type) : '' ?><?= !empty($sort_by) ? '&sort=' . urlencode($sort_by) : '' ?>">
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
+                <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=users_list&page=<?= $total_pages ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $user_type !== 'all' ? '&type=' . urlencode($user_type) : '' ?><?= !empty($sort_by) ? '&sort=' . urlencode($sort_by) : '' ?>">
+                        <i class="bi bi-chevron-double-right"></i>
+                    </a>
+                </li>
             </ul>
+            <div class="text-center text-muted mt-2">
+                Страница <?= $page ?> из <?= $total_pages ?> | Показано <?= count($users) ?> из <?= $total_users ?> пользователей
+            </div>
         </nav>
         <?php 
         }

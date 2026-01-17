@@ -6,6 +6,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || $_SESSION
 }
 
 $product_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
 $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
 $stmt->bind_param("i", $product_id);
@@ -28,6 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $quantity = intval($_POST['quantity']);
     $article = trim($_POST['article']);
     $status = $_POST['status'];
+
+    $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
 
     $image = $_POST['current_image'];
     
@@ -72,12 +75,73 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         if ($stmt->execute()) 
         {
             $_SESSION['success_message'] = 'Товар успешно обновлен';
-            echo '<script>window.location.href = "admin.php?section=products_catalog";</script>';
+
+            if (isset($_SESSION['products_filters'])) 
+            {
+                $filters = $_SESSION['products_filters'];
+
+                if (!empty($filters['search'])) 
+                {
+                    $redirect_url .= "&search=" . urlencode($filters['search']);
+                }
+
+                if (!empty($filters['category']) && $filters['category'] !== 'all') 
+                {
+                    $redirect_url .= "&category=" . urlencode($filters['category']);
+                }
+
+                if (!empty($filters['price_min'])) 
+                {
+                    $redirect_url .= "&price_min=" . urlencode($filters['price_min']);
+                }
+
+                if (!empty($filters['price_max'])) 
+                {
+                    $redirect_url .= "&price_max=" . urlencode($filters['price_max']);
+                }
+
+                if (!empty($filters['quantity_filter'])) 
+                {
+                    $redirect_url .= "&quantity_filter=" . urlencode($filters['quantity_filter']);
+                }
+
+                if (!empty($filters['status_filter'])) 
+                {
+                    $redirect_url .= "&status_filter=" . urlencode($filters['status_filter']);
+                }
+            }
+            
+            echo "<script>window.location.href = 'admin.php?section=products_catalog&page=" . $page . "';</script>";
             exit();
         } 
         else 
         {
             $error = "Ошибка при обновлении товара: " . $conn->error;
+        }
+    }
+}
+
+if (isset($_SERVER['HTTP_REFERER']))
+{
+    $referer = parse_url($_SERVER['HTTP_REFERER']);
+
+    if (isset($referer['query'])) 
+    {
+        parse_str($referer['query'], $query_params);
+
+        $_SESSION['products_filters'] = [
+            'search' => $query_params['search'] ?? '',
+            'category' => $query_params['category'] ?? 'all',
+            'price_min' => $query_params['price_min'] ?? '',
+            'price_max' => $query_params['price_max'] ?? '',
+            'quantity_filter' => $query_params['quantity_filter'] ?? '',
+            'status_filter' => $query_params['status_filter'] ?? '',
+            'page' => $query_params['page'] ?? 1
+        ];
+
+        if (isset($query_params['page'])) 
+        {
+            $page = (int)$query_params['page'];
         }
     }
 }
@@ -96,11 +160,11 @@ while ($row = $categories_result->fetch_assoc())
         <i class="bi bi-pencil me-2"></i>Редактирование товара
     </h2>
     <div class="d-flex gap-2">
-        <a href="admin.php?section=products_catalog" class="btn btn-outline-secondary">
+        <a href="admin.php?section=products_catalog&page=<?= $page ?>" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left me-1"></i>
             <span class="d-none d-sm-inline">Назад к каталогу</span>
         </a>
-        <a href="admin.php?section=products_catalog&delete_id=<?= $product_id ?>" 
+        <a href="admin.php?section=products_catalog&delete_id=<?= $product_id ?>&page=<?= $page ?>" 
            class="btn btn-outline-danger"
            onclick="return confirm('Удалить этот товар?')">
             <i class="bi bi-trash me-1"></i>
@@ -128,6 +192,7 @@ if (isset($error))
     <div class="card-body">
         <form method="POST" action="" enctype="multipart/form-data">
             <input type="hidden" name="current_image" value="<?= htmlspecialchars($product['image'] ?? '') ?>">
+            <input type="hidden" name="page" value="<?= $page ?>">
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -214,7 +279,7 @@ if (isset($error))
                 </div>
             </div>
             <div class="text-end">
-                <a href="admin.php?section=products_catalog" class="btn btn-secondary me-2">
+                <a href="admin.php?section=products_catalog&page=<?= $page ?>" class="btn btn-secondary me-2">
                     Отмена
                 </a>
                 <button type="submit" class="btn btn-primary">

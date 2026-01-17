@@ -27,20 +27,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $organization = !empty($_POST['organization']) ? $_POST['organization'] : null;
     $organizationType = !empty($_POST['organizationType']) ? $_POST['organizationType'] : null;
 
+    $page = $_POST['page'] ?? 1;
     $stmt = $conn->prepare("UPDATE users SET surname_users=?, name_users=?, patronymic_users=?, login_users=?, password_users=?, email_users=?, discountСardNumber_users=?, region_users=?, city_users=?, address_users=?, phone_users=?, TIN_users=?, person_users=?, organization_users=?, organizationType_users=? WHERE id_users=?");
     $stmt->bind_param("sssssssssssssssi", $surname, $name, $patronymic, $login, $password, $email, $discountCardNumber, $region, $city, $address, $phone, $inn, $person, $organization, $organizationType, $id);
     $stmt->execute();
 
-    header("Location: ../admin.php");
+    $redirect_url = "../admin.php?section=users_list&page=" . $page;
+
+    if (isset($_SESSION['users_list_filters'])) 
+    {
+        $filters = $_SESSION['users_list_filters'];
+
+        if (!empty($filters['search'])) 
+        {
+            $redirect_url .= "&search=" . urlencode($filters['search']);
+        }
+
+        if (!empty($filters['type'])) 
+        {
+            $redirect_url .= "&type=" . urlencode($filters['type']);
+        }
+
+        if (!empty($filters['sort'])) 
+        {
+            $redirect_url .= "&sort=" . urlencode($filters['sort']);
+        }
+    }
+    
+    header("Location: " . $redirect_url);
     exit();
 }
 
 $id = $_GET['id'];
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
 $stmt = $conn->prepare("SELECT * FROM `users` WHERE `id_users` = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
+
+if (isset($_SERVER['HTTP_REFERER'])) 
+{
+    $referer = parse_url($_SERVER['HTTP_REFERER']);
+
+    if (isset($referer['query'])) 
+    {
+        parse_str($referer['query'], $query_params);
+        
+        $_SESSION['users_list_filters'] = [
+            'search' => $query_params['search'] ?? '',
+            'type' => $query_params['type'] ?? 'all',
+            'sort' => $query_params['sort'] ?? 'id_desc',
+            'page' => $query_params['page'] ?? 1
+        ];
+
+        if (isset($query_params['page'])) 
+        {
+            $page = (int)$query_params['page'];
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +107,7 @@ $user = $result->fetch_assoc();
     <h1>Редактирование пользователя</h1>
     <form method="POST" action="">
         <input type="hidden" name="id" value="<?= $user['id_users'] ?>">
+        <input type="hidden" name="page" value="<?= $page ?>">
         <div class="form-group">
             <label for="surname">Фамилия</label>
             <input type="text" name="surname" class="form-control" id="surname" value="<?= htmlspecialchars($user['surname_users']) ?>">
@@ -120,11 +168,10 @@ $user = $result->fetch_assoc();
             <label for="organizationType">Тип организации</label>
             <input type="text" name="organizationType" class="form-control" id="organizationType" value="<?= htmlspecialchars($user['organizationType_users']) ?>">
         </div>
-
         <button type="submit" class="btn btn-primary mt-2 mb-4">
             <i class="bi bi-save"></i> Сохранить
         </button>
-        <a href="../admin.php" class="btn btn-secondary mt-2 mb-4">
+        <a href="../admin.php?section=users_list&page=<?= $page ?>" class="btn btn-secondary mt-2 mb-4">
             <i class="bi bi-x-circle"></i> Отмена
         </a>
     </form>

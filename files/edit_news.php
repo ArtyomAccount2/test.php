@@ -28,6 +28,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
 }
 
-header("Location: ../admin.php?section=news");
+$page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+
+$redirect_url = "../admin.php?section=news&page=" . $page;
+
+if (isset($_SESSION['news_filters'])) 
+{
+    $filters = $_SESSION['news_filters'];
+
+    if (!empty($filters['search'])) 
+    {
+        $redirect_url .= "&search=" . urlencode($filters['search']);
+    }
+
+    if (!empty($filters['status_filter'])) 
+    {
+        $redirect_url .= "&status_filter=" . urlencode($filters['status_filter']);
+    }
+}
+
+header("Location: " . $redirect_url);
 exit();
 ?>

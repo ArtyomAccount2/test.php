@@ -38,6 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']))
             $stmt->bind_param("ssisi", $name, $text, $rating, $status, $review_id);
             $stmt->execute();
             $_SESSION['message'] = 'Отзыв обновлен';
+
+            $page = isset($_POST['page']) ? (int)$_POST['page'] : (isset($_GET['page']) ? (int)$_GET['page'] : 1);
+            echo '<script>window.location.href = "admin.php?section=reviews&page=' . $page . '";</script>';
+            exit();
+
             break;
     }
     
@@ -45,9 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']))
     exit();
 }
 
-$limit = 10;
-$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$offset = ($page - 1) * $limit;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$per_page = 3;
+$offset = ($page - 1) * $per_page;
 
 $filter_status = $_GET['status'] ?? 'all';
 $search = $_GET['search'] ?? '';
@@ -89,19 +94,18 @@ if (!empty($params))
 $count_stmt->execute();
 $count_result = $count_stmt->get_result();
 $total_reviews = $count_result->fetch_assoc()['total'];
-$total_pages = ceil($total_reviews / $limit);
+$total_pages = ceil($total_reviews / $per_page);
 
 $query = "SELECT * FROM reviews $where_sql ORDER BY created_at DESC LIMIT ? OFFSET ?";
-$params_for_data = $params;
-$types_for_data = $types . 'ii';
-$params_for_data[] = $limit;
-$params_for_data[] = $offset;
+$params[] = $per_page;
+$params[] = $offset;
+$types .= 'ii';
 
 $stmt = $conn->prepare($query);
 
-if (!empty($params_for_data)) 
+if (!empty($params)) 
 {
-    $stmt->bind_param($types_for_data, ...$params_for_data);
+    $stmt->bind_param($types, ...$params);
 }
 
 $stmt->execute();
@@ -200,9 +204,9 @@ unset($_SESSION['message']);
 </div>
 
 <div class="card shadow-sm">
-    <div class="card-header bg-white">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Список отзывов</h5>
-        <small class="text-muted">Показано <?= min($limit, $reviews_result->num_rows) ?> из <?= $total_reviews ?> отзывов</small>
+        <span class="badge bg-primary"><?= $total_reviews ?> отзывов</span>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -314,56 +318,51 @@ unset($_SESSION['message']);
                 </tbody>
             </table>
         </div>
-        
         <?php 
-        if ($total_pages > 1) 
+        if ($total_pages > 1)
         {
-            $visible_pages = 5;
-            $half_visible = floor($visible_pages / 2);
-            
-            $start_page = max(1, $page - $half_visible);
-            $end_page = min($total_pages, $start_page + $visible_pages - 1);
-
-            if ($end_page - $start_page + 1 < $visible_pages) 
-            {
-                $start_page = max(1, $end_page - $visible_pages + 1);
-            }
         ?>
-        <nav aria-label="Page navigation" class="mt-3">
-            <ul class="pagination justify-content-center">
-                <li class="page-item <?= $page == 1 ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&search=<?= urlencode($search) ?>&page=1">
-                        <i class="bi bi-chevron-bar-left"></i>
+        <nav aria-label="Page navigation" class="mt-3 p-3">
+            <ul class="pagination justify-content-center mb-0">
+                <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=reviews&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $filter_status !== 'all' ? '&status=' . urlencode($filter_status) : '' ?>">
+                        <i class="bi bi-chevron-double-left"></i>
                     </a>
                 </li>
-                <li class="page-item <?= $page == 1 ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&search=<?= urlencode($search) ?>&page=<?= max(1, $page - 1) ?>">
+                <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=reviews&page=<?= $page - 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $filter_status !== 'all' ? '&status=' . urlencode($filter_status) : '' ?>">
                         <i class="bi bi-chevron-left"></i>
                     </a>
                 </li>
-                <?php 
+                <?php
+                $start_page = max(1, $page - 2);
+                $end_page = min($total_pages, $page + 2);
+                
                 for ($i = $start_page; $i <= $end_page; $i++)
                 {
                 ?>
                 <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&search=<?= urlencode($search) ?>&page=<?= $i ?>">
+                    <a class="page-link" href="admin.php?section=reviews&page=<?= $i ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $filter_status !== 'all' ? '&status=' . urlencode($filter_status) : '' ?>">
                         <?= $i ?>
                     </a>
                 </li>
                 <?php 
                 }
                 ?>
-                <li class="page-item <?= $page == $total_pages ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&search=<?= urlencode($search) ?>&page=<?= min($total_pages, $page + 1) ?>">
+                <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=reviews&page=<?= $page + 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $filter_status !== 'all' ? '&status=' . urlencode($filter_status) : '' ?>">
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
-                <li class="page-item <?= $page == $total_pages ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=reviews&status=<?= $filter_status ?>&search=<?= urlencode($search) ?>&page=<?= $total_pages ?>">
-                        <i class="bi bi-chevron-bar-right"></i>
+                <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=reviews&page=<?= $total_pages ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $filter_status !== 'all' ? '&status=' . urlencode($filter_status) : '' ?>">
+                        <i class="bi bi-chevron-double-right"></i>
                     </a>
                 </li>
             </ul>
+            <div class="text-center text-muted mt-2">
+                Страница <?= $page ?> из <?= $total_pages ?> | Показано <?= min($per_page, $reviews_result->num_rows) ?> из <?= $total_reviews ?> отзывов
+            </div>
         </nav>
         <?php 
         }
@@ -389,7 +388,7 @@ if ($reviews_result->num_rows > 0)
                 <div class="modal-body">
                     <input type="hidden" name="action" value="edit">
                     <input type="hidden" name="review_id" value="<?php echo $review['id']; ?>">
-                    
+                    <input type="hidden" name="page" value="<?= $page ?>">
                     <div class="mb-3">
                         <label class="form-label">Имя</label>
                         <input type="text" class="form-control" name="name" value="<?php echo htmlspecialchars($review['name']); ?>" required>
@@ -442,9 +441,11 @@ function approveReview(reviewId)
     {
         let form = document.createElement('form');
         form.method = 'POST';
+        let currentPage = <?= $page ?>;
         form.innerHTML = `
             <input type="hidden" name="action" value="approve">
             <input type="hidden" name="review_id" value="${reviewId}">
+            <input type="hidden" name="page" value="${currentPage}">
         `;
         document.body.appendChild(form);
         form.submit();
@@ -457,9 +458,11 @@ function rejectReview(reviewId)
     {
         let form = document.createElement('form');
         form.method = 'POST';
+        let currentPage = <?= $page ?>;
         form.innerHTML = `
             <input type="hidden" name="action" value="reject">
             <input type="hidden" name="review_id" value="${reviewId}">
+            <input type="hidden" name="page" value="${currentPage}">
         `;
         document.body.appendChild(form);
         form.submit();
@@ -472,9 +475,11 @@ function deleteReview(reviewId)
     {
         let form = document.createElement('form');
         form.method = 'POST';
+        let currentPage = <?= $page ?>;
         form.innerHTML = `
             <input type="hidden" name="action" value="delete">
             <input type="hidden" name="review_id" value="${reviewId}">
+            <input type="hidden" name="page" value="${currentPage}">
         `;
         document.body.appendChild(form);
         form.submit();

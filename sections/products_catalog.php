@@ -17,15 +17,14 @@ $price_max = $_GET['price_max'] ?? '';
 $quantity_filter = $_GET['quantity_filter'] ?? '';
 $status_filter = $_GET['status_filter'] ?? '';
 
-$items_per_page = 10;
-$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$per_page = 2;
+$offset = ($page - 1) * $per_page;
 
-if ($current_page < 1) 
+if ($page < 1) 
 {
-    $current_page = 1;
+    $page = 1;
 }
-
-$offset = ($current_page - 1) * $items_per_page;
 
 $where_conditions = [];
 $params = [];
@@ -99,24 +98,20 @@ if (!empty($params))
 
 $count_stmt->execute();
 $count_result = $count_stmt->get_result();
-$total_items = $count_result->fetch_assoc()['total'];
-$total_pages = ceil($total_items / $items_per_page);
+$total_products = $count_result->fetch_assoc()['total'];
+$total_pages = ceil($total_products / $per_page);
 
 $products_sql = "SELECT * FROM products $where_sql ORDER BY id DESC LIMIT ? OFFSET ?";
+$params_for_data = $params;
+$types_for_data = $types . 'ii';
+$params_for_data[] = $per_page;
+$params_for_data[] = $offset;
+
 $stmt = $conn->prepare($products_sql);
 
-$limit_param = $items_per_page;
-$offset_param = $offset;
-$limit_types = $types . 'ii';
-
-if (!empty($params)) 
+if (!empty($params_for_data)) 
 {
-    $all_params = array_merge($params, [$limit_param, $offset_param]);
-    $stmt->bind_param($limit_types, ...$all_params);
-} 
-else 
-{
-    $stmt->bind_param("ii", $limit_param, $offset_param);
+    $stmt->bind_param($types_for_data, ...$params_for_data);
 }
 
 $stmt->execute();
@@ -128,26 +123,8 @@ while ($row = $result->fetch_assoc())
     $products[] = $row;
 }
 
-function buildPaginationUrl($page, $current_params = []) 
-{
-    $params = array_merge($current_params, ['page' => $page]);
-    return 'admin.php?' . http_build_query($params);
-}
-
-$pagination_params = [
-    'section' => 'products_catalog',
-    'search' => $search,
-    'category' => $category_filter,
-    'price_min' => $price_min,
-    'price_max' => $price_max,
-    'quantity_filter' => $quantity_filter,
-    'status_filter' => $status_filter
-];
-
-$pagination_params = array_filter($pagination_params, function($value) 
-{
-    return $value !== '' && $value !== null;
-});
+$stats_stmt = $conn->query("SELECT COUNT(*) as total, SUM(CASE WHEN status = 'available' THEN 1 ELSE 0 END) as available, SUM(CASE WHEN status = 'low' THEN 1 ELSE 0 END) as low, SUM(CASE WHEN status = 'out_of_stock' THEN 1 ELSE 0 END) as out_of_stock, COALESCE(AVG(price), 0) as avg_price, SUM(quantity) as total_quantity FROM products");
+$stats = $stats_stmt->fetch_assoc();
 ?>
 
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
@@ -178,6 +155,41 @@ if (isset($_SESSION['message']))
 unset($_SESSION['message']); 
 }
 ?>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Всего товаров</h5>
+                <h2 class="text-primary"><?= $stats['total'] ?></h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">В наличии</h5>
+                <h2 class="text-success"><?= $stats['available'] ?></h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Средняя цена</h5>
+                <h2 class="text-warning"><?= number_format($stats['avg_price'], 2, '.', ' ') ?> ₽</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Общий остаток</h5>
+                <h2 class="text-info"><?= $stats['total_quantity'] ?> шт.</h2>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="card shadow-sm">
     <div class="card-header bg-white">
@@ -220,28 +232,18 @@ unset($_SESSION['message']);
             </div>
         </div>
     </div>
-    <div class="card-body">
-        <?php 
-        if ($total_items > 0)
-        {
-        ?>
-        <div class="mb-3 text-muted">
-            Показано <?= min($items_per_page, $total_items - $offset) ?> из <?= $total_items ?> товаров
-        </div>
-        <?php 
-        }
-        ?>
+    <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
                     <tr>
-                        <th>ID</th>
+                        <th width="50">ID</th>
                         <th>Название</th>
                         <th>Категория</th>
                         <th>Цена</th>
                         <th>Остаток</th>
                         <th>Статус</th>
-                        <th>Действия</th>
+                        <th width="120">Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -280,12 +282,15 @@ unset($_SESSION['message']);
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <a href="admin.php?section=edit_products&id=<?= $product['id'] ?>" class="btn btn-outline-primary">
+                                    <a href="admin.php?section=edit_products&id=<?= $product['id'] ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>" 
+                                       class="btn btn-outline-primary">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <button type="button" class="btn btn-outline-danger" onclick="if(confirm('Удалить товар?')) { window.location.href='admin.php?section=products_catalog&delete_id=<?= $product['id'] ?>&page=<?= $current_page ?>'; }">
+                                    <a href="admin.php?section=products_catalog&delete_id=<?= $product['id'] ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>" 
+                                       class="btn btn-outline-danger"
+                                       onclick="return confirm('Удалить товар?')">
                                         <i class="bi bi-trash"></i>
-                                    </button>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -311,79 +316,46 @@ unset($_SESSION['message']);
         if ($total_pages > 1)
         {
         ?>
-        <nav aria-label="Page navigation" class="mt-3">
-            <ul class="pagination justify-content-center">
-                <li class="page-item <?= $current_page == 1 ? 'disabled' : '' ?>">
-                    <a class="page-link" href="<?= $current_page > 1 ? buildPaginationUrl($current_page - 1, $pagination_params) : '#' ?>" aria-label="Previous">
+        <nav aria-label="Page navigation" class="mt-3 p-3">
+            <ul class="pagination justify-content-center mb-0">
+                <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=products_catalog&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>">
+                        <i class="bi bi-chevron-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $page - 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>">
                         <i class="bi bi-chevron-left"></i>
                     </a>
                 </li>
-                <?php 
-                if ($current_page > 3)
-                {
-                ?>
-                <li class="page-item">
-                    <a class="page-link" href="<?= buildPaginationUrl(1, $pagination_params) ?>">1</a>
-                </li>
-                    <?php 
-                    if ($current_page > 4)
-                    {
-                    ?>
-                    <li class="page-item disabled">
-                        <span class="page-link">...</span>
-                    </li>
-                    <?php 
-                    }
-                } 
-
-                for ($i = max(1, $current_page - 2); $i <= min($total_pages, $current_page + 2); $i++)
-                {
-                ?>
-                <li class="page-item <?= $i == $current_page ? 'active' : '' ?>">
-                    <a class="page-link" href="<?= buildPaginationUrl($i, $pagination_params) ?>"><?= $i ?></a>
-                </li>
                 <?php
-                }
+                $start_page = max(1, $page - 2);
+                $end_page = min($total_pages, $page + 2);
                 
-                if ($current_page < $total_pages - 2)
+                for ($i = $start_page; $i <= $end_page; $i++)
                 {
-                    if ($current_page < $total_pages - 3) 
-                    {
-                    ?>
-                    <li class="page-item disabled">
-                        <span class="page-link">...</span>
-                    </li>
-                    <?php 
-                    }
-                    ?>
-                <li class="page-item">
-                    <a class="page-link" href="<?= buildPaginationUrl($total_pages, $pagination_params) ?>"><?= $total_pages ?></a>
+                ?>
+                <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $i ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>">
+                        <?= $i ?>
+                    </a>
                 </li>
-                <?php
+                <?php 
                 }
                 ?>
-                <li class="page-item <?= $current_page == $total_pages ? 'disabled' : '' ?>">
-                    <a class="page-link" href="<?= $current_page < $total_pages ? buildPaginationUrl($current_page + 1, $pagination_params) : '#' ?>" aria-label="Next">
+                <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $page + 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>">
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
+                <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
+                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $total_pages ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>">
+                        <i class="bi bi-chevron-double-right"></i>
+                    </a>
+                </li>
             </ul>
-            <div class="d-flex justify-content-center mt-2">
-                <form method="GET" action="admin.php" class="d-flex align-items-center">
-                    <?php 
-                    foreach ($pagination_params as $key => $value)
-                    {
-                    ?>
-                    <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
-                    <?php
-                    }
-                    ?>
-                    <span class="me-2">Страница:</span>
-                    <input type="number" class="form-control form-control-sm" name="page" 
-                           min="1" max="<?= $total_pages ?>" value="<?= $current_page ?>" 
-                           style="width: 70px;" onchange="if(this.value >= 1 && this.value <= <?= $total_pages ?>) this.form.submit()">
-                    <span class="ms-2">из <?= $total_pages ?></span>
-                </form>
+            <div class="text-center text-muted mt-2">
+                Страница <?= $page ?> из <?= $total_pages ?> | Показано <?= count($products) ?> из <?= $total_products ?> товаров
             </div>
         </nav>
         <?php

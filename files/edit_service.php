@@ -21,6 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $description = trim($_POST['description'] ?? '');
     $status = $_POST['status'] ?? 'active';
     
+    $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+    
     $errors = [];
     
     if (empty($name)) 
@@ -113,7 +115,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $_SESSION['error_message'] = $error_message;
     }
     
-    header("Location: ../admin.php?section=service");
+    $redirect_url = "../admin.php?section=service&page=" . $page;
+
+    if (isset($_SESSION['service_filters'])) 
+    {
+        $filters = $_SESSION['service_filters'];
+
+        if (!empty($filters['search'])) 
+        {
+            $redirect_url .= "&search=" . urlencode($filters['search']);
+        }
+
+        if (!empty($filters['category'])) 
+        {
+            $redirect_url .= "&category=" . urlencode($filters['category']);
+        }
+
+        if (!empty($filters['status_filter'])) 
+        {
+            $redirect_url .= "&status_filter=" . urlencode($filters['status_filter']);
+        }
+    }
+    
+    header("Location: " . $redirect_url);
     exit();
 } 
 else 
