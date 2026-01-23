@@ -382,6 +382,7 @@ function buildQueryString($page, $search, $category)
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/notifications.css">
     <link rel="stylesheet" href="../css/assortment-styles.css">
     <script>
     document.addEventListener('DOMContentLoaded', function() 
@@ -488,7 +489,7 @@ function buildQueryString($page, $search, $category)
                 if ($search_term !== '' || ($category_filter !== '' && $category_filter !== 'все категории'))
                 {
                 ?>
-                    <a href="?" class="btn btn-sm btn-outline-secondary ms-2">Показать все</a>
+                    <a href="assortment.php" class="btn btn-sm btn-outline-secondary ms-2">Показать все</a>
                 <?php 
                 }
                 ?>
@@ -594,7 +595,7 @@ function buildQueryString($page, $search, $category)
                 <i class="bi bi-search display-4 text-muted mb-3"></i>
                 <h4 class="text-muted">Товары не найдены</h4>
                 <p class="text-muted mb-3">Попробуйте изменить параметры поиска</p>
-                <a href="?" class="btn btn-primary">Показать все товары</a>
+                <a href="assortment.php" class="btn btn-primary">Показать все товары</a>
             </div>
         <?php 
         }
@@ -683,8 +684,19 @@ document.addEventListener('DOMContentLoaded', function()
         {
             params.set('category', categoryFilter);
         }
+        else 
+        {
+            document.getElementById('categoryFilter').value = 'все категории';
+        }
         
-        window.location.href = '?' + params.toString();
+        if (categoryFilter && categoryFilter !== 'все категории') 
+        {
+            window.location.href = '?' + params.toString();
+        }
+        else 
+        {
+            window.location.href = 'assortment.php';
+        }
     }
 
     function resetSearch() 
@@ -692,7 +704,7 @@ document.addEventListener('DOMContentLoaded', function()
         document.getElementById('partsSearch').value = '';
         document.getElementById('categoryFilter').value = 'все категории';
         document.querySelector('.search-clear').style.display = 'none';
-        window.location.href = '?';
+        window.location.href = 'assortment.php';
     }
 
     document.getElementById('searchButton').addEventListener('click', performSearch);

@@ -8,6 +8,60 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['u
     header("Location: ../files/logout.php");
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart']) && isset($_SESSION['loggedin'])) 
+{
+    $productId = $_POST['product_id'] ?? 0;
+    $productName = $_POST['product_name'] ?? '';
+    $productImage = $_POST['product_image'] ?? '../img/no-image.png';
+    $price = $_POST['price'] ?? 0;
+    $quantity = $_POST['quantity'] ?? 1;
+    
+    $username = $_SESSION['user'];
+    $userSql = "SELECT id_users FROM users WHERE CONCAT(surname_users, ' ', name_users, ' ', patronymic_users) = ? OR person_users = ?";
+    $userStmt = $conn->prepare($userSql);
+    $userStmt->bind_param("ss", $username, $username);
+    $userStmt->execute();
+    $userResult = $userStmt->get_result();
+    
+    if ($userResult->num_rows > 0) 
+    {
+        $userData = $userResult->fetch_assoc();
+        $userId = $userData['id_users'];
+        
+        if ($productName && $price > 0) 
+        {
+            $checkSql = "SELECT * FROM cart WHERE user_id = ? AND product_name = ?";
+            $checkStmt = $conn->prepare($checkSql);
+            $checkStmt->bind_param("is", $userId, $productName);
+            $checkStmt->execute();
+            $existingItem = $checkStmt->get_result()->fetch_assoc();
+            $checkStmt->close();
+            
+            if ($existingItem) 
+            {
+                $updateSql = "UPDATE cart SET quantity = quantity + ? WHERE id = ?";
+                $updateStmt = $conn->prepare($updateSql);
+                $updateStmt->bind_param("ii", $quantity, $existingItem['id']);
+                $updateStmt->execute();
+                $updateStmt->close();
+                $_SESSION['success_message'] = "Товар добавлен в корзину!";
+            } 
+            else 
+            {
+                $insertSql = "INSERT INTO cart (user_id, product_id, product_name, product_image, price, quantity) VALUES (?, ?, ?, ?, ?, ?)";
+                $insertStmt = $conn->prepare($insertSql);
+                $insertStmt->bind_param("iissdi", $userId, $productId, $productName, $productImage, $price, $quantity);
+                $insertStmt->execute();
+                $insertStmt->close();
+                $_SESSION['success_message'] = "Товар добавлен в корзину!";
+            }
+        }
+    }
+    
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $login = $_POST['login'];
@@ -190,6 +244,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/notifications.css">
     <link rel="stylesheet" href="../css/oils-styles.css">
     <script>
     document.addEventListener('DOMContentLoaded', function() 
@@ -243,7 +298,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                     if (!empty($search_query) || !empty($brand_filter) || !empty($viscosity_filter) || !empty($type_filter) || !empty($volume_filter)) 
                     {
                     ?>
-                        <a href="?" class="btn btn-sm btn-outline-secondary ms-2">Показать все</a>
+                        <a href="oils.php?sort=default&page=1" class="btn btn-sm btn-outline-secondary ms-2">Показать все</a>
                     <?php 
                     } 
                     ?>
@@ -265,14 +320,14 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
             $base_url = '../files/categories/';
 
             $categories = [
-                ['icon' => 'bi-droplet', 'title' => 'Моторные масла', 'count' => '124 товара', 'color' => 'dark', 'link' => $base_url . 'motor-oils.php'],
-                ['icon' => 'bi-gear', 'title' => 'Трансмиссионные масла', 'count' => '56 товаров', 'color' => 'success', 'link' => $base_url . 'transmission-oils.php'],
-                ['icon' => 'bi-snow', 'title' => 'Тормозные жидкости', 'count' => '23 товара', 'color' => 'info', 'link' => $base_url . 'brake-fluids.php'],
-                ['icon' => 'bi-water', 'title' => 'Охлаждающие жидкости', 'count' => '34 товара', 'color' => 'primary', 'link' => $base_url . 'cooling-fluids.php'],
-                ['icon' => 'bi-wind', 'title' => 'Жидкости ГУР', 'count' => '18 товаров', 'color' => 'dark', 'link' => $base_url . 'power-steering-fluids.php'],
-                ['icon' => 'bi-droplet-half', 'title' => 'Антифризы', 'count' => '42 товара', 'color' => 'secondary', 'link' => $base_url . 'antifreeze.php'],
-                ['icon' => 'bi-brightness-high', 'title' => 'Специальные жидкости', 'count' => '31 товар', 'color' => 'warning', 'link' => $base_url . 'special-fluids.php'],
-                ['icon' => 'bi-archive', 'title' => 'Комплекты', 'count' => '15 товаров', 'color' => 'primary', 'link' => $base_url . 'kits.php']
+                ['icon' => 'bi-droplet', 'title' => 'Моторные масла', 'count' => '124 товара', 'color' => 'dark', 'link' => $base_url . 'motor-oils.php?sort=default&page=1'],
+                ['icon' => 'bi-gear', 'title' => 'Трансмиссионные масла', 'count' => '56 товаров', 'color' => 'success', 'link' => $base_url . 'transmission-oils.php?sort=default&page=1'],
+                ['icon' => 'bi-snow', 'title' => 'Тормозные жидкости', 'count' => '23 товара', 'color' => 'info', 'link' => $base_url . 'brake-fluids.php?sort=default&page=1'],
+                ['icon' => 'bi-water', 'title' => 'Охлаждающие жидкости', 'count' => '34 товара', 'color' => 'primary', 'link' => $base_url . 'cooling-fluids.php?sort=default&page=1'],
+                ['icon' => 'bi-wind', 'title' => 'Жидкости ГУР', 'count' => '18 товаров', 'color' => 'dark', 'link' => $base_url . 'power-steering-fluids.php?sort=default&page=1'],
+                ['icon' => 'bi-droplet-half', 'title' => 'Антифризы', 'count' => '42 товара', 'color' => 'secondary', 'link' => $base_url . 'antifreeze.php?sort=default&page=1'],
+                ['icon' => 'bi-brightness-high', 'title' => 'Специальные жидкости', 'count' => '31 товар', 'color' => 'warning', 'link' => $base_url . 'special-fluids.php?sort=default&page=1'],
+                ['icon' => 'bi-archive', 'title' => 'Комплекты', 'count' => '15 товаров', 'color' => 'primary', 'link' => $base_url . 'kits.php?sort=default&page=1']
             ];
             
             foreach ($categories as $category) 
@@ -301,7 +356,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
             <h2 class="mb-0"><i class="bi bi-funnel"></i> Фильтры</h2>
             <div>
                 <a href="?" class="btn btn-sm btn-outline-secondary me-2" id="resetFilters">Сбросить все</a>
-                <button class="btn btn-sm btn-primary" id="applyFilters">Применить фильтры</button>
+                <button class="btn btn-sm btn-primary" type="button" id="applyFiltersBtn">Применить фильтры</button>
             </div>
         </div>
         <form method="GET" id="filterForm">
@@ -309,7 +364,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                 <div class="col-md-3">
                     <div class="filter-group mb-3">
                         <label class="form-label filter-title">Бренд</label>
-                        <select class="form-select" name="brand">
+                        <select class="form-select filter-select" name="brand">
                             <option value="">Все бренды</option>
                             <option value="Castrol" <?php echo $brand_filter === 'Castrol' ? 'selected' : ''; ?>>Castrol</option>
                             <option value="Mobil" <?php echo $brand_filter === 'Mobil' ? 'selected' : ''; ?>>Mobil</option>
@@ -325,7 +380,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                 <div class="col-md-3">
                     <div class="filter-group mb-3">
                         <label class="form-label filter-title">Вязкость</label>
-                        <select class="form-select" name="viscosity">
+                        <select class="form-select filter-select" name="viscosity">
                             <option value="">Все</option>
                             <option value="0W-20" <?php echo $viscosity_filter === '0W-20' ? 'selected' : ''; ?>>0W-20</option>
                             <option value="0W-30" <?php echo $viscosity_filter === '0W-30' ? 'selected' : ''; ?>>0W-30</option>
@@ -340,7 +395,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                 <div class="col-md-3">
                     <div class="filter-group mb-3">
                         <label class="form-label filter-title">Тип</label>
-                        <select class="form-select" name="type">
+                        <select class="form-select filter-select" name="type">
                             <option value="">Все</option>
                             <option value="Синтетическое" <?php echo $type_filter === 'Синтетическое' ? 'selected' : ''; ?>>Синтетическое</option>
                             <option value="Полусинтетическое" <?php echo $type_filter === 'Полусинтетическое' ? 'selected' : ''; ?>>Полусинтетическое</option>
@@ -351,7 +406,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                 <div class="col-md-3">
                     <div class="filter-group mb-3">
                         <label class="form-label filter-title">Объем</label>
-                        <select class="form-select" name="volume">
+                        <select class="form-select filter-select" name="volume">
                             <option value="">Все</option>
                             <option value="1 л" <?php echo $volume_filter === '1 л' ? 'selected' : ''; ?>>1 л</option>
                             <option value="4 л" <?php echo $volume_filter === '4 л' ? 'selected' : ''; ?>>4 л</option>
@@ -364,6 +419,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
             </div>
             <input type="hidden" name="search" value="<?php echo htmlspecialchars($search_query); ?>">
             <input type="hidden" name="sort" value="<?php echo $sort_type; ?>">
+            <input type="hidden" name="page" value="1">
         </form>
     </div>
     <div class="products-section mb-5">
@@ -384,11 +440,11 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                         ?>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                        <li><a class="dropdown-item" href="?<?php echo buildQueryString(1, $search_query, $sort_type, $brand_filter, $viscosity_filter, $type_filter, $volume_filter, 'default'); ?>">По умолчанию</a></li>
-                        <li><a class="dropdown-item" href="?<?php echo buildQueryString(1, $search_query, $sort_type, $brand_filter, $viscosity_filter, $type_filter, $volume_filter, 'popular'); ?>">По популярности</a></li>
-                        <li><a class="dropdown-item" href="?<?php echo buildQueryString(1, $search_query, $sort_type, $brand_filter, $viscosity_filter, $type_filter, $volume_filter, 'price_asc'); ?>">По цене (возрастание)</a></li>
-                        <li><a class="dropdown-item" href="?<?php echo buildQueryString(1, $search_query, $sort_type, $brand_filter, $viscosity_filter, $type_filter, $volume_filter, 'price_desc'); ?>">По цене (убывание)</a></li>
-                        <li><a class="dropdown-item" href="?<?php echo buildQueryString(1, $search_query, $sort_type, $brand_filter, $viscosity_filter, $type_filter, $volume_filter, 'name'); ?>">По названию</a></li>
+                        <li><a class="dropdown-item" href="?<?php echo buildQueryString(['page' => 1, 'sort' => 'default']); ?>">По умолчанию</a></li>
+                        <li><a class="dropdown-item" href="?<?php echo buildQueryString(['page' => 1, 'sort' => 'popular']); ?>">По популярности</a></li>
+                        <li><a class="dropdown-item" href="?<?php echo buildQueryString(['page' => 1, 'sort' => 'price_asc']); ?>">По цене (возрастание)</a></li>
+                        <li><a class="dropdown-item" href="?<?php echo buildQueryString(['page' => 1, 'sort' => 'price_desc']); ?>">По цене (убывание)</a></li>
+                        <li><a class="dropdown-item" href="?<?php echo buildQueryString(['page' => 1, 'sort' => 'name']); ?>">По названию</a></li>
                     </ul>
                 </div>
                 <form method="GET" class="d-flex">
@@ -399,7 +455,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                         if (!empty($search_query))
                         {
                         ?>
-                            <a href="?<?php echo buildQueryString(1, '', $sort_type, $brand_filter, $viscosity_filter, $type_filter, $volume_filter); ?>" class="btn btn-outline-danger"><i class="bi bi-x"></i></a>
+                            <a href="?<?php echo buildQueryString(['search' => '', 'page' => 1]); ?>" class="btn btn-outline-danger"><i class="bi bi-x"></i></a>
                         <?php
                         }
                         ?>
@@ -409,6 +465,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                     <input type="hidden" name="viscosity" value="<?php echo htmlspecialchars($viscosity_filter); ?>">
                     <input type="hidden" name="type" value="<?php echo htmlspecialchars($type_filter); ?>">
                     <input type="hidden" name="volume" value="<?php echo htmlspecialchars($volume_filter); ?>">
+                    <input type="hidden" name="page" value="1">
                 </form>
             </div>
         </div>
@@ -418,7 +475,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
         ?>
             <div class="alert alert-warning text-center">
                 <i class="bi bi-exclamation-triangle"></i> По вашему запросу ничего не найдено.
-                <a href="?" class="btn btn-sm btn-outline-primary ms-2">Показать все товары</a>
+                <a href="oils.php?sort=default&page=1" class="btn btn-sm btn-outline-primary ms-2">Показать все товары</a>
             </div>
         <?php 
         }
@@ -442,10 +499,31 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                                     <i class="bi '.($product['stock'] ? 'bi-check-circle' : 'bi-x-circle').'"></i> 
                                     '.($product['stock'] ? 'В наличии' : 'Нет в наличии').'
                                 </p>
-                                <div class="product-actions d-grid gap-2">
-                                    <button class="btn btn-sm '.($product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled').'">
-                                        <i class="bi bi-cart-plus"></i> В корзину
-                                    </button>
+                                <div class="product-actions d-grid gap-2">';
+                                    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true)
+                                    {
+                                        echo '
+                                        <form method="POST" class="add-to-cart-form">
+                                            <input type="hidden" name="product_id" value="'.$product['id'].'">
+                                            <input type="hidden" name="product_name" value="'.htmlspecialchars($product['title']).'">
+                                            <input type="hidden" name="product_image" value="../img/no-image.png">
+                                            <input type="hidden" name="price" value="'.$product['price'].'">
+                                            <input type="hidden" name="quantity" value="1">
+                                            <button type="submit" name="add_to_cart" class="btn btn-sm w-100 '.($product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled').' add-to-cart-btn">
+                                                <span class="btn-text">
+                                                    <i class="bi bi-cart-plus"></i> В корзину
+                                                </span>
+                                            </button>
+                                        </form>';
+                                    }
+                                    else
+                                    {
+                                        echo '
+                                        <button class="btn btn-sm '.($product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled').'" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                            <i class="bi bi-cart-plus"></i> В корзину
+                                        </button>';
+                                    }
+                                    echo '
                                     <button class="btn btn-sm btn-outline-secondary">
                                         <i class="bi bi-info-circle"></i> Подробнее
                                     </button>
@@ -463,7 +541,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
             <nav aria-label="Page navigation" class="mt-4">
                 <ul class="pagination justify-content-center">
                     <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
-                        <a class="page-link" href="?<?php echo buildQueryString($current_page - 1, $search_query, $sort_type, $brand_filter, $viscosity_filter, $type_filter, $volume_filter); ?>" tabindex="-1" aria-disabled="true">Назад</a>
+                        <a class="page-link" href="?<?php echo buildQueryString(['page' => $current_page - 1]); ?>" tabindex="-1" aria-disabled="true">Назад</a>
                     </li>
                     <?php
                     $start_page = max(1, $current_page - 2);
@@ -478,13 +556,13 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                     { 
                     ?>
                         <li class="page-item <?php echo $page == $current_page ? 'active' : ''; ?>">
-                            <a class="page-link" href="?<?php echo buildQueryString($page, $search_query, $sort_type, $brand_filter, $viscosity_filter, $type_filter, $volume_filter); ?>"><?php echo $page; ?></a>
+                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $page]); ?>"><?php echo $page; ?></a>
                         </li>
                     <?php 
                     } 
                     ?>
                     <li class="page-item <?php echo $current_page == $total_pages ? 'disabled' : ''; ?>">
-                        <a class="page-link" href="?<?php echo buildQueryString($current_page + 1, $search_query, $sort_type, $brand_filter, $viscosity_filter, $type_filter, $volume_filter); ?>">Вперед</a>
+                        <a class="page-link" href="?<?php echo buildQueryString(['page' => $current_page + 1]); ?>">Вперед</a>
                     </li>
                 </ul>
             </nav>
@@ -563,55 +641,28 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
         </div>
     </div>
 </div>
+<div id="cartNotification" class="notification">
+    <i class="bi bi-check-circle-fill"></i>
+    <span>Товар добавлен в корзину!</span>
+</div>
 
 <?php 
     require_once("footer.php"); 
 ?>
 
 <?php
-function buildQueryString($page, $search, $sort, $brand, $viscosity, $type, $volume, $new_sort = null) 
+function buildQueryString($newParams = []) 
 {
-    $params = [];
-
-    if ($page > 1) 
+    $params = array_merge($_GET, $newParams);
+    
+    foreach ($params as $key => $value) 
     {
-        $params['page'] = $page;
+        if ($value === '') 
+        {
+            unset($params[$key]);
+        }
     }
-
-    if (!empty($search)) 
-    {
-        $params['search'] = $search;
-    }
-
-    if (!empty($new_sort)) 
-    {
-        $params['sort'] = $new_sort;
-    } 
-    else if (!empty($sort) && $sort !== 'default') 
-    {
-        $params['sort'] = $sort;
-    }
-
-    if (!empty($brand)) 
-    {
-        $params['brand'] = $brand;
-    }
-
-    if (!empty($viscosity)) 
-    {
-        $params['viscosity'] = $viscosity;
-    }
-
-    if (!empty($type)) 
-    {
-        $params['type'] = $type;
-    }
-
-    if (!empty($volume)) 
-    {
-        $params['volume'] = $volume;
-    }
-
+    
     return http_build_query($params);
 }
 ?>
@@ -621,35 +672,240 @@ function buildQueryString($page, $search, $sort, $brand, $viscosity, $type, $vol
 <script>
 document.addEventListener('DOMContentLoaded', function() 
 {
-    document.getElementById('applyFilters').addEventListener('click', function() 
+    document.getElementById('applyFiltersBtn').addEventListener('click', function() 
     {
-        document.getElementById('filterForm').submit();
+        let brand = document.querySelector('select[name="brand"]').value;
+        let viscosity = document.querySelector('select[name="viscosity"]').value;
+        let type = document.querySelector('select[name="type"]').value;
+        let volume = document.querySelector('select[name="volume"]').value;
+        let search = document.querySelector('input[name="search"]').value;
+        let sort = document.querySelector('input[name="sort"]').value;
+        let params = new URLSearchParams();
+
+        if (search) 
+        {
+            params.set('search', search);
+        }
+
+        if (sort && sort !== 'default') 
+        {
+            params.set('sort', sort);
+        }
+
+        if (brand) 
+        {
+            params.set('brand', brand);
+        }
+
+        if (viscosity) 
+        {
+            params.set('viscosity', viscosity);
+        }
+
+        if (type) 
+        {
+            params.set('type', type);
+        }
+
+        if (volume) 
+        {
+            params.set('volume', volume);
+        }
+        
+        params.set('page', '1');
+        window.location.href = '?' + params.toString();
     });
 
     document.getElementById('resetFilters').addEventListener('click', function(e) 
     {
         e.preventDefault();
-        window.location.href = '?';
-    });
 
-    document.querySelectorAll('#filterForm select').forEach(select => {
-        select.addEventListener('change', function() 
+        let params = new URLSearchParams();
+        let search = document.querySelector('input[name="search"]').value;
+        let sort = document.querySelector('input[name="sort"]').value;
+        
+        if (search) 
         {
-            document.getElementById('filterForm').submit();
-        });
+            params.set('search', search);
+        }
+
+        if (sort && sort !== 'default') 
+        {
+            params.set('sort', sort);
+        }
+
+        params.set('sort', 'default'); 
+        params.set('page', '1'); 
+        window.location.href = '?' + params.toString();
     });
 
     document.querySelector('.btn-outline-danger')?.addEventListener('click', function(e) 
     {
         e.preventDefault();
-        window.location.href = '?' + new URLSearchParams({
-            sort: '<?php echo $sort_type; ?>',
-            brand: '<?php echo $brand_filter; ?>',
-            viscosity: '<?php echo $viscosity_filter; ?>',
-            type: '<?php echo $type_filter; ?>',
-            volume: '<?php echo $volume_filter; ?>'
-        }).toString();
+
+        let params = new URLSearchParams();
+        let brand = document.querySelector('select[name="brand"]').value;
+        let viscosity = document.querySelector('select[name="viscosity"]').value;
+        let type = document.querySelector('select[name="type"]').value;
+        let volume = document.querySelector('select[name="volume"]').value;
+        let sort = document.querySelector('input[name="sort"]').value;
+        
+        if (brand) 
+        {
+            params.set('brand', brand);
+        }
+
+        if (viscosity) 
+        {
+            params.set('viscosity', viscosity);
+        }
+
+        if (type) 
+        {
+            params.set('type', type);
+        }
+
+        if (volume) 
+        {
+            params.set('volume', volume);
+        }
+
+        if (sort && sort !== 'default') 
+        {
+            params.set('sort', sort);
+        }
+
+        params.set('page', '1');
+        window.location.href = '?' + params.toString();
     });
+
+    let addToCartForms = document.querySelectorAll('.add-to-cart-form');
+    
+    addToCartForms.forEach(form => {
+        form.addEventListener('submit', function(e) 
+        {
+            e.preventDefault();
+            
+            let submitButton = this.querySelector('.add-to-cart-btn');
+            
+            if (!submitButton || submitButton.disabled) 
+            {
+                return;
+            }
+            
+            let originalHtml = submitButton.innerHTML;
+            let originalDisabled = submitButton.disabled;
+            
+            submitButton.classList.add('btn-loading');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="btn-text">Добавляем...</span>';
+            
+            showNotification('Товар добавляется...', 'info');
+            
+            let formData = new FormData(this);
+            
+            fetch('../includes/ajax_add_to_cart.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) 
+                {
+                    showNotification(data.message, 'success');
+                    updateCartCounter(data.cart_count);
+                } 
+                else 
+                {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Ошибка сети', 'error');
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    submitButton.classList.remove('btn-loading');
+                    submitButton.disabled = originalDisabled;
+                    submitButton.innerHTML = originalHtml;
+                }, 1500);
+            });
+        });
+    });
+    
+    function showNotification(message, type = 'success') 
+    {
+        let notification = document.getElementById('cartNotification');
+        
+        if (!notification) 
+        {
+            notification = document.createElement('div');
+            notification.id = 'cartNotification';
+            notification.className = 'notification';
+            document.body.appendChild(notification);
+        }
+        
+        let icon = 'bi-check-circle-fill';
+        let bgColor = '#28a745';
+        let textColor = 'white';
+        
+        if (type === 'error') 
+        {
+            icon = 'bi-exclamation-triangle-fill';
+            bgColor = '#dc3545';
+        } 
+        else if (type === 'info') 
+        {
+            icon = 'bi-info-circle-fill';
+            bgColor = '#17a2b8';
+        }
+        
+        notification.innerHTML = `<i class="bi ${icon}"></i><span>${message}</span>`;
+        notification.style.background = bgColor;
+        notification.style.color = textColor;
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+    
+    function updateCartCounter(newCount = null) {
+        let cartCounter = document.getElementById('cartCounter');
+        
+        if (cartCounter) 
+        {
+            if (newCount !== null) 
+            {
+                cartCounter.textContent = newCount;
+            } 
+            else 
+            {
+                let currentCount = parseInt(cartCounter.textContent) || 0;
+                cartCounter.textContent = currentCount + 1;
+            }
+            
+            cartCounter.style.transform = 'scale(1.3)';
+            
+            setTimeout(() => {
+                cartCounter.style.transform = 'scale(1)';
+            }, 300);
+        }
+    }
+    
+    <?php 
+    if (isset($_SESSION['success_message']))
+    {
+    ?>
+        showNotification('<?= $_SESSION['success_message'] ?>', 'success');
+        <?php unset($_SESSION['success_message']); ?>
+    <?php 
+    }
+    ?>
 });
 </script>
 </body>

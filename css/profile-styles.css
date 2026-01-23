@@ -1181,3 +1181,27 @@
     display: flex;
     gap: 5px;
 }
+
+.update-cart-form {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.remove-cart-form {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Стиль для заблокированных кнопок */
+.input-group .btn[data-processing="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Отключаем выделение для кнопок +/- */
+.input-group .btn {
+    user-select: none;
+    -webkit-user-select: none;
+    transition: opacity 0.2s;
+}

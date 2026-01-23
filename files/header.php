@@ -33,7 +33,7 @@ error_reporting(E_ALL);
                             <li><a class="dropdown-item" href="includes/shops.php">Магазины</a></li>
                             <li><a class="dropdown-item" href="includes/service.php">Автосервис</a></li>
                             <li><a class="dropdown-item" href="includes/assortment.php">Ассортимент</a></li>
-                            <li><a class="dropdown-item" href="includes/oils.php">Масла и тех. жидкости</a></li>
+                            <li><a class="dropdown-item" href="includes/oils.php?sort=default&page=1">Масла и тех. жидкости</a></li>
                             <li><a class="dropdown-item" href="includes/accessories.php">Аксессуары</a></li>
                             <li><a class="dropdown-item" href="includes/customers.php">Покупателям</a></li>
                             <li><a class="dropdown-item" href="includes/requisites.php">Реквизиты</a></li>

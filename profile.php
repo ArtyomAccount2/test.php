@@ -334,30 +334,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
     {
         $itemId = $_POST['item_id'] ?? 0;
         $quantity = $_POST['quantity'] ?? 1;
+
+        $quantity = max(1, min(99, intval($quantity)));
         
-        if ($quantity <= 0) 
-        {
-            $deleteSql = "DELETE FROM cart WHERE id = ? AND user_id = ?";
-            $deleteStmt = $conn->prepare($deleteSql);
-            $deleteStmt->bind_param("ii", $itemId, $userId);
-            $deleteStmt->execute();
-            $deleteStmt->close();
-            $_SESSION['success_message'] = "Товар удален из корзины!";
-        } 
-        else 
-        {
-            $updateSql = "UPDATE cart SET quantity = ? WHERE id = ? AND user_id = ?";
-            $updateStmt = $conn->prepare($updateSql);
-            $updateStmt->bind_param("iii", $quantity, $itemId, $userId);
-            $updateStmt->execute();
-            $updateStmt->close();
-            $_SESSION['success_message'] = "Корзина обновлена!";
-        }
+        $updateSql = "UPDATE cart SET quantity = ? WHERE id = ? AND user_id = ?";
+        $updateStmt = $conn->prepare($updateSql);
+        $updateStmt->bind_param("iii", $quantity, $itemId, $userId);
+        $updateStmt->execute();
+        $updateStmt->close();
+        $_SESSION['success_message'] = "Корзина обновлена!";
         
         header("Location: profile.php");
         exit();
     }
-    
+
     if (isset($_POST['remove_cart_item'])) 
     {
         $itemId = $_POST['item_id'] ?? 0;
@@ -372,7 +362,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
         header("Location: profile.php");
         exit();
     }
-    
+
     if (isset($_POST['clear_cart_profile'])) 
     {
         $clearSql = "DELETE FROM cart WHERE user_id = ?";
@@ -1018,7 +1008,7 @@ if (isset($_POST['cancel_order']))
                                                         <span class="cart-item-price"><?= number_format($item['price'], 0, ',', ' ') ?> ₽</span>
                                                     </td>
                                                     <td class="text-center">
-                                                        <form method="POST" class="d-inline">
+                                                        <form method="POST" class="d-inline update-cart-form" data-item-id="<?= $item['id'] ?>">
                                                             <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
                                                             <div class="input-group input-group-sm" style="width: 120px;">
                                                                 <button class="btn btn-outline-secondary minus-btn" type="button">-</button>
@@ -1026,9 +1016,7 @@ if (isset($_POST['cancel_order']))
                                                                     min="1" max="99" class="form-control text-center quantity-input">
                                                                 <button class="btn btn-outline-secondary plus-btn" type="button">+</button>
                                                             </div>
-                                                            <button type="submit" name="update_cart_item" class="btn btn-link btn-sm mt-1" style="display: none;">
-                                                                Обновить
-                                                            </button>
+                                                            <button type="submit" name="update_cart_item" class="d-none submit-update"></button>
                                                         </form>
                                                     </td>
                                                     <td class="text-center">
@@ -1037,11 +1025,10 @@ if (isset($_POST['cancel_order']))
                                                         </span>
                                                     </td>
                                                     <td class="text-center">
-                                                        <form method="POST" class="d-inline">
+                                                        <form method="POST" class="d-inline remove-cart-form ms-2">
                                                             <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
                                                             <button type="submit" name="remove_cart_item" 
-                                                                    class="btn btn-sm btn-outline-danger"
-                                                                    onclick="return confirm('Удалить товар из корзины?')">
+                                                                    class="btn btn-sm btn-outline-danger">
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </form>
@@ -1327,192 +1314,142 @@ if (isset($_POST['cancel_order']))
 <script>
 document.addEventListener('DOMContentLoaded', function() 
 {
-    let viewButtons = document.querySelectorAll('.view-order-details');
-
-    viewButtons.forEach(button => {
-        button.addEventListener('click', function() 
-        {
-            let orderId = this.getAttribute('data-order-id');
-            let detailsRow = document.getElementById('details-' + orderId);
-            
-            if (detailsRow.style.display === 'none') 
-            {
-                detailsRow.style.display = 'table-row';
-                this.innerHTML = '<i class="bi bi-eye-slash me-1"></i>Скрыть';
-            } 
-            else 
-            {
-                detailsRow.style.display = 'none';
-                this.innerHTML = '<i class="bi bi-eye me-1"></i>Подробнее';
-            }
-        });
-    });
+    let formSubmissionInProgress = false;
 
     document.addEventListener('click', function(e) 
     {
-        if (e.target.classList.contains('mark-as-read-btn') || e.target.closest('.mark-as-read-btn')) 
+        let target = e.target;
+
+        if (target.classList.contains('plus-btn')) 
         {
+            e.preventDefault();
+            e.stopImmediatePropagation();
             
-            let button = e.target.classList.contains('mark-as-read-btn') ? e.target : e.target.closest('.mark-as-read-btn');
-            let notificationId = button.getAttribute('data-id');
-            let notificationItem = button.closest('.notification-item');
-            
-            if (!notificationId || !notificationItem) 
+            if (formSubmissionInProgress)
             {
                 return;
             }
-
-            notificationItem.classList.add('marked-read');
-            button.style.display = 'none';
-
-            fetch('includes/ajax_notifications.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    'action': 'mark_as_read',
-                    'notification_id': notificationId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) 
-                {
-                    updateNotificationBadge(data.unread_count);
-
-                    setTimeout(() => {
-                        notificationItem.classList.add('read');
-                    }, 500);
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-
-                notificationItem.classList.remove('marked-read');
-                button.style.display = '';
-            });
             
-            e.preventDefault();
+            let input = target.closest('.input-group').querySelector('.quantity-input');
+            let form = target.closest('.update-cart-form');
+            
+            if (!input || !form) 
+            {
+                return;
+            }
+            
+            let currentValue = parseInt(input.value) || 1;
+            
+            if (currentValue < 99) 
+            {
+                input.value = currentValue + 1;
+                submitCartForm(form);
+            }
         }
 
-        if (e.target.classList.contains('delete-notification-btn') || e.target.closest('.delete-notification-btn')) {
+        if (target.classList.contains('minus-btn')) 
+        {
+            e.preventDefault();
+            e.stopImmediatePropagation();
             
-            let button = e.target.classList.contains('delete-notification-btn') ? e.target : e.target.closest('.delete-notification-btn');
-            let notificationId = button.getAttribute('data-id');
-            let notificationItem = button.closest('.notification-item');
-            
-            if (!notificationId || !notificationItem) 
+            if (formSubmissionInProgress)
             {
                 return;
             }
             
-            notificationItem.classList.add('fade-out');
-
-            fetch('includes/ajax_notifications.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    'action': 'delete',
-                    'notification_id': notificationId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    updateNotificationBadge(data.unread_count);
-
-                    setTimeout(() => {
-                        notificationItem.remove();
-                        let notifications = document.querySelectorAll('.notification-item');
-
-                        if (notifications.length === 0) 
-                        {
-                            showNoNotificationsMessage();
-                        }
-                    }, 300);
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-                notificationItem.classList.remove('fade-out');
-            });
+            let input = target.closest('.input-group').querySelector('.quantity-input');
+            let form = target.closest('.update-cart-form');
             
-            e.preventDefault();
+            if (!input || !form) 
+            {
+                return;
+            }
+            
+            let currentValue = parseInt(input.value) || 1;
+
+            if (currentValue > 1) 
+            {
+                input.value = currentValue - 1;
+                submitCartForm(form);
+            }
         }
     });
-    
-    function updateNotificationBadge(count) 
-    {
-        let badge = document.querySelector('a[href="#notifications"] .badge');
-        
-        if (count > 0) 
-        {
-            if (!badge) 
-            {
-                let link = document.querySelector('a[href="#notifications"]');
 
-                badge = document.createElement('span');
-                badge.className = 'badge bg-warning float-end';
-                link.appendChild(badge);
+    document.addEventListener('change', function(e) 
+    {
+        if (e.target.classList.contains('quantity-input'))
+        {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            
+            if (formSubmissionInProgress) 
+            {
+                return;
+            }
+            
+            let input = e.target;
+            let form = input.closest('.update-cart-form');
+            
+            if (!form) 
+            {
+                return;
+            }
+            
+            let value = parseInt(input.value) || 1;
+            
+            if (value < 1) 
+            {
+                input.value = 1;
+                return;
             }
 
-            badge.textContent = count;
-        } 
-        else if (badge) 
-        {
-            badge.remove();
-        }
-    }
-    
-    function showNoNotificationsMessage() 
-    {
-        let container = document.getElementById('notificationsContainer');
-
-        if (container) 
-        {
-            container.innerHTML = `
-                <div class="text-center py-5" id="noNotifications">
-                    <i class="bi bi-bell-slash display-1 text-muted mb-3"></i>
-                    <h5>Уведомлений пока нет</h5>
-                    <p class="text-muted">Здесь будут появляться ваши уведомления</p>
-                </div>
-            `;
-        }
-    }
-
-    function initNotifications() 
-    {
-        let notificationItems = document.querySelectorAll('.notification-item');
-        
-        notificationItems.forEach((item, index) => {
-            item.style.opacity = '0';
-            item.style.transform = 'translateY(20px)';
+            if (value > 99) 
+            {
+                input.value = 99;
+            }
             
-            setTimeout(() => {
-                item.style.transition = 'all 0.4s ease';
-                item.style.opacity = '1';
-                item.style.transform = 'translateY(0)';
-            }, index * 100);
-        });
-    }
+            submitCartForm(form);
+        }
+    });
 
-    let notificationsTab = document.querySelector('a[href="#notifications"]');
-
-    if (notificationsTab) 
+    function submitCartForm(form) 
     {
-        notificationsTab.addEventListener('click', function() 
+        if (formSubmissionInProgress) 
         {
-            setTimeout(initNotifications, 100);
-        });
+            return;
+        }
+        
+        formSubmissionInProgress = true;
+        
+        let submitBtn = form.querySelector('.submit-update');
+
+        if (submitBtn) 
+        {
+            submitBtn.click();
+        }
+
+        setTimeout(() => {
+            formSubmissionInProgress = false;
+        }, 300);
     }
 
-    if (window.location.hash === '#notifications') 
+    document.addEventListener('submit', function(e) 
     {
-        setTimeout(initNotifications, 100);
-    }
+        let form = e.target;
+        
+        if (form.classList.contains('remove-cart-form')) 
+        {
+            if (!confirm('Удалить товар из корзины?')) 
+            {
+                e.preventDefault();
+                return false;
+            }
+        }
+    });
+
+    document.querySelectorAll('.plus-btn, .minus-btn').forEach(btn => {
+        btn.replaceWith(btn.cloneNode(true));
+    });
 });
 </script>
 </body>

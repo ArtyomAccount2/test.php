@@ -200,7 +200,7 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
                         <a class="nav-link text-dark" href="../../index.php">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="../../includes/oils.php">Масла и тех. жидкости</a>
+                        <a class="nav-link text-dark" href="../../includes/oils.php?sort=default&page=1">Масла и тех. жидкости</a>
                     </li>
                 </ul>
                 <div class="ms-xl-3 ms-lg-2 ms-md-1">
@@ -330,7 +330,7 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="mb-0"><i class="bi bi-funnel"></i> Фильтры</h2>
                 <div>
-                    <a href="?" class="btn btn-sm btn-outline-secondary me-2">Сбросить</a>
+                    <a href="special-fluids.php?sort=default&page=1" class="btn btn-sm btn-outline-secondary me-2">Сбросить</a>
                     <button class="btn btn-sm btn-primary" onclick="applyFilters()">Применить</button>
                 </div>
             </div>
@@ -596,8 +596,6 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
                 </nav>
                 <?php 
                 } 
-                ?>
-            <?php 
             } 
             ?>
         </div>

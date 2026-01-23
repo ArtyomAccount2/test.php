@@ -202,3 +202,13 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+.btn-text
+{
+    color: #007bff;
+}
+
+.btn-text:hover
+{
+    color: #dee2e6;
+}

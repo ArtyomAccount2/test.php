@@ -8,6 +8,60 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['u
     header("Location: ../files/logout.php");
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart']) && isset($_SESSION['loggedin'])) 
+{
+    $productId = $_POST['product_id'] ?? 0;
+    $productName = $_POST['product_name'] ?? '';
+    $productImage = $_POST['product_image'] ?? '../img/no-image.png';
+    $price = $_POST['price'] ?? 0;
+    $quantity = $_POST['quantity'] ?? 1;
+
+    $username = $_SESSION['user'];
+    $userSql = "SELECT id_users FROM users WHERE CONCAT(surname_users, ' ', name_users, ' ', patronymic_users) = ? OR person_users = ?";
+    $userStmt = $conn->prepare($userSql);
+    $userStmt->bind_param("ss", $username, $username);
+    $userStmt->execute();
+    $userResult = $userStmt->get_result();
+    
+    if ($userResult->num_rows > 0) 
+    {
+        $userData = $userResult->fetch_assoc();
+        $userId = $userData['id_users'];
+        
+        if ($productName && $price > 0) 
+        {
+            $checkSql = "SELECT * FROM cart WHERE user_id = ? AND product_name = ?";
+            $checkStmt = $conn->prepare($checkSql);
+            $checkStmt->bind_param("is", $userId, $productName);
+            $checkStmt->execute();
+            $existingItem = $checkStmt->get_result()->fetch_assoc();
+            $checkStmt->close();
+            
+            if ($existingItem) 
+            {
+                $updateSql = "UPDATE cart SET quantity = quantity + ? WHERE id = ?";
+                $updateStmt = $conn->prepare($updateSql);
+                $updateStmt->bind_param("ii", $quantity, $existingItem['id']);
+                $updateStmt->execute();
+                $updateStmt->close();
+                $_SESSION['success_message'] = "Товар добавлен в корзину!";
+            } 
+            else 
+            {
+                $insertSql = "INSERT INTO cart (user_id, product_id, product_name, product_image, price, quantity) VALUES (?, ?, ?, ?, ?, ?)";
+                $insertStmt = $conn->prepare($insertSql);
+                $insertStmt->bind_param("iissdi", $userId, $productId, $productName, $productImage, $price, $quantity);
+                $insertStmt->execute();
+                $insertStmt->close();
+                $_SESSION['success_message'] = "Товар добавлен в корзину!";
+            }
+        }
+    }
+    
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $login = $_POST['login'];
@@ -188,6 +242,7 @@ sort($all_categories);
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/notifications.css">
     <link rel="stylesheet" href="../css/accessories-styles.css">
     <script>
     document.addEventListener('DOMContentLoaded', function() 
@@ -289,7 +344,7 @@ sort($all_categories);
 
 <div class="container my-4">
     <div class="hero-section text-center mb-5" style="padding-top: 105px;">
-        <h1 class="display-5 fw-bold text-primary mb-3">Автоаксессуары</h1>
+        <h1 class="display-5 fw-bold text-primary mb-3">Аксессуары</h1>
         <p class="lead text-muted mb-4">Найдите идеальные аксессуары для вашего автомобиля</p>
     </div>
     <div class="row mb-4">
@@ -531,9 +586,33 @@ sort($all_categories);
                                         } 
                                         ?>
                                     </div>
-                                    <button class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-cart-plus"></i>
-                                    </button>
+                                    <?php 
+                                    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true)
+                                    {
+                                    ?>
+                                        <form method="POST" class="add-to-cart-form">
+                                            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                                            <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['name']) ?>">
+                                            <input type="hidden" name="product_image" value="../img/no-image.png">
+                                            <input type="hidden" name="price" value="<?= $product['price'] ?>">
+                                            <input type="hidden" name="quantity" value="1">
+                                            <button type="submit" name="add_to_cart" class="btn btn-sm btn-outline-primary add-to-cart-btn">
+                                                <span class="btn-text">
+                                                    <i class="bi bi-cart-plus"></i>
+                                                </span>
+                                            </button>
+                                        </form>
+                                    <?php 
+                                    }
+                                    else
+                                    {
+                                    ?>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                            <i class="bi bi-cart-plus"></i>
+                                        </button>
+                                    <?php 
+                                    }
+                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -600,6 +679,10 @@ sort($all_categories);
         </div>
     </div>
 </div>
+<div id="cartNotification" class="notification">
+    <i class="bi bi-check-circle-fill"></i>
+    <span>Товар добавлен в корзину!</span>
+</div>
 
 <?php 
     require_once("footer.php"); 
@@ -653,3 +736,136 @@ function buildQueryString($page, $search, $category, $brand, $min_price, $max_pr
 <script src="../js/script.js"></script>
 </body>
 </html>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() 
+{
+    let addToCartForms = document.querySelectorAll('.add-to-cart-form');
+    
+    addToCartForms.forEach(form => {
+        form.addEventListener('submit', function(e) 
+        {
+            e.preventDefault();
+            
+            let submitButton = this.querySelector('.add-to-cart-btn');
+            
+            if (!submitButton || submitButton.disabled) 
+            {
+                return;
+            }
+            
+            let originalHtml = submitButton.innerHTML;
+            let originalDisabled = submitButton.disabled;
+            
+            submitButton.classList.add('btn-loading');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="btn-text">Добавляем...</span>';
+            
+            showNotification('Товар добавляется...', 'info');
+            
+            let formData = new FormData(this);
+            
+            fetch('../includes/ajax_add_to_cart.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) 
+                {
+                    showNotification(data.message, 'success');
+                    updateCartCounter(data.cart_count);
+                } 
+                else 
+                {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Ошибка сети', 'error');
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    submitButton.classList.remove('btn-loading');
+                    submitButton.disabled = originalDisabled;
+                    submitButton.innerHTML = originalHtml;
+                }, 1500);
+            });
+        });
+    });
+    
+    function showNotification(message, type = 'success') 
+    {
+        let notification = document.getElementById('cartNotification');
+        
+        if (!notification) 
+        {
+            notification = document.createElement('div');
+            notification.id = 'cartNotification';
+            notification.className = 'notification';
+            document.body.appendChild(notification);
+        }
+        
+        let icon = 'bi-check-circle-fill';
+        let bgColor = '#28a745';
+        let textColor = 'white';
+        
+        if (type === 'error') 
+        {
+            icon = 'bi-exclamation-triangle-fill';
+            bgColor = '#dc3545';
+        } 
+        else if (type === 'info') 
+        {
+            icon = 'bi-info-circle-fill';
+            bgColor = '#17a2b8';
+        }
+        
+        notification.innerHTML = `<i class="bi ${icon}"></i><span>${message}</span>`;
+        notification.style.background = bgColor;
+        notification.style.color = textColor;
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+    
+    function updateCartCounter(newCount = null) {
+        let cartCounter = document.getElementById('cartCounter');
+        
+        if (cartCounter) 
+        {
+            if (newCount !== null) 
+            {
+                cartCounter.textContent = newCount;
+            } 
+            else 
+            {
+                let currentCount = parseInt(cartCounter.textContent) || 0;
+                cartCounter.textContent = currentCount + 1;
+            }
+            
+            cartCounter.style.transform = 'scale(1.3)';
+            
+            setTimeout(() => {
+                cartCounter.style.transform = 'scale(1)';
+            }, 300);
+        }
+    }
+    
+    <?php 
+    if (isset($_SESSION['success_message']))
+    {
+    ?>
+        showNotification('<?= $_SESSION['success_message'] ?>', 'success');
+        <?php unset($_SESSION['success_message']); ?>
+    <?php 
+    }
+    ?>
+});
+</script>

@@ -18,7 +18,7 @@
                             <li><a class="dropdown-item" href="shops.php">Магазины</a></li>
                             <li><a class="dropdown-item" href="service.php">Автосервис</a></li>
                             <li><a class="dropdown-item" href="assortment.php">Ассортимент</a></li>
-                            <li><a class="dropdown-item" href="oils.php">Масла и тех. жидкости</a></li>
+                            <li><a class="dropdown-item" href="oils.php?sort=default&page=1">Масла и тех. жидкости</a></li>
                             <li><a class="dropdown-item" href="accessories.php">Аксессуары</a></li>
                             <li><a class="dropdown-item" href="customers.php">Покупателям</a></li>
                             <li><a class="dropdown-item" href="requisites.php">Реквизиты</a></li>
