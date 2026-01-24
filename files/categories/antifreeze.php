@@ -168,6 +168,7 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/notifications.css">
     <link rel="stylesheet" href="../../css/oils-styles.css">
     <script>
     document.addEventListener('DOMContentLoaded', function() 
@@ -477,10 +478,37 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
                                         <i class="bi '.($product['stock'] ? 'bi-check-circle' : 'bi-x-circle').'"></i> 
                                         '.($product['stock'] ? 'В наличии' : 'Нет в наличии').'
                                     </p>
-                                    <div class="product-actions d-grid gap-2">
-                                        <button class="btn btn-sm '.($product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled').'">
-                                            <i class="bi bi-cart-plus"></i> В корзину
-                                        </button>
+                                    <div class="product-actions d-grid gap-2">';
+                                        ?>
+                                        <?php 
+                                        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true)
+                                        {
+                                        ?>
+                                            <form method="POST" class="add-to-cart-form">
+                                                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                                <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($product['title']); ?>">
+                                                <input type="hidden" name="product_image" value="../../img/no-image.png">
+                                                <input type="hidden" name="price" value="<?php echo $product['price']; ?>">
+                                                <input type="hidden" name="quantity" value="1">
+                                                <button type="submit" name="add_to_cart" class="btn btn-sm w-100 <?php echo $product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled'; ?> add-to-cart-btn">
+                                                    <span class="btn-text">
+                                                        <i class="bi bi-cart-plus"></i> В корзину
+                                                    </span>
+                                                </button>
+                                            </form>
+                                        <?php 
+                                        }
+                                        else
+                                        {
+                                        ?>
+                                            <button class="btn btn-sm <?php echo $product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled'; ?>" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                                <i class="bi bi-cart-plus"></i> В корзину
+                                            </button>
+                                        <?php 
+                                        }
+                                        ?>
+                                        <?php
+                                        echo '
                                         <button class="btn btn-sm btn-outline-secondary">
                                             <i class="bi bi-info-circle"></i> Подробнее
                                         </button>
@@ -587,6 +615,10 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
             ?>
         </div>
     </div>
+    <div id="cartNotification" class="notification">
+        <i class="bi bi-check-circle-fill"></i>
+        <span>Товар добавлен в корзину!</span>
+    </div>
 
 <?php 
     require_once("../../includes/footer.php"); 
@@ -621,7 +653,8 @@ function buildQueryString(params)
     return currentParams.toString();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() 
+{
     let paginationLinks = document.querySelectorAll('.pagination a');
     
     for (let i = 0; i < paginationLinks.length; i++) 
@@ -638,6 +671,135 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = this.href;
             }.bind(this), 300);
         });
+    }
+
+    let addToCartForms = document.querySelectorAll('.add-to-cart-form');
+    
+    addToCartForms.forEach(form => {
+        form.addEventListener('submit', function(e) 
+        {
+            e.preventDefault();
+            
+            let submitButton = this.querySelector('.add-to-cart-btn');
+            
+            if (!submitButton || submitButton.disabled) 
+            {
+                return;
+            }
+            
+            let originalHtml = submitButton.innerHTML;
+            let originalDisabled = submitButton.disabled;
+            
+            submitButton.classList.add('btn-loading');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="btn-text">Добавляем...</span>';
+            
+            showNotification('Товар добавляется...', 'info');
+            
+            let formData = new FormData(this);
+            
+            fetch('../../includes/ajax_add_to_cart.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) 
+                {
+                    showNotification(data.message, 'success');
+                    updateCartCounter(data.cart_count);
+                } 
+                else 
+                {
+                    showNotification(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Ошибка сети', 'error');
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    submitButton.classList.remove('btn-loading');
+                    submitButton.disabled = originalDisabled;
+                    submitButton.innerHTML = originalHtml;
+                }, 1500);
+            });
+        });
+    });
+    
+    function showNotification(message, type = 'success') 
+    {
+        let notification = document.getElementById('cartNotification');
+        
+        if (!notification) 
+        {
+            notification = document.createElement('div');
+            notification.id = 'cartNotification';
+            notification.className = 'notification';
+            document.body.appendChild(notification);
+        }
+        
+        let icon = 'bi-check-circle-fill';
+        let bgColor = '#28a745';
+        let textColor = 'white';
+        
+        if (type === 'error') 
+        {
+            icon = 'bi-exclamation-triangle-fill';
+            bgColor = '#dc3545';
+        } 
+        else if (type === 'info') 
+        {
+            icon = 'bi-info-circle-fill';
+            bgColor = '#17a2b8';
+        }
+        
+        notification.innerHTML = `<i class="bi ${icon}"></i><span>${message}</span>`;
+        notification.style.background = bgColor;
+        notification.style.color = textColor;
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+    
+    function updateCartCounter(newCount = null) 
+    {
+        let cartCounter = document.getElementById('cartCounter');
+
+        if (!cartCounter) 
+        {
+            let navCounter = document.querySelector('.navbar .badge.bg-primary');
+
+            if (navCounter) 
+            {
+                cartCounter = navCounter;
+            }
+        }
+        
+        if (cartCounter) 
+        {
+            if (newCount !== null) 
+            {
+                cartCounter.textContent = newCount;
+            } 
+            else 
+            {
+                let currentCount = parseInt(cartCounter.textContent) || 0;
+                cartCounter.textContent = currentCount + 1;
+            }
+            
+            cartCounter.style.transform = 'scale(1.3)';
+            
+            setTimeout(() => {
+                cartCounter.style.transform = 'scale(1)';
+            }, 300);
+        }
     }
 });
 </script>

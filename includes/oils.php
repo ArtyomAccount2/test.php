@@ -601,42 +601,96 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Марка автомобиля</label>
-                        <select class="form-select">
-                            <option selected disabled>Выберите марку</option>
-                            <option>Audi</option>
-                            <option>BMW</option>
-                            <option>Mercedes-Benz</option>
-                            <option>Volkswagen</option>
-                            <option>Toyota</option>
-                            <option>Honda</option>
-                        </select>
+                <form id="oilSelectorForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Марка автомобиля</label>
+                            <select class="form-select" id="carBrand" name="brand" required>
+                                <option value="" selected disabled>Выберите марку</option>
+                                <option value="Audi">Audi</option>
+                                <option value="BMW">BMW</option>
+                                <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                <option value="Volkswagen">Volkswagen</option>
+                                <option value="Toyota">Toyota</option>
+                                <option value="Honda">Honda</option>
+                                <option value="Ford">Ford</option>
+                                <option value="Chevrolet">Chevrolet</option>
+                                <option value="Nissan">Nissan</option>
+                                <option value="Hyundai">Hyundai</option>
+                                <option value="Kia">Kia</option>
+                                <option value="Mazda">Mazda</option>
+                                <option value="Subaru">Subaru</option>
+                                <option value="Lexus">Lexus</option>
+                                <option value="Volvo">Volvo</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Модель</label>
+                            <select class="form-select" id="carModel" name="model" disabled required>
+                                <option value="" selected disabled>Сначала выберите марку</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Модель</label>
-                        <select class="form-select" disabled>
-                            <option selected disabled>Сначала выберите марку</option>
-                        </select>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Год выпуска</label>
+                            <select class="form-select" id="carYear" name="year" disabled required>
+                                <option value="" selected disabled>Сначала выберите модель</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Двигатель (объем)</label>
+                            <select class="form-select" id="carEngine" name="engine" disabled required>
+                                <option value="" selected disabled>Сначала выберите год выпуска</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Год выпуска</label>
-                        <select class="form-select" disabled>
-                            <option selected disabled>Сначала выберите модель</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Двигатель</label>
-                        <select class="form-select" disabled>
-                            <option selected disabled>Сначала выберите год выпуска</option>
-                        </select>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Тип двигателя</label>
+                            <select class="form-select" id="engineType" name="engine_type">
+                                <option value="Бензиновый">Бензиновый</option>
+                                <option value="Дизельный">Дизельный</option>
+                                <option value="Гибридный">Гибридный</option>
+                                <option value="Электрический">Электрический</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Тип масла</label>
+                            <select class="form-select" id="oilType" name="oil_type">
+                                <option value="Синтетическое">Синтетическое</option>
+                                <option value="Полусинтетическое">Полусинтетическое</option>
+                                <option value="Минеральное">Минеральное</option>
+                            </select>
+                        </div>
                     </div>
                 </form>
+                <div id="selectionResults" class="mt-4" style="display: none;">
+                    <div class="alert alert-success">
+                        <h5><i class="bi bi-check-circle"></i> Подходящие масла найдены!</h5>
+                        <p>Для вашего автомобиля <span id="selectedCarInfo"></span> рекомендуем следующие масла:</p>
+                    </div>
+                    <div id="recommendedOils" class="row g-3"></div>
+                </div>
+                <div id="noResults" class="alert alert-warning mt-4" style="display: none;">
+                    <i class="bi bi-exclamation-triangle"></i> Для указанных параметров не найдено подходящих масел. 
+                    <a href="oils.php?sort=default&page=1" class="alert-link">Посмотреть все масла</a>
+                </div>
+                <div id="errorMessage" class="alert alert-danger mt-4" style="display: none;">
+                    <i class="bi bi-x-circle"></i> Произошла ошибка при подборе. Попробуйте еще раз.
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary" disabled>Подобрать</button>
+                <button type="button" class="btn btn-primary" id="findOilBtn" disabled>
+                    <span id="findOilText">Подобрать масло</span>
+                    <span id="findOilLoading" style="display: none;">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Подбираем...
+                    </span>
+                </button>
+                <button type="button" class="btn btn-outline-primary" id="resetSelectionBtn" style="display: none;">
+                    <i class="bi bi-arrow-counterclockwise"></i> Новый подбор
+                </button>
             </div>
         </div>
     </div>
@@ -672,6 +726,417 @@ function buildQueryString($newParams = [])
 <script>
 document.addEventListener('DOMContentLoaded', function() 
 {
+    let carData = {
+        "Audi": {
+            "A4": {
+                "years": ["2015-2020", "2020-2023"],
+                "engines": {
+                    "2015-2020": ["1.4 TSI", "2.0 TDI", "2.0 TFSI"],
+                    "2020-2023": ["2.0 TFSI mild hybrid", "3.0 TDI"]
+                }
+            },
+            "A6": {
+                "years": ["2018-2022", "2022-2024"],
+                "engines": {
+                    "2018-2022": ["2.0 TDI", "3.0 TDI", "2.0 TFSI"],
+                    "2022-2024": ["3.0 TFSI", "3.0 TDI e-tron"]
+                }
+            },
+            "Q5": {
+                "years": ["2017-2021", "2021-2024"],
+                "engines": {
+                    "2017-2021": ["2.0 TDI", "2.0 TFSI"],
+                    "2021-2024": ["2.0 TFSI", "3.0 TFSI"]
+                }
+            }
+        },
+        "BMW": {
+            "3 Series": {
+                "years": ["2019-2022", "2022-2024"],
+                "engines": {
+                    "2019-2022": ["2.0 320i", "3.0 330i", "2.0 320d"],
+                    "2022-2024": ["2.0 320i", "3.0 M340i"]
+                }
+            },
+            "5 Series": {
+                "years": ["2017-2020", "2020-2023"],
+                "engines": {
+                    "2017-2020": ["2.0 520i", "3.0 530d", "2.0 520d"],
+                    "2020-2023": ["2.0 520i", "3.0 540i"]
+                }
+            },
+            "X5": {
+                "years": ["2018-2023"],
+                "engines": {
+                    "2018-2023": ["3.0 xDrive30d", "4.4 xDrive50i", "3.0 xDrive40i"]
+                }
+            }
+        },
+        "Mercedes-Benz": {
+            "C-Class": {
+                "years": ["2014-2018", "2018-2021", "2021-2024"],
+                "engines": {
+                    "2014-2018": ["C 180", "C 200", "C 220 d"],
+                    "2018-2021": ["C 200", "C 300", "C 220 d"],
+                    "2021-2024": ["C 200", "C 300 e", "C 220 d"]
+                }
+            },
+            "E-Class": {
+                "years": ["2016-2020", "2020-2023"],
+                "engines": {
+                    "2016-2020": ["E 200", "E 300", "E 220 d"],
+                    "2020-2023": ["E 200", "E 350 e", "E 220 d"]
+                }
+            }
+        },
+        "Toyota": {
+            "Camry": {
+                "years": ["2017-2021", "2021-2024"],
+                "engines": {
+                    "2017-2021": ["2.5 Hybrid", "3.5 V6"],
+                    "2021-2024": ["2.5 Hybrid", "2.5 Dynamic Force"]
+                }
+            },
+            "RAV4": {
+                "years": ["2018-2022", "2022-2024"],
+                "engines": {
+                    "2018-2022": ["2.0", "2.5 Hybrid"],
+                    "2022-2024": ["2.0", "2.5 Hybrid", "2.5 Plug-in Hybrid"]
+                }
+            },
+            "Corolla": {
+                "years": ["2018-2020", "2020-2023"],
+                "engines": {
+                    "2018-2020": ["1.6", "1.8 Hybrid"],
+                    "2020-2023": ["1.8 Hybrid", "2.0 Hybrid"]
+                }
+            }
+        },
+        "Volkswagen": {
+            "Golf": {
+                "years": ["2012-2017", "2017-2020", "2020-2024"],
+                "engines": {
+                    "2012-2017": ["1.2 TSI", "1.4 TSI", "1.6 TDI"],
+                    "2017-2020": ["1.0 TSI", "1.5 TSI", "2.0 TDI"],
+                    "2020-2024": ["1.0 TSI", "1.5 eTSI", "2.0 TDI"]
+                }
+            },
+            "Passat": {
+                "years": ["2014-2019", "2019-2023"],
+                "engines": {
+                    "2014-2019": ["1.4 TSI", "2.0 TSI", "2.0 TDI"],
+                    "2019-2023": ["1.4 TSI", "2.0 TSI", "2.0 TDI"]
+                }
+            },
+            "Tiguan": {
+                "years": ["2016-2020", "2020-2024"],
+                "engines": {
+                    "2016-2020": ["1.4 TSI", "2.0 TSI", "2.0 TDI"],
+                    "2020-2024": ["1.4 TSI", "2.0 TSI", "2.0 TDI"]
+                }
+            }
+        }
+    };
+
+    let oilRecommendations = {
+        "Audi_A4_1.4 TSI": ["5W-30", "5W-40"],
+        "Audi_A4_2.0 TFSI": ["5W-30", "5W-40"],
+        "Audi_A4_2.0 TDI": ["5W-30", "5W-40"],
+        "BMW_3 Series_2.0 320i": ["5W-30", "0W-30"],
+        "BMW_3 Series_2.0 320d": ["5W-30", "5W-40"],
+        "Mercedes-Benz_C-Class_C 200": ["5W-30", "5W-40"],
+        "Toyota_Camry_2.5 Hybrid": ["0W-20", "5W-30"],
+        "Volkswagen_Golf_1.4 TSI": ["5W-30", "5W-40"],
+        "default": ["5W-30", "5W-40", "10W-40"]
+    };
+
+    let carBrandSelect = document.getElementById('carBrand');
+    let carModelSelect = document.getElementById('carModel');
+    let carYearSelect = document.getElementById('carYear');
+    let carEngineSelect = document.getElementById('carEngine');
+    let findOilBtn = document.getElementById('findOilBtn');
+    let resetSelectionBtn = document.getElementById('resetSelectionBtn');
+
+    carBrandSelect.addEventListener('change', function() 
+    {
+        let brand = this.value;
+
+        carModelSelect.innerHTML = '<option value="" selected disabled>Выберите модель</option>';
+        carYearSelect.innerHTML = '<option value="" selected disabled>Сначала выберите модель</option>';
+        carEngineSelect.innerHTML = '<option value="" selected disabled>Сначала выберите год выпуска</option>';
+        carModelSelect.disabled = !brand;
+        carYearSelect.disabled = true;
+        carEngineSelect.disabled = true;
+        findOilBtn.disabled = true;
+        
+        if (brand && carData[brand]) 
+        {
+            carModelSelect.disabled = false;
+
+            Object.keys(carData[brand]).forEach(model => {
+                let option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                carModelSelect.appendChild(option);
+            });
+        }
+    });
+    
+    carModelSelect.addEventListener('change', function() 
+    {
+        let brand = carBrandSelect.value;
+        let model = this.value;
+
+        carYearSelect.innerHTML = '<option value="" selected disabled>Выберите год выпуска</option>';
+        carEngineSelect.innerHTML = '<option value="" selected disabled>Сначала выберите год выпуска</option>';
+        carYearSelect.disabled = !model;
+        carEngineSelect.disabled = true;
+        findOilBtn.disabled = true;
+
+        if (brand && model && carData[brand][model]) 
+        {
+            carYearSelect.disabled = false;
+
+            carData[brand][model].years.forEach(year => {
+                let option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                carYearSelect.appendChild(option);
+            });
+        }
+    });
+
+    carYearSelect.addEventListener('change', function() 
+    {
+        let brand = carBrandSelect.value;
+        let model = carModelSelect.value;
+        let year = this.value;
+        
+        carEngineSelect.innerHTML = '<option value="" selected disabled>Выберите двигатель</option>';
+        carEngineSelect.disabled = !year;
+        findOilBtn.disabled = true;
+
+        if (brand && model && year && carData[brand][model].engines[year]) 
+        {
+            carEngineSelect.disabled = false;
+
+            carData[brand][model].engines[year].forEach(engine => {
+                let option = document.createElement('option');
+                option.value = engine;
+                option.textContent = engine;
+                carEngineSelect.appendChild(option);
+            });
+        }
+    });
+
+    carEngineSelect.addEventListener('change', function() 
+    {
+        findOilBtn.disabled = !this.value;
+    });
+
+    findOilBtn.addEventListener('click', function() 
+    {
+        findRecommendedOils();
+    });
+
+    resetSelectionBtn.addEventListener('click', function() 
+    {
+        resetOilSelection();
+    });
+    
+    function findRecommendedOils() 
+    {
+        let brand = carBrandSelect.value;
+        let model = carModelSelect.value;
+        let engine = carEngineSelect.value;
+        let year = carYearSelect.value;
+        let oilType = document.getElementById('oilType').value;
+        
+        if (!brand || !model || !engine || !year) 
+        {
+            showNotification('Заполните все поля', 'error');
+            return;
+        }
+        
+        document.getElementById('findOilText').style.display = 'none';
+        document.getElementById('findOilLoading').style.display = 'inline';
+        findOilBtn.disabled = true;
+
+        document.getElementById('selectionResults').style.display = 'none';
+        document.getElementById('noResults').style.display = 'none';
+        document.getElementById('errorMessage').style.display = 'none';
+
+        setTimeout(() => {
+            let key = `${brand}_${model}_${engine}`.replace(/\s+/g, '_');
+            let viscosities = oilRecommendations[key] || oilRecommendations.default;
+            let products = <?php echo json_encode($products); ?>;
+
+            let recommendedProducts = products.filter(product => {
+                let viscosityMatch = viscosities.includes(product.viscosity);
+                let typeMatch = oilType === 'Синтетическое' || product.type === oilType;
+
+                return viscosityMatch && typeMatch && product.stock;
+            });
+
+            recommendedProducts.sort((a, b) => {
+                if (a.hit !== b.hit) 
+                {
+                    return a.hit ? -1 : 1;
+                }
+
+                return a.price - b.price;
+            });
+
+            updateSelectionResults(brand, model, engine, year, recommendedProducts);
+
+            document.getElementById('findOilText').style.display = 'inline';
+            document.getElementById('findOilLoading').style.display = 'none';
+            findOilBtn.disabled = false;
+            resetSelectionBtn.style.display = 'inline-block';
+        }, 1500);
+    }
+
+    function updateSelectionResults(brand, model, engine, year, recommendedProducts) 
+    {
+        document.getElementById('selectedCarInfo').textContent = `${brand} ${model} (${year}), ${engine}`;
+        
+        let resultsContainer = document.getElementById('recommendedOils');
+        resultsContainer.innerHTML = '';
+        
+        if (recommendedProducts.length === 0) 
+        {
+            document.getElementById('noResults').style.display = 'block';
+        } 
+        else 
+        {
+            recommendedProducts.slice(0, 6).forEach(product => {
+                let productHtml = `
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="card-title mb-2">${product.title}</h6>
+                                ${product.hit ? '<span class="badge bg-danger">Хит</span>' : ''}
+                            </div>
+                            <p class="text-muted small mb-2">${product.brand} • ${product.viscosity} • ${product.type}</p>
+                            <p class="text-muted small mb-2">${product.volume}</p>
+                            <h5 class="text-primary mb-3">${product.price.toLocaleString('ru-RU')} ₽</h5>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-sm btn-outline-primary add-from-selection" 
+                                        data-id="${product.id}"
+                                        data-name="${product.title}"
+                                        data-price="${product.price}">
+                                    <i class="bi bi-cart-plus"></i> В корзину
+                                </button>
+                                <a href="oils.php?search=${encodeURIComponent(product.title)}&page=1" 
+                                   class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-info-circle"></i> Подробнее
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                resultsContainer.innerHTML += productHtml;
+            });
+            
+            document.getElementById('selectionResults').style.display = 'block';
+
+            document.querySelectorAll('.add-from-selection').forEach(button => {
+                button.addEventListener('click', function() 
+                {
+                    let productId = this.getAttribute('data-id');
+                    let productName = this.getAttribute('data-name');
+                    let productPrice = this.getAttribute('data-price');
+                    
+                    addToCartFromSelection(productId, productName, productPrice, this);
+                });
+            });
+
+            if (recommendedProducts.length > 6) 
+            {
+                resultsContainer.innerHTML += `
+                <div class="col-12">
+                    <div class="text-center mt-3">
+                        <a href="oils.php?brand=${encodeURIComponent(recommendedProducts[0].brand)}&viscosity=${encodeURIComponent(recommendedProducts[0].viscosity)}&type=${encodeURIComponent(recommendedProducts[0].type)}&page=1" 
+                           class="btn btn-outline-primary">
+                            <i class="bi bi-list"></i> Показать все ${recommendedProducts.length} рекомендованных масел
+                        </a>
+                    </div>
+                </div>`;
+            }
+        }
+
+        document.getElementById('selectionResults').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function addToCartFromSelection(productId, productName, productPrice, button) 
+    {
+        let originalText = button.innerHTML;
+        
+        button.disabled = true;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Добавляем...';
+        
+        let formData = new FormData();
+
+        formData.append('product_id', productId);
+        formData.append('product_name', productName);
+        formData.append('product_image', '../img/no-image.png');
+        formData.append('price', productPrice);
+        formData.append('quantity', '1');
+        formData.append('add_to_cart', '1');
+        
+        fetch('oils.php', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.text())
+        .then(() => {
+            showNotification('Масло добавлено в корзину!', 'success');
+            updateCartCounter();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Ошибка при добавлении в корзину', 'error');
+        })
+        .finally(() => {
+            setTimeout(() => {
+                button.disabled = false;
+                button.innerHTML = originalText;
+            }, 1500);
+        });
+    }
+
+    function resetOilSelection() 
+    {
+        document.getElementById('oilSelectorForm').reset();
+
+        carBrandSelect.selectedIndex = 0;
+        carModelSelect.innerHTML = '<option value="" selected disabled>Сначала выберите марку</option>';
+        carYearSelect.innerHTML = '<option value="" selected disabled>Сначала выберите модель</option>';
+        carEngineSelect.innerHTML = '<option value="" selected disabled>Сначала выберите год выпуска</option>';
+
+        carModelSelect.disabled = true;
+        carYearSelect.disabled = true;
+        carEngineSelect.disabled = true;
+
+        document.getElementById('selectionResults').style.display = 'none';
+        document.getElementById('noResults').style.display = 'none';
+        document.getElementById('errorMessage').style.display = 'none';
+
+        findOilBtn.disabled = true;
+        resetSelectionBtn.style.display = 'none';
+
+        carBrandSelect.focus();
+    }
+    
+    document.getElementById('oilSelectorModal').addEventListener('hidden.bs.modal', function() 
+    {
+        resetOilSelection();
+    });
+
     document.getElementById('applyFiltersBtn').addEventListener('click', function() 
     {
         let brand = document.querySelector('select[name="brand"]').value;
@@ -804,24 +1269,17 @@ document.addEventListener('DOMContentLoaded', function()
             
             let formData = new FormData(this);
             
-            fetch('../includes/ajax_add_to_cart.php', {
+            fetch('oils.php', {
                 method: 'POST',
                 body: formData,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) 
-                {
-                    showNotification(data.message, 'success');
-                    updateCartCounter(data.cart_count);
-                } 
-                else 
-                {
-                    showNotification(data.message, 'error');
-                }
+            .then(response => response.text())
+            .then(() => {
+                showNotification('Товар добавлен в корзину!', 'success');
+                updateCartCounter();
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -874,20 +1332,13 @@ document.addEventListener('DOMContentLoaded', function()
         }, 3000);
     }
     
-    function updateCartCounter(newCount = null) {
+    function updateCartCounter() {
         let cartCounter = document.getElementById('cartCounter');
         
         if (cartCounter) 
         {
-            if (newCount !== null) 
-            {
-                cartCounter.textContent = newCount;
-            } 
-            else 
-            {
-                let currentCount = parseInt(cartCounter.textContent) || 0;
-                cartCounter.textContent = currentCount + 1;
-            }
+            let currentCount = parseInt(cartCounter.textContent) || 0;
+            cartCounter.textContent = currentCount + 1;
             
             cartCounter.style.transform = 'scale(1.3)';
             
