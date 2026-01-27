@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Янв 23 2026 г., 21:33
+-- Время создания: Янв 27 2026 г., 12:22
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -144,6 +144,71 @@ INSERT INTO `categories` (`id`, `name`, `description`, `created_at`) VALUES
 (1, 'Запчасти', 'Автомобильные запчасти', '2026-01-06 17:15:45'),
 (2, 'Масла', 'Моторные и трансмиссионные масла', '2026-01-06 17:15:45'),
 (3, 'Аксессуары', 'Аксессуары для автомобилей', '2026-01-06 17:15:45');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `company_documents`
+--
+
+CREATE TABLE `company_documents` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text,
+  `file_name` varchar(255) DEFAULT NULL,
+  `file_size` varchar(20) DEFAULT NULL,
+  `display_order` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `company_documents`
+--
+
+INSERT INTO `company_documents` (`id`, `title`, `description`, `file_name`, `file_size`, `display_order`) VALUES
+(1, 'Устав компании', 'Учредительный документ ООО \"Лал-Авто\"', 'Устав_ООО_Лал-Авто.pdf', '2.3 MB', 1),
+(2, 'Свидетельство ОГРН', 'Свидетельство о государственной регистрации', 'Свидетельство_ОГРН.pdf', '1.8 MB', 2),
+(3, 'Свидетельство ИНН', 'Свидетельство о постановке на налоговый учет', 'Свидетельство_ИНН.pdf', '1.5 MB', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `company_requisites`
+--
+
+CREATE TABLE `company_requisites` (
+  `id` int(11) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  `copy_value` varchar(500) DEFAULT NULL,
+  `display_order` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `company_requisites`
+--
+
+INSERT INTO `company_requisites` (`id`, `category`, `title`, `value`, `copy_value`, `display_order`) VALUES
+(1, 'general', 'Полное наименование', 'Общество с ограниченной ответственностью \"Лал-Авто\"', 'Общество с ограниченной ответственностью \"Лал-Авто\"', 1),
+(2, 'general', 'Сокращенное наименование', 'ООО \"Лал-Авто\"', 'ООО \"Лал-Авто\"', 2),
+(3, 'general', 'ИНН', '3900000000', '3900000000', 3),
+(4, 'general', 'КПП', '390001001', '390001001', 4),
+(5, 'general', 'ОГРН', '1023900000000', '1023900000000', 5),
+(6, 'general', 'ОКПО', '12345678', '12345678', 6),
+(7, 'general', 'ОКВЭД', '45.32.1 Торговля автомобильными деталями, узлами и принадлежностями', '45.32.1 Торговля автомобильными деталями, узлами и принадлежностями', 7),
+(8, 'bank', 'Расчетный счет', '40702810500000000001', '40702810500000000001', 1),
+(9, 'bank', 'Банк', 'ПАО \"Сбербанк\"', 'ПАО \"Сбербанк\"', 2),
+(10, 'bank', 'БИК', '044525225', '044525225', 3),
+(11, 'bank', 'Корреспондентский счет', '30101810400000000225', '30101810400000000225', 4),
+(12, 'bank', 'Юридический адрес банка', '117997, г. Москва, ул. Вавилова, д. 19', '117997, г. Москва, ул. Вавилова, д. 19', 5),
+(13, 'address', 'Юридический адрес', '236000, г. Калининград, ул. Автомобильная, д. 12', '236000, г. Калининград, ул. Автомобильная, д. 12', 1),
+(14, 'address', 'Фактический адрес', '236000, г. Калининград, ул. Автомобильная, д. 12', '236000, г. Калининград, ул. Автомобильная, д. 12', 2),
+(15, 'address', 'Телефон', '+7 (4012) 65-65-65', '+74012656565', 3),
+(16, 'address', 'Email', 'info@lal-auto.ru', 'info@lal-auto.ru', 4),
+(17, 'address', 'Сайт', 'www.lal-auto.ru', 'www.lal-auto.ru', 5),
+(18, 'management', 'Генеральный директор', 'Иванов Петр Сергеевич', 'Иванов Петр Сергеевич', 1),
+(19, 'management', 'Главный бухгалтер', 'Смирнова Ольга Владимировна', 'Смирнова Ольга Владимировна', 2),
+(20, 'management', 'Действует на основании', 'Устава', 'Устава', 3);
 
 -- --------------------------------------------------------
 
@@ -652,6 +717,18 @@ ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `company_documents`
+--
+ALTER TABLE `company_documents`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `company_requisites`
+--
+ALTER TABLE `company_requisites`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `news`
 --
 ALTER TABLE `news`
@@ -772,7 +849,7 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT для таблицы `action_logs`
 --
 ALTER TABLE `action_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `api_keys`
@@ -790,13 +867,25 @@ ALTER TABLE `backup_logs`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `company_documents`
+--
+ALTER TABLE `company_documents`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `company_requisites`
+--
+ALTER TABLE `company_requisites`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT для таблицы `news`

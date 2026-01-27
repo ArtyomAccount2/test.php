@@ -257,14 +257,14 @@ unset($_SESSION['form_data']);
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="name" class="form-label fw-semibold">
-                                        <i class="bi bi-person me-1"></i>Ваше имя
+                                        <i class="bi bi-person me-1"></i>Ваше имя<span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="name" placeholder="Иван Иванов" required>
                                     <div class="invalid-feedback">Пожалуйста, введите ваше имя</div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="email" class="form-label fw-semibold">
-                                        <i class="bi bi-envelope me-1"></i>Email
+                                        <i class="bi bi-envelope me-1"></i>Email<span class="text-danger">*</span>
                                     </label>
                                     <input type="email" class="form-control" id="email" placeholder="example@mail.ru" required>
                                     <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
@@ -278,7 +278,7 @@ unset($_SESSION['form_data']);
                             </div>
                             <div class="mb-3">
                                 <label for="subject" class="form-label fw-semibold">
-                                    <i class="bi bi-tag me-1"></i>Тема обращения
+                                    <i class="bi bi-tag me-1"></i>Тема обращения<span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select" id="subject" required>
                                     <option value="" selected disabled>Выберите тему</option>
@@ -292,10 +292,9 @@ unset($_SESSION['form_data']);
                             </div>
                             <div class="mb-3">
                                 <label for="message" class="form-label fw-semibold">
-                                    <i class="bi bi-chat-text me-1"></i>Сообщение
+                                    <i class="bi bi-chat-text me-1"></i>Сообщение<span class="text-danger">*</span>
                                 </label>
-                                <textarea class="form-control" id="message" rows="4" 
-                                        placeholder="Опишите ваш вопрос подробнее..." required maxlength="500"></textarea>
+                                <textarea class="form-control" id="message" rows="4" placeholder="Опишите ваш вопрос подробнее..." required maxlength="500"></textarea>
                                 <div class="invalid-feedback">Пожалуйста, напишите ваше сообщение</div>
                                 <div id="charCounter" class="form-text text-muted">500 символов осталось</div>
                             </div>
@@ -318,8 +317,7 @@ unset($_SESSION['form_data']);
     <div class="map-section mb-5">
         <h2 class="text-center mb-4">Как нас найти</h2>
         <div class="map-container">
-            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A1234567890abcdef&amp;source=constructor" 
-                    width="100%" height="400" frameborder="0"></iframe>
+            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A1234567890abcdef&amp;source=constructor" width="100%" height="400" frameborder="0"></iframe>
         </div>
     </div>
 </div>

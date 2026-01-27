@@ -53,6 +53,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
+
+$requisites_by_category = [];
+$categories = [
+    'general' => ['icon' => 'building', 'title' => 'Общая информация'],
+    'bank' => ['icon' => 'bank', 'title' => 'Банковские реквизиты'],
+    'address' => ['icon' => 'geo-alt', 'title' => 'Адреса и контакты'],
+    'management' => ['icon' => 'person', 'title' => 'Руководство']
+];
+
+foreach ($categories as $category => $category_info) 
+{
+    $stmt = $conn->prepare("SELECT title, value, copy_value FROM company_requisites WHERE category = ? ORDER BY display_order");
+    $stmt->bind_param("s", $category);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $requisites_by_category[$category] = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+}
+
+$documents = [];
+$stmt = $conn->prepare("SELECT title, description, file_name, file_size FROM company_documents ORDER BY display_order");
+$stmt->execute();
+$result = $stmt->get_result();
+$documents = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+$phone = '+7 (4012) 65-65-65';
+$email = 'info@lal-auto.ru';
+
+foreach ($requisites_by_category['address'] as $item) 
+{
+    if ($item['title'] === 'Телефон') 
+    {
+        $phone = $item['value'];
+    }
+
+    if ($item['title'] === 'Email') 
+    {
+        $email = $item['value'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -80,43 +121,6 @@ unset($_SESSION['form_data']);
         <?php 
         } 
         ?>
-
-        let copyButtons = document.querySelectorAll('.copy-btn');
-        copyButtons.forEach(button => {
-            button.addEventListener('click', function() 
-            {
-                let textToCopy = this.getAttribute('data-copy');
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    let originalText = this.innerHTML;
-                    this.innerHTML = '<i class="bi bi-check"></i> Скопировано';
-                    this.classList.add('btn-success');
-
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                        this.classList.remove('btn-success');
-                    }, 2000);
-                });
-            });
-        });
-
-        let downloadButtons = document.querySelectorAll('.download-btn');
-
-        downloadButtons.forEach(button => {
-            button.addEventListener('click', function(e) 
-            {
-                e.preventDefault();
-                let fileName = this.getAttribute('data-filename');
-                let originalText = this.innerHTML;
-                this.innerHTML = '<i class="bi bi-download"></i> Скачивание...';
-                this.disabled = true;
-                
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                    this.disabled = false;
-                    alert(`Файл "${fileName}" будет скачан`);
-                }, 1500);
-            });
-        });
     });
     </script>
 </head>
@@ -141,227 +145,54 @@ unset($_SESSION['form_data']);
         </div>
     </div>
     <div class="row g-4 requisites-row">
-        <div class="col-lg-12">
-            <div class="requisites-card w-100">
-                <div class="card-header-custom">
-                    <i class="bi bi-building fs-2 me-3"></i>
-                    <h3 class="mb-0">Общая информация</h3>
-                </div>
-                <div class="requisites-list">
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Полное наименование:</span>
-                            <span class="requisite-value">Общество с ограниченной ответственностью "Лал-Авто"</span>
+        <?php 
+        foreach ($categories as $category => $category_info)
+        {
+        ?>
+            <?php 
+            if (!empty($requisites_by_category[$category]))
+            {
+            ?>
+                <div class="col-lg-12">
+                    <div class="requisites-card w-100">
+                        <div class="card-header-custom">
+                            <i class="bi bi-<?php echo $category_info['icon']; ?> fs-2 me-3"></i>
+                            <h3 class="mb-0"><?php echo $category_info['title']; ?></h3>
                         </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy='Общество с ограниченной ответственностью "Лал-Авто"'>
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Сокращенное наименование:</span>
-                            <span class="requisite-value">ООО "Лал-Авто"</span>
+                        <div class="requisites-list">
+                            <?php 
+                            foreach ($requisites_by_category[$category] as $item)
+                            {
+                            ?>
+                                <div class="requisite-item">
+                                    <div class="requisite-content">
+                                        <span class="requisite-label"><?php echo htmlspecialchars($item['title']); ?>:</span>
+                                        <span class="requisite-value"><?php echo htmlspecialchars($item['value']); ?></span>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-secondary copy-btn" 
+                                            data-copy="<?php echo htmlspecialchars($item['copy_value'] ?? $item['value']); ?>"
+                                            onclick="copyText(this)">
+                                        <i class="bi bi-copy"></i>
+                                    </button>
+                                </div>
+                            <?php 
+                            }
+                            ?>
                         </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy='ООО "Лал-Авто"'>
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">ИНН:</span>
-                            <span class="requisite-value">3900000000</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="3900000000">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">КПП:</span>
-                            <span class="requisite-value">390001001</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="390001001">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">ОГРН:</span>
-                            <span class="requisite-value">1023900000000</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="1023900000000">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">ОКПО:</span>
-                            <span class="requisite-value">12345678</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="12345678">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">ОКВЭД:</span>
-                            <span class="requisite-value">45.32.1 Торговля автомобильными деталями, узлами и принадлежностями</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="45.32.1 Торговля автомобильными деталями, узлами и принадлежностями">
-                            <i class="bi bi-copy"></i>
-                        </button>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="requisites-card w-100">
-                <div class="card-header-custom">
-                    <i class="bi bi-bank fs-2 me-3"></i>
-                    <h3 class="mb-0">Банковские реквизиты</h3>
-                </div>
-                <div class="requisites-list">
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Расчетный счет:</span>
-                            <span class="requisite-value">40702810500000000001</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="40702810500000000001">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Банк:</span>
-                            <span class="requisite-value">ПАО "Сбербанк"</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy='ПАО "Сбербанк"'>
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">БИК:</span>
-                            <span class="requisite-value">044525225</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="044525225">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Корреспондентский счет:</span>
-                            <span class="requisite-value">30101810400000000225</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="30101810400000000225">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Юридический адрес банка:</span>
-                            <span class="requisite-value">117997, г. Москва, ул. Вавилова, д. 19</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="117997, г. Москва, ул. Вавилова, д. 19">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="requisites-card w-100">
-                <div class="card-header-custom">
-                    <i class="bi bi-geo-alt fs-2 me-3"></i>
-                    <h3 class="mb-0">Адреса и контакты</h3>
-                </div>
-                <div class="requisites-list">
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Юридический адрес:</span>
-                            <span class="requisite-value">236000, г. Калининград, ул. Автомобильная, д. 12</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="236000, г. Калининград, ул. Автомобильная, д. 12">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Фактический адрес:</span>
-                            <span class="requisite-value">236000, г. Калининград, ул. Автомобильная, д. 12</span>
-                        </div>
-                    <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="236000, г. Калининград, ул. Автомобильная, д. 12">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Телефон:</span>
-                            <span class="requisite-value">+7 (4012) 65-65-65</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="+74012656565">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Email:</span>
-                            <span class="requisite-value">info@lal-auto.ru</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="info@lal-auto.ru">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Сайт:</span>
-                            <span class="requisite-value">www.lal-auto.ru</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="www.lal-auto.ru">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="requisites-card w-100">
-                <div class="card-header-custom">
-                    <i class="bi bi-person fs-2 me-3"></i>
-                    <h3 class="mb-0">Руководство</h3>
-                </div>
-                <div class="requisites-list">
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Генеральный директор:</span>
-                            <span class="requisite-value">Иванов Петр Сергеевич</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="Иванов Петр Сергеевич">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Главный бухгалтер:</span>
-                            <span class="requisite-value">Смирнова Ольга Владимировна</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="Смирнова Ольга Владимировна">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                    <div class="requisite-item">
-                        <div class="requisite-content">
-                            <span class="requisite-label">Действует на основании:</span>
-                            <span class="requisite-value">Устава</span>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary copy-btn" data-copy="Устава">
-                            <i class="bi bi-copy"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <?php 
+            }
+            ?>
+        <?php 
+        }
+        ?>
     </div>
+
+    <?php 
+    if (!empty($documents))
+    {
+    ?>
     <div class="row mt-4">
         <div class="col-12">
             <div class="documents-section">
@@ -370,49 +201,36 @@ unset($_SESSION['form_data']);
                     <p class="lead text-muted">Официальные документы для скачивания</p>
                 </div>
                 <div class="row g-4">
-                    <div class="col-lg-4">
-                        <div class="document-card">
-                            <div class="document-icon">
-                                <i class="bi bi-file-earmark-pdf"></i>
+                    <?php 
+                    foreach ($documents as $document)
+                    {
+                    ?>
+                        <div class="col-lg-4">
+                            <div class="document-card">
+                                <div class="document-icon">
+                                    <i class="bi bi-file-earmark-pdf"></i>
+                                </div>
+                                <h5><?php echo htmlspecialchars($document['title']); ?></h5>
+                                <p class="document-meta">PDF, <?php echo htmlspecialchars($document['file_size']); ?></p>
+                                <p class="document-desc"><?php echo htmlspecialchars($document['description']); ?></p>
+                                <a href="#" class="btn btn-primary download-btn" 
+                                   data-filename="<?php echo htmlspecialchars($document['file_name']); ?>"
+                                   onclick="downloadFile(this)">
+                                    <i class="bi bi-download me-2"></i>Скачать
+                                </a>
                             </div>
-                            <h5>Устав компании</h5>
-                            <p class="document-meta">PDF, 2.3 MB</p>
-                            <p class="document-desc">Учредительный документ ООО "Лал-Авто"</p>
-                            <a href="#" class="btn btn-primary download-btn" data-filename="Устав_ООО_Лал-Авто.pdf">
-                                <i class="bi bi-download me-2"></i>Скачать
-                            </a>
                         </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="document-card">
-                            <div class="document-icon">
-                                <i class="bi bi-file-earmark-pdf"></i>
-                            </div>
-                            <h5>Свидетельство ОГРН</h5>
-                            <p class="document-meta">PDF, 1.8 MB</p>
-                            <p class="document-desc">Свидетельство о государственной регистрации</p>
-                            <a href="#" class="btn btn-primary download-btn" data-filename="Свидетельство_ОГРН.pdf">
-                                <i class="bi bi-download me-2"></i>Скачать
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="document-card">
-                            <div class="document-icon">
-                                <i class="bi bi-file-earmark-pdf"></i>
-                            </div>
-                            <h5>Свидетельство ИНН</h5>
-                            <p class="document-meta">PDF, 1.5 MB</p>
-                            <p class="document-desc">Свидетельство о постановке на налоговый учет</p>
-                            <a href="#" class="btn btn-primary download-btn" data-filename="Свидетельство_ИНН.pdf">
-                                <i class="bi bi-download me-2"></i>Скачать
-                            </a>
-                        </div>
-                    </div>
+                    <?php 
+                    }
+                    ?>
                 </div>
             </div>
         </div>
     </div>
+    <?php 
+    }
+    ?>
+    
     <div class="row mt-5">
         <div class="col-12">
             <div class="support-section bg-primary text-white rounded-3 p-5 text-center position-relative overflow-hidden">
@@ -420,10 +238,10 @@ unset($_SESSION['form_data']);
                     <h3 class="mb-3 fw-bold">Нужна помощь с реквизитами?</h3>
                     <p class="lead mb-4 opacity-90">Наши специалисты готовы помочь с оформлением документов и ответить на все вопросы</p>
                     <div class="d-flex gap-3 justify-content-center flex-wrap">
-                        <a href="tel:+74012656565" class="btn btn-light btn-lg fw-bold px-4 py-2">
-                            <i class="bi bi-telephone me-2"></i>+7 (4012) 65-65-65
+                        <a href="tel:<?php echo preg_replace('/[^0-9+]/', '', $phone); ?>" class="btn btn-light btn-lg fw-bold px-4 py-2">
+                            <i class="bi bi-telephone me-2"></i><?php echo htmlspecialchars($phone); ?>
                         </a>
-                        <a href="mailto:info@lal-auto.ru" class="btn btn-outline-light btn-lg fw-bold px-4 py-2">
+                        <a href="mailto:<?php echo htmlspecialchars($email); ?>" class="btn btn-outline-light btn-lg fw-bold px-4 py-2">
                             <i class="bi bi-envelope me-2"></i>Написать на почту
                         </a>
                     </div>
@@ -438,6 +256,81 @@ unset($_SESSION['form_data']);
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
-<script src="../js/script.js"></script>
+
+<script>
+function copyText(button) 
+{
+    let textToCopy = button.getAttribute('data-copy');
+    let textArea = document.createElement('textarea');
+
+    textArea.value = textToCopy;
+    document.body.appendChild(textArea);
+
+    textArea.select();
+    textArea.setSelectionRange(0, 99999);
+    
+    try 
+    {
+        let successful = document.execCommand('copy');
+
+        if (successful) 
+        {
+            let originalHTML = button.innerHTML;
+            button.innerHTML = '<i class="bi bi-check"></i>';
+            button.classList.remove('btn-outline-secondary');
+            button.classList.add('btn-success');
+
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.classList.remove('btn-success');
+                button.classList.add('btn-outline-secondary');
+            }, 2000);
+        } 
+        else 
+        {
+            alert('Не удалось скопировать текст. Попробуйте выделить и скопировать вручную.');
+        }
+    } 
+    catch (err) 
+    {
+        alert('Ошибка при копировании. Текст для копирования: ' + textToCopy);
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function downloadFile(link) 
+{
+    let fileName = link.getAttribute('data-filename');
+    let originalHTML = link.innerHTML;
+
+    link.innerHTML = '<i class="bi bi-download"></i> Скачивание...';
+    link.classList.add('disabled');
+
+    setTimeout(() => {
+        window.location.href = '../downloads/' + fileName;
+        
+        alert('Файл "' + fileName + '" будет скачан');
+
+        link.innerHTML = originalHTML;
+        link.classList.remove('disabled');
+    }, 1000);
+    
+    return false;
+}
+
+document.addEventListener('DOMContentLoaded', function() 
+{
+    let copyButtons = document.querySelectorAll('.copy-btn');
+    copyButtons.forEach(btn => {
+        btn.setAttribute('title', 'Копировать в буфер обмена');
+    });
+    
+    let downloadButtons = document.querySelectorAll('.download-btn');
+    downloadButtons.forEach(btn => {
+        btn.setAttribute('title', 'Скачать документ');
+    });
+});
+</script>
 </body>
 </html>

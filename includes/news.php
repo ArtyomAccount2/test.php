@@ -54,36 +54,69 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
 
-$items_per_page = 6;
+$items_per_page = 3;
 $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $offset = ($current_page - 1) * $items_per_page;
 
-$all_news = [
-    ['id' => 1, 'date' => '15 мая 2025', 'title' => 'Открытие нового магазина на Московском проспекте', 'excerpt' => 'Мы рады сообщить об открытии нашего нового магазина автозапчастей в центре Калининграда. Теперь у нас еще больше товаров и удобное расположение.', 'badge' => 'Новое'],
-    ['id' => 2, 'date' => '3 мая 2025', 'title' => 'Специальная акция на моторные масла до конца месяца', 'excerpt' => 'Только в мае скидка 15% на все моторные масла Castrol и Mobil. Акция действует при покупке от 5 литров.', 'badge' => 'Акция'],
-    ['id' => 3, 'date' => '28 апреля 2025', 'title' => 'Поступили новые запчасти для японских автомобилей', 'excerpt' => 'В нашем ассортименте появились оригинальные запчасти для Toyota, Honda и Nissan. Гарантия качества и доступные цены.', 'badge' => ''],
-    ['id' => 4, 'date' => '20 апреля 2025', 'title' => 'Расширение ассортимента шин для внедорожников', 'excerpt' => 'Теперь в наличии широкий выбор всесезонных и зимних шин для внедорожников от ведущих производителей.', 'badge' => 'Новинка'],
-    ['id' => 5, 'date' => '12 апреля 2025', 'title' => 'Бесплатная диагностика ходовой части', 'excerpt' => 'При покупке любых запчастей для подвески получите бесплатную диагностику ходовой части вашего автомобиля.', 'badge' => 'Акция'],
-    ['id' => 6, 'date' => '5 апреля 2025', 'title' => 'Новые поставки фильтров для европейских авто', 'excerpt' => 'Поступили в продажу воздушные, масляные и топливные фильтры для автомобилей Volkswagen, BMW, Mercedes.', 'badge' => ''],
-    ['id' => 7, 'date' => '28 марта 2025', 'title' => 'Скидки на тормозные колодки и диски', 'excerpt' => 'Специальное предложение на комплекты тормозных колодок и дисков - скидка до 20% до конца месяца.', 'badge' => 'Акция'],
-    ['id' => 8, 'date' => '15 марта 2025', 'title' => 'Открытие онлайн-записи на сервис', 'excerpt' => 'Теперь вы можете записаться на техническое обслуживание через наш сайт. Быстро и удобно!', 'badge' => 'Новое'],
-    ['id' => 9, 'date' => '8 марта 2025', 'title' => 'Весенняя распродажа автокосметики', 'excerpt' => 'Скидки до 30% на средства для ухода за автомобилем. Подготовьте машину к весне по выгодным ценам.', 'badge' => 'Акция'],
-    ['id' => 10, 'date' => '1 марта 2025', 'title' => 'Новые поставки аккумуляторов', 'excerpt' => 'В наличии появились аккумуляторы различных емкостей для всех популярных марок автомобилей.', 'badge' => ''],
-    ['id' => 11, 'date' => '22 февраля 2025', 'title' => 'Специальные условия для таксопарков', 'excerpt' => 'Предлагаем выгодные условия сотрудничества для таксопарков и автопредприятий. Индивидуальный подход.', 'badge' => ''],
-    ['id' => 12, 'date' => '15 февраля 2025', 'title' => 'Обновление программы лояльности', 'excerpt' => 'Стали доступны новые бонусы и скидки для участников нашей программы лояльности. Присоединяйтесь!', 'badge' => 'Новое'],
-    ['id' => 13, 'date' => '8 февраля 2025', 'title' => 'Новые технологии в обслуживании автомобилей', 'excerpt' => 'Внедрили современное диагностическое оборудование для более точного определения неисправностей.', 'badge' => 'Технологии'],
-    ['id' => 14, 'date' => '1 февраля 2025', 'title' => 'Расширение складских помещений', 'excerpt' => 'Увеличили складские площади для хранения запчастей. Теперь мы можем предложить еще более широкий ассортимент.', 'badge' => 'Развитие'],
-    ['id' => 15, 'date' => '25 января 2025', 'title' => 'Спецпредложение на зимнюю резину', 'excerpt' => 'Скидки до 25% на зимние шины всех размеров. Успейте подготовить автомобиль к зимнему сезону!', 'badge' => 'Акция'],
-    ['id' => 16, 'date' => '18 января 2025', 'title' => 'Новые бренды в ассортименте', 'excerpt' => 'Теперь в продаже запчасти от новых производителей: Bosch, Mann, NGK и других проверенных брендов.', 'badge' => 'Новинка'],
-    ['id' => 17, 'date' => '10 января 2025', 'title' => 'Бесплатный шиномонтаж при покупке шин', 'excerpt' => 'При покупке комплекта шин в нашем магазине получаете бесплатный шиномонтаж и балансировку.', 'badge' => 'Акция'],
-    ['id' => 18, 'date' => '5 января 2025', 'title' => 'Новый год - новые возможности', 'excerpt' => 'Поздравляем всех с Новым годом! Готовим для вас много интересных предложений и акций в наступившем году.', 'badge' => 'Поздравление']
-];
+$total_news_query = "SELECT COUNT(*) as total FROM news WHERE status = 'published'";
+$total_news_result = $conn->query($total_news_query);
+$total_news_row = $total_news_result->fetch_assoc();
+$total_news = $total_news_row['total'];
 
-$total_news = count($all_news);
 $total_pages = ceil($total_news / $items_per_page);
 
-$current_news = array_slice($all_news, $offset, $items_per_page);
+$query = "SELECT * FROM news WHERE status = 'published' ORDER BY created_at DESC LIMIT ? OFFSET ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("ii", $items_per_page, $offset);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$current_news = [];
+while ($row = $result->fetch_assoc()) 
+{
+    $badge = '';
+    $title_lower = strtolower($row['title']);
+    $content_lower = strtolower($row['content']);
+    
+    if (strpos($title_lower, 'акция') !== false || strpos($content_lower, 'скид') !== false || strpos($content_lower, 'акция') !== false) 
+    {
+        $badge = 'Акция';
+    } 
+    else if (strpos($title_lower, 'нов') !== false || strpos($content_lower, 'новый') !== false) 
+    {
+        $badge = 'Новое';
+    } 
+    else if (strpos($title_lower, 'техн') !== false || strpos($content_lower, 'технологи') !== false) 
+    {
+        $badge = 'Технологии';
+    } 
+    else if (strpos($title_lower, 'развитие') !== false || strpos($content_lower, 'развитие') !== false) 
+    {
+        $badge = 'Развитие';
+    }
+
+    $date = date('d F Y', strtotime($row['created_at']));
+    $excerpt = strip_tags($row['content']);
+
+    if (mb_strlen($excerpt) > 150) 
+    {
+        $excerpt = mb_substr($excerpt, 0, 150) . '...';
+    }
+    
+    $current_news[] = [
+        'id' => $row['id'],
+        'date' => $date,
+        'title' => htmlspecialchars($row['title']),
+        'excerpt' => htmlspecialchars($excerpt),
+        'badge' => $badge,
+        'content' => $row['content'],
+        'author' => $row['author']
+    ];
+}
+
+$stmt->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -133,13 +166,15 @@ $current_news = array_slice($all_news, $offset, $items_per_page);
         <div class="container">
             <div class="row g-4">
                 <?php 
-                foreach($current_news as $news) 
+                if (count($current_news) > 0) 
                 {
+                    foreach($current_news as $news) 
+                    {
                 ?>
                 <div class="col-md-6 col-lg-4">
                     <div class="news-card">
                         <div class="news-img-container">
-                            <img src="../img/no-image.png" class="news-img" alt="<?= htmlspecialchars($news['title']) ?>">
+                            <img src="../img/no-image.png" class="news-img" alt="<?= $news['title'] ?>">
                             <?php 
                             if($news['badge']) 
                             {
@@ -155,19 +190,30 @@ $current_news = array_slice($all_news, $offset, $items_per_page);
                             <div class="news-date">
                                 <i class="bi bi-calendar"></i> <?= $news['date'] ?>
                             </div>
-                            <h3 class="news-title"><?= htmlspecialchars($news['title']) ?></h3>
-                            <p class="news-excerpt"><?= htmlspecialchars($news['excerpt']) ?></p>
-                            <a href="news-single.php?id=<?= $news['id'] ?>" class="read-more">
+                            <h3 class="news-title"><?= $news['title'] ?></h3>
+                            <p class="news-excerpt"><?= $news['excerpt'] ?></p>
+                            <a href="news-single.php?id=<?= $news['id'] ?>&page=<?= $current_page ?>" class="read-more">
                                 Читать далее <i class="bi bi-arrow-right"></i>
                             </a>
                         </div>
                     </div>
                 </div>
                 <?php 
+                    }
+                } 
+                else 
+                {
+                ?>
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        <h4>Новостей пока нет</h4>
+                        <p>Следите за обновлениями, скоро появятся новые публикации!</p>
+                    </div>
+                </div>
+                <?php 
                 } 
                 ?>
             </div>
-            
             <?php 
             if($total_pages > 1) 
             {
@@ -215,6 +261,7 @@ $current_news = array_slice($all_news, $offset, $items_per_page);
                         {
                             echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
                         }
+                        
                         echo '<li class="page-item"><a class="page-link" href="?page=' . $total_pages . '">' . $total_pages . '</a></li>';
                     }
                     ?>
