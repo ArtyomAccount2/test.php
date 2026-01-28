@@ -467,6 +467,9 @@ if (isset($_POST['cancel_order']))
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="includes/support.php">Поддержка</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="includes/developer.php">Настройки разработчика</a>
+                </li>
             </ul>
             <div class="d-flex align-items-center">
                 <div class="dropdown">

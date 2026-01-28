@@ -1,0 +1,42 @@
+.developer-container 
+{
+    padding-top: 100px;
+    min-height: calc(100vh - 200px);
+}
+
+.api-key-card 
+{
+    border-left: 4px solid #007bff;
+}
+
+.api-key-preview 
+{
+    font-family: monospace;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.secret-key 
+{
+    color: #dc3545;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.copy-btn 
+{
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.copy-btn:hover 
+{
+    transform: scale(1.1);
+}
+
+.permission-badge 
+{
+    font-size: 0.75rem;
+}

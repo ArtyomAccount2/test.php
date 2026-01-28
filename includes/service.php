@@ -351,14 +351,14 @@ unset($_SESSION['form_data']);
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="name" class="form-label fw-semibold">
-                                        <i class="bi bi-person me-1"></i>Ваше имя
+                                        <i class="bi bi-person me-1"></i>Ваше имя<span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="name" placeholder="Иван Иванов" required>
                                     <div class="invalid-feedback">Пожалуйста, введите ваше имя</div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="phone" class="form-label fw-semibold">
-                                        <i class="bi bi-phone me-1"></i>Телефон
+                                        <i class="bi bi-phone me-1"></i>Телефон<span class="text-danger">*</span>
                                     </label>
                                     <input type="tel" class="form-control" id="phone" placeholder="+7 (900) 123-45-67" required pattern="[\+\-\d\s\(\)]{10,}">
                                     <div class="invalid-feedback">Пожалуйста, введите корректный телефон</div>
@@ -366,7 +366,7 @@ unset($_SESSION['form_data']);
                             </div>
                             <div class="mb-3">
                                 <label for="car" class="form-label fw-semibold">
-                                    <i class="bi bi-car-front me-1"></i>Автомобиль
+                                    <i class="bi bi-car-front me-1"></i>Автомобиль<span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
                                     <span class="input-group-text">
@@ -378,7 +378,7 @@ unset($_SESSION['form_data']);
                             </div>
                             <div class="mb-3">
                                 <label for="service" class="form-label fw-semibold">
-                                    <i class="bi bi-tools me-1"></i>Услуга
+                                    <i class="bi bi-tools me-1"></i>Услуга<span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select" id="service" required>
                                     <option value="" selected disabled>Выберите услугу</option>
@@ -395,7 +395,7 @@ unset($_SESSION['form_data']);
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="date" class="form-label fw-semibold">
-                                        <i class="bi bi-calendar me-1"></i>Дата
+                                        <i class="bi bi-calendar me-1"></i>Дата<span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group">
                                         <span class="input-group-text">
@@ -407,7 +407,7 @@ unset($_SESSION['form_data']);
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="time" class="form-label fw-semibold">
-                                        <i class="bi bi-clock me-1"></i>Время
+                                        <i class="bi bi-clock me-1"></i>Время<span class="text-danger">*</span>
                                     </label>
                                     <select class="form-select" id="time" required>
                                         <option value="" selected disabled>Выберите время</option>
@@ -427,7 +427,7 @@ unset($_SESSION['form_data']);
                             </div>
                             <div class="mb-3">
                                 <label for="message" class="form-label fw-semibold">
-                                    <i class="bi bi-chat-text me-1"></i>Описание проблемы
+                                    <i class="bi bi-chat-text me-1"></i>Описание проблемы<span class="text-danger">*</span>
                                 </label>
                                 <textarea class="form-control" id="message" rows="2" placeholder="Опишите симптомы или проблему с автомобилем..."></textarea>
                             </div>

@@ -112,7 +112,7 @@
                             <i class="bi bi-box-arrow-in-right"></i>
                             Войти
                         </button>
-                        <a href="#" class="btn btn-link">Забыли пароль?</a>
+                        <a href="forgot_password.php" class="btn btn-link">Забыли пароль?</a>
                     </form>
                 </div>
                 <div class="modal-footer">

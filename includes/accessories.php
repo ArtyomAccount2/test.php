@@ -168,7 +168,8 @@ $filtered_products = $all_products;
 
 if ($search_term !== '' || $category_filter !== '' || $brand_filter !== '' || $min_price > 0 || $max_price > 0) 
 {
-    $filtered_products = array_filter($all_products, function($product) use ($search_term, $category_filter, $brand_filter, $min_price, $max_price) {
+    $filtered_products = array_filter($all_products, function($product) use ($search_term, $category_filter, $brand_filter, $min_price, $max_price) 
+    {
         $matches_search = $search_term === '' || strpos(strtolower($product['name']), $search_term) !== false || strpos(strtolower($product['brand']), $search_term) !== false;
         $matches_category = $category_filter === '' || $product['category'] === $category_filter;
         $matches_brand = $brand_filter === '' || $product['brand'] === $brand_filter;
@@ -177,6 +178,7 @@ if ($search_term !== '' || $category_filter !== '' || $brand_filter !== '' || $m
         
         return $matches_search && $matches_category && $matches_brand && $matches_min_price && $matches_max_price;
     });
+    
     $filtered_products = array_values($filtered_products);
 }
 

@@ -108,9 +108,22 @@ unset($_SESSION['form_data']);
                     <h4 class="mt-4">Получение API ключа</h4>
                     <ol>
                         <li>Зарегистрируйтесь на сайте</li>
-                        <li>Перейдите в личный кабинет → Настройки разработчика</li>
-                        <li>Создайте новое приложение</li>
-                        <li>Получите API ключ и секрет</li>
+                        <?php
+                        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true)
+                        {
+                        ?>
+                            <li>Войдите в <a href="../profile.php">личный кабинет</a></li>
+                        <?php
+                        }
+                        else
+                        {
+                        ?>
+                            <li>Войдите в <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">личный кабинет</a></li>
+                        <?php
+                        }
+                        ?>
+                        <li>В меню пользователя выберите "Настройки разработчика"</li>
+                        <li>Создайте новое приложение и получите API ключ</li>
                     </ol>
                 </section>
                 <section class="mb-5">

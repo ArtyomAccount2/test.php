@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Янв 27 2026 г., 12:22
+-- Время создания: Янв 28 2026 г., 21:30
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -62,7 +62,8 @@ CREATE TABLE `api_keys` (
 
 INSERT INTO `api_keys` (`id`, `name`, `api_key`, `secret_key`, `status`, `permissions`, `last_used`, `created_at`, `expires_at`, `revoked_at`) VALUES
 (1, 'api_keys', 'sk_live_9f91e34cecf030985f13e1eeae02e6b3', 'sk_305308cd266a815f26aebb00613a6e2e9d9028b9946fe003', 'active', 'read,write', NULL, '2026-01-11 12:27:36', '2027-01-11 12:27:36', NULL),
-(2, 'secret', 'sk_live_0530805657771205c63ddf970a3b4365', 'sk_3d6b3db0920b13298822604a87e2e7ea83be75a7d0d363ea', 'active', 'read,write', NULL, '2026-01-11 14:24:16', '2027-01-11 14:24:16', NULL);
+(2, 'secret', 'sk_live_0530805657771205c63ddf970a3b4365', 'sk_3d6b3db0920b13298822604a87e2e7ea83be75a7d0d363ea', 'revoked', 'read,write', NULL, '2026-01-11 14:24:16', '2027-01-11 14:24:16', '2026-01-28 18:27:17'),
+(4, 'Лал-Авто (user2)', 'sk_live_f03ea03f574f8afda76d8ea3cf6ee7be', 'sk_0615af086cdd350ca4ce64e4eb7363cbdee715d124c2aa86', 'active', 'read,write,products,orders', NULL, '2026-01-28 18:07:43', '2027-01-28 18:07:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -855,7 +856,7 @@ ALTER TABLE `action_logs`
 -- AUTO_INCREMENT для таблицы `api_keys`
 --
 ALTER TABLE `api_keys`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `backup_logs`
