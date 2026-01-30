@@ -761,7 +761,7 @@ unset($_SESSION['form_data']);
         <hr class="my-4 bg-light">
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                <p class="mb-0">© 2025 Лал-Авто. Все права защищены.</p>
+                <p class="mb-0">© 2026 Лал-Авто. Все права защищены.</p>
             </div>
             <div class="col-md-6 text-center text-md-end">
                 <a href="includes/sitemap.php" class="text-white text-decoration-none me-3">Карта сайта</a>

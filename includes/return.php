@@ -155,7 +155,7 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                 </div>
-                <section class="mb-5">
+                <section class="section-header mb-5">
                     <h2 class="mb-4"><i class="bi bi-arrow-left-right me-2"></i>Условия возврата и обмена</h2>
                     <div class="conditions-grid">
                         <div class="condition-card">
@@ -181,7 +181,7 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                 </section>
-                <section class="mb-5">
+                <section class="section-header mb-5">
                     <h2 class="mb-4"><i class="bi bi-clock me-2"></i>Сроки возврата</h2>
                     <div class="timeline">
                         <div class="timeline-item">
@@ -213,7 +213,7 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                 </section>
-                <section class="mb-5">
+                <section class="section-header mb-5">
                     <h2 class="mb-4"><i class="bi bi-file-text me-2"></i>Необходимые документы</h2>
                     <div class="documents-list">
                         <div class="document-item">
@@ -245,7 +245,7 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                 </section>
-                <section class="mb-5">
+                <section class="section-header mb-5">
                     <h2 class="mb-4"><i class="bi bi-currency-exchange me-2"></i>Возврат денежных средств</h2>
                     <div class="refund-methods">
                         <div class="refund-method">
@@ -271,7 +271,7 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                 </section>
-                <section class="mb-5">
+                <section class="section-header mb-5">
                     <h2 class="mb-4"><i class="bi bi-list-check me-2"></i>Процедура возврата</h2>
                     <div class="process-steps">
                         <div class="process-step">
@@ -304,16 +304,16 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                 </section>
-                <section class="mb-5">
+                <section class="section-header mb-5">
                     <h2 class="mb-4"><i class="bi bi-question-circle me-2"></i>Частые вопросы</h2>
                     <div class="accordion" id="returnFAQ">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
                                     Какие товары не подлежат возврату?
                                 </button>
                             </h2>
-                            <div id="faq1" class="accordion-collapse collapse show">
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#returnFAQ">
                                 <div class="accordion-body">
                                     <p class="mb-3">Согласно законодательству, не подлежат возврату:</p>
                                     <ul class="mb-0">
@@ -328,11 +328,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
                                     Что делать, если товар был в употреблении?
                                 </button>
                             </h2>
-                            <div id="faq2" class="accordion-collapse collapse">
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#returnFAQ">
                                 <div class="accordion-body">
                                     <p class="mb-3">Товары, бывшие в употреблении, возврату не подлежат, за исключением случаев:</p>
                                     <ul class="mb-0">
@@ -345,11 +345,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
                                     Как вернуть товар, купленный онлайн?
                                 </button>
                             </h2>
-                            <div id="faq3" class="accordion-collapse collapse">
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#returnFAQ">
                                 <div class="accordion-body">
                                     <p class="mb-3">Для возврата товара, купленного онлайн:</p>
                                     <ol class="mb-0">

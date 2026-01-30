@@ -648,6 +648,15 @@
     font-size: 0.8rem;
 }
 
+.section-header h2 i
+{
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-right: 0.5rem;
+}
+
 .display-5 
 {
     background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);

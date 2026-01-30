@@ -476,7 +476,7 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
                         </a>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-center">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle"></i> Закрыть
                     </button>

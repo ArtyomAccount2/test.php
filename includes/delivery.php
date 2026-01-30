@@ -519,11 +519,11 @@ unset($_SESSION['form_data']);
             <div class="accordion" id="faqAccordion">
                 <div class="accordion-item">
                     <h3 class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne" aria-expanded="true" aria-controls="faqOne">
                             Как отследить мой заказ?
                         </button>
                     </h3>
-                    <div id="faqOne" class="accordion-collapse collapse show">
+                    <div id="faqOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
                             После отправки заказа мы вышлем вам номер для отслеживания на указанную электронную почту или SMS. Вы можете отслеживать статус доставки на сайте выбранной транспортной компании или Почты России.
                         </div>
@@ -531,11 +531,11 @@ unset($_SESSION['form_data']);
                 </div>
                 <div class="accordion-item">
                     <h3 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo" aria-expanded="false" aria-controls="faqTwo">
                             Можно ли изменить адрес доставки после оформления заказа?
                         </button>
                     </h3>
-                    <div id="faqTwo" class="accordion-collapse collapse">
+                    <div id="faqTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
                             Да, вы можете изменить адрес доставки до момента отправки заказа. Позвоните нам по телефону +7 (4012) 65-65-65 или напишите на info@lal-auto.ru с указанием номера заказа и нового адреса.
                         </div>

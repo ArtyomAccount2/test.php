@@ -135,12 +135,12 @@ $stmt->close();
     <section class="py-5" style="margin-top: 70px;">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-10">
+                <div class="col-lg-12">
                     <a href="news.php?page=<?= $page ?>" class="back-to-news">
                         <i class="bi bi-arrow-left"></i> Назад к новостям
                     </a>
                     <article class="news-single-article">
-                        <div class="news-single-img mb-5 position-relative">
+                        <div class="news-single-img mb-4 position-relative">
                             <img src="../img/no-image.png" class="img-fluid rounded-3" alt="<?= htmlspecialchars($news['title']) ?>">
                             <?php 
                             if($badge)

@@ -195,7 +195,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="col-lg-4 text-center">
-                <div class="loyalty-cta bg-white rounded-3 p-4 text-dark h-100 d-flex flex-column justify-content-center">
+                <div class="loyalty-card bg-white rounded-3 p-4 text-dark h-100 d-flex flex-column justify-content-center">
                     <h4 class="fw-bold mb-3">Получите карту</h4>
                     <p class="text-muted mb-4">Оформите карту лояльности в любом магазине</p>
                     <div class="special-offer bg-light rounded-2 p-3 mb-4">
@@ -212,49 +212,49 @@ unset($_SESSION['form_data']);
             <div class="faq-section">
                 <h2 class="mb-4 fw-bold"><i class="bi bi-question-circle text-primary me-2"></i>Частые вопросы</h2>
                 <div class="accordion" id="faqAccordion">
-                    <div class="accordion-item border-0 mb-3">
+                    <div class="border-0 mb-3">
                         <h3 class="accordion-header">
-                            <button class="accordion-button rounded-3 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            <button class="accordion-button rounded-3 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
                                 Как подобрать запчасти для моего автомобиля?
                             </button>
                         </h3>
-                        <div id="faq1" class="accordion-collapse collapse show">
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
                             <div class="accordion-body bg-light rounded-bottom-3">
                                 Вы можете воспользоваться нашим онлайн-каталогом, указав марку, модель и год выпуска автомобиля. Также наши консультанты всегда готовы помочь по телефону +7 (4012) 65-65-65 или в любом из наших магазинов.
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-item border-0 mb-3">
+                    <div class="border-0 mb-3">
                         <h3 class="accordion-header">
-                            <button class="accordion-button collapsed rounded-3 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            <button class="accordion-button collapsed rounded-3 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
                                 Есть ли скидки для постоянных клиентов?
                             </button>
                         </h3>
-                        <div id="faq2" class="accordion-collapse collapse">
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body bg-light rounded-bottom-3">
                                 Да, у нас действует программа лояльности. При покупке карты постоянного клиента вы получаете скидку 5% на все покупки. При суммарных покупках от 50 000 ₽ скидка увеличивается до 7%, от 100 000 ₽ - до 10%. Также регулярно проводятся акции и специальные предложения.
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-item border-0 mb-3">
+                    <div class="border-0 mb-3">
                         <h3 class="accordion-header">
-                            <button class="accordion-button collapsed rounded-3 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            <button class="accordion-button collapsed rounded-3 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
                                 Можно ли вернуть товар?
                             </button>
                         </h3>
-                        <div id="faq3" class="accordion-collapse collapse">
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body bg-light rounded-bottom-3">
                                 Да, в течение 14 дней с момента покупки при сохранении товарного вида, упаковки и наличии чека. Некоторые товары (личные предметы, расходники) возврату не подлежат. Подробности уточняйте у наших менеджеров.
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-item border-0 mb-3">
+                    <div class="border-0 mb-3">
                         <h3 class="accordion-header">
-                            <button class="accordion-button collapsed rounded-3 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            <button class="accordion-button collapsed rounded-3 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
                                 Предоставляете ли вы установку запчастей?
                             </button>
                         </h3>
-                        <div id="faq4" class="accordion-collapse collapse">
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                             <div class="accordion-body bg-light rounded-bottom-3">
                                 Да, в наших сервисных центрах вы можете заказать профессиональную установку приобретенных запчастей. Мы предоставляем гарантию как на запчасти, так и на работы по установке.
                             </div>

@@ -97,7 +97,7 @@ unset($_SESSION['form_data']);
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-10 mx-auto">
+        <div class="col-lg-12 mx-auto">
             <div class="api-documentation">
                 <section class="mb-5">
                     <h2 class="mb-4"><i class="bi bi-key"></i> Начало работы</h2>

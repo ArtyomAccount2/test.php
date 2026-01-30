@@ -239,6 +239,24 @@ unset($_SESSION['form_data']);
                                 <p class="mb-0">Обеспечение своевременной доставки по всей территории России</p>
                             </div>
                         </div>
+                        <div class="requirement-item">
+                            <div class="requirement-icon">
+                                <i class="bi bi-7-circle"></i>
+                            </div>
+                            <div class="requirement-content">
+                                <h6>Техническая поддержка</h6>
+                                <p class="mb-0">Наличие сервисной службы и консультационной поддержки по продукции</p>
+                            </div>
+                        </div>
+                        <div class="requirement-item" style="background: #e7f1ff; border-left-color: #0d6efd;">
+                            <div class="requirement-icon">
+                                <i class="bi bi-clock"></i>
+                            </div>
+                            <div class="requirement-content">
+                                <h6>Сроки рассмотрения</h6>
+                                <p class="mb-0">Рассмотрение заявки - 2 рабочих дня. Полный процесс отбора - до 7 рабочих дней</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

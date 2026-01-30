@@ -15,6 +15,15 @@
     margin-bottom: 1rem;
 }
 
+.section-header h2 i 
+{
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-right: 0.5rem;
+}
+
 .stat-item 
 {
     background: #ffffff;
@@ -156,214 +165,369 @@
 
 .terms-card 
 {
-    background: #ffffff;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border: 1px solid #e9ecef;
-    border-radius: 12px;
-    padding: 2rem;
+    border-radius: 16px;
+    padding: 2.5rem;
     height: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.terms-card::before 
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+}
+
+.terms-card:hover 
+{
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    border-color: #007bff;
+}
+
+.terms-card h4 
+{
+    color: #2c3e50;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 1.8rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+    display: flex;
+    align-items: center;
+}
+
+.terms-card h4 i 
+{
+    margin-right: 0.75rem;
+    color: #007bff;
+    background: rgba(0, 123, 255, 0.1);
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .terms-table 
 {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .terms-table th,
 .terms-table td 
 {
-    padding: 0.75rem;
+    padding: 1.1rem 1.2rem;
     border-bottom: 1px solid #e9ecef;
     text-align: left;
 }
 
 .terms-table th 
 {
-    background: #f8f9fa;
-    font-weight: 600;
-    color: #333;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #007bff;
 }
 
-.terms-table tr:last-child td 
+.terms-table tbody tr 
+{
+    transition: all 0.3s ease;
+}
+
+.terms-table tbody tr:hover 
+{
+    background-color: rgba(0, 123, 255, 0.05);
+    transform: scale(1.01);
+}
+
+.terms-table tbody tr:last-child td 
 {
     border-bottom: none;
 }
 
+.terms-table td:first-child 
+{
+    font-weight: 600;
+    color: #495057;
+}
+
+.terms-table td:nth-child(2) 
+{
+    color: #007bff;
+    font-weight: 600;
+}
+
+.terms-table td:nth-child(3) 
+{
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
 .zones-list 
 {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 }
 
 .zone-item 
 {
     display: flex;
     align-items: center;
-    padding: 1rem 0;
+    padding: 1.25rem 1rem;
     border-bottom: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+}
+
+.zone-item:hover 
+{
+    background-color: rgba(0, 123, 255, 0.05);
+    transform: translateX(5px);
 }
 
 .zone-item:last-child 
 {
     border-bottom: none;
+    margin-bottom: 0;
 }
 
 .zone-marker 
 {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    margin-right: 1rem;
+    margin-right: 1.2rem;
     flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border: 2px solid white;
 }
 
-.bg-orange {
-    background-color: #fd7e14;
+.bg-orange 
+{
+    background: linear-gradient(135deg, #fd7e14 0%, #e8590c 100%);
 }
 
 .zone-content h6 
 {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-    color: #333;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    color: #2c3e50;
+    font-size: 1.05rem;
 }
 
 .zone-content p 
 {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.35rem;
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+.zone-content small 
+{
+    font-size: 0.85rem;
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(108, 117, 125, 0.1);
+    border-radius: 15px;
     color: #6c757d;
 }
 
 .faq-content .accordion 
 {
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.12);
+    border: 1px solid #e9ecef;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
 }
 
 .faq-content .accordion-item 
 {
-    border: 1px solid #e9ecef;
-    border-bottom: none;
+    border: none;
+    background: transparent;
+    border-bottom: 1px solid #e9ecef;
+    transition: all 0.3s ease;
 }
 
 .faq-content .accordion-item:last-child 
 {
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: none;
+}
+
+.faq-content .accordion-item:hover 
+{
+    background-color: rgba(0, 123, 255, 0.03);
+}
+
+.faq-content .accordion-header 
+{
+    margin: 0;
 }
 
 .faq-content .accordion-button 
 {
-    background: #ffffff;
-    color: #333;
-    font-weight: 500;
-    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 1.5rem 2rem;
     border: none;
     box-shadow: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .faq-content .accordion-button:not(.collapsed) 
 {
-    background: #007bff;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
     color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.25);
 }
 
 .faq-content .accordion-body 
 {
-    padding: 1.5rem;
-    background: #f8f9fa;
-    line-height: 1.6;
+    padding: 2rem;
+    background: #ffffff;
+    line-height: 1.8;
+    color: #495057;
+    font-size: 1rem;
+    border-top: none;
+    position: relative;
 }
 
-.display-5 
+.faq-content .accordion-body::before 
 {
-    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 2rem;
+    right: 2rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 123, 255, 0.3), transparent);
 }
 
 @media (max-width: 768px) 
 {
-    .stat-item 
+    .terms-card 
     {
-        padding: 1rem;
-        min-width: 110px;
+        padding: 1.75rem;
+        margin-bottom: 1.5rem;
     }
     
-    .delivery-nav .nav-link 
+    .terms-card h4 
     {
-        padding: 0.5rem 1rem;
-        margin: 0.25rem;
+        font-size: 1.25rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .terms-card h4 i 
+    {
+        margin-bottom: 0.75rem;
+    }
+    
+    .terms-table 
+    {
+        font-size: 0.875rem;
+    }
+    
+    .terms-table th,
+    .terms-table td 
+    {
+        padding: 0.85rem 0.75rem;
+    }
+    
+    .zone-item 
+    {
+        padding: 1rem 0.75rem;
+    }
+    
+    .zone-marker 
+    {
+        width: 14px;
+        height: 14px;
+        margin-right: 1rem;
+    }
+    
+    .zone-content h6 
+    {
+        font-size: 1rem;
+    }
+    
+    .zone-content p 
+    {
         font-size: 0.9rem;
     }
     
-    .delivery-method,
-    .payment-method 
+    .faq-content .accordion-button 
+    {
+        padding: 1.25rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .faq-content .accordion-body 
     {
         padding: 1.5rem;
-    }
-    
-    .method-header 
-    {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .method-icon 
-    {
-        margin-right: 0;
-        margin-bottom: 1rem;
-    }
-    
-    .terms-card 
-    {
-        padding: 1.5rem;
-    }
-    
-    .table-responsive 
-    {
-        font-size: 0.875rem;
+        font-size: 0.95rem;
     }
 }
 
 @media (max-width: 576px) 
 {
-    .delivery-section 
+    .terms-card 
     {
-        margin-bottom: 3rem;
-        padding: 1rem 0;
+        padding: 1.5rem;
     }
     
-    .section-header h2 
+    .terms-table th,
+    .terms-table td 
     {
-        font-size: 1.5rem;
+        padding: 0.75rem 0.5rem;
+        font-size: 0.85rem;
     }
     
-    .method-title 
+    .zone-item 
     {
-        font-size: 1.1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
     }
     
-    .method-description 
+    .zone-marker 
     {
+        margin-bottom: 0.75rem;
+    }
+    
+    .faq-content .accordion-button 
+    {
+        font-size: 0.95rem;
+        padding: 1rem 1.25rem;
+    }
+    
+    .faq-content .accordion-body 
+    {
+        padding: 1.25rem;
         font-size: 0.9rem;
     }
-    
-    .detail-item 
-    {
-        font-size: 0.875rem;
-    }
-}
-
-.row 
-{
-    align-items: stretch;
-}
-
-.delivery-method,
-.payment-method,
-.terms-card 
-{
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

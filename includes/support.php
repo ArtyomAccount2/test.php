@@ -208,11 +208,11 @@ unset($_SESSION['form_data']);
                 <div class="accordion" id="instructionsAccordion">
                     <div class="accordion-item">
                         <h3 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#instruction1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#instruction1" aria-expanded="true" aria-controls="instruction1">
                                 Как зарегистрироваться на сайте
                             </button>
                         </h3>
-                        <div id="instruction1" class="accordion-collapse collapse show">
+                        <div id="instruction1" class="accordion-collapse collapse show" data-bs-parent="#instructionsAccordion">
                             <div class="accordion-body">
                                 <ol class="mb-0">
                                     <li>Нажмите кнопку "Зарегистрироваться" в правом верхнем углу</li>
@@ -226,11 +226,11 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="accordion-item">
                         <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#instruction2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#instruction2" aria-expanded="false" aria-controls="instruction2">
                                 Как сделать заказ
                             </button>
                         </h3>
-                        <div id="instruction2" class="accordion-collapse collapse">
+                        <div id="instruction2" class="accordion-collapse collapse" data-bs-parent="#instructionsAccordion">
                             <div class="accordion-body">
                                 <ol class="mb-0">
                                     <li>Найдите нужный товар через поиск или каталог</li>
@@ -244,11 +244,11 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="accordion-item">
                         <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#instruction3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#instruction3" aria-expanded="false" aria-controls="instruction3">
                                 Как отследить статус заказа
                             </button>
                         </h3>
-                        <div id="instruction3" class="accordion-collapse collapse">
+                        <div id="instruction3" class="accordion-collapse collapse" data-bs-parent="#instructionsAccordion">
                             <div class="accordion-body">
                                 <ol class="mb-0">
                                     <li>Войдите в свой аккаунт</li>
