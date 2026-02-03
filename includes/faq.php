@@ -90,9 +90,9 @@ unset($_SESSION['form_data']);
 ?>
 
 <div class="container my-5 pt-4">
-    <div class="row mb-5">
+    <div class="row">
         <div class="col-12 text-center">
-            <h1 class="mb-3" style="padding-top: 60px;">Частые вопросы (FAQ)</h1>
+            <h1 class="mb-2" style="padding-top: 10px;">Частые вопросы (FAQ)</h1>
             <p class="lead">Ответы на самые популярные вопросы наших клиентов</p>
         </div>
     </div>
@@ -127,11 +127,11 @@ unset($_SESSION['form_data']);
                     <div class="accordion" id="orderingAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#ordering1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#ordering1" aria-expanded="true" aria-controls="ordering1">
                                     Как оформить заказ?
                                 </button>
                             </h2>
-                            <div id="ordering1" class="accordion-collapse collapse show">
+                            <div id="ordering1" class="accordion-collapse collapse show" data-bs-parent="#orderingAccordion">
                                 <div class="accordion-body">
                                     <p>Для оформления заказа:</p>
                                     <ol>
@@ -147,11 +147,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ordering2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ordering2" aria-expanded="false" aria-controls="ordering2">
                                     Сколько стоит доставка?
                                 </button>
                             </h2>
-                            <div id="ordering2" class="accordion-collapse collapse">
+                            <div id="ordering2" class="accordion-collapse collapse" data-bs-parent="#orderingAccordion">
                                 <div class="accordion-body">
                                     <p>Стоимость доставки зависит от:</p>
                                     <ul>
@@ -166,11 +166,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ordering3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ordering3" aria-expanded="false" aria-controls="ordering3">
                                     Как отследить мой заказ?
                                 </button>
                             </h2>
-                            <div id="ordering3" class="accordion-collapse collapse">
+                            <div id="ordering3" class="accordion-collapse collapse" data-bs-parent="#orderingAccordion">
                                 <div class="accordion-body">
                                     <p>После отправки заказа мы вышлем вам номер для отслеживания:</p>
                                     <ul>
@@ -184,16 +184,16 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                 </section>
-                <section id="payment" class="faq-section mb-5">
+                <section id="payment" class="faq-section justify-beetween mb-5">
                     <h3 class="mb-4"><i class="bi bi-credit-card"></i> Оплата</h3>
                     <div class="accordion" id="paymentAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#payment1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#payment1" aria-expanded="true" aria-controls="payment1">
                                     Какие способы оплаты доступны?
                                 </button>
                             </h2>
-                            <div id="payment1" class="accordion-collapse collapse show">
+                            <div id="payment1" class="accordion-collapse collapse show" data-bs-parent="#paymentAccordion">
                                 <div class="accordion-body">
                                     <p>Мы принимаем:</p>
                                     <ul>
@@ -208,11 +208,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#payment2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#payment2" aria-expanded="false" aria-controls="payment2">
                                     Безопасна ли оплата картой онлайн?
                                 </button>
                             </h2>
-                            <div id="payment2" class="accordion-collapse collapse">
+                            <div id="payment2" class="accordion-collapse collapse" data-bs-parent="#paymentAccordion">
                                 <div class="accordion-body">
                                     <p>Да, оплата картой через наш сайт абсолютно безопасна:</p>
                                     <ul>
@@ -232,11 +232,11 @@ unset($_SESSION['form_data']);
                     <div class="accordion" id="productsAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#products1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#products1" aria-expanded="true" aria-controls="products1">
                                     Как подобрать запчасти для моего автомобиля?
                                 </button>
                             </h2>
-                            <div id="products1" class="accordion-collapse collapse show">
+                            <div id="products1" class="accordion-collapse collapse show" data-bs-parent="#productsAccordion">
                                 <div class="accordion-body">
                                     <p>Есть несколько способов подбора запчастей:</p>
                                     <ol>
@@ -251,11 +251,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#products2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#products2" aria-expanded="false" aria-controls="products2">
                                     Все ли товары есть в наличии?
                                 </button>
                             </h2>
-                            <div id="products2" class="accordion-collapse collapse">
+                            <div id="products2" class="accordion-collapse collapse" data-bs-parent="#productsAccordion">
                                 <div class="accordion-body">
                                     <p>На сайте указано актуальное наличие товаров:</p>
                                     <ul>
@@ -274,11 +274,11 @@ unset($_SESSION['form_data']);
                     <div class="accordion" id="warrantyAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#warranty1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#warranty1" aria-expanded="true" aria-controls="warranty1">
                                     На какие товары предоставляется гарантия?
                                 </button>
                             </h2>
-                            <div id="warranty1" class="accordion-collapse collapse show">
+                            <div id="warranty1" class="accordion-collapse collapse show" data-bs-parent="#warrantyAccordion">
                                 <div class="accordion-body">
                                     <p>Мы предоставляем гарантию на следующие категории товаров:</p>
                                     <ul>
@@ -294,11 +294,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#warranty2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#warranty2" aria-expanded="false" aria-controls="warranty2">
                                     Как воспользоваться гарантией?
                                 </button>
                             </h2>
-                            <div id="warranty2" class="accordion-collapse collapse">
+                            <div id="warranty2" class="accordion-collapse collapse" data-bs-parent="#warrantyAccordion">
                                 <div class="accordion-body">
                                     <p>Для оформления гарантийного случая:</p>
                                     <ol>
@@ -314,11 +314,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#warranty3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#warranty3" aria-expanded="false" aria-controls="warranty3">
                                     Какие условия гарантийного обслуживания?
                                 </button>
                             </h2>
-                            <div id="warranty3" class="accordion-collapse collapse">
+                            <div id="warranty3" class="accordion-collapse collapse" data-bs-parent="#warrantyAccordion">
                                 <div class="accordion-body">
                                     <p>Условия гарантийного обслуживания:</p>
                                     <ul>
@@ -339,11 +339,11 @@ unset($_SESSION['form_data']);
                     <div class="accordion" id="serviceAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#service1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#service1" aria-expanded="true" aria-controls="service1">
                                     Какие услуги предоставляет ваш автосервис?
                                 </button>
                             </h2>
-                            <div id="service1" class="accordion-collapse collapse show">
+                            <div id="service1" class="accordion-collapse collapse show" data-bs-parent="#serviceAccordion">
                                 <div class="accordion-body">
                                     <p>Наш автосервис предлагает полный спектр услуг:</p>
                                     <ul>
@@ -360,11 +360,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#service2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#service2" aria-expanded="false" aria-controls="service2">
                                     Нужна ли запись в автосервис?
                                 </button>
                             </h2>
-                            <div id="service2" class="accordion-collapse collapse">
+                            <div id="service2" class="accordion-collapse collapse" data-bs-parent="#serviceAccordion">
                                 <div class="accordion-body">
                                     <p>Да, запись в автосервис желательна по нескольким причинам:</p>
                                     <ul>
@@ -386,11 +386,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#service3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#service3" aria-expanded="false" aria-controls="service3">
                                     Сколько времени занимает ремонт?
                                 </button>
                             </h2>
-                            <div id="service3" class="accordion-collapse collapse">
+                            <div id="service3" class="accordion-collapse collapse" data-bs-parent="#serviceAccordion">
                                 <div class="accordion-body">
                                     <p>Время ремонта зависит от сложности работ:</p>
                                     <ul>
@@ -408,11 +408,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#service4">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#service4" aria-expanded="false" aria-controls="service4">
                                     Даете ли вы гарантию на работы?
                                 </button>
                             </h2>
-                            <div id="service4" class="accordion-collapse collapse">
+                            <div id="service4" class="accordion-collapse collapse" data-bs-parent="#serviceAccordion">
                                 <div class="accordion-body">
                                     <p>Да, мы предоставляем гарантию на все виды работ:</p>
                                     <ul>
@@ -438,11 +438,11 @@ unset($_SESSION['form_data']);
                     <div class="accordion" id="accountAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#account1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#account1" aria-expanded="true" aria-controls="account1">
                                     Как создать учетную запись?
                                 </button>
                             </h2>
-                            <div id="account1" class="accordion-collapse collapse show">
+                            <div id="account1" class="accordion-collapse collapse show" data-bs-parent="#accountAccordion">
                                 <div class="accordion-body">
                                     <p>Создать учетную запись можно несколькими способами:</p>
                                     <ol>
@@ -463,11 +463,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account2" aria-expanded="false" aria-controls="account2">
                                     Что делать, если забыл пароль?
                                 </button>
                             </h2>
-                            <div id="account2" class="accordion-collapse collapse">
+                            <div id="account2" class="accordion-collapse collapse" data-bs-parent="#accountAccordion">
                                 <div class="accordion-body">
                                     <p>Если вы забыли пароль:</p>
                                     <ol>
@@ -488,11 +488,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account3" aria-expanded="false" aria-controls="account3">
                                     Какие преимущества у зарегистрированных пользователей?
                                 </button>
-                            </hh2>
-                            <div id="account3" class="accordion-collapse collapse">
+                            </h2>
+                            <div id="account3" class="accordion-collapse collapse" data-bs-parent="#accountAccordion">
                                 <div class="accordion-body">
                                     <p>Зарегистрированные пользователи получают:</p>
                                     <ul>
@@ -511,11 +511,11 @@ unset($_SESSION['form_data']);
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account4">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account4" aria-expanded="false" aria-controls="account4">
                                     Как изменить данные в профиле?
                                 </button>
                             </h2>
-                            <div id="account4" class="accordion-collapse collapse">
+                            <div id="account4" class="accordion-collapse collapse" data-bs-parent="#accountAccordion">
                                 <div class="accordion-body">
                                     <p>Чтобы изменить данные профиля:</p>
                                     <ol>
@@ -573,25 +573,94 @@ document.addEventListener('DOMContentLoaded', function()
 {
     let searchInput = document.getElementById('faqSearch');
     let accordionItems = document.querySelectorAll('.accordion-item');
-    
+    let categoryButtons = document.querySelectorAll('.faq-categories .btn');
+
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function(e) 
+        {
+            e.preventDefault();
+            let targetId = this.getAttribute('href').substring(1);
+            let targetSection = document.getElementById(targetId);
+            
+            if (targetSection) 
+            {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                let firstAccordion = targetSection.querySelector('.accordion-button');
+
+                if (firstAccordion) 
+                {
+                    let collapse = new bootstrap.Collapse(firstAccordion.nextElementSibling);
+                    collapse.show();
+                }
+            }
+        });
+    });
+
     searchInput.addEventListener('input', function() 
     {
-        let searchText = this.value.toLowerCase();
+        let searchText = this.value.toLowerCase().trim();
         
         accordionItems.forEach(item => {
             let question = item.querySelector('.accordion-button').textContent.toLowerCase();
             let answer = item.querySelector('.accordion-body').textContent.toLowerCase();
             
-            if (question.includes(searchText) || answer.includes(searchText)) 
+            if (searchText === '' || question.includes(searchText) || answer.includes(searchText)) 
             {
                 item.style.display = 'block';
+                item.classList.remove('hidden');
 
-                let collapse = new bootstrap.Collapse(item.querySelector('.accordion-collapse'));
-                collapse.show();
+                if (searchText !== '') 
+                {
+                    let collapse = new bootstrap.Collapse(item.querySelector('.accordion-collapse'));
+                    collapse.show();
+                }
             } 
             else 
             {
+                item.classList.add('hidden');
                 item.style.display = 'none';
+            }
+        });
+
+        document.querySelectorAll('.faq-section').forEach(section => {
+            let visibleItems = section.querySelectorAll('.accordion-item:not(.hidden)');
+
+            if (visibleItems.length === 0) 
+            {
+                section.style.display = 'none';
+            } 
+            else 
+            {
+                section.style.display = 'block';
+            }
+        });
+    });
+
+    window.addEventListener('scroll', function() {
+        let scrollPos = window.scrollY + 100;
+        
+        document.querySelectorAll('.faq-section').forEach(section => {
+            let sectionTop = section.offsetTop;
+            let sectionHeight = section.clientHeight;
+            let sectionId = section.getAttribute('id');
+            
+            if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) 
+            {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+
+                let activeBtn = document.querySelector(`.faq-categories .btn[href="#${sectionId}"]`);
+                
+                if (activeBtn) 
+                {
+                    activeBtn.classList.add('active');
+                }
             }
         });
     });

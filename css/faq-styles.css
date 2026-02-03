@@ -5,6 +5,7 @@
     padding: 1.5rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     border: 1px solid #f0f0f0;
+    margin-bottom: 1.5rem;
 }
 
 .faq-categories 
@@ -22,63 +23,120 @@
     margin: 0.25rem;
     border-radius: 20px;
     padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    flex: 1 0 auto;
+    min-width: 120px;
+    text-align: center;
+}
+
+.faq-categories .btn:hover,
+.faq-categories .btn:focus 
+{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.faq-categories .d-flex 
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
 }
 
 .faq-section 
 {
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f0f0f0;
 }
 
 .faq-section h3 
 {
-    color: #007bff;
+    color: #2c3e50;
     border-bottom: 2px solid #e9ecef;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.75rem;
     margin-bottom: 1.5rem;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.faq-section h3 i 
+{
+    color: #007bff;
+    margin-right: 0.5rem;
+}
+
+.faq-section .accordion 
+{
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.faq-section .accordion-item 
+{
+    border: 1px solid #e9ecef;
+    margin-bottom: 0.75rem;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-section .accordion-item:hover 
+{
+    border-color: #007bff;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
 }
 
 .faq-section .accordion-button 
 {
     font-weight: 600;
     padding: 1.25rem;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    color: #495057;
+    background: #f8f9fa;
+    border: none;
+    color: #2c3e50;
+    font-size: 1.05rem;
+    position: relative;
+    transition: all 0.3s ease;
 }
 
 .faq-section .accordion-button:not(.collapsed) 
 {
     background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
     color: white;
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.2);
+}
+
+.faq-section .accordion-button:focus 
+{
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.1);
     border-color: #007bff;
 }
 
 .faq-section .accordion-button::after 
 {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23495057'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-    transition: transform 0.3s ease;
-}
-
-.faq-section .accordion-button:not(.collapsed)::after 
-{
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    transition: transform 0.3s ease, background-image 0.3s ease;
+    width: 1.25rem;
+    height: 1.25rem;
+    background-size: 1.25rem;
 }
 
 .faq-section .accordion-body 
 {
     background: white;
-    border: 1px solid #dee2e6;
-    border-top: none;
-    border-radius: 0 0 8px 8px;
     padding: 1.5rem;
     line-height: 1.6;
+    border-top: 1px solid #f1f3f4;
 }
 
 .faq-section .accordion-body p 
 {
     margin-bottom: 1rem;
+    color: #5a6c7d;
 }
 
 .faq-section .accordion-body ul,
@@ -86,11 +144,18 @@
 {
     margin-bottom: 1rem;
     padding-left: 1.5rem;
+    color: #5a6c7d;
 }
 
 .faq-section .accordion-body li 
 {
     margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.faq-section .accordion-body strong 
+{
+    color: #2c3e50;
 }
 
 .support-section .card 
@@ -98,23 +163,26 @@
     border: none;
     border-radius: 12px;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9f9ff 100%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .support-section .card-body 
 {
-    padding: 3rem 2rem;
+    padding: 2.5rem;
 }
 
 .support-section h3 
 {
-    color: #007bff;
+    color: #2c3e50;
     margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .support-section p 
 {
     color: #6c757d;
     margin-bottom: 2rem;
+    font-size: 1.1rem;
 }
 
 .support-section .btn 
@@ -123,11 +191,62 @@
     padding: 0.75rem 1.5rem;
     font-weight: 600;
     margin: 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.support-section .btn:hover 
+{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.support-section .btn i 
+{
+    margin-right: 0.5rem;
 }
 
 .faq-section .accordion-collapse 
 {
     transition: all 0.3s ease;
+}
+
+#faqSearch 
+{
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+#faqSearch:focus 
+{
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.search-section .btn 
+{
+    border-radius: 0 8px 8px 0;
+    border-left: none;
+    padding: 0.75rem 1.5rem;
+}
+
+.faq-section .accordion-item 
+{
+    transition: all 0.3s ease;
+    opacity: 1;
+    transform: scale(1);
+}
+
+.faq-section .accordion-item.hidden 
+{
+    opacity: 0;
+    transform: scale(0.95);
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: none;
 }
 
 @media (max-width: 768px) 
@@ -137,6 +256,8 @@
         width: calc(50% - 0.5rem);
         margin: 0.25rem;
         text-align: center;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
     }
     
     .support-section .btn 
@@ -148,29 +269,140 @@
     .faq-section .accordion-button 
     {
         padding: 1rem;
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
     
     .faq-section .accordion-body 
     {
-        padding: 1rem;
+        padding: 1.25rem;
+    }
+    
+    .support-section .card-body 
+    {
+        padding: 1.5rem;
+    }
+    
+    .faq-section h3 
+    {
+        font-size: 1.3rem;
     }
 }
 
-#faqSearch 
+@media (max-width: 576px) 
 {
-    padding: 0.75rem 1.5rem;
-    border: 2px solid #dee2e6;
+    .faq-section 
+    {
+        padding: 1rem;
+    }
+    
+    .search-section 
+    {
+        padding: 1rem;
+    }
+    
+    .faq-categories 
+    {
+        padding: 1rem;
+    }
+    
+    .faq-section h3 
+    {
+        font-size: 1.2rem;
+    }
+    
+    .faq-section .accordion-button 
+    {
+        font-size: 0.95rem;
+        padding: 0.875rem;
+    }
+    
+    .support-section h3 
+    {
+        font-size: 1.2rem;
+    }
+    
+    .support-section p 
+    {
+        font-size: 1rem;
+    }
 }
 
-#faqSearch:focus 
+.faq-categories .btn-outline-primary:hover 
 {
+    background-color: #007bff;
+    color: white;
     border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-.search-section .btn 
+.faq-section,
+.faq-categories,
+.search-section 
 {
-    border-radius: 0 25px 25px 0;
-    border-left: none;
+    transition: all 0.3s ease;
+}
+
+.faq-categories .btn.active 
+{
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
+}
+
+.container.my-5.pt-4 
+{
+    padding-top: 90px !important;
+}
+
+.row:first-child h1 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+.row:first-child .lead 
+{
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.accordion-collapse 
+{
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn 
+{
+    from 
+    {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to 
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.highlight 
+{
+    background-color: #fff3cd;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.search-section .input-group .btn 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border: none;
+}
+
+.search-section .input-group .btn:hover 
+{
+    background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
 }
