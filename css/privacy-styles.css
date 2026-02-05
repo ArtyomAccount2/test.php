@@ -131,57 +131,35 @@
     border: 1px dashed #dee2e6;
 }
 
-.principles-grid 
-{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1rem;
-}
-
 .principle-item 
 {
     display: flex;
     align-items: center;
-    padding: 0.75rem;
+    padding: 1rem;
     background: #f8f9fa;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-}
-
-.principle-item:hover 
-{
-    background: #e9ecef;
-}
-
-.principle-item i 
-{
-    margin-right: 0.75rem;
-    font-size: 1.1rem;
-}
-
-.rights-grid 
-{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    min-height: 60px;
+    height: 100%;
 }
 
 .right-item 
 {
     display: flex;
     align-items: flex-start;
-    padding: 1rem;
+    padding: 1.25rem;
     background: white;
     border: 1px solid #e9ecef;
     border-radius: 8px;
     transition: all 0.3s ease;
+    min-height: 100px;
+    height: 100%;
 }
 
-.right-item:hover 
+.principle-item i 
 {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    border-color: #007bff;
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
 }
 
 .right-item i 
@@ -197,13 +175,6 @@
     margin-bottom: 0.5rem;
 }
 
-.protection-grid 
-{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-}
-
 .protection-item 
 {
     display: flex;
@@ -212,12 +183,28 @@
     background: #f8f9fa;
     border-radius: 8px;
     transition: all 0.3s ease;
+    min-height: 60px;
+    height: 100%;
+}
+
+.principle-item:hover 
+{
+    background: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.right-item:hover 
+{
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border-color: #007bff;
 }
 
 .protection-item:hover 
 {
     background: #e9ecef;
-    transform: translateX(5px);
+    transform: translateX(3px);
 }
 
 .protection-item i 
@@ -229,10 +216,23 @@
 
 .data-category 
 {
-    padding: 1rem;
+    padding: 1.5rem;
     background: #f8f9fa;
     border-radius: 8px;
     border-left: 4px solid #007bff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.data-category h5 
+{
+    flex-shrink: 0;
+}
+
+.data-category ul 
+{
+    flex-grow: 1;
 }
 
 .table th 
@@ -259,11 +259,14 @@
         font-size: 1.5rem;
     }
     
-    .principles-grid,
-    .rights-grid,
-    .protection-grid 
+    .summary-card 
     {
-        grid-template-columns: 1fr;
+        margin-bottom: 1rem;
+    }
+    
+    .contact-info-box .row > div 
+    {
+        margin-bottom: 1.5rem;
     }
 }
 

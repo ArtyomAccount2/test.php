@@ -191,11 +191,11 @@ unset($_SESSION['form_data']);
                 <section id="data-composition" class="privacy-section mb-5">
                     <h2 class="mb-3">4. Состав персональных данных</h2>
                     <p>4.1. Оператор может обрабатывать следующие персональные данные:</p>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="data-category mb-4">
-                                <h5 class="fw-bold text-primary">Основные данные</h5>
-                                <ul class="styled-list">
+                    <div class="row row-cols-1 row-cols-md-2 g-3">
+                        <div class="col d-flex">
+                            <div class="data-category w-100">
+                                <h5 class="fw-bold text-primary mb-3">Основные данные</h5>
+                                <ul class="styled-list mb-0">
                                     <li>Фамилия, имя, отчество</li>
                                     <li>Контактный телефон</li>
                                     <li>Адрес электронной почты</li>
@@ -203,10 +203,10 @@ unset($_SESSION['form_data']);
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="data-category mb-4">
-                                <h5 class="fw-bold text-primary">Дополнительные данные</h5>
-                                <ul class="styled-list">
+                        <div class="col d-flex">
+                            <div class="data-category w-100">
+                                <h5 class="fw-bold text-primary mb-3">Дополнительные данные</h5>
+                                <ul class="styled-list mb-0">
                                     <li>Реквизиты документов (для юридических лиц)</li>
                                     <li>Информация о заказах и покупках</li>
                                     <li>Технические данные (IP-адрес, cookies, данные браузера)</li>
@@ -219,30 +219,42 @@ unset($_SESSION['form_data']);
                 <section id="principles" class="privacy-section mb-5">
                     <h2 class="mb-3">5. Принципы обработки персональных данных</h2>
                     <p>5.1. Обработка персональных данных осуществляется на основе следующих принципов:</p>
-                    <div class="principles-grid">
-                        <div class="principle-item">
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                            <span>Законности и справедливости</span>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+                        <div class="col d-flex">
+                            <div class="principle-item w-100 d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-primary flex-shrink-0"></i>
+                                <span class="flex-grow-1">Законности и справедливости</span>
+                            </div>
                         </div>
-                        <div class="principle-item">
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                            <span>Ограничения обработки достижением конкретных целей</span>
+                        <div class="col d-flex">
+                            <div class="principle-item w-100 d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-primary flex-shrink-0"></i>
+                                <span class="flex-grow-1">Ограничения обработки достижением конкретных целей</span>
+                            </div>
                         </div>
-                        <div class="principle-item">
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                            <span>Соответствия содержания и объема обрабатываемых данных заявленным целям</span>
+                        <div class="col d-flex">
+                            <div class="principle-item w-100 d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-primary flex-shrink-0"></i>
+                                <span class="flex-grow-1">Соответствия содержания и объема обрабатываемых данных заявленным целям</span>
+                            </div>
                         </div>
-                        <div class="principle-item">
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                            <span>Достоверности и актуальности данных</span>
+                        <div class="col d-flex">
+                            <div class="principle-item w-100 d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-primary flex-shrink-0"></i>
+                                <span class="flex-grow-1">Достоверности и актуальности данных</span>
+                            </div>
                         </div>
-                        <div class="principle-item">
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                            <span>Хранения данных не дольше требуемого времени</span>
+                        <div class="col d-flex">
+                            <div class="principle-item w-100 d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-primary flex-shrink-0"></i>
+                                <span class="flex-grow-1">Хранения данных не дольше требуемого времени</span>
+                            </div>
                         </div>
-                        <div class="principle-item">
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                            <span>Конфиденциальности и безопасности</span>
+                        <div class="col d-flex">
+                            <div class="principle-item w-100 d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-primary flex-shrink-0"></i>
+                                <span class="flex-grow-1">Конфиденциальности и безопасности</span>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -264,47 +276,59 @@ unset($_SESSION['form_data']);
                 <section id="rights" class="privacy-section mb-5">
                     <h2 class="mb-3">7. Права субъектов персональных данных</h2>
                     <p>7.1. Субъект персональных данных имеет право:</p>
-                    <div class="rights-grid">
-                        <div class="right-item">
-                            <i class="bi bi-info-circle text-primary"></i>
-                            <div>
-                                <h6>На информацию</h6>
-                                <p class="small mb-0">Получать информацию об обработке своих данных</p>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+                        <div class="col d-flex">
+                            <div class="right-item w-100 d-flex align-items-start">
+                                <i class="bi bi-info-circle text-primary flex-shrink-0 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold">На информацию</h6>
+                                    <p class="small mb-0">Получать информацию об обработке своих данных</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="right-item">
-                            <i class="bi bi-pencil-square text-primary"></i>
-                            <div>
-                                <h6>На уточнение</h6>
-                                <p class="small mb-0">Требовать уточнения, блокирования или уничтожения данных</p>
+                        <div class="col d-flex">
+                            <div class="right-item w-100 d-flex align-items-start">
+                                <i class="bi bi-pencil-square text-primary flex-shrink-0 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold">На уточнение</h6>
+                                    <p class="small mb-0">Требовать уточнения, блокирования или уничтожения данных</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="right-item">
-                            <i class="bi bi-x-circle text-primary"></i>
-                            <div>
-                                <h6>На отзыв согласия</h6>
-                                <p class="small mb-0">Отозвать согласие на обработку персональных данных</p>
+                        <div class="col d-flex">
+                            <div class="right-item w-100 d-flex align-items-start">
+                                <i class="bi bi-x-circle text-primary flex-shrink-0 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold">На отзыв согласия</h6>
+                                    <p class="small mb-0">Отозвать согласие на обработку персональных данных</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="right-item">
-                            <i class="bi bi-shield-exclamation text-primary"></i>
-                            <div>
-                                <h6>На обжалование</h6>
-                                <p class="small mb-0">Обжаловать действия или бездействие Оператора</p>
+                        <div class="col d-flex">
+                            <div class="right-item w-100 d-flex align-items-start">
+                                <i class="bi bi-shield-exclamation text-primary flex-shrink-0 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold">На обжалование</h6>
+                                    <p class="small mb-0">Обжаловать действия или бездействие Оператора</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="right-item">
-                            <i class="bi bi-arrow-right-circle text-primary"></i>
-                            <div>
-                                <h6>На доступ</h6>
-                                <p class="small mb-0">Получать доступ к своим персональным данным</p>
+                        <div class="col d-flex">
+                            <div class="right-item w-100 d-flex align-items-start">
+                                <i class="bi bi-arrow-right-circle text-primary flex-shrink-0 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold">На доступ</h6>
+                                    <p class="small mb-0">Получать доступ к своим персональным данным</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="right-item">
-                            <i class="bi bi-file-earmark-text text-primary"></i>
-                            <div>
-                                <h6>На защиту прав</h6>
-                                <p class="small mb-0">Защищать свои права законными способами</p>
+                        <div class="col d-flex">
+                            <div class="right-item w-100 d-flex align-items-start">
+                                <i class="bi bi-file-earmark-text text-primary flex-shrink-0 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold">На защиту прав</h6>
+                                    <p class="small mb-0">Защищать свои права законными способами</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -316,30 +340,42 @@ unset($_SESSION['form_data']);
                     <h2 class="mb-3">8. Меры защиты персональных данных</h2>
                     <p>8.1. Оператор принимает необходимые организационные и технические меры для защиты персональных данных от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, распространения.</p>
                     <p>8.2. Защита данных обеспечивается с помощью:</p>
-                    <div class="protection-grid">
-                        <div class="protection-item">
-                            <i class="bi bi-lock-fill"></i>
-                            <span>Систем контроля доступа</span>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+                        <div class="col d-flex">
+                            <div class="protection-item w-100 d-flex align-items-center">
+                                <i class="bi bi-lock-fill flex-shrink-0"></i>
+                                <span class="flex-grow-1 ms-2">Систем контроля доступа</span>
+                            </div>
                         </div>
-                        <div class="protection-item">
-                            <i class="bi bi-file-lock-fill"></i>
-                            <span>Шифрования передаваемых данных</span>
+                        <div class="col d-flex">
+                            <div class="protection-item w-100 d-flex align-items-center">
+                                <i class="bi bi-file-lock-fill flex-shrink-0"></i>
+                                <span class="flex-grow-1 ms-2">Шифрования передаваемых данных</span>
+                            </div>
                         </div>
-                        <div class="protection-item">
-                            <i class="bi bi-shield-fill"></i>
-                            <span>Антивирусной защиты</span>
+                        <div class="col d-flex">
+                            <div class="protection-item w-100 d-flex align-items-center">
+                                <i class="bi bi-shield-fill flex-shrink-0"></i>
+                                <span class="flex-grow-1 ms-2">Антивирусной защиты</span>
+                            </div>
                         </div>
-                        <div class="protection-item">
-                            <i class="bi bi-hdd-fill"></i>
-                            <span>Регулярного резервного копирования</span>
+                        <div class="col d-flex">
+                            <div class="protection-item w-100 d-flex align-items-center">
+                                <i class="bi bi-hdd-fill flex-shrink-0"></i>
+                                <span class="flex-grow-1 ms-2">Регулярного резервного копирования</span>
+                            </div>
                         </div>
-                        <div class="protection-item">
-                            <i class="bi bi-person-badge-fill"></i>
-                            <span>Обучения сотрудников</span>
+                        <div class="col d-flex">
+                            <div class="protection-item w-100 d-flex align-items-center">
+                                <i class="bi bi-person-badge-fill flex-shrink-0"></i>
+                                <span class="flex-grow-1 ms-2">Обучения сотрудников</span>
+                            </div>
                         </div>
-                        <div class="protection-item">
-                            <i class="bi bi-incognito"></i>
-                            <span>Анонимизации данных при аналитике</span>
+                        <div class="col d-flex">
+                            <div class="protection-item w-100 d-flex align-items-center">
+                                <i class="bi bi-incognito flex-shrink-0"></i>
+                                <span class="flex-grow-1 ms-2">Анонимизации данных при аналитике</span>
+                            </div>
                         </div>
                     </div>
                 </section>

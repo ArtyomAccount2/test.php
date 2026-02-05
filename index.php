@@ -282,15 +282,15 @@ unset($_SESSION['form_data']);
                             <p class="caption-text animate-slide-up">Более 50,000 качественных запчастей для вашего автомобиля</p>
                             <div class="caption-features animate-fade-in">
                                 <div class="feature-item">
-                                    <i class="bi bi-check-circle-fill"></i>
+                                    <i class="bi bi-check-circle-fill text-primary"></i>
                                     <span>Гарантия качества</span>
                                 </div>
                                 <div class="feature-item">
-                                    <i class="bi bi-check-circle-fill"></i>
+                                    <i class="bi bi-check-circle-fill text-primary"></i>
                                     <span>Быстрая доставка</span>
                                 </div>
                                 <div class="feature-item">
-                                    <i class="bi bi-check-circle-fill"></i>
+                                    <i class="bi bi-check-circle-fill text-primary"></i>
                                     <span>Оригинальные бренды</span>
                                 </div>
                             </div>

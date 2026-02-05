@@ -249,7 +249,7 @@ unset($_SESSION['form_data']);
                     <h2 class="mb-4"><i class="bi bi-currency-exchange me-2"></i>Возврат денежных средств</h2>
                     <div class="refund-methods">
                         <div class="refund-method">
-                            <div class="method-icon text-success">
+                            <div class="method-icon text-primary">
                                 <i class="bi bi-cash"></i>
                             </div>
                             <h5 class="mb-2">Наличными</h5>
@@ -263,7 +263,7 @@ unset($_SESSION['form_data']);
                             <p class="mb-0">В течение 3-10 рабочих дней на карту, с которой была оплата</p>
                         </div>
                         <div class="refund-method">
-                            <div class="method-icon text-info">
+                            <div class="method-icon text-primary">
                                 <i class="bi bi-bank"></i>
                             </div>
                             <h5 class="mb-2">Безналичный расчет</h5>

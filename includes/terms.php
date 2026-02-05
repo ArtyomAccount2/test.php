@@ -138,18 +138,24 @@ unset($_SESSION['form_data']);
                     <p>2.1. Все материалы, размещенные на Сайте, включая тексты, изображения, логотипы, дизайн, являются собственностью Компании или используются с разрешения правообладателей.</p>
                     <p>2.2. Запрещается любое копирование, распространение, изменение материалов Сайта без письменного разрешения Компании.</p>
                     <p>2.3. Товарные знаки и логотипы, размещенные на Сайте, являются собственностью их владельцев.</p>
-                    <div class="protection-grid mt-4">
-                        <div class="protection-item">
-                            <i class="bi bi-c-circle"></i>
-                            <span>Авторские права</span>
+                    <div class="row row-cols-1 row-cols-md-3 g-3 mt-4">
+                        <div class="col d-flex">
+                            <div class="protection-item w-100 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-c-circle flex-shrink-0"></i>
+                                <span class="ms-2">Авторские права</span>
+                            </div>
                         </div>
-                        <div class="protection-item">
-                            <i class="bi bi-award"></i>
-                            <span>Товарные знаки</span>
+                        <div class="col d-flex">
+                            <div class="protection-item w-100 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-award flex-shrink-0"></i>
+                                <span class="ms-2">Товарные знаки</span>
+                            </div>
                         </div>
-                        <div class="protection-item">
-                            <i class="bi bi-palette"></i>
-                            <span>Дизайн и контент</span>
+                        <div class="col d-flex">
+                            <div class="protection-item w-100 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-palette flex-shrink-0"></i>
+                                <span class="ms-2">Дизайн и контент</span>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -185,15 +191,15 @@ unset($_SESSION['form_data']);
                     <p>4.4. Компания вправе заблокировать учетную запись при нарушении Условий.</p>
                     <div class="account-rules mt-4">
                         <div class="rule-item">
-                            <i class="bi bi-check-circle-fill text-success"></i>
+                            <i class="bi bi-check-circle-fill text-primary"></i>
                             <span>Использовать реальные данные при регистрации</span>
                         </div>
                         <div class="rule-item">
-                            <i class="bi bi-check-circle-fill text-success"></i>
+                            <i class="bi bi-check-circle-fill text-primary"></i>
                             <span>Хранить логин и пароль в безопасном месте</span>
                         </div>
                         <div class="rule-item">
-                            <i class="bi bi-check-circle-fill text-success"></i>
+                            <i class="bi bi-check-circle-fill text-primary"></i>
                             <span>Немедленно сообщать о несанкционированном доступе</span>
                         </div>
                     </div>
@@ -232,22 +238,30 @@ unset($_SESSION['form_data']);
                     <h2 class="mb-3">6. Отзывы и комментарии</h2>
                     <p>6.1. Пользователи могут оставлять отзывы о товарах и услугах.</p>
                     <p>6.2. Компания оставляет за собой право модерировать и удалять отзывы, которые:</p>
-                    <div class="moderation-grid">
-                        <div class="moderation-item">
-                            <i class="bi bi-x-circle text-danger"></i>
-                            <span>Содержат ненормативную лексику</span>
+                    <div class="row row-cols-1 row-cols-md-2 g-3 mt-3">
+                        <div class="col d-flex">
+                            <div class="moderation-item w-100 d-flex align-items-center">
+                                <i class="bi bi-x-circle text-danger flex-shrink-0"></i>
+                                <span class="ms-2">Содержат ненормативную лексику</span>
+                            </div>
                         </div>
-                        <div class="moderation-item">
-                            <i class="bi bi-x-circle text-danger"></i>
-                            <span>Нарушают законодательство</span>
+                        <div class="col d-flex">
+                            <div class="moderation-item w-100 d-flex align-items-center">
+                                <i class="bi bi-x-circle text-danger flex-shrink-0"></i>
+                                <span class="ms-2">Нарушают законодательство</span>
+                            </div>
                         </div>
-                        <div class="moderation-item">
-                            <i class="bi bi-x-circle text-danger"></i>
-                            <span>Содержат рекламу или спам</span>
+                        <div class="col d-flex">
+                            <div class="moderation-item w-100 d-flex align-items-center">
+                                <i class="bi bi-x-circle text-danger flex-shrink-0"></i>
+                                <span class="ms-2">Содержат рекламу или спам</span>
+                            </div>
                         </div>
-                        <div class="moderation-item">
-                            <i class="bi bi-x-circle text-danger"></i>
-                            <span>Являются оскорбительными или клеветническими</span>
+                        <div class="col d-flex">
+                            <div class="moderation-item w-100 d-flex align-items-center">
+                                <i class="bi bi-x-circle text-danger flex-shrink-0"></i>
+                                <span class="ms-2">Являются оскорбительными или клеветническими</span>
+                            </div>
                         </div>
                     </div>
                     <div class="info-box p-3 mt-3">
@@ -257,33 +271,41 @@ unset($_SESSION['form_data']);
                 <section id="responsibility" class="terms-section mb-5">
                     <h2 class="mb-3">7. Ограничение ответственности</h2>
                     <p>7.1. Компания не несет ответственности за:</p>
-                    <div class="responsibility-grid">
-                        <div class="responsibility-item">
-                            <i class="bi bi-info-circle text-warning"></i>
-                            <div>
-                                <h6>Неточности в описании</h6>
-                                <p class="small mb-0">Неточности в описании товаров</p>
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 mt-3">
+                        <div class="col d-flex">
+                            <div class="responsibility-item w-100 d-flex align-items-start">
+                                <i class="bi bi-info-circle text-primary flex-shrink-0 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold">Неточности в описании</h6>
+                                    <p class="small mb-0">Неточности в описании товаров</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="responsibility-item">
-                            <i class="bi bi-wifi-off text-warning"></i>
-                            <div>
-                                <h6>Доступность сайта</h6>
-                                <p class="small mb-0">Временную недоступность Сайта</p>
+                        <div class="col d-flex">
+                            <div class="responsibility-item w-100 d-flex align-items-start">
+                                <i class="bi bi-wifi-off text-primary flex-shrink-0 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold">Доступность сайта</h6>
+                                    <p class="small mb-0">Временную недоступность Сайта</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="responsibility-item">
-                            <i class="bi bi-people text-warning"></i>
-                            <div>
-                                <h6>Действия третьих лиц</h6>
-                                <p class="small mb-0">Действия третьих лиц</p>
+                        <div class="col d-flex">
+                            <div class="responsibility-item w-100 d-flex align-items-start">
+                                <i class="bi bi-people text-primary flex-shrink-0 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold">Действия третьих лиц</h6>
+                                    <p class="small mb-0">Действия третьих лиц</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="responsibility-item">
-                            <i class="bi bi-exclamation-triangle text-warning"></i>
-                            <div>
-                                <h6>Финансовые убытки</h6>
-                                <p class="small mb-0">Убытки, возникшие в результате использования Сайта</p>
+                        <div class="col d-flex">
+                            <div class="responsibility-item w-100 d-flex align-items-start">
+                                <i class="bi bi-exclamation-triangle text-primary flex-shrink-0 mt-1"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold">Финансовые убытки</h6>
+                                    <p class="small mb-0">Убытки, возникшие в результате использования Сайта</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -295,7 +317,7 @@ unset($_SESSION['form_data']);
                     <p>8.2. Компания не несет ответственности за содержание и политику конфиденциальности сторонних сайтов.</p>
                     <p>8.3. Размещение ссылок не означает одобрения или рекомендации.</p>
                     <div class="external-links-info p-3 mt-3">
-                        <p class="mb-0"><i class="bi bi-box-arrow-up-right me-2"></i> <strong>Внимание:</strong> При переходе по внешним ссылкам ознакомьтесь с политикой конфиденциальности соответствующего сайта.</p>
+                        <p class="mb-0"><strong>Внимание:</strong> При переходе по внешним ссылкам ознакомьтесь с политикой конфиденциальности соответствующего сайта.</p>
                     </div>
                 </section>
                 <section id="law" class="terms-section mb-5">
@@ -303,18 +325,24 @@ unset($_SESSION['form_data']);
                     <p>9.1. Все споры и разногласия регулируются законодательством Российской Федерации.</p>
                     <p>9.2. Компания и пользователь будут стремиться урегулировать все споры путем переговоров.</p>
                     <p>9.3. При невозможности урегулирования спора мирным путем, он подлежит рассмотрению в суде по месту нахождения Компании.</p>
-                    <div class="dispute-resolution mt-4">
-                        <div class="resolution-step">
-                            <i class="bi bi-chat-dots text-primary"></i>
-                            <span>Переговоры сторон</span>
+                    <div class="row row-cols-1 row-cols-md-3 g-3 mt-4">
+                        <div class="col d-flex">
+                            <div class="resolution-step w-100 d-flex flex-column align-items-center justify-content-center text-center">
+                                <i class="bi bi-chat-dots text-primary"></i>
+                                <span class="mt-2">Переговоры сторон</span>
+                            </div>
                         </div>
-                        <div class="resolution-step">
-                            <i class="bi bi-envelope text-primary"></i>
-                            <span>Письменная претензия</span>
+                        <div class="col d-flex">
+                            <div class="resolution-step w-100 d-flex flex-column align-items-center justify-content-center text-center">
+                                <i class="bi bi-envelope text-primary"></i>
+                                <span class="mt-2">Письменная претензия</span>
+                            </div>
                         </div>
-                        <div class="resolution-step">
-                            <i class="bi bi-building text-primary"></i>
-                            <span>Судебное разбирательство</span>
+                        <div class="col d-flex">
+                            <div class="resolution-step w-100 d-flex flex-column align-items-center justify-content-center text-center">
+                                <i class="bi bi-building text-primary"></i>
+                                <span class="mt-2">Судебное разбирательство</span>
+                            </div>
                         </div>
                     </div>
                 </section>

@@ -296,6 +296,7 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
                 <div class="step-title">Новый пароль</div>
             </div>
         </div>
+
         <?php 
         if ($error)
         {
@@ -359,6 +360,7 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
         }
         else
         {
+            $user_email = $_SESSION['user_email'] ?? '';
         ?>
             <form method="POST" action="" id="codeForm">
                 <input type="hidden" name="action" value="verify_code">
@@ -379,9 +381,26 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
                     <button type="submit" class="btn btn-primary btn-lg">
                         <i class="bi bi-arrow-right-circle"></i> Продолжить
                     </button>
-                    <a href="?new_code=1&email=<?= urlencode($_SESSION['user_email']) ?>" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-repeat"></i> Получить новый код
-                    </a>
+
+                    <?php 
+                    if ($user_email)
+                    {
+                    ?>
+                        <a href="?new_code=1&email=<?= urlencode($user_email) ?>" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-repeat"></i> Получить новый код
+                        </a>
+                    <?php 
+                    }
+                    else
+                    { 
+                    ?>
+                        <a href="forgot_password.php" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-repeat"></i> Запросить новый код
+                        </a>
+                    <?php 
+                    }
+                    ?>
+                    
                 </div>
             </form>
             <div class="text-center mt-4">

@@ -197,7 +197,7 @@ unset($_SESSION['form_data']);
                             <div class="col-md-6">
                                 <div class="service-item h-100" data-service="maintenance">
                                     <div class="d-flex align-items-start mb-2">
-                                        <div class="service-icon bg-success me-3">
+                                        <div class="service-icon bg-primary me-3">
                                             <i class="bi bi-gear-fill text-white"></i>
                                         </div>
                                         <div class="service-content">
@@ -214,7 +214,7 @@ unset($_SESSION['form_data']);
                             <div class="col-md-6">
                                 <div class="service-item h-100" data-service="engine">
                                     <div class="d-flex align-items-start mb-2">
-                                        <div class="service-icon bg-danger me-3">
+                                        <div class="service-icon bg-primary me-3">
                                             <i class="bi bi-lightning-charge text-white"></i>
                                         </div>
                                         <div class="service-content">
@@ -231,8 +231,8 @@ unset($_SESSION['form_data']);
                             <div class="col-md-6">
                                 <div class="service-item h-100" data-service="suspension">
                                     <div class="d-flex align-items-start mb-2">
-                                        <div class="service-icon bg-warning me-3">
-                                            <i class="bi bi-car-front text-dark"></i>
+                                        <div class="service-icon bg-primary me-3">
+                                            <i class="bi bi-car-front text-white"></i>
                                         </div>
                                         <div class="service-content">
                                             <h6 class="mb-1">Ходовая часть</h6>
@@ -248,7 +248,7 @@ unset($_SESSION['form_data']);
                             <div class="col-md-6">
                                 <div class="service-item h-100" data-service="electronics">
                                     <div class="d-flex align-items-start mb-2">
-                                        <div class="service-icon bg-info me-3">
+                                        <div class="service-icon bg-primary me-3">
                                             <i class="bi bi-cpu text-white"></i>
                                         </div>
                                         <div class="service-content">
@@ -265,7 +265,7 @@ unset($_SESSION['form_data']);
                             <div class="col-md-6">
                                 <div class="service-item h-100" data-service="tires">
                                     <div class="d-flex align-items-start mb-2">
-                                        <div class="service-icon bg-secondary me-3">
+                                        <div class="service-icon bg-primary me-3">
                                             <i class="bi bi-circle text-white"></i>
                                         </div>
                                         <div class="service-content">

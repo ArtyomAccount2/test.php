@@ -270,7 +270,7 @@ unset($_SESSION['form_data']);
                     <div class="benefit-item bg-white rounded-3 p-4 mb-3 shadow-sm">
                         <div class="d-flex align-items-center">
                             <div class="benefit-icon me-3">
-                                <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                                <i class="bi bi-check-circle-fill text-primary fs-3"></i>
                             </div>
                             <div>
                                 <h5 class="fw-bold mb-2">Широкий ассортимент</h5>
@@ -281,7 +281,7 @@ unset($_SESSION['form_data']);
                     <div class="benefit-item bg-white rounded-3 p-4 mb-3 shadow-sm">
                         <div class="d-flex align-items-center">
                             <div class="benefit-icon me-3">
-                                <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                                <i class="bi bi-check-circle-fill text-primary fs-3"></i>
                             </div>
                             <div>
                                 <h5 class="fw-bold mb-2">Профессиональные консультации</h5>
@@ -292,7 +292,7 @@ unset($_SESSION['form_data']);
                     <div class="benefit-item bg-white rounded-3 p-4 mb-3 shadow-sm">
                         <div class="d-flex align-items-center">
                             <div class="benefit-icon me-3">
-                                <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                                <i class="bi bi-check-circle-fill text-primary fs-3"></i>
                             </div>
                             <div>
                                 <h5 class="fw-bold mb-2">Сервисный центр</h5>
@@ -303,7 +303,7 @@ unset($_SESSION['form_data']);
                     <div class="benefit-item bg-white rounded-3 p-4 mb-3 shadow-sm">
                         <div class="d-flex align-items-center">
                             <div class="benefit-icon me-3">
-                                <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                                <i class="bi bi-check-circle-fill text-primary fs-3"></i>
                             </div>
                             <div>
                                 <h5 class="fw-bold mb-2">Техническая поддержка</h5>
@@ -324,10 +324,10 @@ unset($_SESSION['form_data']);
                         <div class="guarantee-card bg-light rounded-3 p-4 h-100">
                             <h4 class="fw-bold text-primary mb-3">Что покрывается гарантией:</h4>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Заводские дефекты и брак</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Несоответствие техническим характеристикам</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Преждевременный износ при правильной эксплуатации</li>
-                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Конструктивные недостатки</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>Заводские дефекты и брак</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>Несоответствие техническим характеристикам</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>Преждевременный износ при правильной эксплуатации</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>Конструктивные недостатки</li>
                             </ul>
                         </div>
                     </div>
@@ -335,38 +335,38 @@ unset($_SESSION['form_data']);
                         <div class="guarantee-card bg-light rounded-3 p-4 h-100">
                             <h4 class="fw-bold text-primary mb-3">Условия гарантии:</h4>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><i class="bi bi-clock-fill text-warning me-2"></i>Срок гарантии: 6-24 месяца (зависит от товара)</li>
-                                <li class="mb-2"><i class="bi bi-receipt text-warning me-2"></i>Наличие товарного чека или документа покупки</li>
-                                <li class="mb-2"><i class="bi bi-gear-fill text-warning me-2"></i>Соблюдение правил эксплуатации</li>
-                                <li class="mb-2"><i class="bi bi-tools text-warning me-2"></i>Установка квалифицированными специалистами</li>
+                                <li class="mb-2"><i class="bi bi-clock-fill text-primary me-2"></i>Срок гарантии: 6-24 месяца (зависит от товара)</li>
+                                <li class="mb-2"><i class="bi bi-receipt text-primary me-2"></i>Наличие товарного чека или документа покупки</li>
+                                <li class="mb-2"><i class="bi bi-gear-fill text-primary me-2"></i>Соблюдение правил эксплуатации</li>
+                                <li class="mb-2"><i class="bi bi-tools text-primary me-2"></i>Установка квалифицированными специалистами</li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <h2 class="text-center mt-5 mb-5 fw-bold">Процесс покупки</h2>
                 <div class="row g-4">
-                    <div class="col-md-3">
+                    <div class="col-lg-3 col-md-6">
                         <div class="process-step text-center">
                             <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3">1</div>
                             <h5 class="fw-bold">Подбор товара</h5>
                             <p class="text-muted">Онлайн или с помощью консультанта</p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-lg-3 col-md-6">
                         <div class="process-step text-center">
                             <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3">2</div>
                             <h5 class="fw-bold">Оформление заказа</h5>
                             <p class="text-muted">Выбор способа доставки и оплаты</p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-lg-3 col-md-6">
                         <div class="process-step text-center">
                             <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3">3</div>
                             <h5 class="fw-bold">Получение товара</h5>
                             <p class="text-muted">Самовывоз или доставка</p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-lg-3 col-md-6">
                         <div class="process-step text-center">
                             <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3">4</div>
                             <h5 class="fw-bold">Гарантийное обслуживание</h5>
