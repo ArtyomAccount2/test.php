@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/developer.css">
+    <link rel="stylesheet" href="../css/developer-styles.css">
 </head>
 <body>
 
@@ -260,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
                                                         </code>
                                                         <button class="btn btn-sm btn-outline-secondary copy-btn ms-2" 
                                                                 data-key="<?= htmlspecialchars($key['api_key']) ?>"
-                                                                title="Копировать">
+                                                                title="Копировать API ключ">
                                                             <i class="bi bi-clipboard"></i>
                                                         </button>
                                                     </div>
@@ -489,7 +489,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
                     <div class="input-group">
                         <input type="text" class="form-control font-monospace" id="apiKeyDisplay" 
                                value="<?= htmlspecialchars($_SESSION['new_api_key']['api_key']) ?>" readonly>
-                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('apiKeyDisplay')">
+                        <button class="btn btn-outline-secondary copy-btn-modal" type="button" data-target="apiKeyDisplay">
                             <i class="bi bi-clipboard"></i>
                         </button>
                     </div>
@@ -499,7 +499,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
                     <div class="input-group">
                         <input type="text" class="form-control font-monospace" id="secretKeyDisplay" 
                                value="<?= htmlspecialchars($_SESSION['new_api_key']['secret_key']) ?>" readonly>
-                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('secretKeyDisplay')">
+                        <button class="btn btn-outline-secondary copy-btn-modal" type="button" data-target="secretKeyDisplay">
                             <i class="bi bi-clipboard"></i>
                         </button>
                     </div>
@@ -529,36 +529,169 @@ unset($_SESSION['new_api_key']);
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/script.js"></script>
 <script>
+async function copyText(text, button) 
+{
+    try 
+    {
+        await navigator.clipboard.writeText(text);
+        showCopySuccess(button);
+
+        return true;
+    } 
+    catch (err) 
+    {
+        console.error('Clipboard API не доступен:', err);
+        return copyTextFallback(text, button);
+    }
+}
+
+function copyTextFallback(text, button) 
+{
+    try 
+    {
+        let textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-999999px';
+        textarea.style.top = '-999999px';
+        document.body.appendChild(textarea);
+        
+        textarea.select();
+        textarea.setSelectionRange(0, 99999);
+        
+        let successful = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        
+        if (successful) 
+        {
+            showCopySuccess(button);
+            return true;
+        } 
+        else 
+        {
+            showCopyManual(text, button);
+            return false;
+        }
+    } 
+    catch (err) 
+    {
+        console.error('Fallback копирование не удалось:', err);
+        showCopyManual(text, button);
+
+        return false;
+    }
+}
+
+function showCopySuccess(button) 
+{
+    if (!button)
+    {
+        return;
+    }
+    
+    let originalHTML = button.innerHTML;
+    let originalClass = button.className;
+
+    button.innerHTML = '<i class="bi bi-check"></i>';
+    button.className = originalClass.replace('btn-outline-secondary', 'btn-success');
+    button.classList.add('copy-success');
+
+    setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.className = originalClass;
+        button.classList.remove('copy-success');
+    }, 2000);
+}
+
+function showCopyManual(text, button) 
+{
+    let modalHTML = `
+        <div class="modal fade" id="manualCopyModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning">
+                        <h5 class="modal-title">Скопируйте вручную</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Выделите текст ниже и скопируйте его (Ctrl+C):</p>
+                        <textarea class="form-control" rows="4" style="font-family: monospace;" readonly>${text}</textarea>
+                        <div class="mt-2 text-muted small">
+                            <i class="bi bi-info-circle"></i> Выделите весь текст и нажмите Ctrl+C
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Готово</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    let modalDiv = document.createElement('div');
+    modalDiv.innerHTML = modalHTML;
+    document.body.appendChild(modalDiv);
+
+    let manualModal = new bootstrap.Modal(document.getElementById('manualCopyModal'));
+    manualModal.show();
+
+    setTimeout(() => {
+        let textarea = document.querySelector('#manualCopyModal textarea');
+
+        if (textarea) 
+        {
+            textarea.select();
+        }
+    }, 300);
+
+    document.getElementById('manualCopyModal').addEventListener('hidden.bs.modal', function() 
+    {
+        document.body.removeChild(modalDiv);
+
+        if (button) 
+        {
+            showCopySuccess(button);
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() 
 {
-    <?php if (isset($_SESSION['new_api_key']))
+    <?php 
+    if (isset($_SESSION['new_api_key']))
     {
     ?>
-    let newKeyModal = new bootstrap.Modal(document.getElementById('newApiKeyModal'));
-    newKeyModal.show();
-    <?php
+        let newKeyModal = new bootstrap.Modal(document.getElementById('newApiKeyModal'));
+        newKeyModal.show();
+    <?php 
     } 
     ?>
 
-    document.querySelectorAll('.copy-btn').forEach(button => {
-        button.addEventListener('click', function() 
+    document.querySelectorAll('.copy-btn[data-key]').forEach(button => {
+        button.addEventListener('click', async function(e) 
         {
-            let apiKey = this.getAttribute('data-key');
+            e.preventDefault();
 
-            navigator.clipboard.writeText(apiKey).then(() => {
-                let originalHTML = this.innerHTML;
+            let text = this.getAttribute('data-key');
+            await copyText(text, this);
+        });
+    });
 
-                this.innerHTML = '<i class="bi bi-check"></i>';
-                this.classList.remove('btn-outline-secondary');
-                this.classList.add('btn-success');
-                
-                setTimeout(() => {
-                    this.innerHTML = originalHTML;
-                    this.classList.remove('btn-success');
-                    this.classList.add('btn-outline-secondary');
-                }, 2000);
-            });
+    document.querySelectorAll('.copy-btn-modal').forEach(button => {
+        button.addEventListener('click', async function(e) 
+        {
+            e.preventDefault();
+
+            let targetId = this.getAttribute('data-target');
+            let targetElement = document.getElementById(targetId);
+            
+            if (targetElement) 
+            {
+                let text = targetElement.value;
+                await copyText(text, this);
+            }
         });
     });
 });
@@ -567,22 +700,10 @@ function copyToClipboard(elementId)
 {
     let element = document.getElementById(elementId);
 
-    element.select();
-    element.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(element.value);
-
-    let button = event.target;
-    let originalHTML = button.innerHTML;
-
-    button.innerHTML = '<i class="bi bi-check"></i>';
-    button.classList.remove('btn-outline-secondary');
-    button.classList.add('btn-success');
-    
-    setTimeout(() => {
-        button.innerHTML = originalHTML;
-        button.classList.remove('btn-success');
-        button.classList.add('btn-outline-secondary');
-    }, 2000);
+    if (element) 
+    {
+        copyText(element.value);
+    }
 }
 
 function markAsSaved() 

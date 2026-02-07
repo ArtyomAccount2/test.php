@@ -244,7 +244,7 @@ sort($all_categories);
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/notifications.css">
+    <link rel="stylesheet" href="../css/notifications-styles.css">
     <link rel="stylesheet" href="../css/accessories-styles.css">
     <script>
     document.addEventListener('DOMContentLoaded', function() 

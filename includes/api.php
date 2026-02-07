@@ -213,8 +213,7 @@ fetch(url, {
 })
 .then(response => response.json())
 .then(data => console.log(data))
-.catch(error => console.error('Error:', error));
-                        </code></pre>
+.catch(error => console.error('Error:', error));</code></pre>
                     </div>
                     <div class="code-example">
                         <h5>Python (Requests)</h5>
@@ -229,8 +228,7 @@ headers = {
 
 response = requests.get(url, headers=headers, params={'limit': 5})
 data = response.json()
-print(data)
-                        </code></pre>
+print(data)</code></pre>
                     </div>
                 </section>
                 <section class="support-section">
