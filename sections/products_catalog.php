@@ -18,7 +18,7 @@ $quantity_filter = $_GET['quantity_filter'] ?? '';
 $status_filter = $_GET['status_filter'] ?? '';
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$per_page = 2;
+$per_page = 10;
 $offset = ($page - 1) * $per_page;
 
 if ($page < 1) 

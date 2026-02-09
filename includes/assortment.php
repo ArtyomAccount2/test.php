@@ -100,7 +100,7 @@ function enhanceBrandSearch($search_term, $products)
         {
             $found_products = array_filter($products, function($product) use ($brand_key, $brand_variants) 
             {
-                $title_lower = strtolower($product['title']);
+                $title_lower = strtolower($product['name']);
                 $badge_lower = isset($product['badge']) ? strtolower($product['badge']) : '';
                 $badge_match = strpos($badge_lower, 'для ') !== false && (strpos($badge_lower, $brand_key) !== false);
                 $title_match = false;
@@ -153,7 +153,7 @@ function searchByPartCategory($search_term, $products)
         {
             $found_products = array_filter($products, function($product) use ($keywords) 
             {
-                $title_lower = strtolower($product['title']);
+                $title_lower = strtolower($product['name']);
                 
                 foreach ($keywords as $keyword) 
                 {
@@ -177,177 +177,179 @@ function searchByPartCategory($search_term, $products)
 }
 
 $items_per_page = 12;
-$current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-
-$all_products = [
-    ['category' => 'фильтры', 'title' => 'Фильтр масляный Audi A4 B8 2.0 TFSI', 'price' => 1250, 'badge' => 'Для Audi'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные колодки Audi A6 C7', 'price' => 3890, 'old_price' => 4500, 'badge' => 'Для Audi'],
-    ['category' => 'двигатель', 'title' => 'Свечи зажигания Audi Q5 2.0 TDI', 'price' => 850, 'badge' => 'Для Audi'],
-    ['category' => 'трансмиссия', 'title' => 'Сцепление Audi A3 8V', 'price' => 12500, 'badge' => 'Для Audi'],
-    ['category' => 'электрика', 'title' => 'Генератор Audi A4 B9', 'price' => 15600, 'badge' => 'Для Audi'],
-    ['category' => 'фильтры', 'title' => 'Воздушный фильтр Audi Q7 4L', 'price' => 2100, 'badge' => 'Для Audi'],
-    ['category' => 'кузовные детали', 'title' => 'Фара передняя BMW 3 series F30', 'price' => 18700, 'badge' => 'Для BMW'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные диски BMW X5 E70', 'price' => 8900, 'badge' => 'Для BMW'],
-    ['category' => 'электрика', 'title' => 'Аккумулятор BMW 5 series F10', 'price' => 12500, 'badge' => 'Для BMW'],
-    ['category' => 'двигатель', 'title' => 'Ремень ГРМ BMW 7 series G11', 'price' => 3200, 'badge' => 'Для BMW'],
-    ['category' => 'фильтры', 'title' => 'Масляный фильтр BMW X3 G01', 'price' => 1450, 'badge' => 'Для BMW'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные колодки BMW 1 series F20', 'price' => 5200, 'badge' => 'Для BMW'],
-    ['category' => 'электрика', 'title' => 'Аккумулятор Mercedes-Benz E-class W213', 'price' => 12500, 'badge' => 'Для Mercedes'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные колодки Mercedes C-class W205', 'price' => 4500, 'badge' => 'Для Mercedes'],
-    ['category' => 'фильтры', 'title' => 'Воздушный фильтр Mercedes GLC X253', 'price' => 1850, 'badge' => 'Для Mercedes'],
-    ['category' => 'двигатель', 'title' => 'Свечи зажигания Mercedes E-class W212', 'price' => 1200, 'badge' => 'Для Mercedes'],
-    ['category' => 'трансмиссия', 'title' => 'Сцепление Mercedes A-class W176', 'price' => 13800, 'badge' => 'Для Mercedes'],
-    ['category' => 'двигатель', 'title' => 'Ремень ГРМ Toyota Camry XV70', 'price' => 3200, 'badge' => 'Для Toyota'],
-    ['category' => 'фильтры', 'title' => 'Масляный фильтр Toyota RAV4 XA50', 'price' => 950, 'badge' => 'Для Toyota'],
-    ['category' => 'ходовая часть', 'title' => 'Амортизатор Toyota Corolla E210', 'price' => 3800, 'badge' => 'Для Toyota'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные колодки Toyota Land Cruiser 200', 'price' => 6700, 'badge' => 'Для Toyota'],
-    ['category' => 'электрика', 'title' => 'Стартер Toyota Prius XW30', 'price' => 14200, 'badge' => 'Для Toyota'],
-    ['category' => 'фильтры', 'title' => 'Воздушный фильтр Ford Focus MK4', 'price' => 950, 'badge' => 'Для Ford'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные колодки Ford Kuga II', 'price' => 2900, 'badge' => 'Для Ford'],
-    ['category' => 'кузовные детали', 'title' => 'Бампер передний Ford Fiesta MK7', 'price' => 15600, 'badge' => 'Для Ford'],
-    ['category' => 'двигатель', 'title' => 'Турбина Ford Mondeo MK5', 'price' => 23400, 'badge' => 'Для Ford'],
-    ['category' => 'электрика', 'title' => 'Генератор Ford Explorer U502', 'price' => 16700, 'badge' => 'Для Ford'],
-    ['category' => 'ходовая часть', 'title' => 'Амортизатор Hyundai Solaris II', 'price' => 3800, 'badge' => 'Для Hyundai'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные колодки Hyundai Tucson TL', 'price' => 2900, 'badge' => 'Для Hyundai'],
-    ['category' => 'электрика', 'title' => 'Генератор Hyundai Santa Fe TM', 'price' => 13400, 'badge' => 'Для Hyundai'],
-    ['category' => 'фильтры', 'title' => 'Топливный фильтр Hyundai Elantra MD', 'price' => 1250, 'badge' => 'Для Hyundai'],
-    ['category' => 'двигатель', 'title' => 'Ремень ГРМ Hyundai Creta', 'price' => 2800, 'badge' => 'Для Hyundai'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные колодки Kia Rio X-Line', 'price' => 2900, 'badge' => 'Для Kia'],
-    ['category' => 'двигатель', 'title' => 'Турбина Kia Sportage QL', 'price' => 28900, 'badge' => 'Для Kia'],
-    ['category' => 'фильтры', 'title' => 'Топливный фильтр Kia Sorento UM', 'price' => 1850, 'badge' => 'Для Kia'],
-    ['category' => 'кузовные детали', 'title' => 'Фара противотуманная Kia Optima JF', 'price' => 7800, 'badge' => 'Для Kia'],
-    ['category' => 'электрика', 'title' => 'Стартер Kia Cerato YD', 'price' => 11500, 'badge' => 'Для Kia'],
-    ['category' => 'кузовные детали', 'title' => 'Бампер передний Honda Civic FK7', 'price' => 15600, 'badge' => 'Для Honda'],
-    ['category' => 'двигатель', 'title' => 'Распределительный вал Honda CR-V RW', 'price' => 8900, 'badge' => 'Для Honda'],
-    ['category' => 'фильтры', 'title' => 'Масляный фильтр Honda Accord', 'price' => 1100, 'badge' => 'Для Honda'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные диски Honda Pilot', 'price' => 9200, 'badge' => 'Для Honda'],
-    ['category' => 'электрика', 'title' => 'Генератор Volkswagen Golf MK7', 'price' => 13400, 'badge' => 'Для Volkswagen'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные диски Volkswagen Passat B8', 'price' => 6700, 'badge' => 'Для Volkswagen'],
-    ['category' => 'двигатель', 'title' => 'Свечи зажигания Volkswagen Tiguan', 'price' => 950, 'badge' => 'Для Volkswagen'],
-    ['category' => 'фильтры', 'title' => 'Воздушный фильтр Volkswagen Polo', 'price' => 1200, 'badge' => 'Для Volkswagen'],
-    ['category' => 'двигатель', 'title' => 'Турбина Nissan Qashqai J11', 'price' => 28900, 'badge' => 'Для Nissan'],
-    ['category' => 'тормозная система', 'title' => 'Суппорт тормозной Nissan X-Trail T32', 'price' => 11200, 'badge' => 'Для Nissan'],
-    ['category' => 'фильтры', 'title' => 'Масляный фильтр Nissan Juke', 'price' => 1050, 'badge' => 'Для Nissan'],
-    ['category' => 'электрика', 'title' => 'Аккумулятор Nissan Murano Z51', 'price' => 13800, 'badge' => 'Для Nissan'],
-    ['category' => 'тормозная система', 'title' => 'Суппорт тормозной Chevrolet Cruze J300', 'price' => 11200, 'badge' => 'Для Chevrolet'],
-    ['category' => 'двигатель', 'title' => 'Коленчатый вал Chevrolet Aveo T300', 'price' => 15600, 'badge' => 'Для Chevrolet'],
-    ['category' => 'фильтры', 'title' => 'Топливный фильтр Chevrolet Orlando', 'price' => 1350, 'badge' => 'Для Chevrolet'],
-    ['category' => 'кузовные детали', 'title' => 'Капот Chevrolet Captiva C100', 'price' => 24300, 'badge' => 'Для Chevrolet'],
-    ['category' => 'двигатель', 'title' => 'Коленчатый вал двигателя 2.0 TSI', 'price' => 18700, 'badge' => 'Хит'],
-    ['category' => 'двигатель', 'title' => 'Прокладки двигателя комплект V8', 'price' => 4500, 'badge' => 'Акция'],
-    ['category' => 'двигатель', 'title' => 'Топливный насос высокого давления', 'price' => 8900, 'badge' => 'Новинка'],
-    ['category' => 'двигатель', 'title' => 'Распределительный вал 16V', 'price' => 12300, 'badge' => 'Хит'],
-    ['category' => 'тормозная система', 'title' => 'Тормозной цилиндр главный', 'price' => 3400, 'badge' => 'Акция'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные колодки керамические', 'price' => 5600, 'badge' => 'Хит'],
-    ['category' => 'ходовая часть', 'title' => 'Стабилизатор поперечной устойчивости', 'price' => 6700, 'badge' => 'Новинка'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные суппорта передние', 'price' => 12800, 'badge' => 'Акция'],
-    ['category' => 'фильтры', 'title' => 'Топливный фильтр тонкой очистки', 'price' => 2100, 'badge' => 'Хит'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные диски вентилируемые', 'price' => 7800, 'badge' => 'Новинка'],
-    ['category' => 'ходовая часть', 'title' => 'Цапфа поворотная', 'price' => 4500, 'badge' => 'Акция'],
-    ['category' => 'двигатель', 'title' => 'Сальники коленвала комплект', 'price' => 3200, 'badge' => 'Хит'],
-
-    ['category' => 'фильтры', 'title' => 'Фильтр масляный Mann W914/2', 'price' => 1250, 'badge' => 'Новинка'],
-    ['category' => 'тормозная система', 'title' => 'Тормозные колодки Brembo P85115', 'price' => 3890, 'old_price' => 4500, 'badge' => 'Акция'],
-    ['category' => 'двигатель', 'title' => 'Свечи зажигания NGK BKR6E', 'price' => 850, 'badge' => 'Хит'],
-    ['category' => 'трансмиссия', 'title' => 'Сцепление SACHS 3000 951 515', 'price' => 12500],
-    ['category' => 'ходовая часть', 'title' => 'Амортизатор KYB 334302', 'price' => 4200, 'old_price' => 5100, 'badge' => 'Акция'],
-    ['category' => 'электрика', 'title' => 'Аккумулятор VARTA Blue Dynamic E11', 'price' => 8900],
-    ['category' => 'кузовные детали', 'title' => 'Фара правая универсальная', 'price' => 15300, 'badge' => 'Новинка'],
-    ['category' => 'масла и жидкости', 'title' => 'Моторное масло Mobil 1 5W-30', 'price' => 3800],
-    ['category' => 'фильтры', 'title' => 'Воздушный фильтр Bosch F026400224', 'price' => 1100],
-    ['category' => 'тормозная система', 'title' => 'Тормозной диск TRW DF4261', 'price' => 6700],
-    ['category' => 'двигатель', 'title' => 'Ремень ГРМ Gates T420', 'price' => 2900, 'badge' => 'Хит'],
-    ['category' => 'электрика', 'title' => 'Генератор Valeo 439730', 'price' => 18500],
-    ['category' => 'система охлаждения', 'title' => 'Радиатор охлаждения Nissens 94170', 'price' => 11200, 'badge' => 'Новинка'],
-    ['category' => 'рулевое управление', 'title' => 'Рулевая рейка ZF 800195058', 'price' => 24500],
-    ['category' => 'система выпуска', 'title' => 'Глушитель Walker 55487', 'price' => 8900, 'badge' => 'Акция'],
-    ['category' => 'фильтры', 'title' => 'Салонный фильтр Mahle LAK 521', 'price' => 950],
-    ['category' => 'двигатель', 'title' => 'Термостат Wahler 3076.82D', 'price' => 3200],
-    ['category' => 'трансмиссия', 'title' => 'Масло трансмиссионное Motul Gear 300 75W90', 'price' => 2800],
-    ['category' => 'ходовая часть', 'title' => 'Стойка стабилизатора Lemforder 30672 01', 'price' => 1800],
-    ['category' => 'тормозная система', 'title' => 'Тормозная жидкость ATE TYP 200', 'price' => 1200],
-    ['category' => 'электрика', 'title' => 'Стартер Bosch 0986010280', 'price' => 14200, 'badge' => 'Хит'],
-    ['category' => 'кузовные детали', 'title' => 'Бампер передний универсальный', 'price' => 18700],
-    ['category' => 'масла и жидкости', 'title' => 'Антифриз G12++ Felix Prolong 5L', 'price' => 2100],
-    ['category' => 'система охлаждения', 'title' => 'Помпа водяная Gates 42137', 'price' => 5400],
-    ['category' => 'рулевое управление', 'title' => 'Наконечник рулевой тяги TRW JTE799', 'price' => 3200],
-    ['category' => 'фильтры', 'title' => 'Топливный фильтр Knecht KL 169/2', 'price' => 1850],
-    ['category' => 'двигатель', 'title' => 'Прокладка ГБЦ Victor Reinz 71-99718-01', 'price' => 6700],
-    ['category' => 'трансмиссия', 'title' => 'Подшипник выжимной SACHS 3152 160 141', 'price' => 2900],
-    ['category' => 'ходовая часть', 'title' => 'Пружина подвески Kilen 30221', 'price' => 8200],
-    ['category' => 'тормозная система', 'title' => 'Суппорт тормозной ATE 24.0130-5701.2', 'price' => 15300],
-    ['category' => 'электрика', 'title' => 'Катушка зажигания Bosch 0221504470', 'price' => 4100, 'badge' => 'Акция'],
-    ['category' => 'кузовные детали', 'title' => 'Зеркало боковое левое универсальное', 'price' => 8900],
-    ['category' => 'масла и жидкости', 'title' => 'Масло для ГУР Ravenol PSF', 'price' => 1650],
-    ['category' => 'система выпуска', 'title' => 'Лямбда-зонд Bosch 0258006546', 'price' => 11200],
-    ['category' => 'рулевое управление', 'title' => 'Рулевой наконечник Lemforder 20275 01', 'price' => 3800],
-    ['category' => 'фильтры', 'title' => 'Масляный фильтр Mahle OX 395D', 'price' => 950],
-    ['category' => 'двигатель', 'title' => 'Ремень генератора Contitech 6PK1885', 'price' => 3200],
-    ['category' => 'трансмиссия', 'title' => 'Фланец полуоси GKN 980112', 'price' => 12800],
-    ['category' => 'ходовая часть', 'title' => 'Сайлентблок передний Febi 21372', 'price' => 2100],
-    ['category' => 'тормозная система', 'title' => 'Тормозной шланг TRW BHA 513', 'price' => 2900],
-    ['category' => 'электрика', 'title' => 'Датчик ABS Hella 6PT 009 107-791', 'price' => 5400],
-    ['category' => 'кузовные детали', 'title' => 'Капот универсальный', 'price' => 23400],
-    ['category' => 'масла и жидкости', 'title' => 'Тормозная жидкость Bosch ENV6', 'price' => 850],
-    ['category' => 'система охлаждения', 'title' => 'Вентилятор радиатора Hella 8FV 003 501-021', 'price' => 16700],
-    ['category' => 'рулевое управление', 'title' => 'Рулевая тяга Lemforder 24713 01', 'price' => 6200],
-    ['category' => 'фильтры', 'title' => 'Воздушный фильтр Mann C 3698', 'price' => 1850],
-    ['category' => 'двигатель', 'title' => 'Крышка клапана Elring 024.492', 'price' => 4900],
-    ['category' => 'трансмиссия', 'title' => 'Поддон АКПП ZF 8HP', 'price' => 8900],
-    ['category' => 'ходовая часть', 'title' => 'Опорный подшипник SKF VKBA 3564', 'price' => 3200]
-];
-
-$filtered_products = $all_products;
 $search_term = isset($_GET['search']) ? trim($_GET['search']) : '';
 $category_filter = isset($_GET['category']) ? $_GET['category'] : '';
 
-if ($search_term !== '' || $category_filter !== '') 
+if (!empty($search_term) || (!empty($category_filter) && $category_filter !== 'все категории')) 
 {
-    if ($search_term !== '') 
+    $current_page = 1;
+
+    if (isset($_GET['page']) && intval($_GET['page']) === 1) 
     {
-        $brand_results = enhanceBrandSearch($search_term, $all_products);
+        $current_page = 1;
+    }
+} 
+else 
+{
+    $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+}
 
-        if (!empty($brand_results)) 
-        {
-            $filtered_products = $brand_results;
-        } 
-        else 
-        {
-            $part_results = searchByPartCategory($search_term, $all_products);
+$offset = ($current_page - 1) * $items_per_page;
 
-            if (!empty($part_results)) 
-            {
-                $filtered_products = $part_results;
-            } 
-            else 
-            {
-                $filtered_products = array_filter($all_products, function($product) use ($search_term) 
-                {
-                    $title_lower = strtolower($product['title']);
-                    $search_lower = strtolower($search_term);
-                    return strpos($title_lower, $search_lower) !== false;
-                });
-            }
+$_SESSION['last_assortment_page'] = [
+    'page' => $current_page,
+    'search' => $search_term,
+    'category' => $category_filter
+];
+
+$categories_sql = "SELECT DISTINCT category FROM products WHERE status = 'available' AND category IS NOT NULL ORDER BY category";
+$categories_result = $conn->query($categories_sql);
+$available_categories = [];
+
+while ($cat_row = $categories_result->fetch_assoc()) 
+{
+    $available_categories[] = $cat_row['category'];
+}
+
+$sql = "SELECT * FROM products WHERE status = 'available'";
+$params = [];
+$types = "";
+
+if (!empty($search_term)) 
+{
+    $sql .= " AND (name LIKE ? OR description LIKE ? OR category LIKE ? OR article LIKE ?)";
+    $search_like = "%$search_term%";
+    $params[] = $search_like;
+    $params[] = $search_like;
+    $params[] = $search_like;
+    $params[] = $search_like;
+    $types .= "ssss";
+}
+
+if (!empty($category_filter) && $category_filter !== 'все категории') 
+{
+    $sql .= " AND category = ?";
+    $params[] = $category_filter;
+    $types .= "s";
+}
+
+$count_sql = "SELECT COUNT(*) as total FROM products WHERE status = 'available'";
+$count_params = [];
+$count_types = "";
+
+if (!empty($search_term)) 
+{
+    $count_sql .= " AND (name LIKE ? OR description LIKE ? OR category LIKE ? OR article LIKE ?)";
+    $search_like = "%$search_term%";
+    $count_params[] = $search_like;
+    $count_params[] = $search_like;
+    $count_params[] = $search_like;
+    $count_params[] = $search_like;
+    $count_types .= "ssss";
+}
+
+if (!empty($category_filter) && $category_filter !== 'все категории') 
+{
+    $count_sql .= " AND category = ?";
+    $count_params[] = $category_filter;
+    $count_types .= "s";
+}
+
+$count_stmt = $conn->prepare($count_sql);
+
+if (!empty($count_types)) 
+{
+    $count_stmt->bind_param($count_types, ...$count_params);
+}
+
+$count_stmt->execute();
+$count_result = $count_stmt->get_result();
+$total_row = $count_result->fetch_assoc();
+$total_items = $total_row['total'] ?? 0;
+$count_stmt->close();
+$sql .= " ORDER BY created_at DESC LIMIT ? OFFSET ?";
+$params[] = $items_per_page;
+$params[] = $offset;
+$types .= "ii";
+$stmt = $conn->prepare($sql);
+
+if (!empty($types)) 
+{
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
+$filtered_products = [];
+
+while ($row = $result->fetch_assoc()) 
+{
+    $filtered_products[] = $row;
+}
+$stmt->close();
+
+if ($total_items == 0 && !empty($search_term)) 
+{
+    $all_stmt = $conn->prepare("SELECT * FROM products WHERE status = 'available'");
+    $all_stmt->execute();
+    $all_result = $all_stmt->get_result();
+    $all_products_db = [];
+
+    while ($row = $all_result->fetch_assoc()) {
+        $all_products_db[] = $row;
+    }
+
+    $all_stmt->close();
+    $brand_results = enhanceBrandSearch($search_term, $all_products_db);
+    
+    if (!empty($brand_results)) 
+    {
+        $filtered_products = $brand_results;
+    } 
+    else 
+    {
+        $part_results = searchByPartCategory($search_term, $all_products_db);
+        
+        if (!empty($part_results)) 
+        {
+            $filtered_products = $part_results;
         }
     }
 
-    if ($category_filter !== '' && $category_filter !== 'все категории') 
-    {
-        $filtered_products = array_filter($filtered_products, function($product) use ($category_filter) 
-        {
-            return $product['category'] === $category_filter;
-        });
-    }
-
-    $filtered_products = array_values($filtered_products);
+    $total_items = count($filtered_products);
+    $filtered_products = array_slice($filtered_products, $offset, $items_per_page);
 }
 
-$total_items = count($filtered_products);
 $total_pages = ceil($total_items / $items_per_page);
-$start_index = ($current_page - 1) * $items_per_page;
-$end_index = min($start_index + $items_per_page, $total_items);
 
-$show_pagination = $total_pages > 1;
+if ($current_page > $total_pages && $total_pages > 0) 
+{
+    $current_page = 1;
+    $offset = 0;
+
+    if (!empty($types)) 
+    {
+        array_pop($params);
+        array_pop($params);
+        $types = substr($types, 0, -2);
+        
+        $params[] = $items_per_page;
+        $params[] = $offset;
+        $types .= "ii";
+        
+        $stmt = $conn->prepare(str_replace("LIMIT ? OFFSET ?", "LIMIT ? OFFSET ?", $sql));
+        if (!empty($types)) {
+            $stmt->bind_param($types, ...$params);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $filtered_products = [];
+        
+        while ($row = $result->fetch_assoc()) {
+            $filtered_products[] = $row;
+        }
+        $stmt->close();
+    }
+}
 
 function buildQueryString($page, $search, $category) 
 {
@@ -410,8 +412,9 @@ function buildQueryString($page, $search, $category)
 <div class="container my-4">
     <div class="hero-section text-center mb-5" style="padding-top: 105px;">
         <h1 class="display-5 fw-bold text-primary mb-3">Каталог автозапчастей</h1>
-        <p class="lead text-muted mb-4">Более 1000 наименований оригинальных и качественных аналогов</p>
-        <?php if ($search_term !== '') 
+        <p class="lead text-muted mb-4">Более <?php echo $total_items; ?> наименований оригинальных и качественных аналогов</p>
+        <?php 
+        if ($search_term !== '') 
         {
         ?>
         <div class="alert alert-info d-inline-block">
@@ -445,17 +448,16 @@ function buildQueryString($page, $search, $category)
         <div class="col-md-4">
             <select id="categoryFilter" class="form-select">
                 <option value="все категории" <?php echo $category_filter === '' || $category_filter === 'все категории' ? 'selected' : ''; ?>>Все категории</option>
-                <option value="двигатель" <?php echo $category_filter === 'двигатель' ? 'selected' : ''; ?>>Двигатель</option>
-                <option value="трансмиссия" <?php echo $category_filter === 'трансмиссия' ? 'selected' : ''; ?>>Трансмиссия</option>
-                <option value="ходовая часть" <?php echo $category_filter === 'ходовая часть' ? 'selected' : ''; ?>>Ходовая часть</option>
-                <option value="тормозная система" <?php echo $category_filter === 'тормозная система' ? 'selected' : ''; ?>>Тормозная система</option>
-                <option value="электрика" <?php echo $category_filter === 'электрика' ? 'selected' : ''; ?>>Электрика</option>
-                <option value="кузовные детали" <?php echo $category_filter === 'кузовные детали' ? 'selected' : ''; ?>>Кузовные детали</option>
-                <option value="фильтры" <?php echo $category_filter === 'фильтры' ? 'selected' : ''; ?>>Фильтры</option>
-                <option value="масла и жидкости" <?php echo $category_filter === 'масла и жидкости' ? 'selected' : ''; ?>>Масла и жидкости</option>
-                <option value="система охлаждения" <?php echo $category_filter === 'система охлаждения' ? 'selected' : ''; ?>>Система охлаждения</option>
-                <option value="система выпуска" <?php echo $category_filter === 'система выпуска' ? 'selected' : ''; ?>>Система выпуска</option>
-                <option value="рулевое управление" <?php echo $category_filter === 'рулевое управление' ? 'selected' : ''; ?>>Рулевое управление</option>
+                <?php 
+                foreach ($available_categories as $category)
+                {
+                ?>
+                    <option value="<?php echo htmlspecialchars($category); ?>" <?php echo $category_filter === $category ? 'selected' : ''; ?>>
+                        <?php echo ucfirst(htmlspecialchars($category)); ?>
+                    </option>
+                <?php 
+                }
+                ?>
             </select>
         </div>
         <div class="col-md-3 col-lg-2">
@@ -489,7 +491,7 @@ function buildQueryString($page, $search, $category)
                 if ($search_term !== '' || ($category_filter !== '' && $category_filter !== 'все категории'))
                 {
                 ?>
-                    <a href="assortment.php" class="btn btn-sm btn-outline-secondary ms-2">Показать все</a>
+                    <a href="assortment.php?page=<?= $current_page > 1 ? $current_page : '' ?>" class="btn btn-sm btn-outline-secondary ms-2">Показать все</a>
                 <?php 
                 }
                 ?>
@@ -501,32 +503,32 @@ function buildQueryString($page, $search, $category)
     ?>
     <div class="row g-3" id="productsContainer">
         <?php 
-        if ($total_items > 0)
+        if ($total_items > 0 && !empty($filtered_products))
         { 
-        ?>
-            <?php 
-            for ($i = $start_index; $i < $end_index; $i++)
+            foreach ($filtered_products as $product)
             {
-            ?>
-                <?php $product = $filtered_products[$i]; ?>
+                $product_detail_url = "product_detail.php?id=" . $product['id'] . "&back=" . urlencode("assortment.php?" . buildQueryString($current_page, $search_term, $category_filter));
+        ?>
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="product-card">
                         <?php 
-                        if (isset($product['badge'])) 
+                        if (!empty($product['badge'])) 
                         {
                         ?>
-                            <div class="product-badge"><?php echo $product['badge']; ?></div>
+                            <div class="product-badge"><?php echo htmlspecialchars($product['badge']); ?></div>
                         <?php 
                         }
                         ?>
                         <div class="product-image">
-                            <img src="../img/no-image.png" class="product-img" alt="<?php echo htmlspecialchars($product['title']); ?>">
+                            <img src="<?php echo !empty($product['image']) ? htmlspecialchars($product['image']) : '../img/no-image.png'; ?>" 
+                                 class="product-img" alt="<?php echo htmlspecialchars($product['name']); ?>"
+                                 onerror="this.src='../img/no-image.png'">
                         </div>
                         <div class="product-body">
-                            <h6 class="product-title"><?php echo $product['title']; ?></h6>
+                            <h6 class="product-title"><?php echo htmlspecialchars($product['name']); ?></h6>
                             <div class="product-price">
                                 <?php 
-                                if (isset($product['old_price']))
+                                if (!empty($product['old_price']) && $product['old_price'] > $product['price'])
                                 {
                                 ?>
                                     <span class="current-price"><?php echo number_format($product['price'], 0, '', ' '); ?> ₽</span>
@@ -548,17 +550,17 @@ function buildQueryString($page, $search, $category)
                                 ?>
                                     <form method="POST" action="../profile.php" class="d-inline me-1">
                                         <input type="hidden" name="wishlist_action" value="1">
-                                        <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['title']) ?>">
-                                        <input type="hidden" name="product_image" value="../img/no-image.png">
+                                        <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['name']) ?>">
+                                        <input type="hidden" name="product_image" value="<?= !empty($product['image']) ? htmlspecialchars($product['image']) : '../img/no-image.png' ?>">
                                         <input type="hidden" name="price" value="<?= $product['price'] ?>">
                                         <button type="submit" class="btn btn-outline-danger btn-sm">
                                             <i class="bi bi-heart"></i>
                                         </button>
                                     </form>
                                     <form method="POST" action="cart.php" class="d-inline add-to-cart-form">
-                                        <input type="hidden" name="product_id" value="<?= isset($product['id']) ? $product['id'] : 0 ?>">
-                                        <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['title']) ?>">
-                                        <input type="hidden" name="product_image" value="../img/no-image.png">
+                                        <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                                        <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['name']) ?>">
+                                        <input type="hidden" name="product_image" value="<?= !empty($product['image']) ? htmlspecialchars($product['image']) : '../img/no-image.png' ?>">
                                         <input type="hidden" name="price" value="<?= $product['price'] ?>">
                                         <input type="hidden" name="quantity" value="1">
                                         <button type="submit" name="add_to_cart" class="btn btn-primary btn-sm add-to-cart-btn">
@@ -578,15 +580,13 @@ function buildQueryString($page, $search, $category)
                                 <?php 
                                 }
                                 ?>
-                                <button class="btn btn-outline-secondary btn-sm">Подробнее</button>
+                                <a href="<?= $product_detail_url ?>" class="btn btn-outline-secondary btn-sm">Подробнее</a>
                             </div>
                         </div>
                     </div>
                 </div>
             <?php 
             }
-            ?>
-        <?php 
         }
         else
         { 
@@ -602,7 +602,7 @@ function buildQueryString($page, $search, $category)
         ?>
     </div>
     <?php 
-    if ($show_pagination) 
+    if ($total_pages > 1) 
     {
     ?>
     <nav aria-label="Page navigation" class="mt-4">
@@ -634,7 +634,7 @@ function buildQueryString($page, $search, $category)
         </ul>
     </nav>
     <div class="text-center text-muted mt-2">
-        Страница <?php echo $current_page; ?> из <?php echo $total_pages; ?> | Показано <?php echo ($end_index - $start_index); ?> из <?php echo $total_items; ?> товаров
+        Страница <?php echo $current_page; ?> из <?php echo $total_pages; ?> | Показано <?php echo count($filtered_products); ?> из <?php echo $total_items; ?> товаров
     </div>
     <?php 
     }
@@ -669,6 +669,17 @@ function buildQueryString($page, $search, $category)
 <script>
 document.addEventListener('DOMContentLoaded', function() 
 {
+    let urlParams = new URLSearchParams(window.location.search);
+    let page = urlParams.get('page') || 1;
+    let search = urlParams.get('search') || '';
+    let category = urlParams.get('category') || '';
+    
+    sessionStorage.setItem('last_assortment_params', JSON.stringify({
+        page: page,
+        search: search,
+        category: category
+    }));
+    
     function performSearch() 
     {
         let searchTerm = document.getElementById('partsSearch').value.trim();
@@ -684,19 +695,8 @@ document.addEventListener('DOMContentLoaded', function()
         {
             params.set('category', categoryFilter);
         }
-        else 
-        {
-            document.getElementById('categoryFilter').value = 'все категории';
-        }
         
-        if (categoryFilter && categoryFilter !== 'все категории') 
-        {
-            window.location.href = '?' + params.toString();
-        }
-        else 
-        {
-            window.location.href = 'assortment.php';
-        }
+        window.location.href = '?' + params.toString();
     }
 
     function resetSearch() 
@@ -704,6 +704,8 @@ document.addEventListener('DOMContentLoaded', function()
         document.getElementById('partsSearch').value = '';
         document.getElementById('categoryFilter').value = 'все категории';
         document.querySelector('.search-clear').style.display = 'none';
+        sessionStorage.removeItem('last_assortment_params');
+        
         window.location.href = 'assortment.php';
     }
 
@@ -733,6 +735,18 @@ document.addEventListener('DOMContentLoaded', function()
     {
         document.querySelector('.search-clear').style.display = 'block';
     }
+
+    document.querySelectorAll('a[href*="product_detail.php"]').forEach(link => {
+        let href = link.getAttribute('href');
+
+        if (!href.includes('back=')) 
+        {
+            let currentUrl = window.location.pathname + window.location.search;
+            let separator = href.includes('?') ? '&' : '?';
+
+            link.setAttribute('href', href + separator + 'back=' + encodeURIComponent(currentUrl));
+        }
+    });
 
     let addToCartForms = document.querySelectorAll('.add-to-cart-form');
 
