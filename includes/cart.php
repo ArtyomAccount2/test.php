@@ -63,9 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     {
         $productId = $_POST['product_id'] ?? 0;
         $productName = $_POST['product_name'] ?? '';
-        $productImage = $_POST['product_image'] ?? 'no-image.png';
+        $productImage = $_POST['product_image'] ?? '../img/no-image.png';
         $price = $_POST['price'] ?? 0;
         $quantity = $_POST['quantity'] ?? 1;
+        $productType = $_POST['product_type'] ?? 'part';
+        $back_url = $_POST['back_url'] ?? $_SERVER['HTTP_REFERER'] ?? 'oils.php';
         
         if ($userId && $productName && $price > 0) 
         {
@@ -87,9 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             } 
             else 
             {
-                $insertSql = "INSERT INTO cart (user_id, product_id, product_name, product_image, price, quantity) VALUES (?, ?, ?, ?, ?, ?)";
+                $insertSql = "INSERT INTO cart (user_id, product_id, product_name, product_image, price, quantity, product_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 $insertStmt = $conn->prepare($insertSql);
-                $insertStmt->bind_param("iissdi", $userId, $productId, $productName, $productImage, $price, $quantity);
+                $insertStmt->bind_param("iissdis", $userId, $productId, $productName, $productImage, $price, $quantity, $productType);
                 $insertStmt->execute();
                 $insertStmt->close();
                 $_SESSION['success_message'] = "Товар добавлен в корзину!";

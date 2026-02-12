@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 09 2026 г., 13:43
+-- Время создания: Фев 12 2026 г., 19:36
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -102,6 +102,7 @@ CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `product_id` int(11) DEFAULT NULL,
+  `product_type` varchar(50) NOT NULL DEFAULT 'part' COMMENT 'part - запчасть, oil - масло',
   `product_name` varchar(255) NOT NULL,
   `product_image` varchar(255) DEFAULT 'no-image.png',
   `price` decimal(10,2) NOT NULL,
@@ -114,15 +115,14 @@ CREATE TABLE `cart` (
 -- Дамп данных таблицы `cart`
 --
 
-INSERT INTO `cart` (`id`, `user_id`, `product_id`, `product_name`, `product_image`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
-(20, 3, 0, 'Фильтр масляный Audi A4 B8 2.0 TFSI', '../img/no-image.png', '1250.00', 1, '2026-01-05 15:19:41', '2026-01-05 15:19:41'),
-(21, 3, 0, 'Тормозные колодки Audi A6 C7', '../img/no-image.png', '3890.00', 1, '2026-01-05 15:19:42', '2026-01-05 15:19:42'),
-(22, 3, 0, 'Свечи зажигания Audi Q5 2.0 TDI', '../img/no-image.png', '850.00', 1, '2026-01-05 15:19:43', '2026-01-05 15:19:43'),
-(23, 3, 0, 'Сцепление Audi A3 8V', '../img/no-image.png', '12500.00', 2, '2026-01-05 15:19:43', '2026-01-05 15:19:50'),
-(39, 2, 0, 'Тормозные колодки Audi A6 C7', '../img/no-image.png', '3890.00', 1, '2026-01-23 18:12:11', '2026-02-08 17:29:06'),
-(40, 2, 0, 'Сцепление Audi A3 8V', '../img/no-image.png', '12500.00', 2, '2026-01-23 18:12:14', '2026-01-23 18:12:16'),
-(41, 2, 6, 'Motul 8100 X-clean 5W-30', '../img/no-image.png', '4890.00', 1, '2026-01-23 18:12:30', '2026-01-23 18:12:30'),
-(46, 2, 6, 'Воздушный фильтр Audi Q7 4L', 'uploads/products/696392655986c.png', '2100.00', 1, '2026-02-08 17:29:15', '2026-02-08 17:29:15');
+INSERT INTO `cart` (`id`, `user_id`, `product_id`, `product_type`, `product_name`, `product_image`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
+(20, 3, 0, 'part', 'Фильтр масляный Audi A4 B8 2.0 TFSI', '../img/no-image.png', '1250.00', 1, '2026-01-05 15:19:41', '2026-01-05 15:19:41'),
+(21, 3, 0, 'part', 'Тормозные колодки Audi A6 C7', '../img/no-image.png', '3890.00', 1, '2026-01-05 15:19:42', '2026-01-05 15:19:42'),
+(22, 3, 0, 'part', 'Свечи зажигания Audi Q5 2.0 TDI', '../img/no-image.png', '850.00', 1, '2026-01-05 15:19:43', '2026-01-05 15:19:43'),
+(23, 3, 0, 'part', 'Сцепление Audi A3 8V', '../img/no-image.png', '12500.00', 2, '2026-01-05 15:19:43', '2026-01-05 15:19:50'),
+(39, 2, 0, 'part', 'Тормозные колодки Audi A6 C7', '../img/no-image.png', '3890.00', 2, '2026-01-23 18:12:11', '2026-02-12 15:53:50'),
+(40, 2, 0, 'part', 'Сцепление Audi A3 8V', '../img/no-image.png', '12500.00', 2, '2026-01-23 18:12:14', '2026-01-23 18:12:16'),
+(41, 2, 6, 'part', 'Motul 8100 X-clean 5W-30', '../img/no-image.png', '4890.00', 1, '2026-01-23 18:12:30', '2026-01-23 18:12:30');
 
 -- --------------------------------------------------------
 
@@ -359,62 +359,93 @@ CREATE TABLE `products` (
   `badge` varchar(50) DEFAULT NULL,
   `status` varchar(20) DEFAULT 'available',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `product_type` varchar(50) NOT NULL DEFAULT 'part' COMMENT 'part - запчасть, oil - масло',
+  `brand` varchar(100) DEFAULT NULL,
+  `viscosity` varchar(50) DEFAULT NULL,
+  `oil_type` varchar(50) DEFAULT NULL,
+  `volume` varchar(20) DEFAULT NULL,
+  `hit` tinyint(1) DEFAULT '0',
+  `art` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `description`, `category`, `price`, `old_price`, `quantity`, `article`, `image`, `badge`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Фильтр масляный Audi A4 B8 2.0 TFSI', 'Качественный масляный фильтр для Audi A4 B8', 'фильтры', '1250.00', NULL, 25, 'AUDI-FILTER-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(2, 'Тормозные колодки Audi A6 C7', 'Передние тормозные колодки для Audi A6 C7', 'тормозная система', '3890.00', '4500.00', 15, 'AUDI-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(3, 'Свечи зажигания Audi Q5 2.0 TDI', 'Свечи зажигания для дизельного двигателя', 'двигатель', '850.00', NULL, 30, 'AUDI-SPARK-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(4, 'Сцепление Audi A3 8V', 'Комплект сцепления для Audi A3', 'трансмиссия', '12500.00', NULL, 8, 'AUDI-CLUTCH-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(5, 'Генератор Audi A4 B9', 'Генератор 150A для Audi A4 B9', 'электрика', '15600.00', NULL, 12, 'AUDI-GEN-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(6, 'Воздушный фильтр Audi Q7 4L', 'Воздушный фильтр салона', 'фильтры', '2100.00', NULL, 20, 'AUDI-AIR-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(7, 'Фара передняя BMW 3 series F30', 'Передняя фара левая', 'кузовные детали', '18700.00', NULL, 6, 'BMW-LIGHT-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(8, 'Тормозные диски BMW X5 E70', 'Вентилируемые тормозные диски', 'тормозная система', '8900.00', NULL, 10, 'BMW-DISC-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(9, 'Аккумулятор BMW 5 series F10', 'Аккумулятор 80Ah', 'электрика', '12500.00', NULL, 14, 'BMW-BATTERY-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(10, 'Ремень ГРМ BMW 7 series G11', 'Ремень газораспределительного механизма', 'двигатель', '3200.00', NULL, 18, 'BMW-TIMING-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(11, 'Масляный фильтр BMW X3 G01', 'Фильтр моторного масла', 'фильтры', '1450.00', NULL, 22, 'BMW-OILFILTER-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(12, 'Тормозные колодки BMW 1 series F20', 'Комплект передних колодок', 'тормозная система', '5200.00', NULL, 16, 'BMW-BRAKEPAD-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(13, 'Моторное масло 5W-40', 'Синтетическое моторное масло для всех типов двигателей', 'масла и жидкости', '2500.00', NULL, 50, 'OIL-5W40-001', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(14, 'Воздушный фильтр', 'Воздушный фильтр для легковых автомобилей', 'фильтры', '800.00', NULL, 40, 'FILTER-AIR-001', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(15, 'Тормозные колодки', 'Передние тормозные колодки универсальные', 'тормозная система', '3200.00', NULL, 25, 'BRAKEPAD-UNIV-001', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(16, 'Аккумулятор 60Ah', 'Свинцово-кислотный аккумулятор 60Ah', 'электрика', '5500.00', NULL, 18, 'BATTERY-60AH', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(17, 'Аккумулятор Mercedes-Benz E-class W213', 'Аккумулятор 90Ah для Mercedes', 'электрика', '12500.00', NULL, 10, 'MB-BATTERY-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(18, 'Тормозные колодки Mercedes C-class W205', 'Передние тормозные колодки', 'тормозная система', '4500.00', NULL, 15, 'MB-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(19, 'Воздушный фильтр Mercedes GLC X253', 'Воздушный фильтр салона', 'фильтры', '1850.00', NULL, 20, 'MB-AIR-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(20, 'Свечи зажигания Mercedes E-class W212', 'Иридиевые свечи зажигания', 'двигатель', '1200.00', NULL, 25, 'MB-SPARK-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(21, 'Сцепление Mercedes A-class W176', 'Комплект сцепления', 'трансмиссия', '13800.00', NULL, 8, 'MB-CLUTCH-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(22, 'Ремень ГРМ Toyota Camry XV70', 'Ремень ГРМ с натяжителем', 'двигатель', '3200.00', NULL, 15, 'TOYOTA-TIMING-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(23, 'Масляный фильтр Toyota RAV4 XA50', 'Масляный фильтр оригинальный', 'фильтры', '950.00', NULL, 22, 'TOYOTA-OIL-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(24, 'Амортизатор Toyota Corolla E210', 'Амортизатор передний', 'ходовая часть', '3800.00', NULL, 12, 'TOYOTA-SHOCK-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(25, 'Тормозные колодки Toyota Land Cruiser 200', 'Комплект передних колодок', 'тормозная система', '6700.00', NULL, 10, 'TOYOTA-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(26, 'Стартер Toyota Prius XW30', 'Стартер для гибридной системы', 'электрика', '14200.00', NULL, 6, 'TOYOTA-STARTER-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(27, 'Воздушный фильтр Ford Focus MK4', 'Воздушный фильтр салона', 'фильтры', '950.00', NULL, 18, 'FORD-AIR-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(28, 'Тормозные колодки Ford Kuga II', 'Передние тормозные колодки', 'тормозная система', '2900.00', NULL, 14, 'FORD-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(29, 'Бампер передний Ford Fiesta MK7', 'Бампер передний оригинальный', 'кузовные детали', '15600.00', NULL, 8, 'FORD-BUMPER-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(30, 'Турбина Ford Mondeo MK5', 'Турбокомпрессор 2.0 TDCi', 'двигатель', '23400.00', NULL, 5, 'FORD-TURBO-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(31, 'Генератор Ford Explorer U502', 'Генератор 180A', 'электрика', '16700.00', NULL, 7, 'FORD-GEN-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(32, 'Амортизатор Hyundai Solaris II', 'Амортизатор задний', 'ходовая часть', '3800.00', NULL, 16, 'HYUNDAI-SHOCK-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(33, 'Тормозные колодки Hyundai Tucson TL', 'Передние тормозные колодки', 'тормозная система', '2900.00', NULL, 18, 'HYUNDAI-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(34, 'Генератор Hyundai Santa Fe TM', 'Генератор 150A', 'электрика', '13400.00', NULL, 9, 'HYUNDAI-GEN-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(35, 'Топливный фильтр Hyundai Elantra MD', 'Топливный фильтр тонкой очистки', 'фильтры', '1250.00', NULL, 20, 'HYUNDAI-FUEL-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(36, 'Ремень ГРМ Hyundai Creta', 'Ремень ГРМ с роликами', 'двигатель', '2800.00', NULL, 15, 'HYUNDAI-TIMING-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(37, 'Коленчатый вал двигателя 2.0 TSI', 'Коленчатый вал оригинальный', 'двигатель', '18700.00', NULL, 4, 'CRANKSHAFT-001', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(38, 'Прокладки двигателя комплект V8', 'Полный комплект прокладок', 'двигатель', '4500.00', NULL, 8, 'GASKET-V8', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(39, 'Топливный насос высокого давления', 'ТНВД дизельный', 'двигатель', '8900.00', NULL, 6, 'FUEL-PUMP-001', 'uploads/products/696392655986c.png', 'Новинка', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(40, 'Распределительный вал 16V', 'Распредвал для 16-клапанного двигателя', 'двигатель', '12300.00', NULL, 5, 'CAMSHAFT-16V', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(41, 'Тормозной цилиндр главный', 'Главный тормозной цилиндр', 'тормозная система', '3400.00', NULL, 12, 'BRAKE-CYL-001', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(42, 'Тормозные колодки керамические', 'Керамические тормозные колодки', 'тормозная система', '5600.00', NULL, 10, 'CERAMIC-PADS', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(43, 'Стабилизатор поперечной устойчивости', 'Стойка стабилизатора', 'ходовая часть', '6700.00', NULL, 15, 'STABILIZER-001', 'uploads/products/696392655986c.png', 'Новинка', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(44, 'Тормозные суппорта передние', 'Суппорта тормозные ремонтные', 'тормозная система', '12800.00', NULL, 8, 'CALIPER-SET', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(45, 'Топливный фильтр тонкой очистки', 'Фильтр топливный тонкой очистки', 'фильтры', '2100.00', NULL, 20, 'FUEL-FILTER-FINE', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(46, 'Тормозные диски вентилируемые', 'Вентилируемые тормозные диски', 'тормозная система', '7800.00', NULL, 12, 'VENT-DISCS', 'uploads/products/696392655986c.png', 'Новинка', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(47, 'Цапфа поворотная', 'Поворотная цапфа передняя', 'ходовая часть', '4500.00', NULL, 14, 'KNUCKLE-001', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56'),
-(48, 'Сальники коленвала комплект', 'Комплект сальников коленчатого вала', 'двигатель', '3200.00', NULL, 18, 'SEAL-KIT', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56');
+INSERT INTO `products` (`id`, `name`, `description`, `category`, `price`, `old_price`, `quantity`, `article`, `image`, `badge`, `status`, `created_at`, `updated_at`, `product_type`, `brand`, `viscosity`, `oil_type`, `volume`, `hit`, `art`) VALUES
+(1, 'Фильтр масляный Audi A4 B8 2.0 TFSI', 'Качественный масляный фильтр для Audi A4 B8', 'фильтры', '1250.00', NULL, 25, 'AUDI-FILTER-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(2, 'Тормозные колодки Audi A6 C7', 'Передние тормозные колодки для Audi A6 C7', 'тормозная система', '3890.00', '4500.00', 15, 'AUDI-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(3, 'Свечи зажигания Audi Q5 2.0 TDI', 'Свечи зажигания для дизельного двигателя', 'двигатель', '850.00', NULL, 30, 'AUDI-SPARK-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(4, 'Сцепление Audi A3 8V', 'Комплект сцепления для Audi A3', 'трансмиссия', '12500.00', NULL, 8, 'AUDI-CLUTCH-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(5, 'Генератор Audi A4 B9', 'Генератор 150A для Audi A4 B9', 'электрика', '15600.00', NULL, 12, 'AUDI-GEN-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(6, 'Воздушный фильтр Audi Q7 4L', 'Воздушный фильтр салона', 'фильтры', '2100.00', NULL, 20, 'AUDI-AIR-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(7, 'Фара передняя BMW 3 series F30', 'Передняя фара левая', 'кузовные детали', '18700.00', NULL, 6, 'BMW-LIGHT-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(8, 'Тормозные диски BMW X5 E70', 'Вентилируемые тормозные диски', 'тормозная система', '8900.00', NULL, 10, 'BMW-DISC-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(9, 'Аккумулятор BMW 5 series F10', 'Аккумулятор 80Ah', 'электрика', '12500.00', NULL, 14, 'BMW-BATTERY-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(10, 'Ремень ГРМ BMW 7 series G11', 'Ремень газораспределительного механизма', 'двигатель', '3200.00', NULL, 18, 'BMW-TIMING-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(11, 'Масляный фильтр BMW X3 G01', 'Фильтр моторного масла', 'фильтры', '1450.00', NULL, 22, 'BMW-OILFILTER-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(12, 'Тормозные колодки BMW 1 series F20', 'Комплект передних колодок', 'тормозная система', '5200.00', NULL, 16, 'BMW-BRAKEPAD-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(13, 'Моторное масло 5W-40', 'Синтетическое моторное масло для всех типов двигателей', 'масла и жидкости', '2500.00', NULL, 50, 'OIL-5W40-001', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(14, 'Воздушный фильтр', 'Воздушный фильтр для легковых автомобилей', 'фильтры', '800.00', NULL, 40, 'FILTER-AIR-001', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(15, 'Тормозные колодки', 'Передние тормозные колодки универсальные', 'тормозная система', '3200.00', NULL, 25, 'BRAKEPAD-UNIV-001', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(16, 'Аккумулятор 60Ah', 'Свинцово-кислотный аккумулятор 60Ah', 'электрика', '5500.00', NULL, 18, 'BATTERY-60AH', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(17, 'Аккумулятор Mercedes-Benz E-class W213', 'Аккумулятор 90Ah для Mercedes', 'электрика', '12500.00', NULL, 10, 'MB-BATTERY-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(18, 'Тормозные колодки Mercedes C-class W205', 'Передние тормозные колодки', 'тормозная система', '4500.00', NULL, 15, 'MB-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(19, 'Воздушный фильтр Mercedes GLC X253', 'Воздушный фильтр салона', 'фильтры', '1850.00', NULL, 20, 'MB-AIR-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(20, 'Свечи зажигания Mercedes E-class W212', 'Иридиевые свечи зажигания', 'двигатель', '1200.00', NULL, 25, 'MB-SPARK-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(21, 'Сцепление Mercedes A-class W176', 'Комплект сцепления', 'трансмиссия', '13800.00', NULL, 8, 'MB-CLUTCH-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(22, 'Ремень ГРМ Toyota Camry XV70', 'Ремень ГРМ с натяжителем', 'двигатель', '3200.00', NULL, 15, 'TOYOTA-TIMING-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(23, 'Масляный фильтр Toyota RAV4 XA50', 'Масляный фильтр оригинальный', 'фильтры', '950.00', NULL, 22, 'TOYOTA-OIL-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(24, 'Амортизатор Toyota Corolla E210', 'Амортизатор передний', 'ходовая часть', '3800.00', NULL, 12, 'TOYOTA-SHOCK-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(25, 'Тормозные колодки Toyota Land Cruiser 200', 'Комплект передних колодок', 'тормозная система', '6700.00', NULL, 10, 'TOYOTA-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(26, 'Стартер Toyota Prius XW30', 'Стартер для гибридной системы', 'электрика', '14200.00', NULL, 6, 'TOYOTA-STARTER-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(27, 'Воздушный фильтр Ford Focus MK4', 'Воздушный фильтр салона', 'фильтры', '950.00', NULL, 18, 'FORD-AIR-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(28, 'Тормозные колодки Ford Kuga II', 'Передние тормозные колодки', 'тормозная система', '2900.00', NULL, 14, 'FORD-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(29, 'Бампер передний Ford Fiesta MK7', 'Бампер передний оригинальный', 'кузовные детали', '15600.00', NULL, 8, 'FORD-BUMPER-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(30, 'Турбина Ford Mondeo MK5', 'Турбокомпрессор 2.0 TDCi', 'двигатель', '23400.00', NULL, 5, 'FORD-TURBO-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(31, 'Генератор Ford Explorer U502', 'Генератор 180A', 'электрика', '16700.00', NULL, 7, 'FORD-GEN-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(32, 'Амортизатор Hyundai Solaris II', 'Амортизатор задний', 'ходовая часть', '3800.00', NULL, 16, 'HYUNDAI-SHOCK-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(33, 'Тормозные колодки Hyundai Tucson TL', 'Передние тормозные колодки', 'тормозная система', '2900.00', NULL, 18, 'HYUNDAI-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(34, 'Генератор Hyundai Santa Fe TM', 'Генератор 150A', 'электрика', '13400.00', NULL, 9, 'HYUNDAI-GEN-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(35, 'Топливный фильтр Hyundai Elantra MD', 'Топливный фильтр тонкой очистки', 'фильтры', '1250.00', NULL, 20, 'HYUNDAI-FUEL-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(36, 'Ремень ГРМ Hyundai Creta', 'Ремень ГРМ с роликами', 'двигатель', '2800.00', NULL, 15, 'HYUNDAI-TIMING-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(37, 'Коленчатый вал двигателя 2.0 TSI', 'Коленчатый вал оригинальный', 'двигатель', '18700.00', NULL, 4, 'CRANKSHAFT-001', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(38, 'Прокладки двигателя комплект V8', 'Полный комплект прокладок', 'двигатель', '4500.00', NULL, 8, 'GASKET-V8', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(39, 'Топливный насос высокого давления', 'ТНВД дизельный', 'двигатель', '8900.00', NULL, 6, 'FUEL-PUMP-001', 'uploads/products/696392655986c.png', 'Новинка', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(40, 'Распределительный вал 16V', 'Распредвал для 16-клапанного двигателя', 'двигатель', '12300.00', NULL, 5, 'CAMSHAFT-16V', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(41, 'Тормозной цилиндр главный', 'Главный тормозной цилиндр', 'тормозная система', '3400.00', NULL, 12, 'BRAKE-CYL-001', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(42, 'Тормозные колодки керамические', 'Керамические тормозные колодки', 'тормозная система', '5600.00', NULL, 10, 'CERAMIC-PADS', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(43, 'Стабилизатор поперечной устойчивости', 'Стойка стабилизатора', 'ходовая часть', '6700.00', NULL, 15, 'STABILIZER-001', 'uploads/products/696392655986c.png', 'Новинка', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(44, 'Тормозные суппорта передние', 'Суппорта тормозные ремонтные', 'тормозная система', '12800.00', NULL, 8, 'CALIPER-SET', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(45, 'Топливный фильтр тонкой очистки', 'Фильтр топливный тонкой очистки', 'фильтры', '2100.00', NULL, 20, 'FUEL-FILTER-FINE', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(46, 'Тормозные диски вентилируемые', 'Вентилируемые тормозные диски', 'тормозная система', '7800.00', NULL, 12, 'VENT-DISCS', 'uploads/products/696392655986c.png', 'Новинка', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(47, 'Цапфа поворотная', 'Поворотная цапфа передняя', 'ходовая часть', '4500.00', NULL, 14, 'KNUCKLE-001', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(48, 'Сальники коленвала комплект', 'Комплект сальников коленчатого вала', 'двигатель', '3200.00', NULL, 18, 'SEAL-KIT', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
+(49, 'Castrol EDGE 5W-30', 'Моторное масло Castrol 5W-30, 4 л', 'Масла и технические жидкости', '3890.00', NULL, 50, '15698E4', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:31:24', 'oil', 'Castrol', '5W-30', 'Синтетическое', '4 л', 1, '15698E4'),
+(50, 'Mobil Super 3000 X1 5W-40', 'Моторное масло Mobil 5W-40, 4 л', 'Масла и технические жидкости', '3450.00', NULL, 50, '152343', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:31:37', 'oil', 'Mobil', '5W-40', 'Синтетическое', '4 л', 0, '152343'),
+(51, 'Liqui Moly Special Tec AA 5W-30', 'Моторное масло Liqui Moly 5W-30, 5 л', 'Масла и технические жидкости', '4210.00', NULL, 50, '1123DE', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:31:52', 'oil', 'Liqui Moly', '5W-30', 'Синтетическое', '5 л', 1, '1123DE'),
+(52, 'Shell Helix HX7 10W-40', 'Моторное масло Shell 10W-40, 4 л', 'Масла и технические жидкости', '2890.00', NULL, 0, '87654F', 'uploads/products/696392655986c.png', NULL, 'out_of_stock', '2026-02-12 14:58:10', '2026-02-12 16:32:01', 'oil', 'Shell', '10W-40', 'Полусинтетическое', '4 л', 0, '87654F'),
+(53, 'Total Quartz 9000 5W-40', 'Моторное масло Total 5W-40, 5 л', 'Масла и технические жидкости', '3650.00', NULL, 50, 'TQ9000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:11', 'oil', 'Total', '5W-40', 'Синтетическое', '5 л', 0, 'TQ9000'),
+(54, 'Motul 8100 X-clean 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '4890.00', NULL, 50, 'M8100', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:20', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', 1, 'M8100'),
+(55, 'ZIC X9 5W-30', 'Моторное масло ZIC 5W-30, 4 л', 'Масла и технические жидкости', '2990.00', NULL, 50, 'ZX9-5W30', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:29', 'oil', 'ZIC', '5W-30', 'Синтетическое', '4 л', 0, 'ZX9-5W30'),
+(56, 'ELF Evolution 900 NF 5W-40', 'Моторное масло ELF 5W-40, 5 л', 'Масла и технические жидкости', '3750.00', NULL, 50, 'ELF900', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:40', 'oil', 'ELF', '5W-40', 'Синтетическое', '5 л', 0, 'ELF900'),
+(57, 'Castrol MAGNATEC 5W-30', 'Моторное масло Castrol 5W-30, 4 л', 'Масла и технические жидкости', '3250.00', NULL, 50, 'CAST567', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:50', 'oil', 'Castrol', '5W-30', 'Синтетическое', '4 л', 1, 'CAST567'),
+(58, 'Mobil 1 0W-40', 'Моторное масло Mobil 0W-40, 4 л', 'Масла и технические жидкости', '4450.00', NULL, 50, 'MOB1-0W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:00', 'oil', 'Mobil', '0W-40', 'Синтетическое', '4 л', 0, 'MOB1-0W40'),
+(59, 'Liqui Moly Molygen 5W-40', 'Моторное масло Liqui Moly 5W-40, 5 л', 'Масла и технические жидкости', '5120.00', NULL, 50, 'LM-MOLY', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:11', 'oil', 'Liqui Moly', '5W-40', 'Синтетическое', '5 л', 1, 'LM-MOLY'),
+(60, 'Shell Helix Ultra 5W-40', 'Моторное масло Shell 5W-40, 4 л', 'Масла и технические жидкости', '3980.00', NULL, 50, 'SHU-5W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:25', 'oil', 'Shell', '5W-40', 'Синтетическое', '4 л', 0, 'SHU-5W40'),
+(61, 'Total Quartz INEO ECS 5W-30', 'Моторное масло Total 5W-30, 5 л', 'Масла и технические жидкости', '4120.00', NULL, 0, 'TQ-ECS', 'uploads/products/696392655986c.png', NULL, 'out_of_stock', '2026-02-12 14:58:10', '2026-02-12 16:33:36', 'oil', 'Total', '5W-30', 'Синтетическое', '5 л', 0, 'TQ-ECS'),
+(62, 'Motul 8100 Eco-nergy 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '4670.00', NULL, 50, 'MOT-ECO', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:47', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', 1, 'MOT-ECO'),
+(63, 'ZIC X7 10W-40', 'Моторное масло ZIC 10W-40, 4 л', 'Масла и технические жидкости', '2450.00', NULL, 50, 'ZX7-10W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:58', 'oil', 'ZIC', '10W-40', 'Полусинтетическое', '4 л', 0, 'ZX7-10W40'),
+(64, 'ELF Evolution 700 STI 10W-40', 'Моторное масло ELF 10W-40, 4 л', 'Масла и технические жидкости', '2780.00', NULL, 50, 'ELF700', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:07', 'oil', 'ELF', '10W-40', 'Полусинтетическое', '4 л', 0, 'ELF700'),
+(65, 'Castrol EDGE 0W-20', 'Моторное масло Castrol 0W-20, 4 л', 'Масла и технические жидкости', '4120.00', NULL, 50, 'CAST-0W20', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:18', 'oil', 'Castrol', '0W-20', 'Синтетическое', '4 л', 1, 'CAST-0W20'),
+(66, 'Mobil Super 2000 10W-40', 'Моторное масло Mobil 10W-40, 4 л', 'Масла и технические жидкости', '2670.00', NULL, 50, 'MS2000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:27', 'oil', 'Mobil', '10W-40', 'Полусинтетическое', '4 л', 0, 'MS2000'),
+(67, 'Liqui Moly Leichtlauf 10W-40', 'Моторное масло Liqui Moly 10W-40, 5 л', 'Масла и технические жидкости', '3890.00', NULL, 50, 'LM-LEICHT', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:38', 'oil', 'Liqui Moly', '10W-40', 'Синтетическое', '5 л', 0, 'LM-LEICHT'),
+(68, 'Shell Helix HX8 5W-30', 'Моторное масло Shell 5W-30, 4 л', 'Масла и технические жидкости', '3450.00', NULL, 50, 'SH-HX8', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:49', 'oil', 'Shell', '5W-30', 'Синтетическое', '4 л', 1, 'SH-HX8'),
+(69, 'Total Quartz 7000 10W-40', 'Моторное масло Total 10W-40, 4 л', 'Масла и технические жидкости', '2780.00', NULL, 50, 'TQ7000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:00', 'oil', 'Total', '10W-40', 'Полусинтетическое', '4 л', 0, 'TQ7000'),
+(70, 'Motul 8100 X-clean+ 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '5120.00', NULL, 50, 'MOT-CLEAN+', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:12', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', 1, 'MOT-CLEAN+'),
+(71, 'ZIC X5 10W-40', 'Моторное масло ZIC 10W-40, 4 л', 'Масла и технические жидкости', '2230.00', NULL, 50, 'ZX5-10W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:22', 'oil', 'ZIC', '10W-40', 'Минеральное', '4 л', 0, 'ZX5-10W40'),
+(72, 'ELF Evolution SXR 5W-30', 'Моторное масло ELF 5W-30, 5 л', 'Масла и технические жидкости', '3980.00', NULL, 50, 'ELF-SXR', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:32', 'oil', 'ELF', '5W-30', 'Синтетическое', '5 л', 0, 'ELF-SXR');
 
 -- --------------------------------------------------------
 
@@ -914,7 +945,7 @@ ALTER TABLE `backup_logs`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT для таблицы `categories`
@@ -968,7 +999,7 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT для таблицы `remember_tokens`

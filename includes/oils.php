@@ -8,60 +8,6 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['u
     header("Location: ../files/logout.php");
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart']) && isset($_SESSION['loggedin'])) 
-{
-    $productId = $_POST['product_id'] ?? 0;
-    $productName = $_POST['product_name'] ?? '';
-    $productImage = $_POST['product_image'] ?? '../img/no-image.png';
-    $price = $_POST['price'] ?? 0;
-    $quantity = $_POST['quantity'] ?? 1;
-    
-    $username = $_SESSION['user'];
-    $userSql = "SELECT id_users FROM users WHERE CONCAT(surname_users, ' ', name_users, ' ', patronymic_users) = ? OR person_users = ?";
-    $userStmt = $conn->prepare($userSql);
-    $userStmt->bind_param("ss", $username, $username);
-    $userStmt->execute();
-    $userResult = $userStmt->get_result();
-    
-    if ($userResult->num_rows > 0) 
-    {
-        $userData = $userResult->fetch_assoc();
-        $userId = $userData['id_users'];
-        
-        if ($productName && $price > 0) 
-        {
-            $checkSql = "SELECT * FROM cart WHERE user_id = ? AND product_name = ?";
-            $checkStmt = $conn->prepare($checkSql);
-            $checkStmt->bind_param("is", $userId, $productName);
-            $checkStmt->execute();
-            $existingItem = $checkStmt->get_result()->fetch_assoc();
-            $checkStmt->close();
-            
-            if ($existingItem) 
-            {
-                $updateSql = "UPDATE cart SET quantity = quantity + ? WHERE id = ?";
-                $updateStmt = $conn->prepare($updateSql);
-                $updateStmt->bind_param("ii", $quantity, $existingItem['id']);
-                $updateStmt->execute();
-                $updateStmt->close();
-                $_SESSION['success_message'] = "Товар добавлен в корзину!";
-            } 
-            else 
-            {
-                $insertSql = "INSERT INTO cart (user_id, product_id, product_name, product_image, price, quantity) VALUES (?, ?, ?, ?, ?, ?)";
-                $insertStmt = $conn->prepare($insertSql);
-                $insertStmt->bind_param("iissdi", $userId, $productId, $productName, $productImage, $price, $quantity);
-                $insertStmt->execute();
-                $insertStmt->close();
-                $_SESSION['success_message'] = "Товар добавлен в корзину!";
-            }
-        }
-    }
-    
-    header("Location: " . $_SERVER['HTTP_REFERER']);
-    exit();
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $login = $_POST['login'];
@@ -108,32 +54,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
 
-$products = [
-    ['id' => 1, 'title' => 'Castrol EDGE 5W-30', 'art' => '15698E4', 'volume' => '4 л', 'price' => 3890, 'stock' => true, 'hit' => true, 'brand' => 'Castrol', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
-    ['id' => 2, 'title' => 'Mobil Super 3000 X1 5W-40', 'art' => '152343', 'volume' => '4 л', 'price' => 3450, 'stock' => true, 'hit' => false, 'brand' => 'Mobil', 'viscosity' => '5W-40', 'type' => 'Синтетическое'],
-    ['id' => 3, 'title' => 'Liqui Moly Special Tec AA 5W-30', 'art' => '1123DE', 'volume' => '5 л', 'price' => 4210, 'stock' => true, 'hit' => true, 'brand' => 'Liqui Moly', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
-    ['id' => 4, 'title' => 'Shell Helix HX7 10W-40', 'art' => '87654F', 'volume' => '4 л', 'price' => 2890, 'stock' => false, 'hit' => false, 'brand' => 'Shell', 'viscosity' => '10W-40', 'type' => 'Полусинтетическое'],
-    ['id' => 5, 'title' => 'Total Quartz 9000 5W-40', 'art' => 'TQ9000', 'volume' => '5 л', 'price' => 3650, 'stock' => true, 'hit' => false, 'brand' => 'Total', 'viscosity' => '5W-40', 'type' => 'Синтетическое'],
-    ['id' => 6, 'title' => 'Motul 8100 X-clean 5W-30', 'art' => 'M8100', 'volume' => '5 л', 'price' => 4890, 'stock' => true, 'hit' => true, 'brand' => 'Motul', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
-    ['id' => 7, 'title' => 'ZIC X9 5W-30', 'art' => 'ZX9-5W30', 'volume' => '4 л', 'price' => 2990, 'stock' => true, 'hit' => false, 'brand' => 'ZIC', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
-    ['id' => 8, 'title' => 'ELF Evolution 900 NF 5W-40', 'art' => 'ELF900', 'volume' => '5 л', 'price' => 3750, 'stock' => true, 'hit' => false, 'brand' => 'ELF', 'viscosity' => '5W-40', 'type' => 'Синтетическое'],
-    ['id' => 9, 'title' => 'Castrol MAGNATEC 5W-30', 'art' => 'CAST567', 'volume' => '4 л', 'price' => 3250, 'stock' => true, 'hit' => true, 'brand' => 'Castrol', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
-    ['id' => 10, 'title' => 'Mobil 1 0W-40', 'art' => 'MOB1-0W40', 'volume' => '4 л', 'price' => 4450, 'stock' => true, 'hit' => false, 'brand' => 'Mobil', 'viscosity' => '0W-40', 'type' => 'Синтетическое'],
-    ['id' => 11, 'title' => 'Liqui Moly Molygen 5W-40', 'art' => 'LM-MOLY', 'volume' => '5 л', 'price' => 5120, 'stock' => true, 'hit' => true, 'brand' => 'Liqui Moly', 'viscosity' => '5W-40', 'type' => 'Синтетическое'],
-    ['id' => 12, 'title' => 'Shell Helix Ultra 5W-40', 'art' => 'SHU-5W40', 'volume' => '4 л', 'price' => 3980, 'stock' => true, 'hit' => false, 'brand' => 'Shell', 'viscosity' => '5W-40', 'type' => 'Синтетическое'],
-    ['id' => 13, 'title' => 'Total Quartz INEO ECS 5W-30', 'art' => 'TQ-ECS', 'volume' => '5 л', 'price' => 4120, 'stock' => false, 'hit' => false, 'brand' => 'Total', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
-    ['id' => 14, 'title' => 'Motul 8100 Eco-nergy 5W-30', 'art' => 'MOT-ECO', 'volume' => '5 л', 'price' => 4670, 'stock' => true, 'hit' => true, 'brand' => 'Motul', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
-    ['id' => 15, 'title' => 'ZIC X7 10W-40', 'art' => 'ZX7-10W40', 'volume' => '4 л', 'price' => 2450, 'stock' => true, 'hit' => false, 'brand' => 'ZIC', 'viscosity' => '10W-40', 'type' => 'Полусинтетическое'],
-    ['id' => 16, 'title' => 'ELF Evolution 700 STI 10W-40', 'art' => 'ELF700', 'volume' => '4 л', 'price' => 2780, 'stock' => true, 'hit' => false, 'brand' => 'ELF', 'viscosity' => '10W-40', 'type' => 'Полусинтетическое'],
-    ['id' => 17, 'title' => 'Castrol EDGE 0W-20', 'art' => 'CAST-0W20', 'volume' => '4 л', 'price' => 4120, 'stock' => true, 'hit' => true, 'brand' => 'Castrol', 'viscosity' => '0W-20', 'type' => 'Синтетическое'],
-    ['id' => 18, 'title' => 'Mobil Super 2000 10W-40', 'art' => 'MS2000', 'volume' => '4 л', 'price' => 2670, 'stock' => true, 'hit' => false, 'brand' => 'Mobil', 'viscosity' => '10W-40', 'type' => 'Полусинтетическое'],
-    ['id' => 19, 'title' => 'Liqui Moly Leichtlauf 10W-40', 'art' => 'LM-LEICHT', 'volume' => '5 л', 'price' => 3890, 'stock' => true, 'hit' => false, 'brand' => 'Liqui Moly', 'viscosity' => '10W-40', 'type' => 'Синтетическое'],
-    ['id' => 20, 'title' => 'Shell Helix HX8 5W-30', 'art' => 'SH-HX8', 'volume' => '4 л', 'price' => 3450, 'stock' => true, 'hit' => true, 'brand' => 'Shell', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
-    ['id' => 21, 'title' => 'Total Quartz 7000 10W-40', 'art' => 'TQ7000', 'volume' => '4 л', 'price' => 2780, 'stock' => true, 'hit' => false, 'brand' => 'Total', 'viscosity' => '10W-40', 'type' => 'Полусинтетическое'],
-    ['id' => 22, 'title' => 'Motul 8100 X-clean+ 5W-30', 'art' => 'MOT-CLEAN+', 'volume' => '5 л', 'price' => 5120, 'stock' => true, 'hit' => true, 'brand' => 'Motul', 'viscosity' => '5W-30', 'type' => 'Синтетическое'],
-    ['id' => 23, 'title' => 'ZIC X5 10W-40', 'art' => 'ZX5-10W40', 'volume' => '4 л', 'price' => 2230, 'stock' => true, 'hit' => false, 'brand' => 'ZIC', 'viscosity' => '10W-40', 'type' => 'Минеральное'],
-    ['id' => 24, 'title' => 'ELF Evolution SXR 5W-30', 'art' => 'ELF-SXR', 'volume' => '5 л', 'price' => 3980, 'stock' => true, 'hit' => false, 'brand' => 'ELF', 'viscosity' => '5W-30', 'type' => 'Синтетическое']
-];
+$sql = "SELECT id,name as title, article as art, volume, price, CASE WHEN quantity > 0 THEN 1 ELSE 0 END as stock, hit, brand, viscosity, oil_type as type, volume, image as product_image FROM products WHERE product_type = 'oil' AND status = 'available' ORDER BY id";
+$products_result = $conn->query($sql);
+$products = [];
+
+while ($row = $products_result->fetch_assoc()) 
+{
+    $products[] = $row;
+}
 
 $items_per_page = 8;
 $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
@@ -503,12 +431,13 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                                     if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true)
                                     {
                                         echo '
-                                        <form method="POST" class="add-to-cart-form">
+                                        <form method="POST" action="cart.php" class="add-to-cart-form">
                                             <input type="hidden" name="product_id" value="'.$product['id'].'">
                                             <input type="hidden" name="product_name" value="'.htmlspecialchars($product['title']).'">
                                             <input type="hidden" name="product_image" value="../img/no-image.png">
                                             <input type="hidden" name="price" value="'.$product['price'].'">
                                             <input type="hidden" name="quantity" value="1">
+                                            <input type="hidden" name="product_type" value="oil">
                                             <button type="submit" name="add_to_cart" class="btn btn-sm w-100 '.($product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled').' add-to-cart-btn">
                                                 <span class="btn-text">
                                                     <i class="bi bi-cart-plus"></i> В корзину
@@ -524,9 +453,9 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                                         </button>';
                                     }
                                     echo '
-                                    <button class="btn btn-sm btn-outline-secondary">
+                                    <a href="oil_detail.php?id=' . $product['id'] . '&back=' . urlencode("oils.php?" . buildQueryString(['page' => $current_page, 'search' => $search_query, 'brand' => $brand_filter, 'viscosity' => $viscosity_filter, 'type' => $type_filter, 'volume' => $volume_filter])) . '" class="btn btn-sm btn-outline-secondary">
                                         <i class="bi bi-info-circle"></i> Подробнее
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -1083,9 +1012,10 @@ document.addEventListener('DOMContentLoaded', function()
         formData.append('product_image', '../img/no-image.png');
         formData.append('price', productPrice);
         formData.append('quantity', '1');
+        formData.append('product_type', 'oil');
         formData.append('add_to_cart', '1');
         
-        fetch('oils.php', {
+        fetch('ajax_add_to_cart.php', {
             method: 'POST',
             body: formData,
             headers: {
@@ -1269,7 +1199,7 @@ document.addEventListener('DOMContentLoaded', function()
             
             let formData = new FormData(this);
             
-            fetch('oils.php', {
+            fetch('ajax_add_to_cart.php', {
                 method: 'POST',
                 body: formData,
                 headers: {

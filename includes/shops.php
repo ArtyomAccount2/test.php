@@ -327,7 +327,7 @@ unset($_SESSION['form_data']);
                         </tr>
                     </thead>
                     <tbody id="desktop-shops-body">
-                        <tr class="shop-row desktop-row" data-services="service,tire,chemistry,tuning">
+                        <tr class="shop-row desktop-row" data-services="service,tire,tuning">
                             <td>
                                 <strong>Центральный</strong>
                                 <div class="text-secondary small">Флагманский</div>
@@ -345,7 +345,7 @@ unset($_SESSION['form_data']);
                                 <span class="badge bg-success">Есть парковка</span>
                             </td>
                         </tr>
-                        <tr class="shop-row desktop-row" data-services="service,tire,chemistry">
+                        <tr class="shop-row desktop-row" data-services="service,tire">
                             <td>
                                 <strong>Московский</strong>
                                 <div class="text-secondary small">Крупный</div>
@@ -362,7 +362,7 @@ unset($_SESSION['form_data']);
                                 <span class="badge bg-success">Есть парковка</span>
                             </td>
                         </tr>
-                        <tr class="shop-row desktop-row" data-services="service,tire">
+                        <tr class="shop-row desktop-row" data-services="tire">
                             <td>
                                 <strong>Горького</strong>
                                 <div class="text-secondary small">Стандарт</div>
@@ -394,7 +394,7 @@ unset($_SESSION['form_data']);
                                 <span class="badge bg-success">Есть парковка</span>
                             </td>
                         </tr>
-                        <tr class="shop-row desktop-row" data-services="service,tire,chemistry,tuning">
+                        <tr class="shop-row desktop-row" data-services="service,tire,tuning">
                             <td>
                                 <strong>Советский</strong>
                                 <div class="text-secondary small">Крупный</div>

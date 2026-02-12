@@ -55,44 +55,13 @@ $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
 
 $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$back_url = 'assortment.php';
+$back_url = 'oils.php';
 
-if (isset($_GET['back'])) 
-{
+if (isset($_GET['back'])) {
     $back_url = urldecode($_GET['back']);
-} 
-else if (isset($_SESSION['last_assortment_page'])) 
-{
-    $last_page = $_SESSION['last_assortment_page'];
-    $query_params = [];
-    
-    if ($last_page['page'] > 1) 
-    {
-        $query_params['page'] = $last_page['page'];
-    }
-    
-    if (!empty($last_page['search'])) 
-    {
-        $query_params['search'] = $last_page['search'];
-    }
-    
-    if (!empty($last_page['category']) && $last_page['category'] !== 'все категории') 
-    {
-        $query_params['category'] = $last_page['category'];
-    }
-    
-    if (!empty($query_params)) 
-    {
-        $back_url = 'assortment.php?' . http_build_query($query_params);
-    }
 }
 
-if (!isset($_SESSION['redirect_url'])) 
-{
-    $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
-}
-
-$sql = "SELECT * FROM products WHERE id = ? AND product_type = 'part' AND status = 'available'";
+$sql = "SELECT * FROM products WHERE id = ? AND product_type = 'oil' AND status = 'available'";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
@@ -100,13 +69,10 @@ $result = $stmt->get_result();
 $product = $result->fetch_assoc();
 $stmt->close();
 
-if (!$product) 
-{
+if (!$product) {
     header("Location: " . $back_url);
     exit();
 }
-
-$date = date('d F Y', strtotime($product['created_at']));
 
 $badge = '';
 $title_lower = strtolower($product['name']);
@@ -257,16 +223,6 @@ if (!empty($product['old_price']) && $product['old_price'] > 0 && $product['pric
                                                 <button type="submit" name="add_to_cart" class="btn btn-primary btn-lg px-4 add-to-cart-btn">
                                                     <i class="bi bi-cart-plus me-2"></i>
                                                     <span class="btn-text">Добавить в корзину</span>
-                                                </button>
-                                            </form>
-                                            <form method="POST" action="../profile.php" class="d-inline ms-2">
-                                                <input type="hidden" name="wishlist_action" value="1">
-                                                <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['name']) ?>">
-                                                <input type="hidden" name="product_image" value="<?= !empty($product['image']) ? htmlspecialchars($product['image']) : '../img/no-image.png' ?>">
-                                                <input type="hidden" name="price" value="<?= $product['price'] ?>">
-                                                <input type="hidden" name="back_url" value="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>">
-                                                <button type="submit" class="btn btn-outline-danger btn-lg px-4">
-                                                    <i class="bi bi-heart"></i>
                                                 </button>
                                             </form>
                                         <?php 

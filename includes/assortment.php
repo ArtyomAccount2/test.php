@@ -211,7 +211,7 @@ while ($cat_row = $categories_result->fetch_assoc())
     $available_categories[] = $cat_row['category'];
 }
 
-$sql = "SELECT * FROM products WHERE status = 'available'";
+$sql = "SELECT * FROM products WHERE status = 'available' AND product_type = 'part'";
 $params = [];
 $types = "";
 
@@ -233,7 +233,7 @@ if (!empty($category_filter) && $category_filter !== 'все категории'
     $types .= "s";
 }
 
-$count_sql = "SELECT COUNT(*) as total FROM products WHERE status = 'available'";
+$count_sql = "SELECT COUNT(*) as total FROM products WHERE status = 'available' AND product_type = 'part'";
 $count_params = [];
 $count_types = "";
 

@@ -40,19 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
     if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
     {
-        $_SESSION['loggedin'] = true;
-        $_SESSION['user'] = 'admin';
-        unset($_SESSION['login_error']);
-        unset($_SESSION['error_message']);
-
-        if ($rememberMe) 
-        {
-            $token = bin2hex(random_bytes(32));
-            $expires = date('Y-m-d H:i:s', time() + 30 * 24 * 3600);
-            setcookie('remember_token', $token, time() + 30 * 24 * 3600, '/', '', false, true);
-        }
-        
-        header("Location: admin.php?section=users_list");
+        $_SESSION['login_error'] = true;
+        $_SESSION['error_message'] = "Неверный логин или пароль!";
+        header("Location: " . $_SERVER['REQUEST_URI']);
         exit();
     }
     else
