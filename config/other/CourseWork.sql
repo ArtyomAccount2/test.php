@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 12 2026 г., 19:36
+-- Время создания: Фев 14 2026 г., 20:02
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -101,8 +101,8 @@ INSERT INTO `backup_logs` (`id`, `filename`, `file_size`, `status`, `source`, `a
 CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `product_type` varchar(50) NOT NULL DEFAULT 'part' COMMENT 'part - запчасть, oil - масло',
+  `product_id` int(11) NOT NULL,
+  `product_type` varchar(50) DEFAULT NULL COMMENT 'part - запчасть, oil - масло, accessory - аксессуар',
   `product_name` varchar(255) NOT NULL,
   `product_image` varchar(255) DEFAULT 'no-image.png',
   `price` decimal(10,2) NOT NULL,
@@ -116,13 +116,14 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `product_id`, `product_type`, `product_name`, `product_image`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
-(20, 3, 0, 'part', 'Фильтр масляный Audi A4 B8 2.0 TFSI', '../img/no-image.png', '1250.00', 1, '2026-01-05 15:19:41', '2026-01-05 15:19:41'),
-(21, 3, 0, 'part', 'Тормозные колодки Audi A6 C7', '../img/no-image.png', '3890.00', 1, '2026-01-05 15:19:42', '2026-01-05 15:19:42'),
-(22, 3, 0, 'part', 'Свечи зажигания Audi Q5 2.0 TDI', '../img/no-image.png', '850.00', 1, '2026-01-05 15:19:43', '2026-01-05 15:19:43'),
-(23, 3, 0, 'part', 'Сцепление Audi A3 8V', '../img/no-image.png', '12500.00', 2, '2026-01-05 15:19:43', '2026-01-05 15:19:50'),
-(39, 2, 0, 'part', 'Тормозные колодки Audi A6 C7', '../img/no-image.png', '3890.00', 2, '2026-01-23 18:12:11', '2026-02-12 15:53:50'),
-(40, 2, 0, 'part', 'Сцепление Audi A3 8V', '../img/no-image.png', '12500.00', 2, '2026-01-23 18:12:14', '2026-01-23 18:12:16'),
-(41, 2, 6, 'part', 'Motul 8100 X-clean 5W-30', '../img/no-image.png', '4890.00', 1, '2026-01-23 18:12:30', '2026-01-23 18:12:30');
+(8, 2, 2, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', 2, '2026-02-13 16:19:59', '2026-02-14 15:51:46'),
+(9, 2, 3, 'part', 'Свечи зажигания Audi Q5 2.0 TDI', 'uploads/products/696392655986c.png', '850.00', 2, '2026-02-13 16:20:00', '2026-02-13 16:25:41'),
+(12, 2, 51, 'oil', 'Liqui Moly Special Tec AA 5W-30', 'uploads/products/696392655986c.png', '4210.00', 1, '2026-02-13 16:23:04', '2026-02-13 16:23:04'),
+(20, 3, 2, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', 1, '2026-02-13 16:28:12', '2026-02-13 16:28:12'),
+(21, 3, 12, 'part', 'Тормозные колодки BMW 1 series F20', 'uploads/products/696392655986c.png', '5200.00', 1, '2026-02-13 16:28:13', '2026-02-13 16:28:13'),
+(22, 3, 50, 'oil', 'Mobil Super 3000 X1 5W-40', 'uploads/products/696392655986c.png', '3450.00', 1, '2026-02-13 16:28:22', '2026-02-13 16:28:22'),
+(23, 3, 53, 'oil', 'Total Quartz 9000 5W-40', 'uploads/products/696392655986c.png', '3650.00', 1, '2026-02-13 16:28:24', '2026-02-13 16:28:24'),
+(24, 3, 104, 'accessory', 'Камера заднего вида', 'uploads/products/696392655986c.png', '4290.00', 1, '2026-02-13 16:28:28', '2026-02-13 16:28:28');
 
 -- --------------------------------------------------------
 
@@ -290,7 +291,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `order_number`, `user_id`, `total_amount`, `status`, `order_date`, `shipping_address`, `phone`, `notes`) VALUES
-(1, 'ORD-20260105-5A3C6597', 2, '41700.00', 'pending', '2026-01-05 15:00:31', '', '89113456789', '');
+(1, 'ORD-20260105-5A3C6597', 2, '41700.00', 'pending', '2026-01-05 15:00:31', '', '89113456789', ''),
+(2, 'ORD-20260213-AAC10A70', 3, '23330.00', 'cancelled', '2026-02-13 16:27:06', '', '89114567891', '');
 
 -- --------------------------------------------------------
 
@@ -315,7 +317,12 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_name`, `pric
 (1, 1, 0, 'Генератор Audi A4 B9', '15600.00', 1),
 (2, 1, 0, 'Ремень ГРМ BMW 7 series G11', '3200.00', 1),
 (3, 1, 0, 'Аккумулятор BMW 5 series F10', '12500.00', 1),
-(4, 1, 0, 'Тормозные колодки BMW 1 series F20', '5200.00', 2);
+(4, 1, 0, 'Тормозные колодки BMW 1 series F20', '5200.00', 2),
+(5, 2, 98, 'Чехол на сиденье с подогревом', '6590.00', 1),
+(6, 2, 56, 'ELF Evolution 900 NF 5W-40', '3750.00', 2),
+(7, 2, 53, 'Total Quartz 9000 5W-40', '3650.00', 1),
+(8, 2, 3, 'Свечи зажигания Audi Q5 2.0 TDI', '850.00', 2),
+(9, 2, 2, 'Тормозные колодки Audi A6 C7', '3890.00', 1);
 
 -- --------------------------------------------------------
 
@@ -338,7 +345,8 @@ CREATE TABLE `password_resets` (
 --
 
 INSERT INTO `password_resets` (`id`, `user_id`, `token`, `short_token`, `expires_at`, `used`, `created_at`) VALUES
-(20, 4, 'aa261e316f214a318e91e660bd08ccc86a73def1d906eeb0fbc0e71d751b3d69', 'iZ6U6x', '2026-01-13 12:55:17', 1, '2026-01-13 08:55:17');
+(20, 4, 'aa261e316f214a318e91e660bd08ccc86a73def1d906eeb0fbc0e71d751b3d69', 'iZ6U6x', '2026-01-13 12:55:17', 1, '2026-01-13 08:55:17'),
+(23, 2, 'b9e8ef21647e0966957767b7ca64426477d61895b924179635a936f99227134b', 'g2wk8b', '2026-02-12 21:52:07', 0, '2026-02-12 17:52:08');
 
 -- --------------------------------------------------------
 
@@ -360,7 +368,7 @@ CREATE TABLE `products` (
   `status` varchar(20) DEFAULT 'available',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `product_type` varchar(50) NOT NULL DEFAULT 'part' COMMENT 'part - запчасть, oil - масло',
+  `product_type` varchar(50) DEFAULT NULL COMMENT 'part - запчасть, oil - масло, accessory - аксессуар',
   `brand` varchar(100) DEFAULT NULL,
   `viscosity` varchar(50) DEFAULT NULL,
   `oil_type` varchar(50) DEFAULT NULL,
@@ -422,30 +430,78 @@ INSERT INTO `products` (`id`, `name`, `description`, `category`, `price`, `old_p
 (46, 'Тормозные диски вентилируемые', 'Вентилируемые тормозные диски', 'тормозная система', '7800.00', NULL, 12, 'VENT-DISCS', 'uploads/products/696392655986c.png', 'Новинка', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
 (47, 'Цапфа поворотная', 'Поворотная цапфа передняя', 'ходовая часть', '4500.00', NULL, 14, 'KNUCKLE-001', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
 (48, 'Сальники коленвала комплект', 'Комплект сальников коленчатого вала', 'двигатель', '3200.00', NULL, 18, 'SEAL-KIT', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 16:31:56', '2026-02-08 16:31:56', 'part', NULL, NULL, NULL, NULL, 0, NULL),
-(49, 'Castrol EDGE 5W-30', 'Моторное масло Castrol 5W-30, 4 л', 'Масла и технические жидкости', '3890.00', NULL, 50, '15698E4', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:31:24', 'oil', 'Castrol', '5W-30', 'Синтетическое', '4 л', 1, '15698E4'),
-(50, 'Mobil Super 3000 X1 5W-40', 'Моторное масло Mobil 5W-40, 4 л', 'Масла и технические жидкости', '3450.00', NULL, 50, '152343', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:31:37', 'oil', 'Mobil', '5W-40', 'Синтетическое', '4 л', 0, '152343'),
-(51, 'Liqui Moly Special Tec AA 5W-30', 'Моторное масло Liqui Moly 5W-30, 5 л', 'Масла и технические жидкости', '4210.00', NULL, 50, '1123DE', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:31:52', 'oil', 'Liqui Moly', '5W-30', 'Синтетическое', '5 л', 1, '1123DE'),
-(52, 'Shell Helix HX7 10W-40', 'Моторное масло Shell 10W-40, 4 л', 'Масла и технические жидкости', '2890.00', NULL, 0, '87654F', 'uploads/products/696392655986c.png', NULL, 'out_of_stock', '2026-02-12 14:58:10', '2026-02-12 16:32:01', 'oil', 'Shell', '10W-40', 'Полусинтетическое', '4 л', 0, '87654F'),
-(53, 'Total Quartz 9000 5W-40', 'Моторное масло Total 5W-40, 5 л', 'Масла и технические жидкости', '3650.00', NULL, 50, 'TQ9000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:11', 'oil', 'Total', '5W-40', 'Синтетическое', '5 л', 0, 'TQ9000'),
-(54, 'Motul 8100 X-clean 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '4890.00', NULL, 50, 'M8100', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:20', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', 1, 'M8100'),
-(55, 'ZIC X9 5W-30', 'Моторное масло ZIC 5W-30, 4 л', 'Масла и технические жидкости', '2990.00', NULL, 50, 'ZX9-5W30', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:29', 'oil', 'ZIC', '5W-30', 'Синтетическое', '4 л', 0, 'ZX9-5W30'),
-(56, 'ELF Evolution 900 NF 5W-40', 'Моторное масло ELF 5W-40, 5 л', 'Масла и технические жидкости', '3750.00', NULL, 50, 'ELF900', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:40', 'oil', 'ELF', '5W-40', 'Синтетическое', '5 л', 0, 'ELF900'),
-(57, 'Castrol MAGNATEC 5W-30', 'Моторное масло Castrol 5W-30, 4 л', 'Масла и технические жидкости', '3250.00', NULL, 50, 'CAST567', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:50', 'oil', 'Castrol', '5W-30', 'Синтетическое', '4 л', 1, 'CAST567'),
-(58, 'Mobil 1 0W-40', 'Моторное масло Mobil 0W-40, 4 л', 'Масла и технические жидкости', '4450.00', NULL, 50, 'MOB1-0W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:00', 'oil', 'Mobil', '0W-40', 'Синтетическое', '4 л', 0, 'MOB1-0W40'),
-(59, 'Liqui Moly Molygen 5W-40', 'Моторное масло Liqui Moly 5W-40, 5 л', 'Масла и технические жидкости', '5120.00', NULL, 50, 'LM-MOLY', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:11', 'oil', 'Liqui Moly', '5W-40', 'Синтетическое', '5 л', 1, 'LM-MOLY'),
-(60, 'Shell Helix Ultra 5W-40', 'Моторное масло Shell 5W-40, 4 л', 'Масла и технические жидкости', '3980.00', NULL, 50, 'SHU-5W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:25', 'oil', 'Shell', '5W-40', 'Синтетическое', '4 л', 0, 'SHU-5W40'),
-(61, 'Total Quartz INEO ECS 5W-30', 'Моторное масло Total 5W-30, 5 л', 'Масла и технические жидкости', '4120.00', NULL, 0, 'TQ-ECS', 'uploads/products/696392655986c.png', NULL, 'out_of_stock', '2026-02-12 14:58:10', '2026-02-12 16:33:36', 'oil', 'Total', '5W-30', 'Синтетическое', '5 л', 0, 'TQ-ECS'),
-(62, 'Motul 8100 Eco-nergy 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '4670.00', NULL, 50, 'MOT-ECO', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:47', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', 1, 'MOT-ECO'),
-(63, 'ZIC X7 10W-40', 'Моторное масло ZIC 10W-40, 4 л', 'Масла и технические жидкости', '2450.00', NULL, 50, 'ZX7-10W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:58', 'oil', 'ZIC', '10W-40', 'Полусинтетическое', '4 л', 0, 'ZX7-10W40'),
-(64, 'ELF Evolution 700 STI 10W-40', 'Моторное масло ELF 10W-40, 4 л', 'Масла и технические жидкости', '2780.00', NULL, 50, 'ELF700', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:07', 'oil', 'ELF', '10W-40', 'Полусинтетическое', '4 л', 0, 'ELF700'),
-(65, 'Castrol EDGE 0W-20', 'Моторное масло Castrol 0W-20, 4 л', 'Масла и технические жидкости', '4120.00', NULL, 50, 'CAST-0W20', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:18', 'oil', 'Castrol', '0W-20', 'Синтетическое', '4 л', 1, 'CAST-0W20'),
-(66, 'Mobil Super 2000 10W-40', 'Моторное масло Mobil 10W-40, 4 л', 'Масла и технические жидкости', '2670.00', NULL, 50, 'MS2000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:27', 'oil', 'Mobil', '10W-40', 'Полусинтетическое', '4 л', 0, 'MS2000'),
-(67, 'Liqui Moly Leichtlauf 10W-40', 'Моторное масло Liqui Moly 10W-40, 5 л', 'Масла и технические жидкости', '3890.00', NULL, 50, 'LM-LEICHT', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:38', 'oil', 'Liqui Moly', '10W-40', 'Синтетическое', '5 л', 0, 'LM-LEICHT'),
-(68, 'Shell Helix HX8 5W-30', 'Моторное масло Shell 5W-30, 4 л', 'Масла и технические жидкости', '3450.00', NULL, 50, 'SH-HX8', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:49', 'oil', 'Shell', '5W-30', 'Синтетическое', '4 л', 1, 'SH-HX8'),
-(69, 'Total Quartz 7000 10W-40', 'Моторное масло Total 10W-40, 4 л', 'Масла и технические жидкости', '2780.00', NULL, 50, 'TQ7000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:00', 'oil', 'Total', '10W-40', 'Полусинтетическое', '4 л', 0, 'TQ7000'),
-(70, 'Motul 8100 X-clean+ 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '5120.00', NULL, 50, 'MOT-CLEAN+', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:12', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', 1, 'MOT-CLEAN+'),
-(71, 'ZIC X5 10W-40', 'Моторное масло ZIC 10W-40, 4 л', 'Масла и технические жидкости', '2230.00', NULL, 50, 'ZX5-10W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:22', 'oil', 'ZIC', '10W-40', 'Минеральное', '4 л', 0, 'ZX5-10W40'),
-(72, 'ELF Evolution SXR 5W-30', 'Моторное масло ELF 5W-30, 5 л', 'Масла и технические жидкости', '3980.00', NULL, 50, 'ELF-SXR', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:32', 'oil', 'ELF', '5W-30', 'Синтетическое', '5 л', 0, 'ELF-SXR');
+(49, 'Castrol EDGE 5W-30', 'Моторное масло Castrol 5W-30, 4 л', 'Масла и технические жидкости', '3890.00', NULL, 50, '15698E4', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:31:24', 'oil', 'Castrol', '5W-30', 'Синтетическое', '4 л', 1, NULL),
+(50, 'Mobil Super 3000 X1 5W-40', 'Моторное масло Mobil 5W-40, 4 л', 'Масла и технические жидкости', '3450.00', NULL, 50, '152343', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:31:37', 'oil', 'Mobil', '5W-40', 'Синтетическое', '4 л', 0, NULL),
+(51, 'Liqui Moly Special Tec AA 5W-30', 'Моторное масло Liqui Moly 5W-30, 5 л', 'Масла и технические жидкости', '4210.00', NULL, 50, '1123DE', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:31:52', 'oil', 'Liqui Moly', '5W-30', 'Синтетическое', '5 л', 1, NULL),
+(52, 'Shell Helix HX7 10W-40', 'Моторное масло Shell 10W-40, 4 л', 'Масла и технические жидкости', '2890.00', NULL, 0, '87654F', 'uploads/products/696392655986c.png', NULL, 'out_of_stock', '2026-02-12 14:58:10', '2026-02-12 16:32:01', 'oil', 'Shell', '10W-40', 'Полусинтетическое', '4 л', 0, NULL),
+(53, 'Total Quartz 9000 5W-40', 'Моторное масло Total 5W-40, 5 л', 'Масла и технические жидкости', '3650.00', NULL, 50, 'TQ9000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:11', 'oil', 'Total', '5W-40', 'Синтетическое', '5 л', 0, NULL),
+(54, 'Motul 8100 X-clean 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '4890.00', NULL, 50, 'M8100', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:20', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', 1, NULL),
+(55, 'ZIC X9 5W-30', 'Моторное масло ZIC 5W-30, 4 л', 'Масла и технические жидкости', '2990.00', NULL, 50, 'ZX9-5W30', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:29', 'oil', 'ZIC', '5W-30', 'Синтетическое', '4 л', 0, NULL),
+(56, 'ELF Evolution 900 NF 5W-40', 'Моторное масло ELF 5W-40, 5 л', 'Масла и технические жидкости', '3750.00', NULL, 50, 'ELF900', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:40', 'oil', 'ELF', '5W-40', 'Синтетическое', '5 л', 0, NULL),
+(57, 'Castrol MAGNATEC 5W-30', 'Моторное масло Castrol 5W-30, 4 л', 'Масла и технические жидкости', '3250.00', NULL, 50, 'CAST567', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:32:50', 'oil', 'Castrol', '5W-30', 'Синтетическое', '4 л', 1, NULL),
+(58, 'Mobil 1 0W-40', 'Моторное масло Mobil 0W-40, 4 л', 'Масла и технические жидкости', '4450.00', NULL, 50, 'MOB1-0W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:00', 'oil', 'Mobil', '0W-40', 'Синтетическое', '4 л', 0, NULL),
+(59, 'Liqui Moly Molygen 5W-40', 'Моторное масло Liqui Moly 5W-40, 5 л', 'Масла и технические жидкости', '5120.00', NULL, 50, 'LM-MOLY', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:11', 'oil', 'Liqui Moly', '5W-40', 'Синтетическое', '5 л', 1, NULL),
+(60, 'Shell Helix Ultra 5W-40', 'Моторное масло Shell 5W-40, 4 л', 'Масла и технические жидкости', '3980.00', NULL, 50, 'SHU-5W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:25', 'oil', 'Shell', '5W-40', 'Синтетическое', '4 л', 0, NULL),
+(61, 'Total Quartz INEO ECS 5W-30', 'Моторное масло Total 5W-30, 5 л', 'Масла и технические жидкости', '4120.00', NULL, 0, 'TQ-ECS', 'uploads/products/696392655986c.png', NULL, 'out_of_stock', '2026-02-12 14:58:10', '2026-02-12 16:33:36', 'oil', 'Total', '5W-30', 'Синтетическое', '5 л', 0, NULL),
+(62, 'Motul 8100 Eco-nergy 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '4670.00', NULL, 50, 'MOT-ECO', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:47', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', 1, NULL),
+(63, 'ZIC X7 10W-40', 'Моторное масло ZIC 10W-40, 4 л', 'Масла и технические жидкости', '2450.00', NULL, 50, 'ZX7-10W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:33:58', 'oil', 'ZIC', '10W-40', 'Полусинтетическое', '4 л', 0, NULL),
+(64, 'ELF Evolution 700 STI 10W-40', 'Моторное масло ELF 10W-40, 4 л', 'Масла и технические жидкости', '2780.00', NULL, 50, 'ELF700', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:07', 'oil', 'ELF', '10W-40', 'Полусинтетическое', '4 л', 0, NULL),
+(65, 'Castrol EDGE 0W-20', 'Моторное масло Castrol 0W-20, 4 л', 'Масла и технические жидкости', '4120.00', NULL, 50, 'CAST-0W20', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:18', 'oil', 'Castrol', '0W-20', 'Синтетическое', '4 л', 1, NULL),
+(66, 'Mobil Super 2000 10W-40', 'Моторное масло Mobil 10W-40, 4 л', 'Масла и технические жидкости', '2670.00', NULL, 50, 'MS2000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:27', 'oil', 'Mobil', '10W-40', 'Полусинтетическое', '4 л', 0, NULL),
+(67, 'Liqui Moly Leichtlauf 10W-40', 'Моторное масло Liqui Moly 10W-40, 5 л', 'Масла и технические жидкости', '3890.00', NULL, 50, 'LM-LEICHT', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:38', 'oil', 'Liqui Moly', '10W-40', 'Синтетическое', '5 л', 0, NULL),
+(68, 'Shell Helix HX8 5W-30', 'Моторное масло Shell 5W-30, 4 л', 'Масла и технические жидкости', '3450.00', NULL, 50, 'SH-HX8', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:34:49', 'oil', 'Shell', '5W-30', 'Синтетическое', '4 л', 1, NULL),
+(69, 'Total Quartz 7000 10W-40', 'Моторное масло Total 10W-40, 4 л', 'Масла и технические жидкости', '2780.00', NULL, 50, 'TQ7000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:00', 'oil', 'Total', '10W-40', 'Полусинтетическое', '4 л', 0, NULL),
+(70, 'Motul 8100 X-clean+ 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '5120.00', NULL, 50, 'MOT-CLEAN+', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:12', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', 1, NULL),
+(71, 'ZIC X5 10W-40', 'Моторное масло ZIC 10W-40, 4 л', 'Масла и технические жидкости', '2230.00', NULL, 50, 'ZX5-10W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:22', 'oil', 'ZIC', '10W-40', 'Минеральное', '4 л', 0, NULL),
+(72, 'ELF Evolution SXR 5W-30', 'Моторное масло ELF 5W-30, 5 л', 'Масла и технические жидкости', '3980.00', NULL, 50, 'ELF-SXR', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 14:58:10', '2026-02-12 16:35:32', 'oil', 'ELF', '5W-30', 'Синтетическое', '5 л', 0, NULL),
+(73, 'Чехлы на сиденья Premium', 'Качественные автомобильные чехлы из экокожи', 'Для салона', '4290.00', '5050.00', 50, 'ACS-001', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'AutoStyle', NULL, NULL, NULL, 1, NULL),
+(74, 'Коврики в салон 3D', 'Трехмерные коврики для защиты салона', 'Для салона', '6790.00', '0.00', 45, 'ACS-002', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'WeatherTech', NULL, NULL, NULL, 1, NULL),
+(75, 'Органайзер для багажника', 'Удобный органайзер для багажного отделения', 'Для салона', '3490.00', '0.00', 60, 'ACS-003', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'CarMate', NULL, NULL, NULL, 0, NULL),
+(76, 'Ароматизатор CS-X3', 'Автомобильный ароматизатор с запахом свежести', 'Для салона', '790.00', '0.00', 100, 'ACS-004', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Air Spencer', NULL, NULL, NULL, 1, NULL),
+(77, 'Автохолодильник 12V', 'Портативный автомобильный холодильник', 'Для салона', '8990.00', '10500.00', 20, 'ACS-005', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'CoolMaster', NULL, NULL, NULL, 0, NULL),
+(78, 'Видеорегистратор 4K', 'Автомобильный видеорегистратор с записью 4K', 'Электроника', '12490.00', '0.00', 30, 'ACS-006', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'RoadEye', NULL, NULL, NULL, 1, NULL),
+(79, 'Чехол на руль из кожи', 'Кожаный чехол для рулевого колеса', 'Для салона', '2190.00', '0.00', 70, 'ACS-007', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'SteeringPro', NULL, NULL, NULL, 1, NULL),
+(80, 'Компрессор автомобильный', 'Автомобильный компрессор для подкачки шин', 'Электроника', '3590.00', '4490.00', 40, 'ACS-008', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'AirForce', NULL, NULL, NULL, 0, NULL),
+(81, 'Держатель магнитный', 'Магнитный держатель для телефона в авто', 'Электроника', '1290.00', '0.00', 80, 'ACS-009', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'PhoneMount', NULL, NULL, NULL, 0, NULL),
+(82, 'Парктроник 8 датчиков', 'Парковочный радар с 8 датчиками', 'Электроника', '7890.00', '0.00', 25, 'ACS-010', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'ParkMaster', NULL, NULL, NULL, 1, NULL),
+(83, 'Автоодеяло с подогревом', 'Одеяло для автомобиля с подогревом', 'Для салона', '5490.00', '0.00', 35, 'ACS-011', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'ComfortCar', NULL, NULL, NULL, 1, NULL),
+(84, 'Набор автомобильных инструментов', 'Универсальный набор инструментов для авто', 'Для экстерьера', '6990.00', '8200.00', 30, 'ACS-012', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'ToolPro', NULL, NULL, NULL, 0, NULL),
+(85, 'Воск для полировки кузова', 'Профессиональный воск для полировки', 'Уход за авто', '1890.00', '0.00', 60, 'ACS-013', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Meguire\'s', NULL, NULL, NULL, 0, NULL),
+(86, 'Щетки стеклоочистителя', 'Комплект стеклоочистителей Bosch', 'Для экстерьера', '2490.00', '2990.00', 50, 'ACS-014', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Bosch', NULL, NULL, NULL, 0, NULL),
+(87, 'Чехол на автомобиль', 'Защитный чехол для всего автомобиля', 'Для экстерьера', '8990.00', '0.00', 20, 'ACS-015', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'CoverKing', NULL, NULL, NULL, 1, NULL),
+(88, 'Шумоизоляция салона', 'Комплект для шумоизоляции автомобиля', 'Для салона', '12990.00', '0.00', 25, 'ACS-016', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'NoiseGuard', NULL, NULL, NULL, 1, NULL),
+(89, 'Автосканер OBD2', 'Диагностический сканер для автомобиля', 'Электроника', '4590.00', '0.00', 40, 'ACS-017', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Launch', NULL, NULL, NULL, 0, NULL),
+(90, 'Коврик багажника', 'Резиновый коврик для багажника', 'Для салона', '4290.00', '0.00', 55, 'ACS-018', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'WeatherTech', NULL, NULL, NULL, 0, NULL),
+(91, 'Зарядное устройство USB', 'Быстрая зарядка для автомобиля', 'Электроника', '1590.00', '1990.00', 90, 'ACS-019', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Anker', NULL, NULL, NULL, 0, NULL),
+(92, 'Очиститель кондиционера', 'Средство для очистки кондиционера', 'Уход за авто', '890.00', '0.00', 70, 'ACS-020', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Wynn\'s', NULL, NULL, NULL, 0, NULL),
+(93, 'Брелок с сигнализацией', 'Брелок сигнализации с автозапуском', 'Для экстерьера', '2990.00', '0.00', 45, 'ACS-021', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'KeySafe', NULL, NULL, NULL, 0, NULL),
+(94, 'Насос для подкачки шин', 'Автомобильный насос с манометром', 'Для экстерьера', '3290.00', '0.00', 60, 'ACS-022', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Michelin', NULL, NULL, NULL, 0, NULL),
+(95, 'Чистящее средство для салона', 'Пена для чистки салона автомобиля', 'Уход за авто', '1290.00', '0.00', 80, 'ACS-023', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Sonax', NULL, NULL, NULL, 0, NULL),
+(96, 'Антидождь для стекол', 'Средство для защиты стекол от дождя', 'Уход за авто', '1490.00', '0.00', 85, 'ACS-024', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'RainX', NULL, NULL, NULL, 1, NULL),
+(97, 'Коврики резиновые Universal', 'Универсальные резиновые коврики', 'Для салона', '1890.00', '2290.00', 75, 'ACS-025', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'AutoPro', NULL, NULL, NULL, 0, NULL),
+(98, 'Чехол на сиденье с подогревом', 'Автомобильный чехол с подогревом', 'Для салона', '6590.00', '0.00', 40, 'ACS-026', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'HotSeat', NULL, NULL, NULL, 1, NULL),
+(99, 'Авто пылесос мощный', 'Портативный автомобильный пылесос', 'Для салона', '3290.00', '3990.00', 50, 'ACS-027', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Black+Decker', NULL, NULL, NULL, 0, NULL),
+(100, 'Зеркало видеорегистратора', 'Зеркало заднего вида с видеорегистратором', 'Электроника', '8990.00', '0.00', 35, 'ACS-028', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'MirrorCam', NULL, NULL, NULL, 1, NULL),
+(101, 'Навигатор 7 дюймов', 'GPS навигатор с экраном 7 дюймов', 'Электроника', '12990.00', '14990.00', 25, 'ACS-029', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Garmin', NULL, NULL, NULL, 0, NULL),
+(102, 'Радар-детектор Pro', 'Радар-детектор с дальним обнаружением', 'Электроника', '7590.00', '0.00', 40, 'ACS-030', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'StreetStorm', NULL, NULL, NULL, 0, NULL),
+(103, 'Автосигнализация с автозапуском', 'Современная автосигнализация', 'Электроника', '15990.00', '18990.00', 20, 'ACS-031', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'StarLine', NULL, NULL, NULL, 1, NULL),
+(104, 'Камера заднего вида', 'Камера заднего вида для автомобиля', 'Электроника', '4290.00', '0.00', 45, 'ACS-032', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'ParkMaster', NULL, NULL, NULL, 1, NULL),
+(105, 'Фаркоп универсальный', 'Универсальный фаркоп для автомобиля', 'Для экстерьера', '8990.00', '0.00', 30, 'ACS-033', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Bosch', NULL, NULL, NULL, 0, NULL),
+(106, 'Дефлекторы окон', 'Ветровики для окон автомобиля', 'Для экстерьера', '3490.00', '0.00', 50, 'ACS-034', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'WeatherTech', NULL, NULL, NULL, 0, NULL),
+(107, 'Спойлер задний', 'Декоративный задний спойлер', 'Для экстерьера', '7890.00', '8990.00', 25, 'ACS-035', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'AutoStyle', NULL, NULL, NULL, 0, NULL),
+(108, 'Накладки на пороги', 'Защитные накладки на пороги', 'Для экстерьера', '4590.00', '0.00', 40, 'ACS-036', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'SteelGuard', NULL, NULL, NULL, 1, NULL),
+(109, 'Шумоизоляция дверей', 'Шумоизоляция для дверей автомобиля', 'Для салона', '6990.00', '0.00', 30, 'ACS-037', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'NoiseGuard', NULL, NULL, NULL, 0, NULL),
+(110, 'Полироль для кузова', 'Полироль для восстановления цвета', 'Уход за авто', '1290.00', '1590.00', 70, 'ACS-038', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Turtle Wax', NULL, NULL, NULL, 0, NULL),
+(111, 'Очиститель тормозных дисков', 'Специальное средство для тормозов', 'Уход за авто', '890.00', '0.00', 80, 'ACS-039', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:39:06', 'accessory', 'LIQUI MOLY', NULL, NULL, NULL, 0, NULL),
+(112, 'Воск для шин', 'Воск для защиты и блеска шин', 'Уход за авто', '790.00', '0.00', 90, 'ACS-040', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'Sonax', NULL, NULL, NULL, 0, NULL),
+(113, 'Щетка для снега', 'Автомобильная щетка для снега со скребком', 'Для экстерьера', '1590.00', '1990.00', 60, 'ACS-041', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'SnowJoe', NULL, NULL, NULL, 0, NULL),
+(114, 'Антизапотеватель стекол', 'Средство против запотевания стекол', 'Уход за авто', '490.00', '0.00', 100, 'ACS-042', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'GlassCare', NULL, NULL, NULL, 0, NULL),
+(115, 'Домкрат гидравлический', 'Гидравлический домкрат 2 тонны', 'Для экстерьера', '3890.00', '0.00', 40, 'ACS-043', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'ForceFlex', NULL, NULL, NULL, 0, NULL),
+(116, 'Знак аварийной остановки', 'Светоотражающий знак аварийной остановки', 'Для экстерьера', '590.00', '0.00', 120, 'ACS-044', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'AutoSafe', NULL, NULL, NULL, 0, NULL),
+(117, 'Огнетушитель автомобильный', 'Компактный огнетушитель для авто', 'Для экстерьера', '1290.00', '0.00', 80, 'ACS-045', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'FireStop', NULL, NULL, NULL, 1, NULL),
+(118, 'Аптечка первой помощи', 'Автомобильная аптечка ФЭСТ', 'Для экстерьера', '1890.00', '0.00', 70, 'ACS-046', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'MediKit', NULL, NULL, NULL, 0, NULL),
+(119, 'Багажные ремни', 'Ремни для фиксации груза', 'Для салона', '1290.00', '0.00', 90, 'ACS-047', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'CargoTie', NULL, NULL, NULL, 0, NULL),
+(120, 'Органайзер для бардачка', 'Органайзер для хранения вещей в бардачке', 'Для салона', '890.00', '0.00', 100, 'ACS-048', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'CarOrganizer', NULL, NULL, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -745,11 +801,11 @@ CREATE TABLE `wishlist` (
 --
 
 INSERT INTO `wishlist` (`id`, `user_id`, `product_name`, `product_image`, `price`, `created_at`) VALUES
-(1, 2, 'Моторное масло Castrol 5W-40', 'img/no-image.png', '3450.00', '2026-01-15 13:29:33'),
-(2, 2, 'Воздушный фильтр Mann', 'img/no-image.png', '1890.00', '2026-01-15 13:29:33'),
 (3, 3, 'Свечи зажигания NGK BKR6E', 'img/no-image.png', '850.00', '2026-01-15 13:29:33'),
 (4, 4, 'Тормозные колодки Brembo P85115', 'img/no-image.png', '3890.00', '2026-01-15 13:29:33'),
-(5, 5, 'Фильтр масляный Mann W914/2', 'img/no-image.png', '1250.00', '2026-01-15 13:29:33');
+(5, 5, 'Фильтр масляный Mann W914/2', 'img/no-image.png', '1250.00', '2026-01-15 13:29:33'),
+(13, 2, 'Фара передняя BMW 3 series F30', 'uploads/products/696392655986c.png', '18700.00', '2026-02-14 15:52:56'),
+(14, 2, 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', '2026-02-14 15:53:36');
 
 --
 -- Индексы сохранённых таблиц
@@ -786,7 +842,8 @@ ALTER TABLE `backup_logs`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `fk_cart_product` (`product_id`);
 
 --
 -- Индексы таблицы `categories`
@@ -945,7 +1002,7 @@ ALTER TABLE `backup_logs`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT для таблицы `categories`
@@ -981,25 +1038,25 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT для таблицы `remember_tokens`
@@ -1053,7 +1110,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `wishlist`
 --
 ALTER TABLE `wishlist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -1069,7 +1126,8 @@ ALTER TABLE `action_logs`
 -- Ограничения внешнего ключа таблицы `cart`
 --
 ALTER TABLE `cart`
-  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_cart_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `notifications`

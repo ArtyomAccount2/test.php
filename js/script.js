@@ -373,6 +373,19 @@ function filterItems(container, searchValue, noResultsId)
     }
 }
 
+function searchByArticle(article) 
+{
+    return fetch('includes/search_by_article.php?article=' + encodeURIComponent(article))
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch(error => {
+            console.error('Ошибка при поиске по артиклю:', error);
+            return { success: false, message: 'Ошибка сети' };
+        });
+}
+
 function handleHeaderSearch()
 {
     let searchValue = document.getElementById('catalogSearchInput').value.trim();
@@ -383,13 +396,32 @@ function handleHeaderSearch()
         clearBtn.style.display = searchValue ? 'block' : 'none';
     }
     
-    let isRussian = /[а-яА-ЯЁё]/.test(searchValue);
-    
     if (searchValue === '') 
     {
         clearAllSearches();
         return;
     }
+
+    showSearchLoading();
+
+    searchByArticle(searchValue).then(result => {
+        hideSearchLoading();
+        
+        if (result.success && result.found) 
+        {
+            let productUrl = `includes/all_details.php?id=${result.product_id}&back=index.php`;
+
+            window.location.href = productUrl;
+            return;
+        }
+
+        performRegularSearch(searchValue);
+    });
+}
+
+function performRegularSearch(searchValue) 
+{
+    let isRussian = /[а-яА-ЯЁё]/.test(searchValue);
 
     let navbarHeight = document.querySelector('.navbar') ? document.querySelector('.navbar').offsetHeight : 0;
     let offset = navbarHeight + 20;
@@ -457,6 +489,36 @@ function handleHeaderSearch()
                 filterItems(document.querySelector('#popularParts .scrollable'), '', 'no-results-parts');
             }
         }, 500);
+    }
+}
+
+function showSearchLoading() 
+{
+    let searchButton = document.querySelector('#catalogSearchForm .search-button');
+
+    if (searchButton) 
+    {
+        let originalHtml = searchButton.innerHTML;
+        searchButton.setAttribute('data-original-html', originalHtml);
+        searchButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+        searchButton.disabled = true;
+    }
+}
+
+function hideSearchLoading() 
+{
+    let searchButton = document.querySelector('#catalogSearchForm .search-button');
+
+    if (searchButton) 
+    {
+        let originalHtml = searchButton.getAttribute('data-original-html');
+
+        if (originalHtml) 
+        {
+            searchButton.innerHTML = originalHtml;
+        }
+        
+        searchButton.disabled = false;
     }
 }
 

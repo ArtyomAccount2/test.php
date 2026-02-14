@@ -37,11 +37,10 @@ $productName = $_POST['product_name'] ?? '';
 $productImage = $_POST['product_image'] ?? 'no-image.png';
 $price = $_POST['price'] ?? 0;
 $quantity = $_POST['quantity'] ?? 1;
-$productType = $_POST['product_type'] ?? 'part'; // ДОБАВЛЯЕМ поле с типом товара
+$productType = $_POST['product_type'] ?? 'part';
 
 if ($userId && $productName && $price > 0) 
 {
-    // Изменяем проверку: добавляем product_id для точной идентификации
     $checkSql = "SELECT * FROM cart WHERE user_id = ? AND product_id = ? AND product_name = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param("iis", $userId, $productId, $productName);
@@ -65,9 +64,7 @@ if ($userId && $productName && $price > 0)
     } 
     else 
     {
-        // ДОБАВЛЯЕМ product_type в INSERT
-        $insertSql = "INSERT INTO cart (user_id, product_id, product_name, product_image, price, quantity, product_type) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $insertSql = "INSERT INTO cart (user_id, product_id, product_name, product_image, price, quantity, product_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $insertStmt = $conn->prepare($insertSql);
         $insertStmt->bind_param("iissdis", $userId, $productId, $productName, $productImage, $price, $quantity, $productType);
 

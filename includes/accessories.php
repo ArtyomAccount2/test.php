@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart']) && iss
     $productImage = $_POST['product_image'] ?? '../img/no-image.png';
     $price = $_POST['price'] ?? 0;
     $quantity = $_POST['quantity'] ?? 1;
+    $productType = $_POST['product_type'] ?? 'accessory';
 
     $username = $_SESSION['user'];
     $userSql = "SELECT id_users FROM users WHERE CONCAT(surname_users, ' ', name_users, ' ', patronymic_users) = ? OR person_users = ?";
@@ -30,9 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart']) && iss
         
         if ($productName && $price > 0) 
         {
-            $checkSql = "SELECT * FROM cart WHERE user_id = ? AND product_name = ?";
+            $checkSql = "SELECT * FROM cart WHERE user_id = ? AND product_id = ? AND product_name = ?";
             $checkStmt = $conn->prepare($checkSql);
-            $checkStmt->bind_param("is", $userId, $productName);
+            $checkStmt->bind_param("iis", $userId, $productId, $productName);
             $checkStmt->execute();
             $existingItem = $checkStmt->get_result()->fetch_assoc();
             $checkStmt->close();
@@ -48,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart']) && iss
             } 
             else 
             {
-                $insertSql = "INSERT INTO cart (user_id, product_id, product_name, product_image, price, quantity) VALUES (?, ?, ?, ?, ?, ?)";
+                $insertSql = "INSERT INTO cart (user_id, product_id, product_name, product_image, price, quantity, product_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 $insertStmt = $conn->prepare($insertSql);
-                $insertStmt->bind_param("iissdi", $userId, $productId, $productName, $productImage, $price, $quantity);
+                $insertStmt->bind_param("iissdis", $userId, $productId, $productName, $productImage, $price, $quantity, $productType);
                 $insertStmt->execute();
                 $insertStmt->close();
                 $_SESSION['success_message'] = "Товар добавлен в корзину!";
@@ -108,62 +109,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
 
-$all_products = [
-    ['id' => 1, 'name' => 'Чехлы на сиденья Premium', 'brand' => 'AutoStyle', 'price' => 4290, 'old_price' => 5050, 'rating' => 4.8, 'badge' => 'danger', 'badge_text' => '-15%', 'category' => 'Для салона'],
-    ['id' => 2, 'name' => 'Коврики в салон 3D', 'brand' => 'WeatherTech', 'price' => 6790, 'old_price' => 0, 'rating' => 4.9, 'badge' => 'success', 'badge_text' => 'Новинка', 'category' => 'Для салона'],
-    ['id' => 3, 'name' => 'Органайзер для багажника', 'brand' => 'CarMate', 'price' => 3490, 'old_price' => 0, 'rating' => 4.5, 'badge' => '', 'badge_text' => '', 'category' => 'Для салона'],
-    ['id' => 4, 'name' => 'Ароматизатор CS-X3', 'brand' => 'Air Spencer', 'price' => 790, 'old_price' => 0, 'rating' => 4.7, 'badge' => 'info', 'badge_text' => 'Хит', 'category' => 'Для салона'],
-    ['id' => 5, 'name' => 'Автохолодильник 12V', 'brand' => 'CoolMaster', 'price' => 8990, 'old_price' => 10500, 'rating' => 4.6, 'badge' => 'warning', 'badge_text' => 'Акция', 'category' => 'Для салона'],
-    ['id' => 6, 'name' => 'Видеорегистратор 4K', 'brand' => 'RoadEye', 'price' => 12490, 'old_price' => 0, 'rating' => 4.8, 'badge' => 'success', 'badge_text' => 'Новинка', 'category' => 'Электроника'],
-    ['id' => 7, 'name' => 'Чехол на руль из кожи', 'brand' => 'SteeringPro', 'price' => 2190, 'old_price' => 0, 'rating' => 4.4, 'badge' => 'info', 'badge_text' => 'Хит', 'category' => 'Для салона'],
-    ['id' => 8, 'name' => 'Компрессор автомобильный', 'brand' => 'AirForce', 'price' => 3590, 'old_price' => 4490, 'rating' => 4.7, 'badge' => 'danger', 'badge_text' => '-20%', 'category' => 'Электроника'],
-    ['id' => 9, 'name' => 'Держатель магнитный', 'brand' => 'PhoneMount', 'price' => 1290, 'old_price' => 0, 'rating' => 4.3, 'badge' => '', 'badge_text' => '', 'category' => 'Электроника'],
-    ['id' => 10, 'name' => 'Парктроник 8 датчиков', 'brand' => 'ParkMaster', 'price' => 7890, 'old_price' => 0, 'rating' => 4.9, 'badge' => 'success', 'badge_text' => 'Новинка', 'category' => 'Электроника'],
-    ['id' => 11, 'name' => 'Автоодеяло с подогревом', 'brand' => 'ComfortCar', 'price' => 5490, 'old_price' => 0, 'rating' => 4.6, 'badge' => 'info', 'badge_text' => 'Хит', 'category' => 'Для салона'],
-    ['id' => 12, 'name' => 'Набор автомобильных инструментов', 'brand' => 'ToolPro', 'price' => 6990, 'old_price' => 8200, 'rating' => 4.5, 'badge' => 'warning', 'badge_text' => 'Акция', 'category' => 'Для экстерьера'],
-    ['id' => 13, 'name' => 'Воск для полировки кузова', 'brand' => 'Meguire\'s', 'price' => 1890, 'old_price' => 0, 'rating' => 4.7, 'badge' => '', 'badge_text' => '', 'category' => 'Уход за авто'],
-    ['id' => 14, 'name' => 'Щетки стеклоочистителя', 'brand' => 'Bosch', 'price' => 2490, 'old_price' => 2990, 'rating' => 4.6, 'badge' => 'danger', 'badge_text' => '-17%', 'category' => 'Для экстерьера'],
-    ['id' => 15, 'name' => 'Чехол на автомобиль', 'brand' => 'CoverKing', 'price' => 8990, 'old_price' => 0, 'rating' => 4.4, 'badge' => 'success', 'badge_text' => 'Новинка', 'category' => 'Для экстерьера'],
-    ['id' => 16, 'name' => 'Шумоизоляция салона', 'brand' => 'NoiseGuard', 'price' => 12990, 'old_price' => 0, 'rating' => 4.8, 'badge' => 'info', 'badge_text' => 'Хит', 'category' => 'Для салона'],
-    ['id' => 17, 'name' => 'Автосканер OBD2', 'brand' => 'Launch', 'price' => 4590, 'old_price' => 0, 'rating' => 4.5, 'badge' => '', 'badge_text' => '', 'category' => 'Электроника'],
-    ['id' => 18, 'name' => 'Коврик багажника', 'brand' => 'WeatherTech', 'price' => 4290, 'old_price' => 0, 'rating' => 4.7, 'badge' => '', 'badge_text' => '', 'category' => 'Для салона'],
-    ['id' => 19, 'name' => 'Зарядное устройство USB', 'brand' => 'Anker', 'price' => 1590, 'old_price' => 1990, 'rating' => 4.8, 'badge' => 'warning', 'badge_text' => 'Акция', 'category' => 'Электроника'],
-    ['id' => 20, 'name' => 'Очиститель кондиционера', 'brand' => 'Wynn\'s', 'price' => 890, 'old_price' => 0, 'rating' => 4.3, 'badge' => '', 'badge_text' => '', 'category' => 'Уход за авто'],
-    ['id' => 21, 'name' => 'Брелок с сигнализацией', 'brand' => 'KeySafe', 'price' => 2990, 'old_price' => 0, 'rating' => 4.2, 'badge' => '', 'badge_text' => '', 'category' => 'Для экстерьера'],
-    ['id' => 22, 'name' => 'Насос для подкачки шин', 'brand' => 'Michelin', 'price' => 3290, 'old_price' => 0, 'rating' => 4.6, 'badge' => '', 'badge_text' => '', 'category' => 'Для экстерьера'],
-    ['id' => 23, 'name' => 'Чистящее средство для салона', 'brand' => 'Sonax', 'price' => 1290, 'old_price' => 0, 'rating' => 4.7, 'badge' => '', 'badge_text' => '', 'category' => 'Уход за авто'],
-    ['id' => 24, 'name' => 'Антидождь для стекол', 'brand' => 'RainX', 'price' => 1490, 'old_price' => 0, 'rating' => 4.8, 'badge' => 'info', 'badge_text' => 'Хит', 'category' => 'Уход за авто'],
-    ['id' => 25, 'name' => 'Коврики резиновые Universal', 'brand' => 'AutoPro', 'price' => 1890, 'old_price' => 2290, 'rating' => 4.3, 'badge' => 'danger', 'badge_text' => '-17%', 'category' => 'Для салона'],
-    ['id' => 26, 'name' => 'Чехол на сиденье с подогревом', 'brand' => 'HotSeat', 'price' => 6590, 'old_price' => 0, 'rating' => 4.7, 'badge' => 'success', 'badge_text' => 'Новинка', 'category' => 'Для салона'],
-    ['id' => 27, 'name' => 'Авто пылесос мощный', 'brand' => 'Black+Decker', 'price' => 3290, 'old_price' => 3990, 'rating' => 4.5, 'badge' => 'warning', 'badge_text' => 'Акция', 'category' => 'Для салона'],
-    ['id' => 28, 'name' => 'Зеркало видеорегистратора', 'brand' => 'MirrorCam', 'price' => 8990, 'old_price' => 0, 'rating' => 4.6, 'badge' => 'info', 'badge_text' => 'Хит', 'category' => 'Электроника'],
-    ['id' => 29, 'name' => 'Навигатор 7 дюймов', 'brand' => 'Garmin', 'price' => 12990, 'old_price' => 14990, 'rating' => 4.8, 'badge' => 'danger', 'badge_text' => '-13%', 'category' => 'Электроника'],
-    ['id' => 30, 'name' => 'Радар-детектор Pro', 'brand' => 'StreetStorm', 'price' => 7590, 'old_price' => 0, 'rating' => 4.7, 'badge' => '', 'badge_text' => '', 'category' => 'Электроника'],
-    ['id' => 31, 'name' => 'Автосигнализация с автозапуском', 'brand' => 'StarLine', 'price' => 15990, 'old_price' => 18990, 'rating' => 4.9, 'badge' => 'warning', 'badge_text' => 'Акция', 'category' => 'Электроника'],
-    ['id' => 32, 'name' => 'Камера заднего вида', 'brand' => 'ParkMaster', 'price' => 4290, 'old_price' => 0, 'rating' => 4.6, 'badge' => 'success', 'badge_text' => 'Новинка', 'category' => 'Электроника'],
-    ['id' => 33, 'name' => 'Фаркоп универсальный', 'brand' => 'Bosch', 'price' => 8990, 'old_price' => 0, 'rating' => 4.4, 'badge' => '', 'badge_text' => '', 'category' => 'Для экстерьера'],
-    ['id' => 34, 'name' => 'Дефлекторы окон', 'brand' => 'WeatherTech', 'price' => 3490, 'old_price' => 0, 'rating' => 4.5, 'badge' => '', 'badge_text' => '', 'category' => 'Для экстерьера'],
-    ['id' => 35, 'name' => 'Спойлер задний', 'brand' => 'AutoStyle', 'price' => 7890, 'old_price' => 8990, 'rating' => 4.3, 'badge' => 'danger', 'badge_text' => '-12%', 'category' => 'Для экстерьера'],
-    ['id' => 36, 'name' => 'Накладки на пороги', 'brand' => 'SteelGuard', 'price' => 4590, 'old_price' => 0, 'rating' => 4.6, 'badge' => 'info', 'badge_text' => 'Хит', 'category' => 'Для экстерьера'],
-    ['id' => 37, 'name' => 'Шумоизоляция дверей', 'brand' => 'NoiseGuard', 'price' => 6990, 'old_price' => 0, 'rating' => 4.7, 'badge' => '', 'badge_text' => '', 'category' => 'Для салона'],
-    ['id' => 38, 'name' => 'Полироль для кузова', 'brand' => 'Turtle Wax', 'price' => 1290, 'old_price' => 1590, 'rating' => 4.4, 'badge' => 'warning', 'badge_text' => 'Акция', 'category' => 'Уход за авто'],
-    ['id' => 39, 'name' => 'Очиститель тормозных дисков', 'brand' => 'LIQUI MOLY', 'price' => 890, 'old_price' => 0, 'rating' => 4.5, 'badge' => '', 'badge_text' => '', 'category' => 'Уход за авто'],
-    ['id' => 40, 'name' => 'Воск для шин', 'brand' => 'Sonax', 'price' => 790, 'old_price' => 0, 'rating' => 4.3, 'badge' => '', 'badge_text' => '', 'category' => 'Уход за авто'],
-    ['id' => 41, 'name' => 'Щетка для снега', 'brand' => 'SnowJoe', 'price' => 1590, 'old_price' => 1990, 'rating' => 4.6, 'badge' => 'danger', 'badge_text' => '-20%', 'category' => 'Для экстерьера'],
-    ['id' => 42, 'name' => 'Антизапотеватель стекол', 'brand' => 'GlassCare', 'price' => 490, 'old_price' => 0, 'rating' => 4.2, 'badge' => '', 'badge_text' => '', 'category' => 'Уход за авто'],
-    ['id' => 43, 'name' => 'Домкрат гидравлический', 'brand' => 'ForceFlex', 'price' => 3890, 'old_price' => 0, 'rating' => 4.7, 'badge' => '', 'badge_text' => '', 'category' => 'Для экстерьера'],
-    ['id' => 44, 'name' => 'Знак аварийной остановки', 'brand' => 'AutoSafe', 'price' => 590, 'old_price' => 0, 'rating' => 4.1, 'badge' => '', 'badge_text' => '', 'category' => 'Для экстерьера'],
-    ['id' => 45, 'name' => 'Огнетушитель автомобильный', 'brand' => 'FireStop', 'price' => 1290, 'old_price' => 0, 'rating' => 4.8, 'badge' => 'info', 'badge_text' => 'Хит', 'category' => 'Для экстерьера'],
-    ['id' => 46, 'name' => 'Аптечка первой помощи', 'brand' => 'MediKit', 'price' => 1890, 'old_price' => 0, 'rating' => 4.9, 'badge' => '', 'badge_text' => '', 'category' => 'Для экстерьера'],
-    ['id' => 47, 'name' => 'Багажные ремни', 'brand' => 'CargoTie', 'price' => 1290, 'old_price' => 0, 'rating' => 4.4, 'badge' => '', 'badge_text' => '', 'category' => 'Для салона'],
-    ['id' => 48, 'name' => 'Органайзер для бардачка', 'brand' => 'CarOrganizer', 'price' => 890, 'old_price' => 0, 'rating' => 4.3, 'badge' => '', 'badge_text' => '', 'category' => 'Для салона'],
-];
+$sql = "SELECT id, name, description, category, price, old_price, quantity, article, image, badge, status, brand, hit FROM products WHERE product_type = 'accessory' AND status = 'available' ORDER BY id";
+
+$result = $conn->query($sql);
+$all_products = [];
+
+if ($result->num_rows > 0) 
+{
+    while ($row = $result->fetch_assoc()) 
+    {
+        $all_products[] = [
+            'id' => $row['id'],
+            'name' => $row['name'],
+            'brand' => $row['brand'] ?? 'Лал-Авто',
+            'price' => (float)$row['price'],
+            'old_price' => (float)($row['old_price'] ?? 0),
+            'rating' => 4.5,
+            'badge' => !empty($row['badge']) ? $row['badge'] : '',
+            'badge_text' => $row['badge'] == 'danger' ? 'Акция' : ($row['badge'] == 'success' ? 'Новинка' : ($row['badge'] == 'info' ? 'Хит' : '')),
+            'category' => $row['category'] ?? 'Аксессуары',
+            'hit' => $row['hit'] ?? 0,
+            'image' => $row['image'],
+            'article' => $row['article']
+        ];
+    }
+}
 
 $search_term = isset($_GET['search']) ? strtolower(trim($_GET['search'])) : '';
 $category_filter = isset($_GET['category']) ? $_GET['category'] : '';
 $brand_filter = isset($_GET['brand']) ? $_GET['brand'] : '';
 $min_price = isset($_GET['min_price']) ? intval($_GET['min_price']) : 0;
 $max_price = isset($_GET['max_price']) ? intval($_GET['max_price']) : 0;
+
 $filtered_products = $all_products;
 
 if ($search_term !== '' || $category_filter !== '' || $brand_filter !== '' || $min_price > 0 || $max_price > 0) 
@@ -213,6 +190,11 @@ switch($sort)
     default:
         usort($filtered_products, function($a, $b) 
         {
+            if ($a['hit'] != $b['hit']) 
+            {
+                return $b['hit'] - $a['hit'];
+            }
+
             return $b['rating'] - $a['rating'];
         });
         break;
@@ -269,6 +251,7 @@ sort($all_categories);
             {
                 let url = new URL(window.location);
                 url.searchParams.set('sort', this.value);
+                url.searchParams.set('page', '1');
                 window.location.href = url.toString();
             });
         }
@@ -291,6 +274,7 @@ sort($all_categories);
                     }
                 }
                 
+                params.set('page', '1');
                 window.location.href = '?' + params.toString();
             });
         }
@@ -323,6 +307,7 @@ sort($all_categories);
                     }
                 }
                 
+                params.set('page', '1');
                 window.location.href = '?' + params.toString();
             });
         }
@@ -332,7 +317,23 @@ sort($all_categories);
                 let category = this.getAttribute('data-category');
                 let url = new URL(window.location);
                 url.searchParams.set('category', category);
+                url.searchParams.set('page', '1');
                 window.location.href = url.toString();
+            });
+        });
+
+        document.querySelectorAll('.filter-brand').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                let params = new URLSearchParams(window.location.search);
+                params.delete('brand');
+
+                if (this.checked) 
+                {
+                    params.set('brand', this.value);
+                }
+                
+                params.set('page', '1');
+                window.location.href = '?' + params.toString();
             });
         });
     });
@@ -465,8 +466,7 @@ sort($all_categories);
                                         return $product['category'] === $category;
                                     }));
                                 ?>
-                                    <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center filter-category" 
-                                            data-category="<?php echo $category; ?>">
+                                    <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center filter-category" data-category="<?php echo $category; ?>">
                                         <?php echo $category; ?>
                                         <span class="badge bg-primary rounded-pill"><?php echo $count; ?></span>
                                     </button>
@@ -486,7 +486,7 @@ sort($all_categories);
                                 }));
                             ?>
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" name="brand" value="<?php echo $brand; ?>" id="brand_<?php echo preg_replace('/[^a-zA-Z0-9]/', '_', $brand); ?>" 
+                                    <input class="form-check-input filter-brand" type="checkbox" name="brand" value="<?php echo $brand; ?>" id="brand_<?php echo preg_replace('/[^a-zA-Z0-9]/', '_', $brand); ?>" 
                                            <?php echo $brand_filter === $brand ? 'checked' : ''; ?>>
                                     <label class="form-check-label" for="brand_<?php echo preg_replace('/[^a-zA-Z0-9]/', '_', $brand); ?>">
                                         <?php echo $brand; ?>
@@ -551,15 +551,23 @@ sort($all_categories);
                             <?php 
                             if(!empty($product['badge'])) 
                             {
+                                $badge_class = $product['badge'];
+                                $badge_text = $product['badge_text'];
+                                
+                                if ($product['hit'] && empty($badge_text)) 
+                                {
+                                    $badge_class = 'info';
+                                    $badge_text = 'Хит';
+                                }
                             ?>
-                                <div class="badge bg-<?php echo $product['badge']; ?> position-absolute top-0 start-0 m-2">
-                                    <?php echo $product['badge_text']; ?>
+                                <div class="badge bg-<?php echo $badge_class; ?> position-absolute top-0 start-0 m-2">
+                                    <?php echo $badge_text; ?>
                                 </div>
                             <?php 
                             } 
                             ?>
                             <div class="product-image p-3">
-                                <img src="../img/no-image.png" class="img-fluid" alt="<?php echo $product['name']; ?>">
+                                <img src="<?php echo !empty($product['image']) ? htmlspecialchars($product['image']) : '../img/no-image.png'; ?>" class="img-fluid" alt="<?php echo $product['name']; ?>" onerror="this.src='../img/no-image.png'">
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -569,7 +577,8 @@ sort($all_categories);
                                         <span><?php echo $product['rating']; ?></span>
                                     </div>
                                 </div>
-                                <h6 class="card-title mb-2"><?php echo $product['name']; ?></h6>
+                                <h6 class="card-title"><?php echo $product['name']; ?></h6>
+                                <span class="text-muted small">Арт. <?php echo $product['article']; ?></span>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <?php 
@@ -595,9 +604,10 @@ sort($all_categories);
                                         <form method="POST" class="add-to-cart-form">
                                             <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                                             <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['name']) ?>">
-                                            <input type="hidden" name="product_image" value="../img/no-image.png">
+                                            <input type="hidden" name="product_image" value="<?= !empty($product['image']) ? htmlspecialchars($product['image']) : '../img/no-image.png' ?>">
                                             <input type="hidden" name="price" value="<?= $product['price'] ?>">
                                             <input type="hidden" name="quantity" value="1">
+                                            <input type="hidden" name="product_type" value="accessory">
                                             <button type="submit" name="add_to_cart" class="btn btn-sm btn-outline-primary add-to-cart-btn">
                                                 <span class="btn-text">
                                                     <i class="bi bi-cart-plus"></i>
@@ -767,7 +777,7 @@ document.addEventListener('DOMContentLoaded', function()
             
             let formData = new FormData(this);
             
-            fetch('../includes/ajax_add_to_cart.php', {
+            fetch('ajax_add_to_cart.php', {
                 method: 'POST',
                 body: formData,
                 headers: {

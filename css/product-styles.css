@@ -247,9 +247,14 @@
     font-weight: 600;
 }
 
+.spec-item .bg-danger
+{
+    color: white;
+}
+
 .spec-item span 
 {
-    color: #6c757d;
+    color: black;
 }
 
 .product-tags 

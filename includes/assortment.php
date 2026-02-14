@@ -437,8 +437,7 @@ function buildQueryString($page, $search, $category)
     <div class="row mb-4">
         <div class="col-md-5 col-lg-6">
             <div class="search-container position-relative">
-                <input type="text" id="partsSearch" placeholder="Поиск по каталогу..." class="form-control" 
-                       value="<?php echo htmlspecialchars($search_term); ?>">
+                <input type="text" id="partsSearch" placeholder="Поиск по каталогу..." class="form-control" value="<?php echo htmlspecialchars($search_term); ?>">
                 <button class="btn btn-link search-clear" type="button" style="display: none;">
                     <i class="bi bi-x"></i>
                 </button>
@@ -520,9 +519,7 @@ function buildQueryString($page, $search, $category)
                         }
                         ?>
                         <div class="product-image">
-                            <img src="<?php echo !empty($product['image']) ? htmlspecialchars($product['image']) : '../img/no-image.png'; ?>" 
-                                 class="product-img" alt="<?php echo htmlspecialchars($product['name']); ?>"
-                                 onerror="this.src='../img/no-image.png'">
+                            <img src="<?php echo !empty($product['image']) ? htmlspecialchars($product['image']) : '../img/no-image.png'; ?>" class="product-img" alt="<?php echo htmlspecialchars($product['name']); ?>" onerror="this.src='../img/no-image.png'">
                         </div>
                         <div class="product-body">
                             <h6 class="product-title"><?php echo htmlspecialchars($product['name']); ?></h6>

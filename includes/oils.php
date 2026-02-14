@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
 
-$sql = "SELECT id,name as title, article as art, volume, price, CASE WHEN quantity > 0 THEN 1 ELSE 0 END as stock, hit, brand, viscosity, oil_type as type, volume, image as product_image FROM products WHERE product_type = 'oil' AND status = 'available' ORDER BY id";
+$sql = "SELECT id, name as title, article as art, volume, price, CASE WHEN quantity > 0 THEN 1 ELSE 0 END as stock, hit, brand, viscosity, oil_type as type, volume, image as product_image FROM products WHERE product_type = 'oil' AND status = 'available' ORDER BY id";
 $products_result = $conn->query($sql);
 $products = [];
 
@@ -418,10 +418,10 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                     <div class="col-lg-3 col-md-6">
                         <div class="product-card card h-100">
                             '.($product['hit'] ? '<span class="badge bg-danger position-absolute top-0 start-0 m-2">Хит</span>' : '').'
-                            <img src="../img/no-image.png" class="product-img card-img-top p-3" alt="'.$product['title'].'">
+                            <img src="'.(!empty($product['product_image']) ? htmlspecialchars($product['product_image']) : '../img/no-image.png').'" class="product-img card-img-top p-3" alt="'.htmlspecialchars($product['title']).'" onerror="this.src=\'../img/no-image.png\'">
                             <div class="card-body">
-                                <h5 class="product-title card-title">'.$product['title'].'</h5>
-                                <p class="product-meta text-muted small mb-2">Арт. '.$product['art'].', '.$product['volume'].'</p>
+                                <h5 class="product-title card-title">'.htmlspecialchars($product['title']).'</h5>
+                                <p class="product-meta text-muted small mb-2">Арт. '.htmlspecialchars($product['art']).', '.htmlspecialchars($product['volume']).'</p>
                                 <h4 class="product-price mb-3">'.number_format($product['price'], 0, '', ' ').' ₽</h4>
                                 <p class="product-stock '.($product['stock'] ? 'text-success' : 'text-danger').' mb-3">
                                     <i class="bi '.($product['stock'] ? 'bi-check-circle' : 'bi-x-circle').'"></i> 
@@ -434,7 +434,7 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
                                         <form method="POST" action="cart.php" class="add-to-cart-form">
                                             <input type="hidden" name="product_id" value="'.$product['id'].'">
                                             <input type="hidden" name="product_name" value="'.htmlspecialchars($product['title']).'">
-                                            <input type="hidden" name="product_image" value="../img/no-image.png">
+                                            <input type="hidden" name="product_image" value="'.(!empty($product['product_image']) ? htmlspecialchars($product['product_image']) : '../img/no-image.png').'">
                                             <input type="hidden" name="price" value="'.$product['price'].'">
                                             <input type="hidden" name="quantity" value="1">
                                             <input type="hidden" name="product_type" value="oil">
