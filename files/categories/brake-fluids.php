@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 session_start();
 require_once("../../config/link.php");
+require_once("../../includes/category_functions.php");
 
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['user'] == 'admin')
 {
@@ -54,99 +55,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
 
-$brake_fluids = [
-    ['id' => 1, 'title' => 'Liqui Moly Bremsflussigkeit DOT 4', 'art' => 'BRAKE001', 'volume' => '0.5 л', 'price' => 650, 'stock' => true, 'hit' => true, 'brand' => 'Liqui Moly', 'standard' => 'DOT 4', 'dry_boil' => '255°C', 'wet_boil' => '165°C'],
-    ['id' => 2, 'title' => 'Castrol React DOT 4', 'art' => 'CAST-BF01', 'volume' => '0.5 л', 'price' => 580, 'stock' => true, 'hit' => false, 'brand' => 'Castrol', 'standard' => 'DOT 4', 'dry_boil' => '250°C', 'wet_boil' => '160°C'],
-    ['id' => 3, 'title' => 'Motul DOT 5.1', 'art' => 'MOT-BF01', 'volume' => '0.5 л', 'price' => 890, 'stock' => true, 'hit' => true, 'brand' => 'Motul', 'standard' => 'DOT 5.1', 'dry_boil' => '270°C', 'wet_boil' => '180°C'],
-    ['id' => 4, 'title' => 'Brembo LCF 600 Plus DOT 4', 'art' => 'BREM-BF01', 'volume' => '0.5 л', 'price' => 720, 'stock' => true, 'hit' => false, 'brand' => 'Brembo', 'standard' => 'DOT 4', 'dry_boil' => '260°C', 'wet_boil' => '170°C'],
-    ['id' => 5, 'title' => 'ATE SL.6 DOT 4', 'art' => 'ATE-BF001', 'volume' => '1 л', 'price' => 950, 'stock' => true, 'hit' => true, 'brand' => 'ATE', 'standard' => 'DOT 4', 'dry_boil' => '255°C', 'wet_boil' => '165°C'],
-    ['id' => 6, 'title' => 'TRW PFG550 DOT 4', 'art' => 'TRW-BF001', 'volume' => '0.5 л', 'price' => 520, 'stock' => false, 'hit' => false, 'brand' => 'TRW', 'standard' => 'DOT 4', 'dry_boil' => '250°C', 'wet_boil' => '160°C'],
-    ['id' => 7, 'title' => 'Bosch ESI6-32N DOT 4', 'art' => 'BOSCH-BF01', 'volume' => '1 л', 'price' => 780, 'stock' => true, 'hit' => false, 'brand' => 'Bosch', 'standard' => 'DOT 4', 'dry_boil' => '265°C', 'wet_boil' => '175°C'],
-    ['id' => 8, 'title' => 'Febi Bilstein DOT 4', 'art' => 'FEBI-BF01', 'volume' => '0.5 л', 'price' => 480, 'stock' => true, 'hit' => false, 'brand' => 'Febi', 'standard' => 'DOT 4', 'dry_boil' => '250°C', 'wet_boil' => '160°C'],
-    ['id' => 9, 'title' => 'Ravenol DOT 5.1', 'art' => 'RAV-BF001', 'volume' => '0.5 л', 'price' => 820, 'stock' => true, 'hit' => true, 'brand' => 'Ravenol', 'standard' => 'DOT 5.1', 'dry_boil' => '270°C', 'wet_boil' => '180°C'],
-    ['id' => 10, 'title' => 'Shell DOT 4', 'art' => 'SHELL-BF01', 'volume' => '0.5 л', 'price' => 550, 'stock' => true, 'hit' => false, 'brand' => 'Shell', 'standard' => 'DOT 4', 'dry_boil' => '255°C', 'wet_boil' => '165°C'],
-    ['id' => 11, 'title' => 'Liqui Moly DOT 5.1', 'art' => 'BRAKE002', 'volume' => '0.5 л', 'price' => 920, 'stock' => true, 'hit' => false, 'brand' => 'Liqui Moly', 'standard' => 'DOT 5.1', 'dry_boil' => '275°C', 'wet_boil' => '185°C'],
-    ['id' => 12, 'title' => 'Castrol React DOT 5.1', 'art' => 'CAST-BF02', 'volume' => '0.5 л', 'price' => 850, 'stock' => true, 'hit' => false, 'brand' => 'Castrol', 'standard' => 'DOT 5.1', 'dry_boil' => '270°C', 'wet_boil' => '180°C'],
-    ['id' => 13, 'title' => 'Motul DOT 4', 'art' => 'MOT-BF02', 'volume' => '1 л', 'price' => 1100, 'stock' => true, 'hit' => true, 'brand' => 'Motul', 'standard' => 'DOT 4', 'dry_boil' => '265°C', 'wet_boil' => '175°C'],
-    ['id' => 14, 'title' => 'Brembo DOT 5.1', 'art' => 'BREM-BF02', 'volume' => '0.5 л', 'price' => 950, 'stock' => false, 'hit' => false, 'brand' => 'Brembo', 'standard' => 'DOT 5.1', 'dry_boil' => '275°C', 'wet_boil' => '185°C'],
-    ['id' => 15, 'title' => 'ATE TYP 200 DOT 4', 'art' => 'ATE-BF002', 'volume' => '1 л', 'price' => 1200, 'stock' => true, 'hit' => true, 'brand' => 'ATE', 'standard' => 'DOT 4', 'dry_boil' => '260°C', 'wet_boil' => '170°C']
-];
-
 $search_query = $_GET['search'] ?? '';
 $sort_type = $_GET['sort'] ?? 'default';
 $brand_filter = $_GET['brand'] ?? '';
 $standard_filter = $_GET['standard'] ?? '';
+$dry_filter = $_GET['dry_boil'] ?? '';
+$wet_filter = $_GET['wet_boil'] ?? '';
+$volume_filter = $_GET['volume'] ?? '';
 
 $items_per_page = 8;
 $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 
-$filtered_products = $brake_fluids;
-
-if (!empty($search_query)) 
-{
-    $filtered_products = array_filter($filtered_products, function($product) use ($search_query) 
-    {
-        return stripos($product['title'], $search_query) !== false || stripos($product['art'], $search_query) !== false || stripos($product['brand'], $search_query) !== false;
-    });
-}
-
-if (!empty($brand_filter)) 
-{
-    $filtered_products = array_filter($filtered_products, function($product) use ($brand_filter) 
-    {
-        return $product['brand'] === $brand_filter;
-    });
-}
-
-if (!empty($standard_filter)) 
-{
-    $filtered_products = array_filter($filtered_products, function($product) use ($standard_filter) 
-    {
-        return $product['standard'] === $standard_filter;
-    });
-}
-
-switch ($sort_type) 
-{
-    case 'price_asc':
-        usort($filtered_products, function($a, $b) 
-        {
-            return $a['price'] - $b['price'];
-        });
-        break;
-    case 'price_desc':
-        usort($filtered_products, function($a, $b) 
-        {
-            return $b['price'] - $a['price'];
-        });
-        break;
-    case 'name':
-        usort($filtered_products, function($a, $b) 
-        {
-            return strcmp($a['title'], $b['title']);
-        });
-        break;
-    case 'popular':
-        usort($filtered_products, function($a, $b) 
-        {
-            if ($a['hit'] == $b['hit']) 
-            {
-                return 0;
-            }
-
-            return $a['hit'] ? -1 : 1;
-        });
-        break;
-    default:
-        break;
-}
+$filtered_products = getCategoryProducts($conn, 'brake-fluid', $search_query, $brand_filter, $sort_type, [
+    'standard' => $standard_filter,
+    'dry_boil' => $dry_filter,
+    'wet_boil' => $wet_filter,
+    'volume' => $volume_filter
+]);
 
 $total_items = count($filtered_products);
 $total_pages = ceil($total_items / $items_per_page);
-$current_page = min($current_page, $total_pages);
+$current_page = min($current_page, max(1, $total_pages));
 $offset = ($current_page - 1) * $items_per_page;
 
 $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
+
+$brands = getFilterOptions($conn, 'brake-fluid', 'brand');
+$standards = getFilterOptions($conn, 'brake-fluid', 'standard');
+$dry_boils = getFilterOptions($conn, 'brake-fluid', 'dry_boil');
+$wet_boils = getFilterOptions($conn, 'brake-fluid', 'wet_boil');
+$volumes = getFilterOptions($conn, 'brake-fluid', 'volume');
 ?>
 
 <!DOCTYPE html>
@@ -315,7 +253,52 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
         <div class="row mb-4 align-items-center" style="padding-top: 75px;">
             <div class="col-md-8">
                 <h1 class="display-6 fw-bold text-primary mb-3">Тормозные жидкости</h1>
-                <p class="lead text-muted mb-4">Качественные тормозные жидкости для надежной работы тормозной системы</p>
+                <p class="lead text-muted mb-4">Высококачественные тормозные жидкости для надежного торможения</p>
+                <?php 
+                if (!empty($search_query) || !empty($brand_filter) || !empty($standard_filter) || !empty($dry_filter))
+                {
+                    $filters_applied = [];
+
+                    if (!empty($search_query)) 
+                    {
+                        $filters_applied[] = 'поиск: "' . htmlspecialchars($search_query) . '"';
+                    }
+
+                    if (!empty($brand_filter)) 
+                    {
+                        $filters_applied[] = 'бренд: ' . htmlspecialchars($brand_filter);
+                    }
+
+                    if (!empty($standard_filter)) 
+                    {
+                        $filters_applied[] = 'стандарт: ' . htmlspecialchars($standard_filter);
+                    }
+
+                    if (!empty($dry_filter)) 
+                    {
+                        $filters_applied[] = 'темп. кипения (сухая): ' . htmlspecialchars($dry_filter);
+                    }
+
+                    if (!empty($wet_filter)) 
+                    {
+                        $filters_applied[] = 'темп. кипения (влажная): ' . htmlspecialchars($wet_filter);
+                    }
+                ?>
+                    <p class="text-muted mt-2">
+                        Найдено <?php echo $total_items; ?> товаров 
+                        <?php 
+                        if (!empty($filters_applied))
+                        {
+                        ?>
+                            (<?php echo implode(', ', $filters_applied); ?>)
+                        <?php 
+                        }    
+                        ?>
+                        <a href="brake-fluids.php?sort=default&page=1" class="btn btn-sm btn-outline-secondary ms-2">Показать все</a>
+                    </p>
+                <?php 
+                } 
+                ?>
             </div>
         </div>
         <div class="filter-section mb-5">
@@ -328,41 +311,93 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
             </div>
             <form method="GET" id="filterForm">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6 col-lg-2">
                         <div class="filter-group mb-3">
                             <label class="form-label filter-title">Бренд</label>
                             <select class="form-select" name="brand">
                                 <option value="">Все бренды</option>
-                                <option value="Liqui Moly" <?php echo $brand_filter === 'Liqui Moly' ? 'selected' : ''; ?>>Liqui Moly</option>
-                                <option value="Castrol" <?php echo $brand_filter === 'Castrol' ? 'selected' : ''; ?>>Castrol</option>
-                                <option value="Motul" <?php echo $brand_filter === 'Motul' ? 'selected' : ''; ?>>Motul</option>
-                                <option value="Brembo" <?php echo $brand_filter === 'Brembo' ? 'selected' : ''; ?>>Brembo</option>
-                                <option value="ATE" <?php echo $brand_filter === 'ATE' ? 'selected' : ''; ?>>ATE</option>
-                                <option value="TRW" <?php echo $brand_filter === 'TRW' ? 'selected' : ''; ?>>TRW</option>
-                                <option value="Bosch" <?php echo $brand_filter === 'Bosch' ? 'selected' : ''; ?>>Bosch</option>
-                                <option value="Febi" <?php echo $brand_filter === 'Febi' ? 'selected' : ''; ?>>Febi</option>
-                                <option value="Ravenol" <?php echo $brand_filter === 'Ravenol' ? 'selected' : ''; ?>>Ravenol</option>
-                                <option value="Shell" <?php echo $brand_filter === 'Shell' ? 'selected' : ''; ?>>Shell</option>
+                                <?php 
+                                foreach($brands as $brand)
+                                {
+                                ?>
+                                    <option value="<?php echo htmlspecialchars($brand); ?>" <?php echo $brand_filter === $brand ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($brand); ?>
+                                    </option>
+                                <?php 
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6 col-lg-2">
                         <div class="filter-group mb-3">
-                            <label class="form-label filter-title">Стандарт</label>
+                            <label class="form-label filter-title">Тип</label>
                             <select class="form-select" name="standard">
                                 <option value="">Все</option>
-                                <option value="DOT 4" <?php echo $standard_filter === 'DOT 4' ? 'selected' : ''; ?>>DOT 4</option>
-                                <option value="DOT 5.1" <?php echo $standard_filter === 'DOT 5.1' ? 'selected' : ''; ?>>DOT 5.1</option>
+                                <?php 
+                                foreach($standards as $standard)
+                                {
+                                ?>
+                                    <option value="<?php echo htmlspecialchars($standard); ?>" <?php echo $standard_filter === $standard ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($standard); ?>
+                                    </option>
+                                <?php 
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="filter-group mb-3">
+                            <label class="form-label filter-title">Темп. кипения (сухая)</label>
+                            <select class="form-select" name="dry_boil">
+                                <option value="">Все</option>
+                                <?php 
+                                foreach($dry_boils as $dry_boil)
+                                {
+                                ?>
+                                    <option value="<?php echo htmlspecialchars($dry_boil); ?>" <?php echo $dry_filter === $dry_boil ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($dry_boil); ?>
+                                    </option>
+                                <?php 
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="filter-group mb-3">
+                            <label class="form-label filter-title">Темп. кипения (влажная)</label>
+                            <select class="form-select" name="wet_boil">
+                                <option value="">Все</option>
+                                <?php 
+                                foreach($wet_boils as $wet_boil)
+                                {
+                                ?>
+                                    <option value="<?php echo htmlspecialchars($wet_boil); ?>" <?php echo $wet_filter === $wet_boil ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($wet_boil); ?>
+                                    </option>
+                                <?php 
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-2">
                         <div class="filter-group mb-3">
                             <label class="form-label filter-title">Объем</label>
                             <select class="form-select" name="volume">
                                 <option value="">Все</option>
-                                <option value="0.5">0.5 л</option>
-                                <option value="1">1 л</option>
+                                <?php 
+                                foreach($volumes as $volume)
+                                {
+                                ?>
+                                    <option value="<?php echo htmlspecialchars($volume); ?>" <?php echo $volume_filter === $volume ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($volume); ?>
+                                    </option>
+                                <?php 
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -371,7 +406,7 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
                 <input type="hidden" name="sort" value="<?php echo $sort_type; ?>">
                 <input type="hidden" name="page" value="1">
             </form>
-        </div>
+        </div>       
         <div class="products-section mb-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="mb-0"><i class="bi bi-box-seam"></i> Товары <span class="badge bg-secondary"><?php echo $total_items; ?></span></h2>
@@ -386,15 +421,16 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
                                 'price_desc' => 'По цене (убывание)',
                                 'name' => 'По названию'
                             ];
+
                             echo $sort_labels[$sort_type] ?? 'Сортировка';
                             ?>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'default', 'page' => 1]); ?>">По умолчанию</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'popular', 'page' => 1]); ?>">По популярности</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'price_asc', 'page' => 1]); ?>">По цене (возрастание)</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'price_desc', 'page' => 1]); ?>">По цене (убывание)</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo buildQueryString(['sort' => 'name', 'page' => 1]); ?>">По названию</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildCategoryQueryString(['sort' => 'default', 'page' => 1]); ?>">По умолчанию</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildCategoryQueryString(['sort' => 'popular', 'page' => 1]); ?>">По популярности</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildCategoryQueryString(['sort' => 'price_asc', 'page' => 1]); ?>">По цене (возрастание)</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildCategoryQueryString(['sort' => 'price_desc', 'page' => 1]); ?>">По цене (убывание)</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo buildCategoryQueryString(['sort' => 'name', 'page' => 1]); ?>">По названию</a></li>
                         </ul>
                     </div>
                     <form method="GET" class="d-flex">
@@ -402,16 +438,19 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
                             <input type="text" class="form-control" name="search" placeholder="Поиск..." value="<?php echo htmlspecialchars($search_query); ?>">
                             <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
                             <?php 
-                            if (!empty($search_query) || !empty($brand_filter) || !empty($standard_filter))
+                            if (!empty($search_query))
                             {
                             ?>
-                                <a href="?" class="btn btn-outline-danger"><i class="bi bi-x"></i></a>
+                                <a href="?<?php echo buildCategoryQueryString(['search' => '', 'page' => 1]); ?>" class="btn btn-outline-danger"><i class="bi bi-x"></i></a>
                             <?php
                             }
                             ?>
                         </div>
-                        <input type="hidden" name="brand" value="<?php echo $brand_filter; ?>">
-                        <input type="hidden" name="standard" value="<?php echo $standard_filter; ?>">
+                        <input type="hidden" name="brand" value="<?php echo htmlspecialchars($brand_filter); ?>">
+                        <input type="hidden" name="standard" value="<?php echo htmlspecialchars($standard_filter); ?>">
+                        <input type="hidden" name="dry_boil" value="<?php echo htmlspecialchars($dry_filter); ?>">
+                        <input type="hidden" name="wet_boil" value="<?php echo htmlspecialchars($wet_filter); ?>">
+                        <input type="hidden" name="volume" value="<?php echo htmlspecialchars($volume_filter); ?>">
                         <input type="hidden" name="sort" value="<?php echo $sort_type; ?>">
                         <input type="hidden" name="page" value="1">
                     </form>
@@ -433,35 +472,41 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
                     <?php
                     foreach ($paginated_products as $product) 
                     {
-                        echo '
+                        $product_url = 'product_detail.php?id=' . $product['id'] . '&back=' . urlencode("brake-fluids.php?" . buildCategoryQueryString(['page' => $current_page]));
+                        ?>
                         <div class="col-lg-3 col-md-6">
                             <div class="product-card card h-100">
-                                '.($product['hit'] ? '<span class="badge bg-danger position-absolute top-0 start-0 m-2">Хит</span>' : '').'
-                                <img src="../../img/no-image.png" class="product-img card-img-top p-3" alt="'.$product['title'].'">
+                                <?php 
+                                if($product['hit'])
+                                {
+                                ?>
+                                    <span class="badge bg-danger position-absolute top-0 start-0 m-2">Хит</span>
+                                <?php 
+                                }
+                                ?>
+                                <img src="<?php echo !empty($product['image']) ? htmlspecialchars($product['image']) : '../../img/no-image.png'; ?>" class="product-img card-img-top p-3" alt="<?php echo htmlspecialchars($product['title']); ?>" onerror="this.src='../../img/no-image.png'">
                                 <div class="card-body">
-                                    <h5 class="product-title card-title">'.$product['title'].'</h5>
-                                    <p class="product-meta text-muted small mb-2">Арт. '.$product['art'].', '.$product['volume'].'</p>
-                                    <div class="product-specs mb-2">
-                                        <small class="text-muted">Стандарт: '.$product['standard'].'</small><br>
-                                        <small class="text-muted">Темп. кипения: '.$product['dry_boil'].' (сух.) / '.$product['wet_boil'].' (влаж.)</small>
-                                    </div>
-                                    <h4 class="product-price mb-3">'.number_format($product['price'], 0, '', ' ').' ₽</h4>
-                                    <p class="product-stock '.($product['stock'] ? 'text-success' : 'text-danger').' mb-3">
-                                        <i class="bi '.($product['stock'] ? 'bi-check-circle' : 'bi-x-circle').'"></i> 
-                                        '.($product['stock'] ? 'В наличии' : 'Нет в наличии').'
+                                    <h5 class="product-title card-title"><?php echo htmlspecialchars($product['title']); ?></h5>
+                                    <p class="product-meta text-muted small mb-2">
+                                        Арт. <?php echo htmlspecialchars($product['art']); ?>, <?php echo htmlspecialchars($product['volume']); ?>
                                     </p>
-                                    <div class="product-actions d-grid gap-2">';
-                                        ?>
+                                    <h4 class="product-price mb-3"><?php echo number_format($product['price'], 0, '', ' '); ?> ₽</h4>
+                                    <p class="product-stock <?php echo $product['stock'] ? 'text-success' : 'text-danger'; ?> mb-3">
+                                        <i class="bi <?php echo $product['stock'] ? 'bi-check-circle' : 'bi-x-circle'; ?>"></i> 
+                                        <?php echo $product['stock'] ? 'В наличии' : 'Нет в наличии'; ?>
+                                    </p>
+                                    <div class="product-actions d-grid gap-2">
                                         <?php 
                                         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true)
                                         {
                                         ?>
-                                            <form method="POST" class="add-to-cart-form">
+                                            <form method="POST" action="../../cart.php" class="add-to-cart-form">
                                                 <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
                                                 <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($product['title']); ?>">
-                                                <input type="hidden" name="product_image" value="../../img/no-image.png">
+                                                <input type="hidden" name="product_image" value="<?php echo !empty($product['image']) ? htmlspecialchars($product['image']) : '../../img/no-image.png'; ?>">
                                                 <input type="hidden" name="price" value="<?php echo $product['price']; ?>">
                                                 <input type="hidden" name="quantity" value="1">
+                                                <input type="hidden" name="product_type" value="brake-fluid">
                                                 <button type="submit" name="add_to_cart" class="btn btn-sm w-100 <?php echo $product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled'; ?> add-to-cart-btn">
                                                     <span class="btn-text">
                                                         <i class="bi bi-cart-plus"></i> В корзину
@@ -479,97 +524,76 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
                                         <?php 
                                         }
                                         ?>
-                                        <?php
-                                        echo '
-                                        <button class="btn btn-sm btn-outline-secondary">
+                                        <a href="<?php echo $product_url; ?>" class="btn btn-sm btn-outline-secondary">
                                             <i class="bi bi-info-circle"></i> Подробнее
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                        </div>';
+                        </div>
+                    <?php
                     }
                     ?>
                 </div>
-                <?php if ($total_pages > 1) 
+                <?php 
+                if ($total_pages > 1) 
                 { 
                 ?>
                 <nav aria-label="Page navigation" class="mt-5">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item <?php 
-                        if ($current_page <= 1) 
-                        { 
-                            echo 'disabled'; 
-                        } 
-                        ?>">
-                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $current_page - 1]); ?>" aria-label="Previous">
+                        <li class="page-item <?php if ($current_page <= 1) echo 'disabled'; ?>">
+                            <a class="page-link" href="?<?php echo buildCategoryQueryString(['page' => $current_page - 1]); ?>" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
                         <?php 
-                        if ($current_page > 3) 
-                        { 
+                        if ($current_page > 3)
+                        {
                         ?>
                         <li class="page-item">
-                            <a class="page-link" href="?<?php echo buildQueryString(['page' => 1]); ?>">1</a>
+                            <a class="page-link" href="?<?php echo buildCategoryQueryString(['page' => 1]); ?>">1</a>
                         </li>
                             <?php 
-                            if ($current_page > 4) 
-                            { 
+                            if ($current_page > 4)
+                            {
+                            ?>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        <?php 
+                            }
+                        }
+                        
+                        for ($i = max(1, $current_page - 2); $i <= min($total_pages, $current_page + 2); $i++)
+                        {
+                        ?>
+                        <li class="page-item <?php if ($i == $current_page) echo 'active'; ?>">
+                            <a class="page-link" href="?<?php echo buildCategoryQueryString(['page' => $i]); ?>"><?php echo $i; ?></a>
+                        </li>
+                        <?php 
+                        }
+                        
+                        if ($current_page < $total_pages - 2)
+                        {
+                        ?>
+                            <?php 
+                            if ($current_page < $total_pages - 3)
+                            {
                             ?>
                             <li class="page-item disabled">
                                 <span class="page-link">...</span>
                             </li>
                             <?php 
-                            } 
-                            ?>
-                        <?php 
-                        } 
-                        ?>
-                        <?php 
-                        for ($i = max(1, $current_page - 2); $i <= min($total_pages, $current_page + 2); $i++) 
-                        { 
-                        ?>
-                        <li class="page-item 
-                        <?php 
-                        if ($i == $current_page) 
-                        { 
-                            echo 'active'; 
-                        } 
-                        ?>">
-                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $i]); ?>"><?php echo $i; ?></a>
-                        </li>
-                        <?php 
-                        } 
-                        ?>
-                        <?php 
-                        if ($current_page < $total_pages - 2) 
-                        { 
-                        ?>
-                            <?php 
-                            if ($current_page < $total_pages - 3) 
-                            { 
-                            ?>
-                            <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>
-                            <?php 
-                            } 
+                            }
                             ?>
                         <li class="page-item">
-                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $total_pages]); ?>"><?php echo $total_pages; ?></a>
+                            <a class="page-link" href="?<?php echo buildCategoryQueryString(['page' => $total_pages]); ?>"><?php echo $total_pages; ?></a>
                         </li>
                         <?php 
-                        } 
+                        }
                         ?>
-                        <li class="page-item 
-                        <?php 
-                        if ($current_page >= $total_pages) 
-                        { 
-                            echo 'disabled'; 
-                        } 
-                        ?>">
-                            <a class="page-link" href="?<?php echo buildQueryString(['page' => $current_page + 1]); ?>" aria-label="Next">
+                        <li class="page-item <?php if ($current_page >= $total_pages) echo 'disabled'; ?>">
+                            <a class="page-link" href="?<?php echo buildCategoryQueryString(['page' => $current_page + 1]); ?>" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -594,13 +618,14 @@ $paginated_products = array_slice($filtered_products, $offset, $items_per_page);
 ?>
 
 <script src="../../js/bootstrap.bundle.min.js"></script>
+<script src="../../js/script.js"></script>
 <script>
 function applyFilters() 
 {
     document.getElementById('filterForm').submit();
 }
 
-function buildQueryString(params) 
+function buildCategoryQueryString(params) 
 {
     let currentParams = new URLSearchParams(window.location.search);
     let keys = Object.keys(params);
@@ -774,11 +799,3 @@ document.addEventListener('DOMContentLoaded', function()
 </script>
 </body>
 </html>
-
-<?php
-function buildQueryString($newParams = []) 
-{
-    $params = array_merge($_GET, $newParams);
-    return http_build_query($params);
-}
-?>

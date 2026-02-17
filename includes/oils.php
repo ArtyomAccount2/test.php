@@ -245,17 +245,15 @@ $current_page_products = array_slice($filtered_products, $start_index, $items_pe
         <h2 class="mb-4"><i class="bi bi-filter-square"></i> Категории</h2>
         <div class="row g-4">
             <?php
-            $base_url = '../files/categories/';
-
             $categories = [
-                ['icon' => 'bi-droplet', 'title' => 'Моторные масла', 'count' => '124 товара', 'color' => 'dark', 'link' => $base_url . 'motor-oils.php?sort=default&page=1'],
-                ['icon' => 'bi-gear', 'title' => 'Трансмиссионные масла', 'count' => '56 товаров', 'color' => 'success', 'link' => $base_url . 'transmission-oils.php?sort=default&page=1'],
-                ['icon' => 'bi-snow', 'title' => 'Тормозные жидкости', 'count' => '23 товара', 'color' => 'info', 'link' => $base_url . 'brake-fluids.php?sort=default&page=1'],
-                ['icon' => 'bi-water', 'title' => 'Охлаждающие жидкости', 'count' => '34 товара', 'color' => 'primary', 'link' => $base_url . 'cooling-fluids.php?sort=default&page=1'],
-                ['icon' => 'bi-wind', 'title' => 'Жидкости ГУР', 'count' => '18 товаров', 'color' => 'dark', 'link' => $base_url . 'power-steering-fluids.php?sort=default&page=1'],
-                ['icon' => 'bi-droplet-half', 'title' => 'Антифризы', 'count' => '42 товара', 'color' => 'secondary', 'link' => $base_url . 'antifreeze.php?sort=default&page=1'],
-                ['icon' => 'bi-brightness-high', 'title' => 'Специальные жидкости', 'count' => '31 товар', 'color' => 'warning', 'link' => $base_url . 'special-fluids.php?sort=default&page=1'],
-                ['icon' => 'bi-archive', 'title' => 'Комплекты', 'count' => '15 товаров', 'color' => 'primary', 'link' => $base_url . 'kits.php?sort=default&page=1']
+                ['icon' => 'bi-droplet', 'title' => 'Моторные масла', 'count' => '124 товара', 'color' => 'dark', 'link' => '../files/categories/motor-oils.php?sort=default&page=1'],
+                ['icon' => 'bi-gear', 'title' => 'Трансмиссионные масла', 'count' => '56 товаров', 'color' => 'success', 'link' => '../files/categories/transmission-oils.php?sort=default&page=1'],
+                ['icon' => 'bi-snow', 'title' => 'Тормозные жидкости', 'count' => '23 товара', 'color' => 'info', 'link' => '../files/categories/brake-fluids.php?sort=default&page=1'],
+                ['icon' => 'bi-water', 'title' => 'Охлаждающие жидкости', 'count' => '34 товара', 'color' => 'primary', 'link' => '../files/categories/cooling-fluids.php?sort=default&page=1'],
+                ['icon' => 'bi-wind', 'title' => 'Жидкости ГУР', 'count' => '18 товаров', 'color' => 'dark', 'link' => '../files/categories/power-steering-fluids.php?sort=default&page=1'],
+                ['icon' => 'bi-droplet-half', 'title' => 'Антифризы', 'count' => '42 товара', 'color' => 'secondary', 'link' => '../files/categories/antifreeze.php?sort=default&page=1'],
+                ['icon' => 'bi-brightness-high', 'title' => 'Специальные жидкости', 'count' => '31 товар', 'color' => 'warning', 'link' => '../files/categories/special-fluids.php?sort=default&page=1'],
+                ['icon' => 'bi-archive', 'title' => 'Комплекты', 'count' => '15 товаров', 'color' => 'primary', 'link' => '../files/categories/kits.php?sort=default&page=1']
             ];
             
             foreach ($categories as $category) 

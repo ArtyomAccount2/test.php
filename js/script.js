@@ -409,7 +409,12 @@ function handleHeaderSearch()
         
         if (result.success && result.found) 
         {
-            let productUrl = `includes/all_details.php?id=${result.product_id}&back=index.php`;
+            let productUrl;
+
+            if (result.source_table === 'category_products') 
+            {
+                productUrl = `includes/all_details.php?id=${result.product_id}&back=index.php`;
+            }
 
             window.location.href = productUrl;
             return;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 14 2026 г., 20:02
+-- Время создания: Фев 17 2026 г., 20:03
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -146,6 +146,164 @@ INSERT INTO `categories` (`id`, `name`, `description`, `created_at`) VALUES
 (1, 'Запчасти', 'Автомобильные запчасти', '2026-01-06 17:15:45'),
 (2, 'Масла', 'Моторные и трансмиссионные масла', '2026-01-06 17:15:45'),
 (3, 'Аксессуары', 'Аксессуары для автомобилей', '2026-01-06 17:15:45');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `category_products`
+--
+
+CREATE TABLE `category_products` (
+  `id` int(11) NOT NULL,
+  `category_type` varchar(50) NOT NULL COMMENT 'antifreeze, brake-fluid, cooling-fluid, power-steering, special-fluid, kit, transmission-oil, motor-oil',
+  `title` varchar(255) NOT NULL,
+  `art` varchar(100) DEFAULT NULL,
+  `volume` varchar(50) DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `stock` tinyint(1) DEFAULT '1',
+  `hit` tinyint(1) DEFAULT '0',
+  `brand` varchar(100) DEFAULT NULL,
+  `image` varchar(500) DEFAULT 'uploads/products/696392655986c.png',
+  `type` varchar(100) DEFAULT NULL,
+  `color` varchar(50) DEFAULT NULL,
+  `viscosity` varchar(50) DEFAULT NULL,
+  `standard` varchar(50) DEFAULT NULL,
+  `application` varchar(100) DEFAULT NULL,
+  `freezing` varchar(20) DEFAULT NULL,
+  `dry_boil` varchar(20) DEFAULT NULL,
+  `wet_boil` varchar(20) DEFAULT NULL,
+  `contents` text,
+  `api` varchar(50) DEFAULT NULL,
+  `acea` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `category_products`
+--
+
+INSERT INTO `category_products` (`id`, `category_type`, `title`, `art`, `volume`, `price`, `stock`, `hit`, `brand`, `image`, `type`, `color`, `viscosity`, `standard`, `application`, `freezing`, `dry_boil`, `wet_boil`, `contents`, `api`, `acea`, `created_at`, `updated_at`) VALUES
+(1, 'antifreeze', 'Motul Inugel Optimal', 'ANTI001', '2 л', '1100.00', 1, 1, 'Motul', 'uploads/products/696392655986c.png', 'G12', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(2, 'antifreeze', 'Shell Zone Ultra', 'SHELL-AF01', '5 л', '1650.00', 1, 0, 'Shell', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(3, 'antifreeze', 'Liqui Moly Kuhlerfrostschutz', 'LM-AF001', '1.5 л', '1250.00', 1, 1, 'Liqui Moly', 'uploads/products/696392655986c.png', 'G12++', 'Синий', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(4, 'antifreeze', 'Castrol Radicool SF', 'CAST-AF01', '5 л', '1890.00', 1, 0, 'Castrol', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(5, 'antifreeze', 'Total Glacelf Auto Supra', 'TOTAL-AF01', '5 л', '1450.00', 0, 0, 'Total', 'uploads/products/696392655986c.png', 'G12', 'Синий', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(6, 'antifreeze', 'Mobil Antifreeze Advanced', 'MOB-AF001', '1 л', '680.00', 1, 1, 'Mobil', 'uploads/products/696392655986c.png', 'G12++', 'Оранжевый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(7, 'antifreeze', 'Febi Bilstein Antifreeze', 'FEBI-AF01', '1.5 л', '850.00', 1, 0, 'Febi', 'uploads/products/696392655986c.png', 'G12', 'Синий', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(8, 'antifreeze', 'Ravenol Original Green', 'RAV-AF001', '1.5 л', '920.00', 1, 0, 'Ravenol', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(9, 'antifreeze', 'SWAG Antifreeze', 'SWAG-AF01', '5 л', '1580.00', 1, 1, 'SWAG', 'uploads/products/696392655986c.png', 'G12+', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(10, 'antifreeze', 'Hepu Antifreeze', 'HEPU-AF01', '1.5 л', '780.00', 1, 0, 'Hepu', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(11, 'antifreeze', 'Motul Inugel Expert', 'ANTI002', '5 л', '2200.00', 1, 0, 'Motul', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(12, 'antifreeze', 'Shell Helix Ultra', 'SHELL-AF02', '2 л', '1350.00', 1, 1, 'Shell', 'uploads/products/696392655986c.png', 'G12+', 'Оранжевый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(13, 'antifreeze', 'Liqui Moly G12 Plus', 'LM-AF002', '5 л', '1950.00', 1, 0, 'Liqui Moly', 'uploads/products/696392655986c.png', 'G12+', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(14, 'antifreeze', 'Castrol SF Concentrate', 'CAST-AF02', '1 л', '950.00', 1, 0, 'Castrol', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(15, 'antifreeze', 'Total Antifreeze', 'TOTAL-AF02', '2 л', '1200.00', 0, 0, 'Total', 'uploads/products/696392655986c.png', 'G12', 'Синий', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(16, 'brake-fluid', 'Liqui Moly Bremsflussigkeit DOT 4', 'BRAKE001', '0.5 л', '650.00', 1, 1, 'Liqui Moly', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '255°C', '165°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(17, 'brake-fluid', 'Castrol React DOT 4', 'CAST-BF01', '0.5 л', '580.00', 1, 0, 'Castrol', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '250°C', '160°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(18, 'brake-fluid', 'Motul DOT 5.1', 'MOT-BF01', '0.5 л', '890.00', 1, 1, 'Motul', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 5.1', NULL, NULL, '270°C', '180°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(19, 'brake-fluid', 'Brembo LCF 600 Plus DOT 4', 'BREM-BF01', '0.5 л', '720.00', 1, 0, 'Brembo', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '260°C', '170°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(20, 'brake-fluid', 'ATE SL.6 DOT 4', 'ATE-BF001', '1 л', '950.00', 1, 1, 'ATE', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '255°C', '165°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(21, 'brake-fluid', 'TRW PFG550 DOT 4', 'TRW-BF001', '0.5 л', '520.00', 0, 0, 'TRW', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '250°C', '160°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(22, 'brake-fluid', 'Bosch ESI6-32N DOT 4', 'BOSCH-BF01', '1 л', '780.00', 1, 0, 'Bosch', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '265°C', '175°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(23, 'brake-fluid', 'Febi Bilstein DOT 4', 'FEBI-BF01', '0.5 л', '480.00', 1, 0, 'Febi', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '250°C', '160°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(24, 'brake-fluid', 'Ravenol DOT 5.1', 'RAV-BF001', '0.5 л', '820.00', 1, 1, 'Ravenol', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 5.1', NULL, NULL, '270°C', '180°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(25, 'brake-fluid', 'Shell DOT 4', 'SHELL-BF01', '0.5 л', '550.00', 1, 0, 'Shell', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '255°C', '165°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(26, 'brake-fluid', 'Liqui Moly DOT 5.1', 'BRAKE002', '0.5 л', '920.00', 1, 0, 'Liqui Moly', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 5.1', NULL, NULL, '275°C', '185°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(27, 'brake-fluid', 'Castrol React DOT 5.1', 'CAST-BF02', '0.5 л', '850.00', 1, 0, 'Castrol', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 5.1', NULL, NULL, '270°C', '180°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(28, 'brake-fluid', 'Motul DOT 4', 'MOT-BF02', '1 л', '1100.00', 1, 1, 'Motul', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '265°C', '175°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(29, 'brake-fluid', 'Brembo DOT 5.1', 'BREM-BF02', '0.5 л', '950.00', 0, 0, 'Brembo', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 5.1', NULL, NULL, '275°C', '185°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(30, 'brake-fluid', 'ATE TYP 200 DOT 4', 'ATE-BF002', '1 л', '1200.00', 1, 1, 'ATE', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '260°C', '170°C', NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(31, 'cooling-fluid', 'Liqui Moly Kuhlerfrostschutz GTL 12 Plus', 'COOL001', '1.5 л', '1250.00', 1, 1, 'Liqui Moly', 'uploads/products/696392655986c.png', 'G12++', 'Синий', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(32, 'cooling-fluid', 'Castrol Radicool SF', 'CAST-CF01', '5 л', '1890.00', 1, 0, 'Castrol', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, '-35°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(33, 'cooling-fluid', 'Motul Inugel Optimal', 'MOT-CF001', '2 л', '1100.00', 1, 1, 'Motul', 'uploads/products/696392655986c.png', 'G12', 'Красный', NULL, NULL, NULL, '-37°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(34, 'cooling-fluid', 'Shell Zone Ultra', 'SHELL-CF01', '5 л', '1650.00', 1, 0, 'Shell', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(35, 'cooling-fluid', 'Total Glacelf Auto Supra', 'TOTAL-CF01', '5 л', '1450.00', 0, 0, 'Total', 'uploads/products/696392655986c.png', 'G12', 'Синий', NULL, NULL, NULL, '-35°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(36, 'cooling-fluid', 'Mobil Antifreeze Advanced', 'MOB-CF001', '1 л', '680.00', 1, 1, 'Mobil', 'uploads/products/696392655986c.png', 'G12++', 'Оранжевый', NULL, NULL, NULL, '-37°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(37, 'cooling-fluid', 'Febi Bilstein Kuhlerfrostschutz', 'FEBI-CF01', '1.5 л', '850.00', 1, 0, 'Febi', 'uploads/products/696392655986c.png', 'G12', 'Синий', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(38, 'cooling-fluid', 'Ravenol Original Green', 'RAV-CF001', '1.5 л', '920.00', 1, 0, 'Ravenol', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, '-35°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(39, 'cooling-fluid', 'SWAG Antifreeze', 'SWAG-CF01', '5 л', '1580.00', 1, 1, 'SWAG', 'uploads/products/696392655986c.png', 'G12+', 'Красный', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(40, 'cooling-fluid', 'Hepu Antifreeze', 'HEPU-CF01', '1.5 л', '780.00', 1, 0, 'Hepu', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, '-37°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(41, 'cooling-fluid', 'Liqui Moly G13', 'COOL002', '1.5 л', '1350.00', 1, 0, 'Liqui Moly', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(42, 'cooling-fluid', 'Castrol G12++', 'CAST-CF02', '5 л', '1950.00', 1, 1, 'Castrol', 'uploads/products/696392655986c.png', 'G12++', 'Синий', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(43, 'cooling-fluid', 'Motul G11', 'MOT-CF002', '2 л', '950.00', 1, 0, 'Motul', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, '-35°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(44, 'cooling-fluid', 'Shell G12+', 'SHELL-CF02', '5 л', '1750.00', 0, 0, 'Shell', 'uploads/products/696392655986c.png', 'G12+', 'Красный', NULL, NULL, NULL, '-37°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(45, 'cooling-fluid', 'Mobil G13', 'MOB-CF002', '1 л', '720.00', 1, 1, 'Mobil', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:29', '2026-02-16 17:49:29'),
+(46, 'power-steering', 'Liqui Moly Lenkungs-Getriebeoil', 'PSF001', '1 л', '1450.00', 1, 1, 'Liqui Moly', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(47, 'power-steering', 'Febi Bilstein Hydraulikol', 'FEBI-PS01', '1 л', '980.00', 1, 0, 'Febi', 'uploads/products/696392655986c.png', 'PSF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(48, 'power-steering', 'Ravenol Hydraulik Fluid', 'RAV-PS001', '1 л', '1120.00', 1, 1, 'Ravenol', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(49, 'power-steering', 'SWAG Power Steering Fluid', 'SWAG-PS01', '1 л', '890.00', 0, 0, 'SWAG', 'uploads/products/696392655986c.png', 'PSF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(50, 'power-steering', 'Mannol Power Steering Fluid', 'MANN-PS01', '1 л', '760.00', 1, 0, 'Mannol', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(51, 'power-steering', 'Motul Multi ATF', 'MOT-PS001', '1 л', '1280.00', 1, 1, 'Motul', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(52, 'power-steering', 'Castrol Transmax ATF', 'CAST-PS01', '1 л', '1350.00', 1, 0, 'Castrol', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(53, 'power-steering', 'Mobil ATF 320', 'MOB-PS001', '1 л', '1100.00', 1, 0, 'Mobil', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(54, 'power-steering', 'Pentosin CHF 11S', 'PENT-PS01', '1 л', '1650.00', 1, 1, 'Pentosin', 'uploads/products/696392655986c.png', 'CHF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(55, 'power-steering', 'Comma PSF-MV', 'COMM-PS01', '1 л', '820.00', 1, 0, 'Comma', 'uploads/products/696392655986c.png', 'PSF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(56, 'power-steering', 'Liqui Moly ATF Synth', 'PSF002', '1 л', '1550.00', 1, 0, 'Liqui Moly', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(57, 'power-steering', 'Febi Hydraulic Oil', 'FEBI-PS02', '1 л', '1050.00', 1, 0, 'Febi', 'uploads/products/696392655986c.png', 'PSF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(58, 'power-steering', 'Ravenol ATF Fluid', 'RAV-PS002', '1 л', '1250.00', 1, 1, 'Ravenol', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(59, 'power-steering', 'Motul Dexron III', 'MOT-PS002', '1 л', '1380.00', 1, 0, 'Motul', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(60, 'power-steering', 'Pentosin CHF 202', 'PENT-PS02', '1 л', '1750.00', 1, 1, 'Pentosin', 'uploads/products/696392655986c.png', 'CHF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(61, 'special-fluid', 'Liqui Moly Scheiben-Reiniger', 'SPEC001', '2 л', '450.00', 1, 1, 'Liqui Moly', 'uploads/products/696392655986c.png', 'Омыватель', NULL, NULL, NULL, 'Лобовое стекло', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(62, 'special-fluid', 'Sonax AdBlue', 'SONAX-AB01', '10 л', '890.00', 1, 0, 'Sonax', 'uploads/products/696392655986c.png', 'AdBlue', NULL, NULL, NULL, 'Система SCR', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(63, 'special-fluid', 'Wynns Injector Cleaner', 'WYNNS-IC01', '0.25 л', '680.00', 1, 1, 'Wynns', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Инжектор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(64, 'special-fluid', 'Motul Clean Brake', 'MOT-SP001', '0.4 л', '520.00', 1, 0, 'Motul', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Тормоза', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(65, 'special-fluid', 'Bardahl No Frost', 'BARD-SP01', '0.5 л', '320.00', 0, 0, 'Bardahl', 'uploads/products/696392655986c.png', 'Антиобледенитель', NULL, NULL, NULL, 'Замки', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(66, 'special-fluid', 'Gunk Engine Degreaser', 'GUNK-SP01', '0.5 л', '580.00', 1, 1, 'Gunk', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Двигатель', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(67, 'special-fluid', 'CRC Contact Cleaner', 'CRC-SP001', '0.4 л', '420.00', 1, 0, 'CRC', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Электрика', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(68, 'special-fluid', 'Permatex Anti-Seize', 'PERM-SP01', '0.1 л', '350.00', 1, 0, 'Permatex', 'uploads/products/696392655986c.png', 'Смазка', NULL, NULL, NULL, 'Резьба', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(69, 'special-fluid', 'WD-40 Specialist', 'WD40-SP01', '0.4 л', '480.00', 1, 1, 'WD-40', 'uploads/products/696392655986c.png', 'Смазка', NULL, NULL, NULL, 'Универсальная', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(70, 'special-fluid', '3M Windshield Wash', '3M-SP001', '1 л', '290.00', 1, 0, '3M', 'uploads/products/696392655986c.png', 'Омыватель', NULL, NULL, NULL, 'Стекло', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(71, 'special-fluid', 'Liqui Moly Kühlerschutz', 'SPEC002', '1.5 л', '550.00', 1, 0, 'Liqui Moly', 'uploads/products/696392655986c.png', 'Охлаждающая', NULL, NULL, NULL, 'Радиатор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(72, 'special-fluid', 'Sonax Glass Cleaner', 'SONAX-GC01', '0.5 л', '380.00', 1, 0, 'Sonax', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Стекло', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(73, 'special-fluid', 'Wynns Diesel Cleaner', 'WYNNS-DC01', '0.25 л', '720.00', 1, 1, 'Wynns', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Дизель', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(74, 'special-fluid', 'Motul Chain Clean', 'MOT-SP002', '0.4 л', '610.00', 1, 0, 'Motul', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Цепь', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(75, 'special-fluid', 'Bardahl Injector Clean', 'BARD-SP02', '0.3 л', '490.00', 0, 0, 'Bardahl', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Инжектор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(76, 'kit', 'Комплект замены масла Castrol', 'KIT001', '1 компл', '5200.00', 1, 1, 'Castrol', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 4л + фильтр', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(77, 'kit', 'Набор Liqui Moly для ТО', 'KIT002', '1 компл', '7800.00', 1, 0, 'Liqui Moly', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 5л + фильтры + свечи', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(78, 'kit', 'Комплект тормозной жидкости', 'KIT003', '1 компл', '1850.00', 1, 1, 'ATE', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Тормозная жидкость 1л + очиститель', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(79, 'kit', 'Набор охлаждающей жидкости', 'KIT004', '1 компл', '2450.00', 0, 0, 'Motul', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Антифриз 5л + дистиллированная вода', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(80, 'kit', 'Комплект трансмиссионного масла', 'KIT005', '1 компл', '3200.00', 1, 0, 'Liqui Moly', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 2л + прокладка', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(81, 'kit', 'Набор для ГУР', 'KIT006', '1 компл', '1980.00', 1, 1, 'Febi', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Жидкость ГУР 1л + очиститель', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(82, 'kit', 'Комплект полного ТО', 'KIT007', '1 компл', '12500.00', 1, 1, 'Various', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло, фильтры, свечи, жидкости', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(83, 'kit', 'Набор для замены АКПП', 'KIT008', '1 компл', '6800.00', 1, 0, 'Mobil', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло АКПП 4л + фильтр', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(84, 'kit', 'Комплект зимнего ТО', 'KIT009', '1 компл', '4200.00', 1, 1, 'Various', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Омыватель, антифриз, свечи, жидкости', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(85, 'kit', 'Набор для дизельного двигателя', 'KIT010', '1 компл', '8900.00', 1, 0, 'Liqui Moly', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 5л + фильтры + присадка', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(86, 'kit', 'Комплект замены масла Mobil', 'KIT011', '1 компл', '5800.00', 1, 0, 'Mobil', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 4л + фильтр', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(87, 'kit', 'Набор для бензинового двигателя', 'KIT012', '1 компл', '9500.00', 1, 1, 'Castrol', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 5л + фильтры + свечи', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(88, 'kit', 'Комплект тормозной системы', 'KIT013', '1 компл', '3200.00', 1, 0, 'Brembo', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Тормозная жидкость + колодки', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(89, 'kit', 'Набор для кондиционера', 'KIT014', '1 компл', '2800.00', 0, 0, 'Various', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Фреон + очиститель', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(90, 'kit', 'Комплект летнего ТО', 'KIT015', '1 компл', '3800.00', 1, 1, 'Various', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Омыватель, антифриз, фильтры', NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(91, 'transmission-oil', 'Castrol TRANSMAX 75W-90', 'TRANS001', '1 л', '1890.00', 1, 1, 'Castrol', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-90', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(92, 'transmission-oil', 'Mobilube 1 SHC 75W-90', 'MOB-TR001', '1 л', '2150.00', 1, 0, 'Mobil', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-90', NULL, 'МКПП, АКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(93, 'transmission-oil', 'Liqui Moly Hochleistungs-Getriebeoil 75W-90', 'LM-TR001', '1 л', '1980.00', 1, 1, 'Liqui Moly', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-90', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(94, 'transmission-oil', 'Motul Gear 300 75W-90', 'MOT-TR001', '1 л', '2450.00', 1, 0, 'Motul', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-90', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(95, 'transmission-oil', 'Shell Spirax S6 GX 80W-90', 'SHELL-TR01', '1 л', '1650.00', 1, 0, 'Shell', 'uploads/products/696392655986c.png', 'Минеральное', NULL, '80W-90', NULL, 'МКПП, редуктор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(96, 'transmission-oil', 'Total Transmission FE 75W-80', 'TOTAL-TR01', '1 л', '1780.00', 0, 0, 'Total', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-80', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(97, 'transmission-oil', 'ZIC G-F Top 75W-85', 'ZIC-TR001', '1 л', '1520.00', 1, 1, 'ZIC', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-85', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(98, 'transmission-oil', 'ELF Tranself NFJ 75W-80', 'ELF-TR001', '1 л', '1920.00', 1, 0, 'ELF', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-80', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(99, 'transmission-oil', 'Ravenol MTF-2 75W-80', 'RAV-TR001', '1 л', '1680.00', 1, 0, 'Ravenol', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-80', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(100, 'transmission-oil', 'Febi Bilstein Getriebeoil 75W-90', 'FEBI-TR01', '1 л', '1350.00', 1, 0, 'Febi', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-90', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(101, 'transmission-oil', 'Castrol TRANSMAX 80W-90', 'TRANS002', '1 л', '1750.00', 1, 0, 'Castrol', 'uploads/products/696392655986c.png', 'Минеральное', NULL, '80W-90', NULL, 'МКПП, редуктор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(102, 'transmission-oil', 'Mobilube GX 80W-90', 'MOB-TR002', '1 л', '1420.00', 1, 0, 'Mobil', 'uploads/products/696392655986c.png', 'Минеральное', NULL, '80W-90', NULL, 'МКПП, редуктор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(103, 'transmission-oil', 'Liqui Moly Getriebeoil 75W-80', 'LM-TR002', '1 л', '1850.00', 1, 1, 'Liqui Moly', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-80', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(104, 'transmission-oil', 'Motul Multi ATF', 'MOT-TR002', '1 л', '1950.00', 1, 0, 'Motul', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, 'ATF', NULL, 'АКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(105, 'transmission-oil', 'Shell Spirax S4 ATF MD3', 'SHELL-TR02', '1 л', '1250.00', 1, 0, 'Shell', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, 'ATF', NULL, 'АКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(106, 'motor-oil', 'Castrol EDGE 5W-30', '15698E4', '4 л', '3890.00', 1, 1, 'Castrol', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A3/B4', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(107, 'motor-oil', 'Mobil Super 3000 X1 5W-40', '152343', '4 л', '3450.00', 1, 0, 'Mobil', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A3/B4', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(108, 'motor-oil', 'Liqui Moly Special Tec AA 5W-30', '1123DE', '5 л', '4210.00', 1, 1, 'Liqui Moly', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A5/B5', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(109, 'motor-oil', 'Shell Helix HX7 10W-40', '87654F', '4 л', '2890.00', 0, 0, 'Shell', 'uploads/products/696392655986c.png', 'Полусинтетическое', NULL, '10W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A3/B4', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(110, 'motor-oil', 'Total Quartz 9000 5W-40', 'TQ9000', '5 л', '3650.00', 1, 0, 'Total', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A3/B4', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(111, 'motor-oil', 'Motul 8100 X-clean 5W-30', 'M8100', '5 л', '4890.00', 1, 1, 'Motul', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'C3', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(112, 'motor-oil', 'ZIC X9 5W-30', 'ZX9-5W30', '4 л', '2990.00', 1, 0, 'ZIC', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A5/B5', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(113, 'motor-oil', 'ELF Evolution 900 NF 5W-40', 'ELF900', '5 л', '3750.00', 1, 0, 'ELF', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A3/B4', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(114, 'motor-oil', 'Castrol MAGNATEC 5W-30', 'CAST567', '4 л', '3250.00', 1, 1, 'Castrol', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A1/B1', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(115, 'motor-oil', 'Mobil 1 0W-40', 'MOB1-0W40', '4 л', '4450.00', 1, 0, 'Mobil', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '0W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A3/B4', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(116, 'motor-oil', 'Castrol EDGE 0W-20', '15698E5', '4 л', '3990.00', 1, 0, 'Castrol', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '0W-20', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A1/B1', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(117, 'motor-oil', 'Mobil Super 3000 5W-30', '152344', '4 л', '3550.00', 1, 0, 'Mobil', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A3/B4', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(118, 'motor-oil', 'Liqui Moly Molygen 5W-40', '1124DE', '5 л', '4510.00', 1, 1, 'Liqui Moly', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A3/B4', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(119, 'motor-oil', 'Shell Helix Ultra 5W-30', '87655F', '4 л', '3290.00', 1, 0, 'Shell', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A5/B5', '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(120, 'motor-oil', 'Total Quartz 7000 10W-40', 'TQ7000', '4 л', '2750.00', 1, 0, 'Total', 'uploads/products/696392655986c.png', 'Полусинтетическое', NULL, '10W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A3/B4', '2026-02-16 17:49:30', '2026-02-16 17:49:30');
 
 -- --------------------------------------------------------
 
@@ -852,6 +1010,15 @@ ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `category_products`
+--
+ALTER TABLE `category_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_category_type` (`category_type`),
+  ADD KEY `idx_brand` (`brand`),
+  ADD KEY `idx_price` (`price`);
+
+--
 -- Индексы таблицы `company_documents`
 --
 ALTER TABLE `company_documents`
@@ -1002,13 +1169,19 @@ ALTER TABLE `backup_logs`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `category_products`
+--
+ALTER TABLE `category_products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT для таблицы `company_documents`
