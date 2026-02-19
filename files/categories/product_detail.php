@@ -57,7 +57,7 @@ unset($_SESSION['form_data']);
 
 $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$back_url = '../../includes/oils.php';
+$back_url = '../../index.php';
 
 if (isset($_GET['back']) && !empty($_GET['back'])) 
 {
@@ -274,7 +274,7 @@ if ($product['hit'])
                 <div class="row justify-content-center">
                     <div class="col-lg-12">
                         <a href="<?= htmlspecialchars($back_url) ?>" class="back-to-products">
-                            <i class="bi bi-arrow-left"></i> Назад к товарам
+                            <i class="bi bi-arrow-left"></i> Вернуться назад
                         </a>
                         <article class="product-single-article">
                             <div class="row">
@@ -323,10 +323,10 @@ if ($product['hit'])
                                             if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true)
                                             {
                                             ?>
-                                                <form method="POST" action="../../cart.php" class="d-inline add-to-cart-form">
-                                                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                                                <form method="POST" action="../../includes/add_to_cart.php" class="d-inline add-to-cart-form">
+                                                    <input type="hidden" name="category_product_id" value="<?= $product['id'] ?>">
                                                     <input type="hidden" name="product_name" value="<?= htmlspecialchars($product['title']) ?>">
-                                                    <input type="hidden" name="product_image" value="<?= '../../' . (!empty($product['image']) ? htmlspecialchars($product['image']) : 'img/no-image.png') ?>">
+                                                    <input type="hidden" name="product_image" value="<?= !empty($product['image']) ? htmlspecialchars($product['image']) : '../../img/no-image.png' ?>">
                                                     <input type="hidden" name="price" value="<?= $product['price'] ?>">
                                                     <input type="hidden" name="quantity" value="1">
                                                     <input type="hidden" name="product_type" value="<?= $product['category_type'] ?>">
@@ -596,17 +596,31 @@ document.addEventListener('DOMContentLoaded', function()
 
             let formData = new FormData(this);
 
-            fetch('../../includes/ajax_add_to_cart.php', {
+            fetch('../../includes/add_to_cart.php', {
                 method: 'POST',
                 body: formData,
                 headers: {'X-Requested-With': 'XMLHttpRequest'}
             })
             .then(response => response.json())
             .then(data => {
-                showNotification(data.message, data.success ? 'success' : 'error');
-                if (data.success) updateCartCounter(data.cart_count);
+                if (data.success) 
+                {
+                    showNotification(data.message, 'success');
+                    
+                    if (data.cart_count !== undefined) 
+                    {
+                        updateCartCounter(data.cart_count);
+                    }
+                } 
+                else 
+                {
+                    showNotification(data.message, 'error');
+                }
             })
-            .catch(() => showNotification('Ошибка сети', 'error'))
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Ошибка сети', 'error');
+            })
             .finally(() => {
                 setTimeout(() => {
                     submitButton.classList.remove('btn-loading');

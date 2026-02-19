@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 17 2026 г., 20:03
+-- Время создания: Фев 19 2026 г., 20:36
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -101,8 +101,9 @@ INSERT INTO `backup_logs` (`id`, `filename`, `file_size`, `status`, `source`, `a
 CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `product_type` varchar(50) DEFAULT NULL COMMENT 'part - запчасть, oil - масло, accessory - аксессуар',
+  `product_id` int(11) DEFAULT NULL,
+  `category_product_id` int(11) DEFAULT NULL,
+  `product_type` varchar(50) DEFAULT NULL COMMENT 'part - запчасть (products), oil - масло (products), accessory - аксессуар (products), antifreeze - антифриз (category_products), brake-fluid - тормозная жидкость (category_products), cooling-fluid - охлаждающая жидкость (category_products), power-steering - жидкость ГУР (category_products), special-fluid - специальная жидкость (category_products), kit - комплект (category_products), transmission-oil - трансмиссионное масло (category_products), motor-oil - моторное масло (category_products)',
   `product_name` varchar(255) NOT NULL,
   `product_image` varchar(255) DEFAULT 'no-image.png',
   `price` decimal(10,2) NOT NULL,
@@ -115,37 +116,15 @@ CREATE TABLE `cart` (
 -- Дамп данных таблицы `cart`
 --
 
-INSERT INTO `cart` (`id`, `user_id`, `product_id`, `product_type`, `product_name`, `product_image`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
-(8, 2, 2, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', 2, '2026-02-13 16:19:59', '2026-02-14 15:51:46'),
-(9, 2, 3, 'part', 'Свечи зажигания Audi Q5 2.0 TDI', 'uploads/products/696392655986c.png', '850.00', 2, '2026-02-13 16:20:00', '2026-02-13 16:25:41'),
-(12, 2, 51, 'oil', 'Liqui Moly Special Tec AA 5W-30', 'uploads/products/696392655986c.png', '4210.00', 1, '2026-02-13 16:23:04', '2026-02-13 16:23:04'),
-(20, 3, 2, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', 1, '2026-02-13 16:28:12', '2026-02-13 16:28:12'),
-(21, 3, 12, 'part', 'Тормозные колодки BMW 1 series F20', 'uploads/products/696392655986c.png', '5200.00', 1, '2026-02-13 16:28:13', '2026-02-13 16:28:13'),
-(22, 3, 50, 'oil', 'Mobil Super 3000 X1 5W-40', 'uploads/products/696392655986c.png', '3450.00', 1, '2026-02-13 16:28:22', '2026-02-13 16:28:22'),
-(23, 3, 53, 'oil', 'Total Quartz 9000 5W-40', 'uploads/products/696392655986c.png', '3650.00', 1, '2026-02-13 16:28:24', '2026-02-13 16:28:24'),
-(24, 3, 104, 'accessory', 'Камера заднего вида', 'uploads/products/696392655986c.png', '4290.00', 1, '2026-02-13 16:28:28', '2026-02-13 16:28:28');
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `categories`
---
-
-CREATE TABLE `categories` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` text,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `categories`
---
-
-INSERT INTO `categories` (`id`, `name`, `description`, `created_at`) VALUES
-(1, 'Запчасти', 'Автомобильные запчасти', '2026-01-06 17:15:45'),
-(2, 'Масла', 'Моторные и трансмиссионные масла', '2026-01-06 17:15:45'),
-(3, 'Аксессуары', 'Аксессуары для автомобилей', '2026-01-06 17:15:45');
+INSERT INTO `cart` (`id`, `user_id`, `product_id`, `category_product_id`, `product_type`, `product_name`, `product_image`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
+(8, 2, 2, NULL, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', 2, '2026-02-13 16:19:59', '2026-02-18 17:59:20'),
+(9, 2, 3, NULL, 'part', 'Свечи зажигания Audi Q5 2.0 TDI', 'uploads/products/696392655986c.png', '850.00', 2, '2026-02-13 16:20:00', '2026-02-13 16:25:41'),
+(12, 2, 51, NULL, 'oil', 'Liqui Moly Special Tec AA 5W-30', 'uploads/products/696392655986c.png', '4210.00', 1, '2026-02-13 16:23:04', '2026-02-13 16:23:04'),
+(20, 3, 2, NULL, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', 1, '2026-02-13 16:28:12', '2026-02-13 16:28:12'),
+(21, 3, 12, NULL, 'part', 'Тормозные колодки BMW 1 series F20', 'uploads/products/696392655986c.png', '5200.00', 1, '2026-02-13 16:28:13', '2026-02-13 16:28:13'),
+(22, 3, 50, NULL, 'oil', 'Mobil Super 3000 X1 5W-40', 'uploads/products/696392655986c.png', '3450.00', 1, '2026-02-13 16:28:22', '2026-02-13 16:28:22'),
+(23, 3, 53, NULL, 'oil', 'Total Quartz 9000 5W-40', 'uploads/products/696392655986c.png', '3650.00', 1, '2026-02-13 16:28:24', '2026-02-13 16:28:24'),
+(24, 3, 104, NULL, 'accessory', 'Камера заднего вида', 'uploads/products/696392655986c.png', '4290.00', 1, '2026-02-13 16:28:28', '2026-02-13 16:28:28');
 
 -- --------------------------------------------------------
 
@@ -242,7 +221,7 @@ INSERT INTO `category_products` (`id`, `category_type`, `title`, `art`, `volume`
 (56, 'power-steering', 'Liqui Moly ATF Synth', 'PSF002', '1 л', '1550.00', 1, 0, 'Liqui Moly', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
 (57, 'power-steering', 'Febi Hydraulic Oil', 'FEBI-PS02', '1 л', '1050.00', 1, 0, 'Febi', 'uploads/products/696392655986c.png', 'PSF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
 (58, 'power-steering', 'Ravenol ATF Fluid', 'RAV-PS002', '1 л', '1250.00', 1, 1, 'Ravenol', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
-(59, 'power-steering', 'Motul Dexron III', 'MOT-PS002', '1 л', '1380.00', 1, 0, 'Motul', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
+(59, 'power-steering', 'Motul Dexron III', 'MOT-PS002', '1 л', '1380.00', 1, 0, 'Motul', 'uploads/products/696392655986c.png', 'ATF', 'Красный', '', '', '', '', '', '', '', '', '', '2026-02-16 17:49:30', '2026-02-19 17:04:27'),
 (60, 'power-steering', 'Pentosin CHF 202', 'PENT-PS02', '1 л', '1750.00', 1, 1, 'Pentosin', 'uploads/products/696392655986c.png', 'CHF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
 (61, 'special-fluid', 'Liqui Moly Scheiben-Reiniger', 'SPEC001', '2 л', '450.00', 1, 1, 'Liqui Moly', 'uploads/products/696392655986c.png', 'Омыватель', NULL, NULL, NULL, 'Лобовое стекло', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
 (62, 'special-fluid', 'Sonax AdBlue', 'SONAX-AB01', '10 л', '890.00', 1, 0, 'Sonax', 'uploads/products/696392655986c.png', 'AdBlue', NULL, NULL, NULL, 'Система SCR', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 17:49:30', '2026-02-16 17:49:30'),
@@ -503,8 +482,7 @@ CREATE TABLE `password_resets` (
 --
 
 INSERT INTO `password_resets` (`id`, `user_id`, `token`, `short_token`, `expires_at`, `used`, `created_at`) VALUES
-(20, 4, 'aa261e316f214a318e91e660bd08ccc86a73def1d906eeb0fbc0e71d751b3d69', 'iZ6U6x', '2026-01-13 12:55:17', 1, '2026-01-13 08:55:17'),
-(23, 2, 'b9e8ef21647e0966957767b7ca64426477d61895b924179635a936f99227134b', 'g2wk8b', '2026-02-12 21:52:07', 0, '2026-02-12 17:52:08');
+(20, 4, 'aa261e316f214a318e91e660bd08ccc86a73def1d906eeb0fbc0e71d751b3d69', 'iZ6U6x', '2026-01-13 12:55:17', 1, '2026-01-13 08:55:17');
 
 -- --------------------------------------------------------
 
@@ -659,7 +637,7 @@ INSERT INTO `products` (`id`, `name`, `description`, `category`, `price`, `old_p
 (117, 'Огнетушитель автомобильный', 'Компактный огнетушитель для авто', 'Для экстерьера', '1290.00', '0.00', 80, 'ACS-045', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'FireStop', NULL, NULL, NULL, 1, NULL),
 (118, 'Аптечка первой помощи', 'Автомобильная аптечка ФЭСТ', 'Для экстерьера', '1890.00', '0.00', 70, 'ACS-046', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'MediKit', NULL, NULL, NULL, 0, NULL),
 (119, 'Багажные ремни', 'Ремни для фиксации груза', 'Для салона', '1290.00', '0.00', 90, 'ACS-047', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'CargoTie', NULL, NULL, NULL, 0, NULL),
-(120, 'Органайзер для бардачка', 'Органайзер для хранения вещей в бардачке', 'Для салона', '890.00', '0.00', 100, 'ACS-048', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-13 15:38:45', 'accessory', 'CarOrganizer', NULL, NULL, NULL, 0, NULL);
+(120, 'Органайзер для бардачка', 'Органайзер для хранения вещей в бардачке', 'Для салона', '890.00', '0.00', 100, 'ACS-048', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 15:38:45', '2026-02-19 17:07:33', 'accessory', 'CarOrganizer', '', '', '', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1001,13 +979,8 @@ ALTER TABLE `backup_logs`
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `fk_cart_product` (`product_id`);
-
---
--- Индексы таблицы `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`);
+  ADD KEY `fk_cart_product` (`product_id`),
+  ADD KEY `idx_cart_category_product` (`category_product_id`);
 
 --
 -- Индексы таблицы `category_products`
@@ -1172,16 +1145,10 @@ ALTER TABLE `cart`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
--- AUTO_INCREMENT для таблицы `categories`
---
-ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
 -- AUTO_INCREMENT для таблицы `category_products`
 --
 ALTER TABLE `category_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 
 --
 -- AUTO_INCREMENT для таблицы `company_documents`
@@ -1223,13 +1190,13 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT для таблицы `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 
 --
 -- AUTO_INCREMENT для таблицы `remember_tokens`
@@ -1300,6 +1267,7 @@ ALTER TABLE `action_logs`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_cart_category_product` FOREIGN KEY (`category_product_id`) REFERENCES `category_products` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_cart_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --

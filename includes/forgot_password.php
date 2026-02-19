@@ -20,56 +20,6 @@ function generateShortToken($length = 6)
     return $randomString;
 }
 
-if (isset($_GET['new_code']) && isset($_GET['email'])) 
-{
-    $email = trim($_GET['email']);
-    
-    $stmt = $conn->prepare("SELECT id_users, login_users, surname_users, name_users FROM users WHERE email_users = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows > 0) 
-    {
-        $user = $result->fetch_assoc();
-        $token = bin2hex(random_bytes(32));
-        $short_token = generateShortToken(6);
-
-        $checkStmt = $conn->prepare("SELECT id FROM password_resets WHERE short_token = ?");
-        $checkStmt->bind_param("s", $short_token);
-        $checkStmt->execute();
-        $checkResult = $checkStmt->get_result();
-
-        while ($checkResult->num_rows > 0) 
-        {
-            $short_token = generateShortToken(6);
-            $checkStmt->bind_param("s", $short_token);
-            $checkStmt->execute();
-            $checkResult = $checkStmt->get_result();
-        }
-        
-        $expires = date('Y-m-d H:i:s', time() + 3600);
-
-        $deleteStmt = $conn->prepare("DELETE FROM password_resets WHERE user_id = ?");
-        $deleteStmt->bind_param("i", $user['id_users']);
-        $deleteStmt->execute();
-
-        $insertStmt = $conn->prepare("INSERT INTO password_resets (user_id, token, short_token, expires_at) VALUES (?, ?, ?, ?)");
-        $insertStmt->bind_param("isss", $user['id_users'], $token, $short_token, $expires);
-        
-        if ($insertStmt->execute()) 
-        {
-            $_SESSION['new_code_modal'] = true;
-            $_SESSION['new_code'] = $short_token;
-            $_SESSION['new_code_email'] = $email;
-            $_SESSION['new_code_expires'] = $expires;
-            
-            header("Location: " . $_SERVER['PHP_SELF'] . "?email=" . urlencode($email));
-            exit();
-        }
-    }
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $email = trim($_POST['email'] ?? '');
@@ -118,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             
             if ($insertStmt->execute()) 
             {
-                $resetLink = "http://" . $_SERVER['HTTP_HOST'] . "/reset_password.php?code=" . $short_token;
+                $resetLink = "http://test.php:81/includes/reset_password.php?code=" . $short_token;
 
                 $userName = !empty($user['surname_users']) ? $user['surname_users'] . " " . $user['name_users'] : $user['login_users'];
                 
@@ -128,11 +78,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         <h5><i class='bi bi-check-circle-fill'></i> Ссылка для сброса пароля отправлена!</h5>
                         <p class='mb-2'>Здравствуйте, <strong>" . htmlspecialchars($userName) . "</strong>!</p>
                         <p>На ваш email <strong>" . htmlspecialchars($email) . "</strong> была отправлена ссылка для сброса пароля.</p>
-                        <div class='mt-2'>
-                            <a href='?new_code=1&email=" . urlencode($email) . "' class='btn btn-sm btn-outline-primary'>
-                                <i class='bi bi-arrow-repeat'></i> Получить новый код
-                            </a>
-                        </div>
                     </div>
                     <div class='reset-link-box bg-light p-3 rounded border'>
                         <h6 class='text-center mb-3'>Ссылка для сброса пароля:</h6>
@@ -192,12 +137,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 $error = $_SESSION['forgot_error'] ?? '';
 $success = $_SESSION['forgot_success'] ?? '';
 $email = $_SESSION['forgot_email'] ?? $_GET['email'] ?? '';
-$newCodeModal = $_SESSION['new_code_modal'] ?? false;
-$newCode = $_SESSION['new_code'] ?? '';
-$newCodeEmail = $_SESSION['new_code_email'] ?? '';
-$newCodeExpires = $_SESSION['new_code_expires'] ?? '';
 
-unset($_SESSION['forgot_error'], $_SESSION['forgot_success'], $_SESSION['forgot_email'], $_SESSION['new_code_modal'], $_SESSION['new_code'], $_SESSION['new_code_email'], $_SESSION['new_code_expires']);
+unset($_SESSION['forgot_error'], $_SESSION['forgot_success'], $_SESSION['forgot_email']);
 ?>
 
 <!DOCTYPE html>
@@ -222,14 +163,6 @@ unset($_SESSION['forgot_error'], $_SESSION['forgot_success'], $_SESSION['forgot_
             loginModal.show();
         <?php 
         } 
-        
-        if ($newCodeModal && $newCode) 
-        {
-        ?>
-            var newCodeModal = new bootstrap.Modal(document.getElementById('newCodeModal'));
-            newCodeModal.show();
-        <?php 
-        }
         ?>
     });
     </script>
@@ -309,53 +242,6 @@ unset($_SESSION['forgot_error'], $_SESSION['forgot_success'], $_SESSION['forgot_
         ?>
     </div>
 
-    <div class="modal fade" id="newCodeModal" tabindex="-1" aria-labelledby="newCodeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title w-100 text-center" id="newCodeModalLabel">
-                        <i class="bi bi-key-fill"></i> Новый код сгенерирован
-                    </h5>
-                </div>
-                <div class="modal-body text-center">
-                    <div class="mb-4">
-                        <i class="bi bi-check-circle-fill text-success display-1"></i>
-                        <h4 class="mt-3">Новый код успешно создан!</h4>
-                        <p class="text-muted">Старый код больше недействителен</p>
-                    </div>
-                    <div class="new-code-box p-4 bg-light rounded border">
-                        <p class="mb-2"><strong>Ваш новый код для сброса пароля:</strong></p>
-                        <div class="new-code display-2 text-primary font-monospace fw-bold mb-2">
-                            <?= htmlspecialchars($newCode) ?>
-                        </div>
-                        <small class="text-muted d-block mb-3">
-                            <i class="bi bi-clock"></i> Действителен до: <?= date('H:i', strtotime($newCodeExpires)) ?>
-                        </small>
-                        
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control text-center font-monospace" id="newCodeInput" 
-                                   value="<?= htmlspecialchars($newCode) ?>" readonly>
-                            <button class="btn btn-outline-primary" type="button" onclick="copyNewCode()">
-                                <i class="bi bi-clipboard"></i> Копировать
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <a href="reset_password.php?code=<?= htmlspecialchars($newCode) ?>" 
-                           class="btn btn-success btn-lg">
-                            <i class="bi bi-arrow-right"></i> Перейти к сбросу пароля
-                        </a>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i> Закрыть
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -433,37 +319,6 @@ function copyResetLink()
     {
         document.execCommand('copy');
         alert('Ссылка скопирована в буфер обмена');
-    }
-}
-
-function copyNewCode() 
-{
-    let newCodeInput = document.getElementById('newCodeInput');
-    
-    newCodeInput.select();
-    newCodeInput.setSelectionRange(0, 99999);
-            
-    try 
-    {
-        navigator.clipboard.writeText(newCodeInput.value).then(() => {
-            let copyBtn = document.querySelector('button[onclick="copyNewCode()"]');
-            let originalHtml = copyBtn.innerHTML;
-
-            copyBtn.innerHTML = '<i class="bi bi-check"></i> Скопировано';
-            copyBtn.classList.remove('btn-outline-primary');
-            copyBtn.classList.add('btn-success');
-                    
-            setTimeout(() => {
-                copyBtn.innerHTML = originalHtml;
-                copyBtn.classList.remove('btn-success');
-                copyBtn.classList.add('btn-outline-primary');
-            }, 2000);
-        });
-    } 
-    catch (err) 
-    {
-        document.execCommand('copy');
-        alert('Код скопирован в буфер обмена');
     }
 }
         

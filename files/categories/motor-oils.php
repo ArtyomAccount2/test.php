@@ -527,14 +527,14 @@ $volumes = getFilterOptions($conn, 'motor-oil', 'volume');
                                         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true)
                                         {
                                         ?>
-                                            <form method="POST" action="../../cart.php" class="add-to-cart-form">
-                                                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                            <form method="POST" action="../../includes/add_to_cart.php" class="add-to-cart-form">
+                                                <input type="hidden" name="category_product_id" value="<?php echo $product['id']; ?>">
                                                 <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($product['title']); ?>">
                                                 <input type="hidden" name="product_image" value="<?php echo !empty($product['image']) ? htmlspecialchars($product['image']) : '../../img/no-image.png'; ?>">
                                                 <input type="hidden" name="price" value="<?php echo $product['price']; ?>">
                                                 <input type="hidden" name="quantity" value="1">
-                                                <input type="hidden" name="product_type" value="motor-oil">
-                                                <button type="submit" name="add_to_cart" class="btn btn-sm w-100 <?php echo $product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled'; ?> add-to-cart-btn">
+                                                <input type="hidden" name="product_type" value="<?php echo $product['category_type']; ?>">
+                                                <button type="submit" class="btn btn-sm w-100 <?php echo $product['stock'] ? 'btn-primary' : 'btn-outline-secondary disabled'; ?> add-to-cart-btn">
                                                     <span class="btn-text">
                                                         <i class="bi bi-cart-plus"></i> В корзину
                                                     </span>
@@ -676,24 +676,6 @@ function buildCategoryQueryString(params)
 
 document.addEventListener('DOMContentLoaded', function() 
 {
-    let paginationLinks = document.querySelectorAll('.pagination a');
-    
-    for (let i = 0; i < paginationLinks.length; i++) 
-    {
-        paginationLinks[i].addEventListener('click', function(e) 
-        {
-            e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-
-            setTimeout(function() {
-                window.location.href = this.href;
-            }.bind(this), 300);
-        });
-    }
-
     let addToCartForms = document.querySelectorAll('.add-to-cart-form');
     
     addToCartForms.forEach(form => {
@@ -714,12 +696,10 @@ document.addEventListener('DOMContentLoaded', function()
             submitButton.classList.add('btn-loading');
             submitButton.disabled = true;
             submitButton.innerHTML = '<span class="btn-text">Добавляем...</span>';
-            
-            showNotification('Товар добавляется...', 'info');
-            
+
             let formData = new FormData(this);
-            
-            fetch('../../includes/ajax_add_to_cart.php', {
+
+            fetch('../../includes/add_to_cart.php', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -740,7 +720,7 @@ document.addEventListener('DOMContentLoaded', function()
             })
             .catch(error => {
                 console.error('Error:', error);
-                showNotification('Ошибка сети', 'error');
+                showNotification('Ошибка соединения', 'error');
             })
             .finally(() => {
                 setTimeout(() => {
@@ -789,32 +769,18 @@ document.addEventListener('DOMContentLoaded', function()
         }, 3000);
     }
     
-    function updateCartCounter(newCount = null) 
+    function updateCartCounter(newCount) 
     {
         let cartCounter = document.getElementById('cartCounter');
-
+        
         if (!cartCounter) 
         {
-            let navCounter = document.querySelector('.navbar .badge.bg-primary');
-
-            if (navCounter) 
-            {
-                cartCounter = navCounter;
-            }
+            cartCounter = document.querySelector('.cart-counter');
         }
         
         if (cartCounter) 
         {
-            if (newCount !== null) 
-            {
-                cartCounter.textContent = newCount;
-            } 
-            else 
-            {
-                let currentCount = parseInt(cartCounter.textContent) || 0;
-                cartCounter.textContent = currentCount + 1;
-            }
-            
+            cartCounter.textContent = newCount;
             cartCounter.style.transform = 'scale(1.3)';
             
             setTimeout(() => {

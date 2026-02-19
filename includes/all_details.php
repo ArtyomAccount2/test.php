@@ -236,7 +236,7 @@ switch($product_type)
             <div class="row justify-content-center">
                 <div class="col-lg-12">
                     <a href="<?= htmlspecialchars($back_url) ?>" class="back-to-products" id="backToProducts">
-                        <i class="bi bi-arrow-left"></i> Назад
+                        <i class="bi bi-arrow-left"></i> Вернуться назад
                     </a>
                     <article class="product-single-article">
                         <div class="row">

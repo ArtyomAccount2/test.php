@@ -413,10 +413,16 @@ function handleHeaderSearch()
 
             if (result.source_table === 'category_products') 
             {
+                productUrl = `../files/categories/product_detail.php?id=${result.product_id}&back=../../index.php`;
+            }
+            else if (result.source_table === 'products')
+            {
                 productUrl = `includes/all_details.php?id=${result.product_id}&back=index.php`;
             }
 
-            window.location.href = productUrl;
+            if (productUrl) {
+                window.location.href = productUrl;
+            }
             return;
         }
 

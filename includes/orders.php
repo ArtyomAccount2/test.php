@@ -264,7 +264,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order']))
                                                                                      class="me-3" width="60" height="60">
                                                                                 <div>
                                                                                     <h6 class="mb-0"><?= htmlspecialchars($item['product_name']) ?></h6>
-                                                                                    <small class="text-muted">Код: <?= $item['product_id'] ?></small>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="text-end">

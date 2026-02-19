@@ -4,8 +4,16 @@ if (isset($_GET['delete_id']))
     $delete_id = (int)$_GET['delete_id'];
     $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
     $stmt->bind_param("i", $delete_id);
-    $stmt->execute();
-    $_SESSION['message'] = 'Товар успешно удален';
+    
+    if ($stmt->execute()) 
+    {
+        $_SESSION['message'] = 'Товар успешно удален';
+    } 
+    else 
+    {
+        $_SESSION['message'] = 'Ошибка при удалении товара';
+    }
+    
     echo '<script>window.location.href = "admin.php?section=products_catalog";</script>';
     exit();
 }
@@ -61,7 +69,8 @@ if (!empty($price_max))
 
 if (!empty($quantity_filter)) 
 {
-    switch ($quantity_filter) {
+    switch ($quantity_filter) 
+    {
         case 'available':
             $where_conditions[] = "quantity > 0";
             break;
@@ -123,13 +132,20 @@ while ($row = $result->fetch_assoc())
     $products[] = $row;
 }
 
-$stats_stmt = $conn->query("SELECT COUNT(*) as total, SUM(CASE WHEN status = 'available' THEN 1 ELSE 0 END) as available, SUM(CASE WHEN status = 'low' THEN 1 ELSE 0 END) as low, SUM(CASE WHEN status = 'out_of_stock' THEN 1 ELSE 0 END) as out_of_stock, COALESCE(AVG(price), 0) as avg_price, SUM(quantity) as total_quantity FROM products");
+$stats_stmt = $conn->query("SELECT 
+    COUNT(*) as total, 
+    SUM(CASE WHEN status = 'available' THEN 1 ELSE 0 END) as available, 
+    SUM(CASE WHEN status = 'low' THEN 1 ELSE 0 END) as low, 
+    SUM(CASE WHEN status = 'out_of_stock' THEN 1 ELSE 0 END) as out_of_stock, 
+    COALESCE(AVG(price), 0) as avg_price, 
+    SUM(quantity) as total_quantity 
+    FROM products");
 $stats = $stats_stmt->fetch_assoc();
 ?>
 
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
     <h2 class="mb-3 mb-md-0">
-        <i class="bi bi-card-checklist me-2"></i>Каталог товаров
+        <i class="bi bi-card-checklist me-2"></i>Каталог товаров (таблица products)
     </h2>
     <div class="d-flex gap-2">
         <a href="admin.php?section=products_add" class="btn btn-primary">
@@ -142,7 +158,6 @@ $stats = $stats_stmt->fetch_assoc();
         </a>
     </div>
 </div>
-
 <?php 
 if (isset($_SESSION['message']))
 {
@@ -155,7 +170,6 @@ if (isset($_SESSION['message']))
 unset($_SESSION['message']); 
 }
 ?>
-
 <div class="row mb-4">
     <div class="col-md-3">
         <div class="card text-center">
@@ -190,7 +204,6 @@ unset($_SESSION['message']);
         </div>
     </div>
 </div>
-
 <div class="card shadow-sm">
     <div class="card-header bg-white">
         <div class="row g-3">
@@ -220,9 +233,15 @@ unset($_SESSION['message']);
                         ?>
                         <select class="form-select" name="category" onchange="this.form.submit()" style="width: auto;">
                             <option value="all" <?= $category_filter == 'all' ? 'selected' : '' ?>>Все категории</option>
-                            <option value="Запчасти" <?= $category_filter == 'Запчасти' ? 'selected' : '' ?>>Запчасти</option>
-                            <option value="Масла" <?= $category_filter == 'Масла' ? 'selected' : '' ?>>Масла</option>
-                            <option value="Аксессуары" <?= $category_filter == 'Аксессуары' ? 'selected' : '' ?>>Аксессуары</option>
+                            <?php
+                            $cat_result = $conn->query("SELECT DISTINCT category FROM products WHERE category IS NOT NULL ORDER BY category");
+
+                            while ($cat_row = $cat_result->fetch_assoc()) 
+                            {
+                                $selected = ($category_filter == $cat_row['category']) ? 'selected' : '';
+                                echo '<option value="' . htmlspecialchars($cat_row['category']) . '" ' . $selected . '>' . htmlspecialchars($cat_row['category']) . '</option>';
+                            }
+                            ?>
                         </select>
                     </form>
                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
@@ -266,7 +285,7 @@ unset($_SESSION['message']);
                                 }
                                 ?>
                             </td>
-                            <td><?= htmlspecialchars($product['category']) ?></td>
+                            <td><?= htmlspecialchars($product['category'] ?? '—') ?></td>
                             <td><?= number_format($product['price'], 2, '.', ' ') ?> ₽</td>
                             <td><?= $product['quantity'] ?> шт.</td>
                             <td>

@@ -41,9 +41,9 @@ if ($current_section === 'products_catalog')
 
 $categories = [];
 
-if ($current_section === 'products_categories') 
+if ($current_section === 'categories') 
 {
-    $stmt = $conn->prepare("SELECT * FROM `categories` ORDER BY id DESC");
+    $stmt = $conn->prepare("SELECT * FROM `category_products` ORDER BY id DESC");
     $stmt->execute();
     $result = $stmt->get_result();
     
@@ -186,8 +186,18 @@ if (isset($_GET['export']) && $current_section === 'products_catalog')
                     <li class="<?= isActiveSection('products_add') ? 'active' : '' ?>">
                         <a href="admin.php?section=products_add"><i class="bi bi-plus-circle"></i>Добавить товар</a>
                     </li>
-                    <li class="<?= isActiveSection('products_categories') ? 'active' : '' ?>">
-                        <a href="admin.php?section=products_categories"><i class="bi bi-tags"></i>Категории</a>
+                </ul>
+            </li>
+            <li class="<?= isActiveSection('categories') ? 'active' : '' ?>">
+                <a href="#categoriesSubmenu" data-bs-toggle="collapse" aria-expanded="<?= isActiveSubmenu('categories') ? 'true' : 'false' ?>" class="dropdown-toggle">
+                    <i class="bi bi-tags"></i>Категории
+                </a>
+                <ul class="collapse list-unstyled <?= isActiveSubmenu('categories') ? 'show' : '' ?>" id="categoriesSubmenu">
+                    <li class="<?= isActiveSection('categories') ? 'active' : '' ?>">
+                        <a href="admin.php?section=categories"><i class="bi bi-list-check"></i>Список категорий</a>
+                    </li>
+                    <li class="<?= isActiveSection('categories_add') ? 'active' : '' ?>">
+                        <a href="admin.php?section=categories_add"><i class="bi bi-plus-circle"></i>Добавить категорию</a>
                     </li>
                 </ul>
             </li>
@@ -271,8 +281,17 @@ if (isset($_GET['export']) && $current_section === 'products_catalog')
                 case 'products_add':
                     include 'sections/products_add.php';
                     break;
-                case 'products_categories':
-                    include 'sections/products_categories.php';
+                case 'categories':
+                    include 'sections/categories.php';
+                    break;
+                case 'category_products':
+                    include 'sections/category_products.php';
+                    break;
+                case 'categories_add':
+                    include 'sections/categories_add.php';
+                    break;
+                case 'edit_category_product':
+                    include 'sections/edit_category_product.php';
                     break;
                 case 'news':
                     include 'sections/news.php';

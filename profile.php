@@ -858,12 +858,19 @@ if (isset($_POST['cancel_order']))
                                                                             <div class="list-group-item">
                                                                                 <div class="d-flex justify-content-between align-items-center w-100">
                                                                                     <div class="d-flex align-items-center">
-                                                                                        <img src="img/no-image.png" 
-                                                                                            alt="<?= htmlspecialchars($item['product_name']) ?>" 
-                                                                                            class="me-3" width="60" height="60">
+                                                                                        <img src="img/no-image.png" alt="<?= htmlspecialchars($item['product_name']) ?>" class="me-3" width="60" height="60">
                                                                                         <div>
                                                                                             <h6 class="mb-0"><?= htmlspecialchars($item['product_name']) ?></h6>
-                                                                                            <small class="text-muted">Код: <?= $item['product_id'] ?></small>
+                                                                                            <?php 
+                                                                                            if ($item['product_id']) 
+                                                                                            {
+                                                                                                echo '<small class="text-muted">Код товара: ' . $item['product_id'] . '</small>';
+                                                                                            } 
+                                                                                            else if ($item['category_product_id']) 
+                                                                                            {
+                                                                                                echo '<small class="text-muted">Код категории: ' . $item['category_product_id'] . '</small>';
+                                                                                            }
+                                                                                            ?>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="text-end">
@@ -1001,9 +1008,11 @@ if (isset($_POST['cancel_order']))
                                                         <?php 
                                                         if ($item['product_id']) 
                                                         {
-                                                        ?>
-                                                            <small class="text-muted">Код: <?= $item['product_id'] ?></small>
-                                                        <?php 
+                                                            echo '<small class="text-muted">Код товара: ' . $item['product_id'] . '</small>';
+                                                        } 
+                                                        else if ($item['category_product_id']) 
+                                                        {
+                                                            echo '<small class="text-muted">Код категории: ' . $item['category_product_id'] . '</small>';
                                                         }
                                                         ?>
                                                     </td>

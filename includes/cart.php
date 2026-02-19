@@ -313,18 +313,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                                 ?>
                                                 <tr>
                                                     <td>
-                                                        <img src="../<?= htmlspecialchars($item['product_image']) ?>" 
-                                                             alt="<?= htmlspecialchars($item['product_name']) ?>" 
-                                                             class="cart-item-image">
+                                                        <img src="../<?= htmlspecialchars($item['product_image']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>" class="cart-item-image">
                                                     </td>
                                                     <td>
                                                         <h6 class="mb-1"><?= htmlspecialchars($item['product_name']) ?></h6>
                                                         <?php 
-                                                        if ($item['product_id'])
+                                                        if ($item['product_id']) 
                                                         {
-                                                        ?>
-                                                            <small class="text-muted">Код: <?= $item['product_id'] ?></small>
-                                                        <?php 
+                                                            echo '<small class="text-muted">Код товара: ' . $item['product_id'] . '</small>';
+                                                        } 
+                                                        else if ($item['category_product_id']) 
+                                                        {
+                                                            echo '<small class="text-muted">Код категории: ' . $item['category_product_id'] . '</small>';
                                                         }
                                                         ?>
                                                     </td>

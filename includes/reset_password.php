@@ -264,7 +264,7 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
         {
         ?>
             <div class="text-end mb-3">
-                <a href="reset_password.php" class="btn btn-warning btn-sm">
+                <a href="reset_password.php" class="btn btn-primary btn-sm">
                     <i class="bi bi-arrow-left"></i> Назад
                 </a>
             </div>
@@ -274,7 +274,7 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
         {
         ?>
             <div class="text-end mb-3">
-                <a href="forgot_password.php" class="btn btn-warning btn-sm">
+                <a href="forgot_password.php" class="btn btn-primary btn-sm">
                     <i class="bi bi-arrow-left"></i> Назад
                 </a>
             </div>
@@ -381,7 +381,6 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
                     <button type="submit" class="btn btn-primary btn-lg">
                         <i class="bi bi-arrow-right-circle"></i> Продолжить
                     </button>
-
                     <?php 
                     if ($user_email)
                     {
@@ -391,16 +390,7 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
                         </a>
                     <?php 
                     }
-                    else
-                    { 
                     ?>
-                        <a href="forgot_password.php" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-repeat"></i> Запросить новый код
-                        </a>
-                    <?php 
-                    }
-                    ?>
-                    
                 </div>
             </form>
             <div class="text-center mt-4">
