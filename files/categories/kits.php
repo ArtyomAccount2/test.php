@@ -67,7 +67,7 @@ $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $filtered_products = getCategoryProducts($conn, 'kit', $search_query, $brand_filter, $sort_type, [
     'contents' => $contents_filter,
     'volume' => $volume_filter
-]);
+], true);
 
 $total_items = count($filtered_products);
 $total_pages = ceil($total_items / $items_per_page);
@@ -102,6 +102,7 @@ $volumes = getFilterOptions($conn, 'kit', 'volume');
         ?>
             let loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
             loginModal.show();
+            
             <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 

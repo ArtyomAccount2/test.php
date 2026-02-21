@@ -56,7 +56,6 @@ $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
 
 $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
 $back_url = '../../index.php';
 
 if (isset($_GET['back']) && !empty($_GET['back'])) 
@@ -79,6 +78,13 @@ $stmt->close();
 
 if (!$product) 
 {
+    header("Location: " . $back_url);
+    exit();
+}
+
+if (!$product['stock']) 
+{
+    $_SESSION['error_message'] = "Данного товара нет в наличии";
     header("Location: " . $back_url);
     exit();
 }
@@ -127,6 +133,7 @@ if ($product['hit'])
         ?>
             var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
             loginModal.show();
+
             <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 
@@ -148,8 +155,33 @@ if ($product['hit'])
                     <li class="nav-item">
                         <a class="nav-link text-dark" href="../../index.php">Главная</a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Меню
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
+                            <li><a class="dropdown-item" href="../../includes/shops.php">Магазины</a></li>
+                            <li><a class="dropdown-item" href="../../includes/service.php">Автосервис</a></li>
+                            <li><a class="dropdown-item" href="../../includes/assortment.php">Ассортимент</a></li>
+                            <li><a class="dropdown-item" href="../../includes/oils.php?sort=default&page=1">Масла и тех. жидкости</a></li>
+                            <li><a class="dropdown-item" href="../../includes/accessories.php">Аксессуары</a></li>
+                            <li><a class="dropdown-item" href="../../includes/customers.php">Покупателям</a></li>
+                            <li><a class="dropdown-item" href="../../includes/requisites.php">Реквизиты</a></li>
+                            <li><a class="dropdown-item" href="../../includes/suppliers.php">Поставщикам</a></li>
+                            <li><a class="dropdown-item" href="../../includes/vacancies.php">Вакансии</a></li>
+                            <li><a class="dropdown-item" href="../../includes/contacts.php">Контакты</a></li>
+                            <li><a class="dropdown-item" href="../../includes/reviews.php">Отзывы</a></li>
+                            <li><a class="dropdown-item" href="../../includes/delivery.php">Оплата и доставка</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="../../includes/oils.php?sort=default&page=1">Масла и тех. жидкости</a>
+                        <a class="nav-link text-dark" href="../../includes/brands.php">Торговые марки</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="../../includes/support.php">Поддержка сайта</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="../../includes/news.php">Новости компании</a>
                     </li>
                 </ul>
                 <div class="ms-xl-3 ms-lg-2 ms-md-1">

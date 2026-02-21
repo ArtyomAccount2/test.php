@@ -69,7 +69,7 @@ $filtered_products = getCategoryProducts($conn, 'power-steering', $search_query,
     'type' => $type_filter,
     'color' => $color_filter,
     'volume' => $volume_filter
-]);
+], true);
 
 $total_items = count($filtered_products);
 $total_pages = ceil($total_items / $items_per_page);
@@ -105,6 +105,7 @@ $volumes = getFilterOptions($conn, 'power-steering', 'volume');
         ?>
             let loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
             loginModal.show();
+
             <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 
@@ -188,14 +189,14 @@ $volumes = getFilterOptions($conn, 'power-steering', 'volume');
                             <input type="checkbox" name="rememberMe" class="form-check-input" id="rememberMe">
                             <label class="form-check-label" for="rememberMe">Запомнить меня</label>
                         </div>
-                        <?php 
+                        <?php
                         if (isset($_SESSION['error_message'])) 
                         {
-                        ?>
-                            <div class="alert alert-danger" role="alert">
-                                <?= htmlspecialchars($_SESSION['error_message']); ?>
-                            </div>
-                        <?php 
+                            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                            echo htmlspecialchars($_SESSION['error_message']);
+                            echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                            echo '</div>';
+                            
                             unset($_SESSION['error_message']);
                         }
                         ?>

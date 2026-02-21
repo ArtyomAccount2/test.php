@@ -1,9 +1,14 @@
 <?php
-function getCategoryProducts($conn, $category_type, $search_query = '', $brand_filter = '', $sort_type = 'default', $extra_filters = []) 
+function getCategoryProducts($conn, $category_type, $search_query = '', $brand_filter = '', $sort_type = 'default', $extra_filters = [], $only_in_stock = false) 
 {
     $sql = "SELECT * FROM category_products WHERE category_type = ?";
     $params = [$category_type];
     $types = "s";
+
+    if ($only_in_stock) 
+    {
+        $sql .= " AND stock = 1";
+    }
     
     if (!empty($search_query)) 
     {
@@ -85,9 +90,17 @@ function getCategoryProducts($conn, $category_type, $search_query = '', $brand_f
     return $products;
 }
 
-function getFilterOptions($conn, $category_type, $filter_field) 
+function getFilterOptions($conn, $category_type, $filter_field, $only_in_stock = true) 
 {
-    $sql = "SELECT DISTINCT $filter_field FROM category_products WHERE category_type = ? AND $filter_field IS NOT NULL AND $filter_field != '' ORDER BY $filter_field";
+    $sql = "SELECT DISTINCT $filter_field FROM category_products WHERE category_type = ? AND $filter_field IS NOT NULL AND $filter_field != ''";
+    
+    if ($only_in_stock) 
+    {
+        $sql .= " AND stock = 1";
+    }
+    
+    $sql .= " ORDER BY $filter_field";
+    
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $category_type);
     $stmt->execute();
@@ -103,7 +116,6 @@ function getFilterOptions($conn, $category_type, $filter_field)
     $stmt->close();
     return $options;
 }
-
 
 function buildCategoryQueryString($newParams = [], $excludeParams = []) 
 {

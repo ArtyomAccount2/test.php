@@ -45,7 +45,7 @@ if ($result->num_rows > 0)
 
 $stmt->close();
 
-$sql = "SELECT id, title, category_type, art, 'category_products' as source_table FROM category_products WHERE art = ?";
+$sql = "SELECT id, title, category_type, art, 'category_products' as source_table FROM category_products WHERE art = ? AND stock = 1";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $article);
 $stmt->execute();
@@ -71,7 +71,7 @@ else
     echo json_encode([
         'success' => true,
         'found' => false,
-        'message' => 'Товар с таким артикулом не найден'
+        'message' => 'Товар с таким артикулом не найден или отсутствует в наличии'
     ]);
 }
 

@@ -420,9 +420,11 @@ function handleHeaderSearch()
                 productUrl = `includes/all_details.php?id=${result.product_id}&back=index.php`;
             }
 
-            if (productUrl) {
+            if (productUrl) 
+            {
                 window.location.href = productUrl;
             }
+            
             return;
         }
 

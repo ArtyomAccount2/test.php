@@ -69,7 +69,7 @@ $filtered_products = getCategoryProducts($conn, 'special-fluid', $search_query, 
     'type' => $type_filter,
     'application' => $application_filter,
     'volume' => $volume_filter
-]);
+], true);
 
 $total_items = count($filtered_products);
 $total_pages = ceil($total_items / $items_per_page);
@@ -105,6 +105,7 @@ $volumes = getFilterOptions($conn, 'special-fluid', 'volume');
         ?>
             let loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
             loginModal.show();
+            
             <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 

@@ -126,7 +126,7 @@ if ($result->num_rows > 0)
             'old_price' => (float)($row['old_price'] ?? 0),
             'rating' => 4.5,
             'badge' => !empty($row['badge']) ? $row['badge'] : '',
-            'badge_text' => $row['badge'] == 'danger' ? 'Акция' : ($row['badge'] == 'success' ? 'Новинка' : ($row['badge'] == 'info' ? 'Хит' : '')),
+            'badge_text' => $row['badge'] == 'danger' ? 'Акция' : ($row['badge'] == 'success' ? 'Новинка' : ($row['badge'] == 'warning' ? 'Спецпредложение' : ($row['badge'] == 'info' ? 'Хит' : ''))),
             'category' => $row['category'] ?? 'Аксессуары',
             'hit' => $row['hit'] ?? 0,
             'image' => $row['image'],
@@ -137,19 +137,40 @@ if ($result->num_rows > 0)
 
 $search_term = isset($_GET['search']) ? strtolower(trim($_GET['search'])) : '';
 $category_filter = isset($_GET['category']) ? $_GET['category'] : '';
-$brand_filter = isset($_GET['brand']) ? $_GET['brand'] : '';
+$brand_filters = isset($_GET['brands']) ? (is_array($_GET['brands']) ? $_GET['brands'] : [$_GET['brands']]) : [];
 $min_price = isset($_GET['min_price']) ? intval($_GET['min_price']) : 0;
 $max_price = isset($_GET['max_price']) ? intval($_GET['max_price']) : 0;
+$brand_counts = [];
+
+foreach($all_products as $product) 
+{
+    $brand = $product['brand'];
+
+    if (!isset($brand_counts[$brand])) 
+    {
+        $brand_counts[$brand] = 0;
+    }
+
+    $matches_search = $search_term === '' || strpos(strtolower($product['name']), $search_term) !== false || strpos(strtolower($product['brand']), $search_term) !== false;
+    $matches_category = $category_filter === '' || $product['category'] === $category_filter;
+    $matches_min_price = $min_price === 0 || $product['price'] >= $min_price;
+    $matches_max_price = $max_price === 0 || $product['price'] <= $max_price;
+    
+    if ($matches_search && $matches_category && $matches_min_price && $matches_max_price) 
+    {
+        $brand_counts[$brand]++;
+    }
+}
 
 $filtered_products = $all_products;
 
-if ($search_term !== '' || $category_filter !== '' || $brand_filter !== '' || $min_price > 0 || $max_price > 0) 
+if ($search_term !== '' || $category_filter !== '' || !empty($brand_filters) || $min_price > 0 || $max_price > 0) 
 {
-    $filtered_products = array_filter($all_products, function($product) use ($search_term, $category_filter, $brand_filter, $min_price, $max_price) 
+    $filtered_products = array_filter($all_products, function($product) use ($search_term, $category_filter, $brand_filters, $min_price, $max_price) 
     {
         $matches_search = $search_term === '' || strpos(strtolower($product['name']), $search_term) !== false || strpos(strtolower($product['brand']), $search_term) !== false;
         $matches_category = $category_filter === '' || $product['category'] === $category_filter;
-        $matches_brand = $brand_filter === '' || $product['brand'] === $brand_filter;
+        $matches_brand = empty($brand_filters) || in_array($product['brand'], $brand_filters);
         $matches_min_price = $min_price === 0 || $product['price'] >= $min_price;
         $matches_max_price = $max_price === 0 || $product['price'] <= $max_price;
         
@@ -200,7 +221,7 @@ switch($sort)
         break;
 }
 
-$items_per_page = 20;
+$items_per_page = 8;
 $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $total_items = count($filtered_products);
 $total_pages = ceil($total_items / $items_per_page);
@@ -263,16 +284,22 @@ sort($all_categories);
             filterForm.addEventListener('submit', function(e) 
             {
                 e.preventDefault();
+
                 let formData = new FormData(this);
                 let params = new URLSearchParams();
-                
-                for (let [key, value] of formData.entries()) 
+                let brands = formData.getAll('brands[]');
+
+                if (brands.length > 0) 
                 {
-                    if (value) 
-                    {
-                        params.set(key, value);
-                    }
+                    brands.forEach(brand => {
+                        params.append('brands[]', brand);
+                    });
                 }
+
+                if (formData.get('search')) params.set('search', formData.get('search'));
+                if (formData.get('category')) params.set('category', formData.get('category'));
+                if (formData.get('min_price')) params.set('min_price', formData.get('min_price'));
+                if (formData.get('max_price')) params.set('max_price', formData.get('max_price'));
                 
                 params.set('page', '1');
                 window.location.href = '?' + params.toString();
@@ -322,20 +349,80 @@ sort($all_categories);
             });
         });
 
-        document.querySelectorAll('.filter-brand').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                let params = new URLSearchParams(window.location.search);
-                params.delete('brand');
-
-                if (this.checked) 
+        function updateSelectedBrands() 
+        {
+            let selectedBrands = document.querySelectorAll('input[name="brands[]"]:checked');
+            let selectedCount = selectedBrands.length;
+            let selectedBrandsText = document.getElementById('selectedBrandsText');
+            
+            if (selectedBrandsText) 
+            {
+                if (selectedCount > 0) 
                 {
-                    params.set('brand', this.value);
+                    selectedBrandsText.textContent = `Выбрано брендов: ${selectedCount}`;
+                } 
+                else 
+                {
+                    selectedBrandsText.textContent = 'Не выбрано';
                 }
-                
-                params.set('page', '1');
-                window.location.href = '?' + params.toString();
-            });
+            }
+        }
+
+        document.querySelectorAll('input[name="brands[]"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedBrands);
         });
+
+        updateSelectedBrands();
+
+        let selectAllBrands = document.getElementById('selectAllBrands');
+
+        if (selectAllBrands) 
+        {
+            selectAllBrands.addEventListener('click', function() 
+            {
+                let checkboxes = document.querySelectorAll('input[name="brands[]"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+
+                updateSelectedBrands();
+            });
+        }
+
+        let clearBrands = document.getElementById('clearBrands');
+
+        if (clearBrands) 
+        {
+            clearBrands.addEventListener('click', function() 
+            {
+                let checkboxes = document.querySelectorAll('input[name="brands[]"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+
+                updateSelectedBrands();
+            });
+        }
+
+        let brandSelect = document.getElementById('brandSelect');
+
+        if (brandSelect) 
+        {
+            brandSelect.addEventListener('change', function() 
+            {
+                if (this.value) 
+                {
+                    let brandCheckboxes = document.querySelectorAll('input[name="brands[]"]');
+                    brandCheckboxes.forEach(checkbox => {
+                        checkbox.checked = (checkbox.value === this.value);
+                    });
+
+                    updateSelectedBrands();
+                }
+
+                document.getElementById('filterForm').submit();
+            });
+        }
     });
     </script>
 </head>
@@ -374,13 +461,18 @@ sort($all_categories);
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <select name="brand" class="form-select">
-                                <option value="">Все бренды</option>
+                            <?php
+                                $selectedBrandsText = 'Все бренды';
+                                $multipleBrandsSelected = count($brand_filters) > 1;
+                            ?>
+                            <select id="brandSelect" name="brands[]" class="form-select">
+                                <option value=""><?= $selectedBrandsText ?></option>
                                 <?php 
                                 foreach($all_brands as $brand) 
                                 {
+                                    $selected = (!$multipleBrandsSelected && in_array($brand, $brand_filters)) ? 'selected' : '';
                                 ?>
-                                    <option value="<?php echo $brand; ?>" <?php echo $brand_filter === $brand ? 'selected' : ''; ?>>
+                                    <option value="<?php echo $brand; ?>" <?php echo $selected; ?>>
                                         <?php echo $brand; ?>
                                     </option>
                                 <?php 
@@ -399,41 +491,33 @@ sort($all_categories);
         </div>
     </div>
     <?php 
-    if ($search_term !== '' || $category_filter !== '' || $brand_filter !== '' || $min_price > 0 || $max_price > 0)
+    if ($search_term !== '' || $category_filter !== '' || !empty($brand_filters) || $min_price > 0 || $max_price > 0)
     { 
     ?>
     <div class="row mb-3">
         <div class="col-12">
             <div class="alert alert-info py-2">
                 <?php 
-                if ($search_term !== '' && $category_filter !== '' && $brand_filter !== '')
+                $filter_parts = [];
+
+                if ($search_term !== '') 
                 {
-                    echo "Найдено $total_items товаров по запросу \"" . htmlspecialchars($search_term) . "\" в категории \"" . htmlspecialchars($category_filter) . "\" бренда \"" . htmlspecialchars($brand_filter) . "\"";
+                    $filter_parts[] = "по запросу \"" . htmlspecialchars($search_term) . "\"";
                 }
-                else if ($search_term !== '' && $category_filter !== '')
+
+                if ($category_filter !== '') 
                 {
-                    echo "Найдено $total_items товаров по запросу \"" . htmlspecialchars($search_term) . "\" в категории \"" . htmlspecialchars($category_filter) . "\"";
+                    $filter_parts[] = "в категории \"" . htmlspecialchars($category_filter) . "\"";
                 }
-                else if ($search_term !== '' && $brand_filter !== '')
+
+                if (!empty($brand_filters)) 
                 {
-                    echo "Найдено $total_items товаров по запросу \"" . htmlspecialchars($search_term) . "\" бренда \"" . htmlspecialchars($brand_filter) . "\"";
+                    $brands_text = count($brand_filters) > 1 ? "брендов: " . implode(", ", $brand_filters) : "бренда \"" . $brand_filters[0] . "\"";
+                    $filter_parts[] = $brands_text;
                 }
-                else if ($search_term !== '')
-                {
-                    echo "Найдено $total_items товаров по запросу \"" . htmlspecialchars($search_term) . "\"";
-                }
-                else if ($category_filter !== '')
-                {
-                    echo "Найдено $total_items товаров в категории \"" . htmlspecialchars($category_filter) . "\"";
-                }
-                else if ($brand_filter !== '')
-                {
-                    echo "Найдено $total_items товаров бренда \"" . htmlspecialchars($brand_filter) . "\"";
-                }
-                else
-                {
-                    echo "Найдено $total_items товаров";
-                }
+                
+                $filter_text = !empty($filter_parts) ? " по " . implode(" и ", $filter_parts) : "";
+                echo "Найдено $total_items товаров" . $filter_text;
                 ?>
                 <a href="?" class="btn btn-sm btn-outline-secondary ms-2">Показать все</a>
             </div>
@@ -476,26 +560,40 @@ sort($all_categories);
                             </div>
                         </div>
                         <div class="mb-4">
-                            <h6 class="mb-3">Бренды</h6>
-                            <?php 
-                            foreach($all_brands as $brand)
-                            { 
-                                $count = count(array_filter($all_products, function($product) use ($brand) 
-                                {
-                                    return $product['brand'] === $brand;
-                                }));
-                            ?>
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input filter-brand" type="checkbox" name="brand" value="<?php echo $brand; ?>" id="brand_<?php echo preg_replace('/[^a-zA-Z0-9]/', '_', $brand); ?>" 
-                                           <?php echo $brand_filter === $brand ? 'checked' : ''; ?>>
-                                    <label class="form-check-label" for="brand_<?php echo preg_replace('/[^a-zA-Z0-9]/', '_', $brand); ?>">
-                                        <?php echo $brand; ?>
-                                        <small class="text-muted">(<?php echo $count; ?>)</small>
-                                    </label>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0">Бренды</h6>
+                                <div>
+                                    <button type="button" id="selectAllBrands" class="btn btn-sm btn-link p-0 me-2">Выбрать все</button>
+                                    <button type="button" id="clearBrands" class="btn btn-sm btn-link p-0">Сбросить</button>
                                 </div>
-                            <?php 
-                            } 
-                            ?>
+                            </div>
+                            <div class="mb-2 p-2 bg-light rounded">
+                                <small class="text-muted" id="selectedBrandsText">
+                                <?php 
+                                    $selected_count = count($brand_filters);
+                                    echo $selected_count > 0 ? "Выбрано брендов: $selected_count" : "Не выбрано";
+                                ?>
+                                </small>
+                            </div>
+                            <div class="brands-list" style="max-height: 300px; overflow-y: auto;">
+                                <?php 
+                                foreach($all_brands as $brand)
+                                { 
+                                    $count = isset($brand_counts[$brand]) ? $brand_counts[$brand] : 0;
+                                    $checked = in_array($brand, $brand_filters) ? 'checked' : '';
+                                ?>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="brands[]" value="<?php echo $brand; ?>" id="brand_<?php echo preg_replace('/[^a-zA-Z0-9]/', '_', $brand); ?>" 
+                                               <?php echo $checked; ?> <?php echo $count == 0 ? 'disabled' : ''; ?>>
+                                        <label class="form-check-label <?php echo $count == 0 ? 'text-muted' : ''; ?>" for="brand_<?php echo preg_replace('/[^a-zA-Z0-9]/', '_', $brand); ?>">
+                                            <?php echo $brand; ?>
+                                            <small class="<?php echo $count == 0 ? 'text-muted' : 'text-primary'; ?>">(<?php echo $count; ?>)</small>
+                                        </label>
+                                    </div>
+                                <?php 
+                                } 
+                                ?>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary w-100 mb-2">Применить фильтры</button>
                         <button type="button" id="resetFilters" class="btn btn-outline-secondary w-100">Сбросить все</button>
@@ -654,7 +752,7 @@ sort($all_categories);
             <nav class="mt-4">
                 <ul class="pagination justify-content-center">
                     <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
-                        <a class="page-link" href="?<?php echo buildQueryString($current_page - 1, $search_term, $category_filter, $brand_filter, $min_price, $max_price, $sort); ?>">
+                        <a class="page-link" href="?<?php echo buildQueryString($current_page - 1, $search_term, $category_filter, $brand_filters, $min_price, $max_price, $sort); ?>">
                             <i class="bi bi-chevron-left"></i>
                         </a>
                     </li>
@@ -671,7 +769,7 @@ sort($all_categories);
                     {
                     ?>
                         <li class="page-item <?php echo $page == $current_page ? 'active' : ''; ?>">
-                            <a class="page-link" href="?<?php echo buildQueryString($page, $search_term, $category_filter, $brand_filter, $min_price, $max_price, $sort); ?>">
+                            <a class="page-link" href="?<?php echo buildQueryString($page, $search_term, $category_filter, $brand_filters, $min_price, $max_price, $sort); ?>">
                                 <?php echo $page; ?>
                             </a>
                         </li>
@@ -679,7 +777,7 @@ sort($all_categories);
                     }
                     ?>
                     <li class="page-item <?php echo $current_page == $total_pages ? 'disabled' : ''; ?>">
-                        <a class="page-link" href="?<?php echo buildQueryString($current_page + 1, $search_term, $category_filter, $brand_filter, $min_price, $max_price, $sort); ?>">
+                        <a class="page-link" href="?<?php echo buildQueryString($current_page + 1, $search_term, $category_filter, $brand_filters, $min_price, $max_price, $sort); ?>">
                             <i class="bi bi-chevron-right"></i>
                         </a>
                     </li>
@@ -701,7 +799,7 @@ sort($all_categories);
 ?>
 
 <?php
-function buildQueryString($page, $search, $category, $brand, $min_price, $max_price, $sort) 
+function buildQueryString($page, $search, $category, $brands, $min_price, $max_price, $sort) 
 {
     $params = [];
 
@@ -720,9 +818,19 @@ function buildQueryString($page, $search, $category, $brand, $min_price, $max_pr
         $params['category'] = $category;
     }
 
-    if (!empty($brand)) 
+    if (!empty($brands)) 
     {
-        $params['brand'] = $brand;
+        if (is_array($brands)) 
+        {
+            foreach ($brands as $brand) 
+            {
+                $params['brands[]'] = $brand;
+            }
+        } 
+        else 
+        {
+            $params['brands[]'] = $brands;
+        }
     }
 
     if ($min_price > 0) 
@@ -746,9 +854,6 @@ function buildQueryString($page, $search, $category, $brand, $min_price, $max_pr
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
-</body>
-</html>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() 
 {
@@ -847,7 +952,8 @@ document.addEventListener('DOMContentLoaded', function()
         }, 3000);
     }
     
-    function updateCartCounter(newCount = null) {
+    function updateCartCounter(newCount = null) 
+    {
         let cartCounter = document.getElementById('cartCounter');
         
         if (cartCounter) 
@@ -881,3 +987,5 @@ document.addEventListener('DOMContentLoaded', function()
     ?>
 });
 </script>
+</body>
+</html>
