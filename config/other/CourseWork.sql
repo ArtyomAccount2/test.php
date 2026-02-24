@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 19 2026 г., 20:36
+-- Время создания: Фев 24 2026 г., 21:43
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -473,7 +473,7 @@ CREATE TABLE `password_resets` (
   `token` varchar(255) NOT NULL,
   `short_token` varchar(10) DEFAULT NULL,
   `expires_at` datetime NOT NULL,
-  `used` tinyint(1) DEFAULT '0',
+  `used` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -482,7 +482,9 @@ CREATE TABLE `password_resets` (
 --
 
 INSERT INTO `password_resets` (`id`, `user_id`, `token`, `short_token`, `expires_at`, `used`, `created_at`) VALUES
-(20, 4, 'aa261e316f214a318e91e660bd08ccc86a73def1d906eeb0fbc0e71d751b3d69', 'iZ6U6x', '2026-01-13 12:55:17', 1, '2026-01-13 08:55:17');
+(109, 3, 'c1a9af8daae57c8ef7acbcd5c767912356ee0ba2d80275cd060ba6edf9b2fbe2', 'cwz9TM', '2026-02-24 22:40:00', 1, '2026-02-24 18:40:00'),
+(111, 2, '5164faeeaecf2e90aa48afb4d0aafc834cca68addb03315e1f261a7cf0ad5826', 'bytxPH', '2026-02-24 22:40:29', 0, '2026-02-24 18:40:29'),
+(113, 4, 'de54d70989770933b0aec5e1e03f54dcda0bbe4a60a0127d2bf881704b11690d', '7W8GfE', '2026-02-24 22:41:45', 0, '2026-02-24 18:41:45');
 
 -- --------------------------------------------------------
 
@@ -913,9 +915,9 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id_users`, `surname_users`, `name_users`, `patronymic_users`, `login_users`, `password_users`, `email_users`, `discountСardNumber_users`, `region_users`, `city_users`, `address_users`, `phone_users`, `avatar_users`, `TIN_users`, `person_users`, `organization_users`, `organizationType_users`, `user_type`) VALUES
 (1, NULL, NULL, NULL, 'admin', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
 (2, 'Иванов', 'Иван', 'Иванович', 'user1', 'user1', 'user1@gmail.com', '223344', 'Калининградская область', 'Калининград', 'Малый переулок, 3', 89113456789, 'uploads/avatars/avatar_2_1758131749.jpg', NULL, NULL, NULL, NULL, 'physical'),
-(3, NULL, NULL, NULL, 'user2', 'user2', 'user2@gmail.com', NULL, 'Калининградская область', 'Калининград', 'Уральская улица, 20', 89114567891, NULL, 2222455179, 'Наталья Евгеньевна Графарова', 'Дизель-мастер', 'ООО', 'legal'),
+(3, NULL, NULL, NULL, 'user2', 'user2new', 'user2@gmail.com', NULL, 'Калининградская область', 'Калининград', 'Уральская улица, 20', 89114567891, NULL, 2222455179, 'Наталья Евгеньевна Графарова', 'Дизель-мастер', 'ООО', 'legal'),
 (4, NULL, NULL, NULL, 'user3', 'user3new', 'user3@gmail.com', '556677', 'Калининградская область', 'Балтийск', 'Киркенесская улица, 20', 89115678912, NULL, 5552431142, 'Иван Иванович Иванов', 'КлассикАвто', 'ЗАО', 'legal'),
-(5, 'Рожков', 'Олег', 'Константинович', 'user4', 'user4', 'user4@gmail.com', NULL, 'Калининградская область', 'Черняховск', 'улица Советская, 5', 89116789123, NULL, NULL, NULL, NULL, NULL, 'physical');
+(5, 'Рожков', 'Олег', 'Константинович', 'user4', 'user4new', 'user4@gmail.com', NULL, 'Калининградская область', 'Черняховск', 'улица Советская, 5', 89116789123, NULL, NULL, NULL, NULL, NULL, 'physical');
 
 -- --------------------------------------------------------
 
@@ -1148,7 +1150,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT для таблицы `category_products`
 --
 ALTER TABLE `category_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT для таблицы `company_documents`
@@ -1190,13 +1192,13 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT для таблицы `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT для таблицы `remember_tokens`

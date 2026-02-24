@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             
             if ($insertStmt->execute()) 
             {
-                $resetLink = "http://test.php:81/includes/reset_password.php?code=" . $short_token;
+                $resetLink = "http://test.php:81/includes/reset_password.php?code=" . $short_token . "&email=" . urlencode($email);
 
                 $userName = !empty($user['surname_users']) ? $user['surname_users'] . " " . $user['name_users'] : $user['login_users'];
                 
@@ -97,10 +97,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         <small class='text-muted'>Можно ввести этот код на странице сброса пароля</small>
                     </div>
                     <div class='mt-4'>
-                        <a href='index.php' class='btn btn-primary'>
+                        <a href='../index.php' class='btn btn-primary'>
                             <i class='bi bi-house-door'></i> Вернуться на главную
                         </a>
-                        <a href='reset_password.php' class='btn btn-outline-primary ms-2'>
+                        <a href='reset_password.php?email=" . urlencode($email) . "'class='btn btn-outline-primary ms-2'>
                             <i class='bi bi-key'></i> Перейти к сбросу пароля
                         </a>
                     </div>
@@ -161,6 +161,8 @@ unset($_SESSION['forgot_error'], $_SESSION['forgot_success'], $_SESSION['forgot_
         ?>
             var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
             loginModal.show();
+
+            <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 
         ?>
@@ -274,10 +276,14 @@ unset($_SESSION['forgot_error'], $_SESSION['forgot_success'], $_SESSION['forgot_
                             unset($_SESSION['error_message']);
                         }
                         ?>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-box-arrow-in-right"></i> Войти
-                        </button>
-                        <a href="forgot_password.php" class="btn btn-link">Забыли пароль?</a>
+                        <div class="d-flex gap-2 align-items-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-box-arrow-in-right"></i> Войти
+                            </button>
+                            <a href="includes/forgot_password.php" class="btn btn-outline-secondary">
+                                <i class="bi bi-question-circle"></i> Забыли пароль?
+                            </a>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -290,6 +296,7 @@ unset($_SESSION['forgot_error'], $_SESSION['forgot_success'], $_SESSION['forgot_
     </div>
     
 <script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/script.js"></script>
 <script>
 function copyResetLink() 
 {

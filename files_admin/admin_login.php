@@ -92,7 +92,6 @@ unset($_SESSION['form_data']);
                                 </button>
                             </div>
                         </div>
-
                         <?php 
                         if (isset($_SESSION['error_message']))
                         {
@@ -106,7 +105,6 @@ unset($_SESSION['form_data']);
                             unset($_SESSION['error_message']);
                         } 
                         ?>
-
                         <button type="submit" class="btn btn-admin btn-lg w-100 text-white mb-3">
                             <i class="bi bi-box-arrow-in-right me-2"></i>Войти в панель управления
                         </button>

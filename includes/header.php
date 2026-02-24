@@ -108,11 +108,14 @@
                             unset($_SESSION['error_message']);
                         }
                         ?>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-box-arrow-in-right"></i>
-                            Войти
-                        </button>
-                        <a href="forgot_password.php" class="btn btn-link">Забыли пароль?</a>
+                        <div class="d-flex gap-2 align-items-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-box-arrow-in-right"></i> Войти
+                            </button>
+                            <a href="includes/forgot_password.php" class="btn btn-outline-secondary">
+                                <i class="bi bi-question-circle"></i> Забыли пароль?
+                            </a>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
