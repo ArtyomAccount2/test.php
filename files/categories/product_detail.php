@@ -257,7 +257,7 @@ if ($product['hit'])
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-box-arrow-in-right"></i> Войти
                             </button>
-                            <a href="includes/forgot_password.php" class="btn btn-outline-secondary">
+                            <a href="../../includes/forgot_password.php" class="btn btn-outline-secondary">
                                 <i class="bi bi-question-circle"></i> Забыли пароль?
                             </a>
                         </div>

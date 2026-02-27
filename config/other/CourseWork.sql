@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 24 2026 г., 21:43
+-- Время создания: Фев 27 2026 г., 21:10
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -117,14 +117,17 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `product_id`, `category_product_id`, `product_type`, `product_name`, `product_image`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
-(8, 2, 2, NULL, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', 2, '2026-02-13 16:19:59', '2026-02-18 17:59:20'),
-(9, 2, 3, NULL, 'part', 'Свечи зажигания Audi Q5 2.0 TDI', 'uploads/products/696392655986c.png', '850.00', 2, '2026-02-13 16:20:00', '2026-02-13 16:25:41'),
-(12, 2, 51, NULL, 'oil', 'Liqui Moly Special Tec AA 5W-30', 'uploads/products/696392655986c.png', '4210.00', 1, '2026-02-13 16:23:04', '2026-02-13 16:23:04'),
-(20, 3, 2, NULL, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', 1, '2026-02-13 16:28:12', '2026-02-13 16:28:12'),
-(21, 3, 12, NULL, 'part', 'Тормозные колодки BMW 1 series F20', 'uploads/products/696392655986c.png', '5200.00', 1, '2026-02-13 16:28:13', '2026-02-13 16:28:13'),
-(22, 3, 50, NULL, 'oil', 'Mobil Super 3000 X1 5W-40', 'uploads/products/696392655986c.png', '3450.00', 1, '2026-02-13 16:28:22', '2026-02-13 16:28:22'),
-(23, 3, 53, NULL, 'oil', 'Total Quartz 9000 5W-40', 'uploads/products/696392655986c.png', '3650.00', 1, '2026-02-13 16:28:24', '2026-02-13 16:28:24'),
-(24, 3, 104, NULL, 'accessory', 'Камера заднего вида', 'uploads/products/696392655986c.png', '4290.00', 1, '2026-02-13 16:28:28', '2026-02-13 16:28:28');
+(53, 2, 50, NULL, 'oil', 'Mobil Super 3000 X1 5W-40', 'uploads/products/696392655986c.png', '3450.00', 2, '2026-02-27 18:03:11', '2026-02-27 18:03:26'),
+(54, 2, 11, NULL, 'part', 'Масляный фильтр BMW X3 G01', 'uploads/products/696392655986c.png', '1450.00', 2, '2026-02-27 18:03:15', '2026-02-27 18:03:23'),
+(55, 2, 76, NULL, 'accessory', 'Ароматизатор CS-X3', 'uploads/products/696392655986c.png', '790.00', 1, '2026-02-27 18:03:20', '2026-02-27 18:03:20'),
+(61, 3, 2, NULL, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', 1, '2026-02-27 18:05:45', '2026-02-27 18:05:45'),
+(62, 3, 53, NULL, 'oil', 'Total Quartz 9000 5W-40', 'uploads/products/696392655986c.png', '3650.00', 1, '2026-02-27 18:05:51', '2026-02-27 18:05:51'),
+(63, 3, NULL, 87, 'kit', 'Набор для бензинового двигателя', 'uploads/products/696392655986c.png', '9500.00', 1, '2026-02-27 18:05:56', '2026-02-27 18:05:56'),
+(64, 3, NULL, 40, 'cooling-fluid', 'Hepu Antifreeze', 'uploads/products/696392655986c.png', '780.00', 1, '2026-02-27 18:06:04', '2026-02-27 18:06:04'),
+(65, 3, 97, NULL, 'accessory', 'Коврики резиновые Universal', 'uploads/products/696392655986c.png', '1890.00', 1, '2026-02-27 18:06:13', '2026-02-27 18:06:13'),
+(66, 4, NULL, 1, 'antifreeze', 'Motul Inugel Optimal', 'uploads/products/696392655986c.png', '1100.00', 1, '2026-02-27 18:08:14', '2026-02-27 18:08:14'),
+(67, 4, NULL, 2, 'antifreeze', 'Shell Zone Ultra', 'uploads/products/696392655986c.png', '1650.00', 1, '2026-02-27 18:08:15', '2026-02-27 18:08:15'),
+(68, 4, NULL, 39, 'cooling-fluid', 'SWAG Antifreeze', 'uploads/products/696392655986c.png', '1580.00', 1, '2026-02-27 18:08:21', '2026-02-27 18:08:21');
 
 -- --------------------------------------------------------
 
@@ -428,8 +431,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `order_number`, `user_id`, `total_amount`, `status`, `order_date`, `shipping_address`, `phone`, `notes`) VALUES
-(1, 'ORD-20260105-5A3C6597', 2, '41700.00', 'pending', '2026-01-05 15:00:31', '', '89113456789', ''),
-(2, 'ORD-20260213-AAC10A70', 3, '23330.00', 'cancelled', '2026-02-13 16:27:06', '', '89114567891', '');
+(23, 'ORD-20260227-66F89CC9', 2, '49520.00', 'pending', '2026-02-27 18:02:16', '', '89113456789', '');
 
 -- --------------------------------------------------------
 
@@ -441,7 +443,9 @@ CREATE TABLE `order_items` (
   `id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) DEFAULT NULL,
+  `category_product_id` int(11) DEFAULT NULL,
   `product_name` varchar(255) NOT NULL,
+  `product_type` varchar(50) DEFAULT NULL,
   `price` decimal(10,2) NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -450,16 +454,15 @@ CREATE TABLE `order_items` (
 -- Дамп данных таблицы `order_items`
 --
 
-INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_name`, `price`, `quantity`) VALUES
-(1, 1, 0, 'Генератор Audi A4 B9', '15600.00', 1),
-(2, 1, 0, 'Ремень ГРМ BMW 7 series G11', '3200.00', 1),
-(3, 1, 0, 'Аккумулятор BMW 5 series F10', '12500.00', 1),
-(4, 1, 0, 'Тормозные колодки BMW 1 series F20', '5200.00', 2),
-(5, 2, 98, 'Чехол на сиденье с подогревом', '6590.00', 1),
-(6, 2, 56, 'ELF Evolution 900 NF 5W-40', '3750.00', 2),
-(7, 2, 53, 'Total Quartz 9000 5W-40', '3650.00', 1),
-(8, 2, 3, 'Свечи зажигания Audi Q5 2.0 TDI', '850.00', 2),
-(9, 2, 2, 'Тормозные колодки Audi A6 C7', '3890.00', 1);
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `category_product_id`, `product_name`, `product_type`, `price`, `quantity`) VALUES
+(77, 23, 74, NULL, 'Коврики в салон 3D', 'accessory', '6790.00', 1),
+(78, 23, 83, NULL, 'Автоодеяло с подогревом', 'accessory', '5490.00', 1),
+(79, 23, NULL, 51, 'Motul Multi ATF', 'power-steering', '1280.00', 2),
+(80, 23, NULL, 102, 'Mobilube GX 80W-90', 'transmission-oil', '1420.00', 1),
+(81, 23, NULL, 77, 'Набор Liqui Moly для ТО', 'kit', '7800.00', 1),
+(82, 23, 51, NULL, 'Liqui Moly Special Tec AA 5W-30', 'oil', '4210.00', 1),
+(83, 23, 50, NULL, 'Mobil Super 3000 X1 5W-40', 'oil', '3450.00', 1),
+(84, 23, 39, NULL, 'Топливный насос высокого давления', 'part', '8900.00', 2);
 
 -- --------------------------------------------------------
 
@@ -482,9 +485,9 @@ CREATE TABLE `password_resets` (
 --
 
 INSERT INTO `password_resets` (`id`, `user_id`, `token`, `short_token`, `expires_at`, `used`, `created_at`) VALUES
-(109, 3, 'c1a9af8daae57c8ef7acbcd5c767912356ee0ba2d80275cd060ba6edf9b2fbe2', 'cwz9TM', '2026-02-24 22:40:00', 1, '2026-02-24 18:40:00'),
 (111, 2, '5164faeeaecf2e90aa48afb4d0aafc834cca68addb03315e1f261a7cf0ad5826', 'bytxPH', '2026-02-24 22:40:29', 0, '2026-02-24 18:40:29'),
-(113, 4, 'de54d70989770933b0aec5e1e03f54dcda0bbe4a60a0127d2bf881704b11690d', '7W8GfE', '2026-02-24 22:41:45', 0, '2026-02-24 18:41:45');
+(113, 4, 'de54d70989770933b0aec5e1e03f54dcda0bbe4a60a0127d2bf881704b11690d', '7W8GfE', '2026-02-24 22:41:45', 0, '2026-02-24 18:41:45'),
+(114, 3, '1987ad5933faf2854cb20f3a7b385d00ecd7fd92129d5667b6683a410d440f2b', 'h8znbn', '2026-02-27 21:59:29', 1, '2026-02-27 17:59:29');
 
 -- --------------------------------------------------------
 
@@ -939,11 +942,12 @@ CREATE TABLE `wishlist` (
 --
 
 INSERT INTO `wishlist` (`id`, `user_id`, `product_name`, `product_image`, `price`, `created_at`) VALUES
-(3, 3, 'Свечи зажигания NGK BKR6E', 'img/no-image.png', '850.00', '2026-01-15 13:29:33'),
-(4, 4, 'Тормозные колодки Brembo P85115', 'img/no-image.png', '3890.00', '2026-01-15 13:29:33'),
-(5, 5, 'Фильтр масляный Mann W914/2', 'img/no-image.png', '1250.00', '2026-01-15 13:29:33'),
+(3, 3, 'Свечи зажигания NGK BKR6E', 'uploads/products/696392655986c.png', '850.00', '2026-01-15 13:29:33'),
+(4, 4, 'Тормозные колодки Brembo P85115', 'uploads/products/696392655986c.png', '3890.00', '2026-01-15 13:29:33'),
+(5, 5, 'Фильтр масляный Mann W914/2', 'uploads/products/696392655986c.png', '1250.00', '2026-01-15 13:29:33'),
 (13, 2, 'Фара передняя BMW 3 series F30', 'uploads/products/696392655986c.png', '18700.00', '2026-02-14 15:52:56'),
-(14, 2, 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', '2026-02-14 15:53:36');
+(14, 2, 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', '2026-02-14 15:53:36'),
+(15, 4, 'Свечи зажигания Audi Q5 2.0 TDI', 'uploads/products/696392655986c.png', '850.00', '2026-02-27 07:39:02');
 
 --
 -- Индексы сохранённых таблиц
@@ -1144,7 +1148,7 @@ ALTER TABLE `backup_logs`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT для таблицы `category_products`
@@ -1180,19 +1184,19 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT для таблицы `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT для таблицы `password_resets`
 --
 ALTER TABLE `password_resets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT для таблицы `products`
@@ -1252,7 +1256,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `wishlist`
 --
 ALTER TABLE `wishlist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

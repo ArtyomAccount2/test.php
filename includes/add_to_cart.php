@@ -29,8 +29,8 @@ if (!$userData)
 }
 
 $userId = $userData['id_users'];
-$category_product_id = isset($_POST['category_product_id']) ? intval($_POST['category_product_id']) : 0;
-$product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+$category_product_id = isset($_POST['category_product_id']) && $_POST['category_product_id'] > 0 ? intval($_POST['category_product_id']) : null;
+$product_id = isset($_POST['product_id']) && $_POST['product_id'] > 0 ? intval($_POST['product_id']) : null;
 $product_name = $_POST['product_name'] ?? '';
 $product_image = $_POST['product_image'] ?? '../img/no-image.png';
 $price = isset($_POST['price']) ? floatval($_POST['price']) : 0;
@@ -44,7 +44,7 @@ if (empty($product_name) || $price <= 0)
     exit();
 }
 
-if ($category_product_id > 0) 
+if ($category_product_id) 
 {
     $check_sql = "SELECT id, quantity FROM cart WHERE user_id = ? AND category_product_id = ?";
     $check_stmt = $conn->prepare($check_sql);
@@ -78,7 +78,7 @@ if ($category_product_id > 0)
         $insert_stmt->close();
     }
 } 
-else if ($product_id > 0) 
+else if ($product_id) 
 {
     $check_sql = "SELECT id, quantity FROM cart WHERE user_id = ? AND product_id = ?";
     $check_stmt = $conn->prepare($check_sql);

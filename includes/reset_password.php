@@ -300,6 +300,23 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
             <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 
+
+        if ($showNewCodeModal && !empty($newCodeValue))
+        {
+        ?>
+            setTimeout(function() {
+                var newCodeModal = new bootstrap.Modal(document.getElementById('newCodeModal'));
+                newCodeModal.show();
+                
+                fetch('clear_new_code_session.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+            }, 500);
+        <?php 
+        }
         ?>
     });
     </script>
@@ -555,6 +572,206 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
 <script>
+function checkPasswordStrength(password) 
+{
+    let strength = 0;
+    let feedback = '';
+    
+    if (password.length >= 6) 
+    {
+        strength += 1;
+    }
+
+    if (password.length >= 8) 
+    {
+        strength += 1;
+    }
+
+    if (/\d/.test(password)) 
+    {
+        strength += 1;
+    }
+
+    if (/[a-z]/.test(password)) 
+    {
+        strength += 1;
+    }
+
+    if (/[A-Z]/.test(password)) 
+    {
+        strength += 1;
+    }
+    
+    if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) 
+    {
+        strength += 2;
+    }
+    
+    return strength;
+}
+
+function updatePasswordStrength(password) 
+{
+    let strengthBar = document.getElementById('strengthBar');
+    let strengthText = document.getElementById('strengthText');
+    
+    if (!strengthBar || !strengthText) 
+    {
+        return;
+    }
+    
+    if (!password) 
+    {
+        strengthBar.style.width = '0%';
+        strengthBar.style.backgroundColor = '#e9ecef';
+        strengthText.textContent = '';
+        strengthText.style.color = '#6c757d';
+
+        return;
+    }
+    
+    let strength = checkPasswordStrength(password);
+    let width = '0%';
+    let color = '#e9ecef';
+    let text = '';
+    let textColor = '#6c757d';
+
+    if (strength <= 2) 
+    {
+        width = '33%';
+        color = '#dc3545';
+        text = 'Слабый пароль';
+        textColor = '#dc3545';
+    }
+    else if (strength <= 4) 
+    {
+        width = '66%';
+        color = '#ffc107';
+        text = 'Средний пароль';
+        textColor = '#856404';
+    }
+    else 
+    {
+        width = '100%';
+        color = '#28a745';
+        text = 'Надёжный пароль';
+        textColor = '#28a745';
+    }
+    
+    strengthBar.style.width = width;
+    strengthBar.style.backgroundColor = color;
+    strengthText.textContent = text;
+    strengthText.style.color = textColor;
+}
+
+function checkPasswordMatch() 
+{
+    let password = document.getElementById('password');
+    let confirmPassword = document.getElementById('confirm_password');
+    let confirmError = document.getElementById('confirmError');
+    
+    if (!password || !confirmPassword || !confirmError) 
+    {
+        return;
+    }
+    
+    if (confirmPassword.value && password.value !== confirmPassword.value) 
+    {
+        confirmPassword.classList.add('is-invalid');
+        confirmError.textContent = 'Пароли не совпадают';
+        confirmError.style.display = 'block';
+    } 
+    else 
+    {
+        confirmPassword.classList.remove('is-invalid');
+        confirmError.textContent = '';
+        confirmError.style.display = 'none';
+    }
+}
+
+function validateResetForm(event) 
+{
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm_password');
+    
+    if (!password || !confirmPassword) 
+    {
+        return true;
+    }
+    
+    if (password.value.length < 6) 
+    {
+        event.preventDefault();
+        alert('Пароль должен содержать минимум 6 символов');
+        password.focus();
+        return false;
+    }
+    
+    if (password.value !== confirmPassword.value) 
+    {
+        event.preventDefault();
+        alert('Пароли не совпадают');
+        confirmPassword.focus();
+
+        return false;
+    }
+    
+    let strength = checkPasswordStrength(password.value);
+
+    if (strength <= 2) 
+    {
+        if (!confirm('Пароль слабый. Вы уверены, что хотите продолжить?')) 
+        {
+            event.preventDefault();
+
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+document.addEventListener('DOMContentLoaded', function() 
+{
+    let codeInput = document.getElementById('code');
+
+    if (codeInput) 
+    {
+        codeInput.focus();
+
+        codeInput.addEventListener('input', function() 
+        {
+            this.value = this.value.toUpperCase();
+        });
+    }
+    
+    let passwordInput = document.getElementById('password');
+    let confirmPassword = document.getElementById('confirm_password');
+    let resetForm = document.getElementById('resetForm');
+    
+    if (passwordInput) 
+    {
+        passwordInput.addEventListener('input', function() 
+        {
+            updatePasswordStrength(this.value);
+            checkPasswordMatch();
+        });
+        
+        passwordInput.addEventListener('blur', checkPasswordMatch);
+    }
+    
+    if (confirmPassword) 
+    {
+        confirmPassword.addEventListener('input', checkPasswordMatch);
+        confirmPassword.addEventListener('blur', checkPasswordMatch);
+    }
+    
+    if (resetForm) 
+    {
+        resetForm.addEventListener('submit', validateResetForm);
+    }
+});
+
 function copyNewCode() 
 {
     let newCodeInput = document.getElementById('newCodeInput');
@@ -598,40 +815,6 @@ function clearNewCodeSession()
         }
     });
 }
-
-document.addEventListener('DOMContentLoaded', function() 
-{
-    <?php 
-    if ($showNewCodeModal && !empty($newCodeValue))
-    {
-    ?>
-        setTimeout(function() {
-            var newCodeModal = new bootstrap.Modal(document.getElementById('newCodeModal'));
-            newCodeModal.show();
-            
-            fetch('clear_new_code_session.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-        }, 500);
-    <?php 
-    }
-    ?>
-
-    let codeInput = document.getElementById('code');
-
-    if (codeInput) 
-    {
-        codeInput.focus();
-
-        codeInput.addEventListener('input', function() 
-        {
-            this.value = this.value.toUpperCase();
-        });
-    }
-});
 </script>
 </body>
 </html>

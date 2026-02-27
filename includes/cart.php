@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         } 
         else 
         {
-            $_SESSION['error_message'] = "Ошибка добавления товара в корзину!";
+            $_SESSION['cart_error'] = "Ошибка добавления товара в корзину!";
         }
         
         header("Location: " . ($_SERVER['HTTP_REFERER'] ?? 'cart.php'));
@@ -153,7 +153,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     {
         if (empty($cartItems)) 
         {
-            $_SESSION['error_message'] = "Корзина пуста!";
+            $_SESSION['cart_error'] = "Корзина пуста!";
+            header("Location: cart.php");
+            exit();
+        }
+
+        $activeOrdersSql = "SELECT COUNT(*) as active_count FROM orders WHERE user_id = ? AND status IN ('pending', 'processing')";
+        $activeStmt = $conn->prepare($activeOrdersSql);
+        $activeStmt->bind_param("i", $userId);
+        $activeStmt->execute();
+        $activeResult = $activeStmt->get_result();
+        $activeCount = $activeResult->fetch_assoc()['active_count'];
+        $activeStmt->close();
+
+        if ($activeCount >= 5) 
+        {
+            $_SESSION['cart_error'] = "Вы не можете оформить более 5 активных заказов одновременно. Пожалуйста, дождитесь выполнения или отмените некоторые заказы.";
             header("Location: cart.php");
             exit();
         }
@@ -173,9 +188,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             
             foreach ($cartItems as $item) 
             {
-                $itemSql = "INSERT INTO order_items (order_id, product_id, product_name, price, quantity) VALUES (?, ?, ?, ?, ?)";
+                $product_id = !empty($item['product_id']) && $item['product_id'] > 0 ? $item['product_id'] : null;
+                $category_product_id = !empty($item['category_product_id']) ? $item['category_product_id'] : null;
+                
+                $itemSql = "INSERT INTO order_items (order_id, product_id, category_product_id, product_name, product_type, price, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 $itemStmt = $conn->prepare($itemSql);
-                $itemStmt->bind_param("iisdi", $orderId, $item['product_id'], $item['product_name'], $item['price'], $item['quantity']);
+                $itemStmt->bind_param("iisssdi", $orderId, $product_id, $category_product_id, $item['product_name'], $item['product_type'], $item['price'], $item['quantity']);
                 $itemStmt->execute();
                 $itemStmt->close();
             }
@@ -188,12 +206,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             
             $_SESSION['success_message'] = "Заказ №{$orderNumber} успешно оформлен!";
             $_SESSION['order_number'] = $orderNumber;
-            header("Location: orders.php");
+            header("Location: order_details.php?id=" . $orderId);
             exit();
         } 
         else 
         {
-            $_SESSION['error_message'] = "Ошибка при оформлении заказа!";
+            $_SESSION['cart_error'] = "Ошибка при оформлении заказа!";
             header("Location: cart.php");
             exit();
         }
@@ -248,17 +266,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                     </div>
                     <?php unset($_SESSION['success_message']); ?>
                 <?php 
-                } 
+                }
 
-                if (isset($_SESSION['error_message'])) 
+                if (isset($_SESSION['cart_error'])) 
                 { 
                 ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        <?= $_SESSION['error_message']; ?>
+                        <?= $_SESSION['cart_error']; ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <?php unset($_SESSION['error_message']); ?>
+                    <?php unset($_SESSION['cart_error']); ?>
                 <?php 
                 } 
                 ?>  

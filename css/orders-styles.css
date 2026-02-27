@@ -11,6 +11,56 @@
     border-left: 4px solid #3498db;
 }
 
+.order-details-page 
+{
+    margin-top: 100px;
+    min-height: calc(100vh - 200px);
+}
+
+.order-details-container 
+{
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.order-items-list 
+{
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.info-card 
+{
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+@media print 
+{
+    .no-print, .footer-section, .navbar 
+    {
+        display: none !important;
+    }
+
+    .order-details-page 
+    {
+        margin-top: 20px;
+    }
+
+    .card 
+    {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+    }
+}
+
 .order-items .list-group-item 
 {
     border: 1px solid rgba(0, 0, 0, 0.125);

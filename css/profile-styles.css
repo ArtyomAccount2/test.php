@@ -1205,3 +1205,50 @@
     -webkit-user-select: none;
     transition: opacity 0.2s;
 }
+
+#orders .table-responsive 
+{
+    max-height: calc(120vh - 105px);
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+}
+
+#orders .table thead th 
+{
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    z-index: 10;
+    border-bottom: 2px solid #dee2e6;
+}
+
+#orders .table-responsive::-webkit-scrollbar 
+{
+    width: 8px;
+    height: 8px;
+}
+
+#orders .table-responsive::-webkit-scrollbar-track 
+{
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+#orders .table-responsive::-webkit-scrollbar-thumb 
+{
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+#orders .table-responsive::-webkit-scrollbar-thumb:hover 
+{
+    background: #a8a8a8;
+}
+
+#orders .table-responsive 
+{
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 #f1f1f1;
+}
