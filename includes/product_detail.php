@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 session_start();
 require_once("../config/link.php");
+require_once("../config/check_auth.php");
 
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['user'] == 'admin')
 {
@@ -12,15 +13,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     $login = $_POST['login'];
     $password = $_POST['password'];
-    $redirect_url = $_POST['redirect_url'] ?? $_SERVER['REQUEST_URI'];
 
     if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
     {
-        $_SESSION['loggedin'] = true;
-        $_SESSION['user'] = 'admin';
-        unset($_SESSION['login_error']);
-        unset($_SESSION['error_message']);
-        header("Location: ../admin.php");
+        $_SESSION['login_error'] = true;
+        $_SESSION['error_message'] = "Неверный логин или пароль!";
+        header("Location: " . $_SERVER['REQUEST_URI']);
         exit();
     }
     else
@@ -35,9 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $row = $result->fetch_assoc();
             $_SESSION['loggedin'] = true;
             $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+            $_SESSION['user_id'] = $row['id_users'];
             unset($_SESSION['login_error']);
             unset($_SESSION['error_message']);
-            header("Location: " . $redirect_url);
+            header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         } 
         else 
@@ -45,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $_SESSION['login_error'] = true;
             $_SESSION['error_message'] = "Неверный логин или пароль!";
             $_SESSION['form_data'] = $_POST;
-            header("Location: " . $redirect_url);
+            header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         }
     }
@@ -142,6 +141,7 @@ if (!empty($product['old_price']) && $product['old_price'] > 0 && $product['pric
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($product['name']) ?> - Лал-Авто</title>
+    <link rel="icon" href="../img/iconAuto.png" type="image/png" height="32">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">

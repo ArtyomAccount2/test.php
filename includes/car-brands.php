@@ -2,25 +2,36 @@
 error_reporting(E_ALL);
 session_start();
 require_once("../config/link.php");
+require_once("../config/check_auth.php");
 
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['user'] == 'admin')
 {
     header("Location: ../files/logout.php");
 }
 
+$carBrands = [];
+$sql = "SELECT * FROM car_brands ORDER BY name";
+$result = $conn->query($sql);
+
+if ($result && $result->num_rows > 0) 
+{
+    while ($row = $result->fetch_assoc()) 
+    {
+        $row['models'] = json_decode($row['models'], true);
+        $carBrands[] = $row;
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $login = $_POST['login'];
     $password = $_POST['password'];
-    $redirect_url = $_POST['redirect_url'] ?? $_SERVER['REQUEST_URI'];
 
     if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
     {
-        $_SESSION['loggedin'] = true;
-        $_SESSION['user'] = 'admin';
-        unset($_SESSION['login_error']);
-        unset($_SESSION['error_message']);
-        header("Location: ../admin.php");
+        $_SESSION['login_error'] = true;
+        $_SESSION['error_message'] = "Неверный логин или пароль!";
+        header("Location: " . $_SERVER['REQUEST_URI']);
         exit();
     }
     else
@@ -35,9 +46,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $row = $result->fetch_assoc();
             $_SESSION['loggedin'] = true;
             $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+            $_SESSION['user_id'] = $row['id_users'];
             unset($_SESSION['login_error']);
             unset($_SESSION['error_message']);
-            header("Location: " . $redirect_url);
+            header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         } 
         else 
@@ -45,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $_SESSION['login_error'] = true;
             $_SESSION['error_message'] = "Неверный логин или пароль!";
             $_SESSION['form_data'] = $_POST;
-            header("Location: " . $redirect_url);
+            header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         }
     }
@@ -53,414 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
-
-$carBrands = [
-    [
-        'name' => 'Acura',
-        'country' => 'Япония',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Японский премиальный бренд, принадлежащий Honda',
-        'models' => ['MDX', 'RDX', 'TLX', 'NSX'],
-        'image' => '../img/Stamps/Acura.png'
-    ],
-    [
-        'name' => 'Aixam',
-        'country' => 'Франция',
-        'category' => 'special',
-        'category_name' => 'Микрокары',
-        'description' => 'Французский производитель микроавтомобилей',
-        'models' => ['City', 'Crossover', 'E-City'],
-        'image' => '../img/Stamps/Aixam.png'
-    ],
-    [
-        'name' => 'Alfa Romeo',
-        'country' => 'Италия',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Итальянский производитель спортивных автомобилей',
-        'models' => ['Giulia', 'Stelvio', 'Tonale'],
-        'image' => '../img/Stamps/Alfa Romeo.png'
-    ],
-    [
-        'name' => 'Aston Martin',
-        'country' => 'Великобритания',
-        'category' => 'luxury',
-        'category_name' => 'Люкс',
-        'description' => 'Британский производитель роскошных спортивных автомобилей',
-        'models' => ['DB11', 'Vantage', 'DBS', 'Valhalla'],
-        'image' => '../img/Stamps/Aston Martin.png'
-    ],
-    [
-        'name' => 'Audi',
-        'country' => 'Германия',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Немецкий производитель автомобилей премиум-класса',
-        'models' => ['A4', 'A6', 'Q5', 'Q7', 'TT'],
-        'image' => '../img/Stamps/Audi.png'
-    ],
-    [
-        'name' => 'BMW',
-        'country' => 'Германия',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Немецкий производитель автомобилей и мотоциклов',
-        'models' => ['3 серии', '5 серии', 'X5', 'X3', 'i8'],
-        'image' => '../img/Stamps/BMW.png'
-    ],
-    [
-        'name' => 'Bentley',
-        'country' => 'Великобритания',
-        'category' => 'luxury',
-        'category_name' => 'Люкс',
-        'description' => 'Британский производитель роскошных автомобилей',
-        'models' => ['Continental', 'Flying Spur', 'Bentayga'],
-        'image' => '../img/Stamps/Bentley.png'
-    ],
-    [
-        'name' => 'Buick',
-        'country' => 'США',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Американский бренд автомобилей премиум-класса',
-        'models' => ['Enclave', 'Encore', 'Regal'],
-        'image' => '../img/Stamps/Buick.png'
-    ],
-    [
-        'name' => 'Cadillac',
-        'country' => 'США',
-        'category' => 'luxury',
-        'category_name' => 'Люкс',
-        'description' => 'Американский производитель автомобилей класса люкс',
-        'models' => ['Escalade', 'XT5', 'CT5', 'Lyriq'],
-        'image' => '../img/Stamps/Cadillac.png'
-    ],
-    [
-        'name' => 'Chevrolet',
-        'country' => 'США',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Американский производитель массовых автомобилей',
-        'models' => ['Camaro', 'Malibu', 'Tahoe', 'Equinox'],
-        'image' => '../img/Stamps/Chevrolet.png'
-    ],
-    [
-        'name' => 'Chrysler',
-        'country' => 'США',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Американский производитель автомобилей',
-        'models' => ['Pacifica', '300', 'Voyager'],
-        'image' => '../img/Stamps/Chrysler.png'
-    ],
-    [
-        'name' => 'Dodge',
-        'country' => 'США',
-        'category' => 'sport',
-        'category_name' => 'Спорт',
-        'description' => 'Американский производитель спортивных автомобилей',
-        'models' => ['Charger', 'Challenger', 'Durango'],
-        'image' => '../img/Stamps/Dodge.png'
-    ],
-    [
-        'name' => 'Fiat',
-        'country' => 'Италия',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Итальянский производитель автомобилей',
-        'models' => ['500', 'Panda', 'Tipo', 'Doblo'],
-        'image' => '../img/Stamps/Fiat.png'
-    ],
-    [
-        'name' => 'Ford',
-        'country' => 'США',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Американский производитель автомобилей',
-        'models' => ['Focus', 'Fiesta', 'Mustang', 'Explorer'],
-        'image' => '../img/Stamps/Ford.png'
-    ],
-    [
-        'name' => 'Gaz',
-        'country' => 'Россия',
-        'category' => 'commercial',
-        'category_name' => 'Коммерческий',
-        'description' => 'Российский производитель грузовых и легковых автомобилей',
-        'models' => ['Волга', 'Газель', 'Соболь'],
-        'image' => '../img/Stamps/Gaz.png'
-    ],
-    [
-        'name' => 'Honda',
-        'country' => 'Япония',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Японский производитель автомобилей и мотоциклов',
-        'models' => ['Civic', 'Accord', 'CR-V', 'Pilot'],
-        'image' => '../img/Stamps/Honda.png'
-    ],
-    [
-        'name' => 'Hummer',
-        'country' => 'США',
-        'category' => 'offroad',
-        'category_name' => 'Внедорожник',
-        'description' => 'Американский бренд внедорожников',
-        'models' => ['H2', 'H3', 'EV'],
-        'image' => '../img/Stamps/Hummer.png'
-    ],
-    [
-        'name' => 'Hyundai',
-        'country' => 'Корея',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Южнокорейский производитель автомобилей',
-        'models' => ['Solaris', 'Tucson', 'Santa Fe', 'Elantra'],
-        'image' => '../img/Stamps/Hyundai.png'
-    ],
-    [
-        'name' => 'Infiniti',
-        'country' => 'Япония',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Японский премиальный бренд, принадлежащий Nissan',
-        'models' => ['Q50', 'QX60', 'QX80'],
-        'image' => '../img/Stamps/Infiniti.png'
-    ],
-    [
-        'name' => 'Jaguar',
-        'country' => 'Великобритания',
-        'category' => 'luxury',
-        'category_name' => 'Люкс',
-        'description' => 'Британский производитель роскошных автомобилей',
-        'models' => ['XF', 'F-Pace', 'E-Pace', 'I-Pace'],
-        'image' => '../img/Stamps/Jaguar.png'
-    ],
-    [
-        'name' => 'Jeep',
-        'country' => 'США',
-        'category' => 'offroad',
-        'category_name' => 'Внедорожник',
-        'description' => 'Американский производитель внедорожников',
-        'models' => ['Wrangler', 'Grand Cherokee', 'Renegade'],
-        'image' => '../img/Stamps/Jeep.png'
-    ],
-    [
-        'name' => 'Kia',
-        'country' => 'Корея',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Южнокорейский производитель автомобилей',
-        'models' => ['Rio', 'Sportage', 'Sorento', 'K5'],
-        'image' => '../img/Stamps/Kia.png'
-    ],
-    [
-        'name' => 'Lada',
-        'country' => 'Россия',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Российский производитель автомобилей',
-        'models' => ['Vesta', 'Granta', 'Niva', 'XRAY'],
-        'image' => '../img/Stamps/Lada.png'
-    ],
-    [
-        'name' => 'Lamborghini',
-        'country' => 'Италия',
-        'category' => 'luxury',
-        'category_name' => 'Люкс',
-        'description' => 'Итальянский производитель суперкаров',
-        'models' => ['Aventador', 'Huracan', 'Urus'],
-        'image' => '../img/Stamps/Lamborghini.png'
-    ],
-    [
-        'name' => 'Lancia',
-        'country' => 'Италия',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Итальянский производитель автомобилей',
-        'models' => ['Ypsilon', 'Delta', 'Thema'],
-        'image' => '../img/Stamps/Lancia.png'
-    ],
-    [
-        'name' => 'Land Rover',
-        'country' => 'Великобритания',
-        'category' => 'offroad',
-        'category_name' => 'Внедорожник',
-        'description' => 'Британский производитель внедорожников',
-        'models' => ['Range Rover', 'Discovery', 'Defender'],
-        'image' => '../img/Stamps/Land Rover.png'
-    ],
-    [
-        'name' => 'Lexus',
-        'country' => 'Япония',
-        'category' => 'luxury',
-        'category_name' => 'Люкс',
-        'description' => 'Японский бренд автомобилей класса люкс, принадлежащий Toyota',
-        'models' => ['RX', 'NX', 'ES', 'LS'],
-        'image' => '../img/Stamps/Lexus.png'
-    ],
-    [
-        'name' => 'Lotus',
-        'country' => 'Великобритания',
-        'category' => 'sport',
-        'category_name' => 'Спорт',
-        'description' => 'Британский производитель спортивных автомобилей',
-        'models' => ['Evora', 'Emira', 'Elise'],
-        'image' => '../img/Stamps/Lotus.png'
-    ],
-    [
-        'name' => 'Mazda',
-        'country' => 'Япония',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Японский производитель автомобилей',
-        'models' => ['3', '6', 'CX-5', 'MX-5'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Mercedes-Benz',
-        'country' => 'Германия',
-        'category' => 'luxury',
-        'category_name' => 'Люкс',
-        'description' => 'Немецкий производитель автомобилей премиум-класса',
-        'models' => ['C-класс', 'E-класс', 'S-класс', 'GLE'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Mini',
-        'country' => 'Великобритания',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Британский производитель малолитражных автомобилей',
-        'models' => ['Cooper', 'Countryman', 'Clubman'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Mitsubishi',
-        'country' => 'Япония',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Японский производитель автомобилей',
-        'models' => ['Outlander', 'Pajero Sport', 'Lancer'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Nissan',
-        'country' => 'Япония',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Японский производитель автомобилей',
-        'models' => ['Qashqai', 'X-Trail', 'Note', 'GT-R'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Opel',
-        'country' => 'Германия',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Немецкий производитель автомобилей',
-        'models' => ['Astra', 'Corsa', 'Insignia', 'Mokka'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Peugeot',
-        'country' => 'Франция',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Французский производитель автомобилей',
-        'models' => ['308', '3008', '508', '2008'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Porsche',
-        'country' => 'Германия',
-        'category' => 'luxury',
-        'category_name' => 'Люкс',
-        'description' => 'Немецкий производитель спортивных автомобилей',
-        'models' => ['911', 'Cayenne', 'Panamera', 'Macan'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Renault',
-        'country' => 'Франция',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Французский производитель автомобилей',
-        'models' => ['Logan', 'Sandero', 'Duster', 'Kaptur'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Skoda',
-        'country' => 'Чехия',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Чешский производитель автомобилей',
-        'models' => ['Octavia', 'Kodiaq', 'Karoq', 'Superb'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Subaru',
-        'country' => 'Япония',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Японский производитель автомобилей',
-        'models' => ['Forester', 'Outback', 'Impreza', 'XV'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Suzuki',
-        'country' => 'Япония',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Японский производитель автомобилей',
-        'models' => ['Vitara', 'Swift', 'SX4', 'Jimny'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Tesla',
-        'country' => 'США',
-        'category' => 'electric',
-        'category_name' => 'Электрический',
-        'description' => 'Американский производитель электромобилей',
-        'models' => ['Model 3', 'Model S', 'Model X', 'Model Y'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Toyota',
-        'country' => 'Япония',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Японский производитель автомобилей',
-        'models' => ['Camry', 'RAV4', 'Land Cruiser', 'Corolla'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Volkswagen',
-        'country' => 'Германия',
-        'category' => 'mass',
-        'category_name' => 'Массовый',
-        'description' => 'Немецкий производитель автомобилей',
-        'models' => ['Passat', 'Tiguan', 'Polo', 'Golf'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'Volvo',
-        'country' => 'Швеция',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Шведский производитель автомобилей',
-        'models' => ['XC90', 'XC60', 'S90', 'V90'],
-        'image' => '../img/no-image.png'
-    ],
-    [
-        'name' => 'UAZ',
-        'country' => 'Россия',
-        'category' => 'offroad',
-        'category_name' => 'Внедорожник',
-        'description' => 'Российский производитель внедорожников',
-        'models' => ['Patriot', 'Hunter', 'Pickup', 'Profi'],
-        'image' => '../img/no-image.png'
-    ]
-];
 ?>
 
 <!DOCTYPE html>
@@ -469,6 +73,7 @@ $carBrands = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Все марки автомобилей - Лал-Авто</title>
+    <link rel="icon" href="../img/iconAuto.png" type="image/png" height="32">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">

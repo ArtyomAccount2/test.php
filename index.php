@@ -2,41 +2,17 @@
 error_reporting(E_ALL);
 session_start();
 require_once("config/link.php");
+require_once("config/check_auth.php");
 
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['user'] == 'admin')
 {
     header("Location: ../files/logout.php");
 }
 
-if (!isset($_SESSION['loggedin']) && isset($_COOKIE['remember_token'])) 
-{
-    $token = $_COOKIE['remember_token'];
-    $stmt = $conn->prepare("SELECT u.* FROM users u INNER JOIN remember_tokens rt ON u.id_users = rt.user_id WHERE rt.token = ? AND rt.expires_at > NOW()");
-    $stmt->bind_param("s", $token);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows > 0) 
-    {
-        $row = $result->fetch_assoc();
-        $_SESSION['loggedin'] = true;
-        $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
-        $_SESSION['user_id'] = $row['id_users'];
-        unset($_SESSION['login_error']);
-        unset($_SESSION['error_message']);
-
-        $updateStmt = $conn->prepare("UPDATE remember_tokens SET expires_at = DATE_ADD(NOW(), INTERVAL 30 DAY) WHERE token = ?");
-        $updateStmt->bind_param("s", $token);
-        $updateStmt->execute();
-        setcookie('remember_token', $token, time() + 30 * 24 * 3600, '/', '', false, true);
-    }
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $login = $_POST['login'];
     $password = $_POST['password'];
-    $rememberMe = isset($_POST['rememberMe']) ? $_POST['rememberMe'] : false;
 
     if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
     {
@@ -60,20 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $_SESSION['user_id'] = $row['id_users'];
             unset($_SESSION['login_error']);
             unset($_SESSION['error_message']);
-
-            if ($rememberMe) 
-            {
-                $token = bin2hex(random_bytes(32));
-                $expires = date('Y-m-d H:i:s', time() + 30 * 24 * 3600);
-                $deleteStmt = $conn->prepare("DELETE FROM remember_tokens WHERE user_id = ?");
-                $deleteStmt->bind_param("i", $row['id_users']);
-                $deleteStmt->execute();
-                $insertStmt = $conn->prepare("INSERT INTO remember_tokens (user_id, token, expires_at) VALUES (?, ?, ?)");
-                $insertStmt->bind_param("iss", $row['id_users'], $token, $expires);
-                $insertStmt->execute();
-                setcookie('remember_token', $token, time() + 30 * 24 * 3600, '/', '', false, true);
-            }
-            
             header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         } 
@@ -98,6 +60,7 @@ unset($_SESSION['form_data']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лал-Авто - Автозапчасти</title>
+    <link rel="icon" href="img/iconAuto.png" type="image/png" height="32">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -221,16 +184,12 @@ unset($_SESSION['form_data']);
                 <div class="modal-body">
                     <form method="POST" action="/">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Логин</label>
+                            <label for="username" class="form-label">Логин<span class="text-danger">*</span></label>
                             <input type="text" name="login" class="form-control" id="username" placeholder="Введите логин" required value="<?= htmlspecialchars($form_data['login'] ?? '') ?>">
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Пароль</label>
+                            <label for="password" class="form-label">Пароль<span class="text-danger">*</span></label>
                             <input type="password" name="password" class="form-control" id="password" placeholder="Введите пароль" required value="<?= htmlspecialchars($form_data['password'] ?? '') ?>">
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" name="rememberMe" class="form-check-input" id="rememberMe">
-                            <label class="form-check-label" for="rememberMe">Запомнить меня</label>
                         </div>
                         <?php 
                         if (isset($_SESSION['error_message'])) 
@@ -465,7 +424,7 @@ unset($_SESSION['form_data']);
             </div>
             <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="100">
                 <a href="includes/about.php" class="btn btn-primary btn-lg px-4 py-2 btn-hover-effect">
-                    <span>Подробнее о компании</span>
+                    <i class="bi bi-building me-2"></i>Подробнее о компании
                 </a>
             </div>
         </div>

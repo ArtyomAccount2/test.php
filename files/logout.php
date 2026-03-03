@@ -2,7 +2,24 @@
 error_reporting(E_ALL);
 session_start();
 
-$_SESSION = [];
+require_once("../config/link.php");
+
+if (isset($_SESSION['user_id'])) 
+{
+    $userId = $_SESSION['user_id'];
+    
+    $stmt = $conn->prepare("DELETE FROM remember_tokens WHERE user_id = ?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $stmt->close();
+}
+
+if (isset($_COOKIE['remember_token'])) 
+{
+    setcookie('remember_token', '', time() - 3600, '/', '', false, true);
+}
+
+$_SESSION = array();
 
 if (ini_get("session.use_cookies")) 
 {

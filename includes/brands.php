@@ -2,25 +2,36 @@
 error_reporting(E_ALL);
 session_start();
 require_once("../config/link.php");
+require_once("../config/check_auth.php");
 
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['user'] == 'admin')
 {
     header("Location: ../files/logout.php");
 }
 
+$brands = [];
+$sql = "SELECT * FROM `product_brands` ORDER BY name";
+$result = $conn->query($sql);
+
+if ($result && $result->num_rows > 0) 
+{
+    while ($row = $result->fetch_assoc())
+    {
+        $row['stats'] = json_decode($row['stats'], true);
+        $brands[] = $row;
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $login = $_POST['login'];
     $password = $_POST['password'];
-    $redirect_url = $_POST['redirect_url'] ?? $_SERVER['REQUEST_URI'];
 
     if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
     {
-        $_SESSION['loggedin'] = true;
-        $_SESSION['user'] = 'admin';
-        unset($_SESSION['login_error']);
-        unset($_SESSION['error_message']);
-        header("Location: ../admin.php");
+        $_SESSION['login_error'] = true;
+        $_SESSION['error_message'] = "Неверный логин или пароль!";
+        header("Location: " . $_SERVER['REQUEST_URI']);
         exit();
     }
     else
@@ -35,9 +46,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $row = $result->fetch_assoc();
             $_SESSION['loggedin'] = true;
             $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+            $_SESSION['user_id'] = $row['id_users'];
             unset($_SESSION['login_error']);
             unset($_SESSION['error_message']);
-            header("Location: " . $redirect_url);
+            header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         } 
         else 
@@ -45,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $_SESSION['login_error'] = true;
             $_SESSION['error_message'] = "Неверный логин или пароль!";
             $_SESSION['form_data'] = $_POST;
-            header("Location: " . $redirect_url);
+            header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         }
     }
@@ -53,332 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
-
-$brands = [
-    [
-        'name' => 'Bosch',
-        'country' => 'Германия',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Мировой лидер в производстве автокомпонентов и систем',
-        'stats' => ['Более 1000 товаров', 'Гарантия 2 года']
-    ],
-    [
-        'name' => 'Castrol',
-        'country' => 'Великобритания',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Ведущий производитель моторных масел и смазочных материалов',
-        'stats' => ['Более 500 товаров', 'Одобрено OEM']
-    ],
-    [
-        'name' => 'Mann-Filter',
-        'country' => 'Германия',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Эксперты в области фильтрации для автомобильной промышленности',
-        'stats' => ['Более 300 товаров', 'ОЕМ поставщик']
-    ],
-    [
-        'name' => 'Brembo',
-        'country' => 'Италия',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Мировой лидер в производстве тормозных систем',
-        'stats' => ['Более 400 товаров', 'Спорт-кар качество']
-    ],
-    [
-        'name' => 'Continental',
-        'country' => 'Германия',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Инновационные шины и автокомпоненты',
-        'stats' => ['Более 800 товаров', 'Немецкое качество']
-    ],
-    [
-        'name' => 'Mobil',
-        'country' => 'США',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Высококачественные моторные масла',
-        'stats' => ['Более 400 товаров', 'Мировой лидер']
-    ],
-    [
-        'name' => 'Valeo',
-        'country' => 'Франция',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Системы комфорта и безопасности',
-        'stats' => ['Более 550 товаров', 'Французские технологии']
-    ],
-    [
-        'name' => 'ZF',
-        'country' => 'Германия',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Трансмиссии и шасси',
-        'stats' => ['Более 450 товаров', 'Инженерное превосходство']
-    ],
-    [
-        'name' => 'Michelin',
-        'country' => 'Франция',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Премиальные шины мирового уровня',
-        'stats' => ['Более 250 товаров', 'Инновации в шинах']
-    ],
-    [
-        'name' => 'Bridgestone',
-        'country' => 'Япония',
-        'category' => 'premium',
-        'category_name' => 'Премиум',
-        'description' => 'Высокотехнологичные шины',
-        'stats' => ['Более 230 товаров', 'Японские технологии']
-    ],
-
-    [
-        'name' => 'VW Original',
-        'country' => 'Германия',
-        'category' => 'original',
-        'category_name' => 'Оригинальные',
-        'description' => 'Оригинальные запчасти Volkswagen Group',
-        'stats' => ['Более 2000 товаров', 'Официальный дилер']
-    ],
-    [
-        'name' => 'Toyota Original',
-        'country' => 'Япония',
-        'category' => 'original',
-        'category_name' => 'Оригинальные',
-        'description' => 'Оригинальные запчасти Toyota Motor Corporation',
-        'stats' => ['Более 1500 товаров', 'Гарантия качества']
-    ],
-    [
-        'name' => 'BMW Original',
-        'country' => 'Германия',
-        'category' => 'original',
-        'category_name' => 'Оригинальные',
-        'description' => 'Оригинальные запчасти BMW Group',
-        'stats' => ['Более 1200 товаров', 'Сертифицировано']
-    ],
-    [
-        'name' => 'Mercedes Original',
-        'country' => 'Германия',
-        'category' => 'original',
-        'category_name' => 'Оригинальные',
-        'description' => 'Оригинальные запчасти Mercedes-Benz',
-        'stats' => ['Более 1100 товаров', 'Премиум качество']
-    ],
-    [
-        'name' => 'Hyundai Original',
-        'country' => 'Корея',
-        'category' => 'original',
-        'category_name' => 'Оригинальные',
-        'description' => 'Оригинальные запчасти Hyundai',
-        'stats' => ['Более 900 товаров', 'Официальный дилер']
-    ],
-    [
-        'name' => 'Kia Original',
-        'country' => 'Корея',
-        'category' => 'original',
-        'category_name' => 'Оригинальные',
-        'description' => 'Оригинальные запчасти Kia Motors',
-        'stats' => ['Более 850 товаров', 'Гарантия качества']
-    ],
-    [
-        'name' => 'Ford Original',
-        'country' => 'США',
-        'category' => 'original',
-        'category_name' => 'Оригинальные',
-        'description' => 'Оригинальные запчасти Ford',
-        'stats' => ['Более 1100 товаров', 'Американское качество']
-    ],
-    [
-        'name' => 'Nissan Original',
-        'country' => 'Япония',
-        'category' => 'original',
-        'category_name' => 'Оригинальные',
-        'description' => 'Оригинальные запчасти Nissan',
-        'stats' => ['Более 950 товаров', 'Японская надежность']
-    ],
-    [
-        'name' => 'Mazda Original',
-        'country' => 'Япония',
-        'category' => 'original',
-        'category_name' => 'Оригинальные',
-        'description' => 'Оригинальные запчасти Mazda',
-        'stats' => ['Более 800 товаров', 'Технологии Zoom-Zoom']
-    ],
-    [
-        'name' => 'Honda Original',
-        'country' => 'Япония',
-        'category' => 'original',
-        'category_name' => 'Оригинальные',
-        'description' => 'Оригинальные запчасти Honda',
-        'stats' => ['Более 850 товаров', 'Надежность Honda']
-    ],
-
-    [
-        'name' => 'Febi Bilstein',
-        'country' => 'Германия',
-        'category' => 'aftermarket',
-        'category_name' => 'Аналоги',
-        'description' => 'Качественные аналоги европейских автомобилей',
-        'stats' => ['Более 800 товаров', 'Соответствие OE']
-    ],
-    [
-        'name' => 'Blue Print',
-        'country' => 'Япония',
-        'category' => 'aftermarket',
-        'category_name' => 'Аналоги',
-        'description' => 'Высококачественные аналоги для азиатских авто',
-        'stats' => ['Более 600 товаров', 'Японское качество']
-    ],
-    [
-        'name' => 'SWAG',
-        'country' => 'Германия',
-        'category' => 'aftermarket',
-        'category_name' => 'Аналоги',
-        'description' => 'Немецкое качество по доступным ценам',
-        'stats' => ['Более 500 товаров', 'Германские стандарты']
-    ],
-    [
-        'name' => 'Mapco',
-        'country' => 'Германия',
-        'category' => 'aftermarket',
-        'category_name' => 'Аналоги',
-        'description' => 'Надежные аналоги для европейских автомобилей',
-        'stats' => ['Более 400 товаров', 'Проверенное качество']
-    ],
-    [
-        'name' => 'Mahle',
-        'country' => 'Германия',
-        'category' => 'aftermarket',
-        'category_name' => 'Аналоги',
-        'description' => 'Качественные аналоги для всех марок',
-        'stats' => ['Более 700 товаров', 'Немецкие стандарты']
-    ],
-    [
-        'name' => 'Hella',
-        'country' => 'Германия',
-        'category' => 'aftermarket',
-        'category_name' => 'Аналоги',
-        'description' => 'Осветительные приборы и электроника',
-        'stats' => ['Более 600 товаров', 'Инновации']
-    ],
-    [
-        'name' => 'Bosch Car Service',
-        'country' => 'Германия',
-        'category' => 'aftermarket',
-        'category_name' => 'Аналоги',
-        'description' => 'Сервисные решения и компоненты',
-        'stats' => ['Более 500 товаров', 'Профессиональные решения']
-    ],
-    [
-        'name' => 'NGK',
-        'country' => 'Япония',
-        'category' => 'aftermarket',
-        'category_name' => 'Аналоги',
-        'description' => 'Свечи зажигания и датчики',
-        'stats' => ['Более 300 товаров', 'Технологии зажигания']
-    ],
-    [
-        'name' => 'Corteco',
-        'country' => 'Германия',
-        'category' => 'aftermarket',
-        'category_name' => 'Аналоги',
-        'description' => 'Уплотнительные элементы и сальники высокого качества',
-        'stats' => ['Более 350 товаров', 'Немецкая точность']
-    ],
-    [
-        'name' => 'Behr',
-        'country' => 'Германия',
-        'category' => 'aftermarket',
-        'category_name' => 'Аналоги',
-        'description' => 'Системы охлаждения и отопления для автомобилей',
-        'stats' => ['Более 450 товаров', 'Тепловые решения']
-    ],
-
-    [
-        'name' => 'Трек',
-        'country' => 'Россия',
-        'category' => 'russia',
-        'category_name' => 'Российские',
-        'description' => 'Ведущий российский производитель фильтров',
-        'stats' => ['Более 200 товаров', 'Лучшая цена']
-    ],
-    [
-        'name' => 'СтартВОЛЬТ',
-        'country' => 'Россия',
-        'category' => 'russia',
-        'category_name' => 'Российские',
-        'description' => 'Российские аккумуляторы премиум-класса',
-        'stats' => ['Более 50 товаров', 'Адаптированы к климату']
-    ],
-    [
-        'name' => 'FENOX',
-        'country' => 'Беларусь/Россия',
-        'category' => 'russia',
-        'category_name' => 'Российские',
-        'description' => 'Качественные автокомпоненты для СНГ рынка',
-        'stats' => ['Более 300 товаров', 'Оптимальное соотношение']
-    ],
-    [
-        'name' => 'БелМаг',
-        'country' => 'Россия',
-        'category' => 'russia',
-        'category_name' => 'Российские',
-        'description' => 'Магнитолы и аудиосистемы российского производства',
-        'stats' => ['Более 100 товаров', 'Лучшая цена']
-    ],
-    [
-        'name' => 'Кама',
-        'country' => 'Россия',
-        'category' => 'russia',
-        'category_name' => 'Российские',
-        'description' => 'Российские шины премиум-класса',
-        'stats' => ['Более 150 товаров', 'Адаптированы к дорогам']
-    ],
-    [
-        'name' => 'СОАТЭ',
-        'country' => 'Россия',
-        'category' => 'russia',
-        'category_name' => 'Российские',
-        'description' => 'Автоэлектрика и компоненты',
-        'stats' => ['Более 200 товаров', 'Надежность']
-    ],
-    [
-        'name' => 'АВТОВАЗ',
-        'country' => 'Россия',
-        'category' => 'russia',
-        'category_name' => 'Российские',
-        'description' => 'Оригинальные запчасти LADA',
-        'stats' => ['Более 2000 товаров', 'Официальный поставщик']
-    ],
-    [
-        'name' => 'ОМНИ',
-        'country' => 'Россия',
-        'category' => 'russia',
-        'category_name' => 'Российские',
-        'description' => 'Аккумуляторы и электрооборудование',
-        'stats' => ['Более 180 товаров', 'Российское качество']
-    ],
-    [
-        'name' => 'КВЗ',
-        'country' => 'Россия',
-        'category' => 'russia',
-        'category_name' => 'Российские',
-        'description' => 'Радиаторы и компоненты системы охлаждения',
-        'stats' => ['Более 120 товаров', 'Проверенная надежность']
-    ],
-    [
-        'name' => 'АГАТ',
-        'country' => 'Россия',
-        'category' => 'russia',
-        'category_name' => 'Российские',
-        'description' => 'Тормозные колодки и диски российского производства',
-        'stats' => ['Более 180 товаров', 'Безопасность прежде всего']
-    ]
-];
 ?>
 
 <!DOCTYPE html>
@@ -387,6 +73,7 @@ $brands = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Торговые марки - Лал-Авто</title>
+    <link rel="icon" href="../img/iconAuto.png" type="image/png" height="32">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">

@@ -19,7 +19,7 @@
                                     <div class="col-md-4">
                                         <div class="form-floating">
                                             <select name="organizationType" class="form-select" id="organizationType" required>
-                                                <option value="" disabled selected></option>
+                                                <option value="" style="display: none;" disabled selected>Выберите</option>
                                                 <option value="ООО">ООО</option>
                                                 <option value="ОАО">ОАО</option>
                                                 <option value="ЗАО">ЗАО</option>

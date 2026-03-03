@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once("../config/link.php");
+require_once("../config/check_auth.php");
 
 $message = '';
 $error = '';
@@ -147,6 +148,7 @@ unset($_SESSION['forgot_error'], $_SESSION['forgot_success'], $_SESSION['forgot_
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Восстановление пароля - Лал-Авто</title>
+    <link rel="icon" href="../img/iconAuto.png" type="image/png" height="32">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -254,16 +256,12 @@ unset($_SESSION['forgot_error'], $_SESSION['forgot_success'], $_SESSION['forgot_
                 <div class="modal-body">
                     <form method="POST" action="/">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Логин</label>
+                            <label for="username" class="form-label">Логин<span class="text-danger">*</span></label>
                             <input type="text" name="login" class="form-control" id="username" placeholder="Введите логин" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Пароль</label>
+                            <label for="password" class="form-label">Пароль<span class="text-danger">*</span></label>
                             <input type="password" name="password" class="form-control" id="password" placeholder="Введите пароль" required>
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" name="rememberMe" class="form-check-input" id="rememberMe">
-                            <label class="form-check-label" for="rememberMe">Запомнить меня</label>
                         </div>
                         <?php 
                         if (isset($_SESSION['error_message'])) 

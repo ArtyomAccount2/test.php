@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 session_start();
 require_once("../../config/link.php");
+require_once("../../config/check_auth.php");
 require_once("../../includes/category_functions.php");
 
 if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['user'] == 'admin')
@@ -13,15 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     $login = $_POST['login'];
     $password = $_POST['password'];
-    $redirect_url = $_POST['redirect_url'] ?? $_SERVER['REQUEST_URI'];
 
     if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
     {
-        $_SESSION['loggedin'] = true;
-        $_SESSION['user'] = 'admin';
-        unset($_SESSION['login_error']);
-        unset($_SESSION['error_message']);
-        header("Location: ../../admin.php");
+        $_SESSION['login_error'] = true;
+        $_SESSION['error_message'] = "Неверный логин или пароль!";
+        header("Location: " . $_SERVER['REQUEST_URI']);
         exit();
     }
     else
@@ -36,9 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $row = $result->fetch_assoc();
             $_SESSION['loggedin'] = true;
             $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+            $_SESSION['user_id'] = $row['id_users'];
             unset($_SESSION['login_error']);
             unset($_SESSION['error_message']);
-            header("Location: " . $redirect_url);
+            header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         } 
         else 
@@ -46,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             $_SESSION['login_error'] = true;
             $_SESSION['error_message'] = "Неверный логин или пароль!";
             $_SESSION['form_data'] = $_POST;
-            header("Location: " . $redirect_url);
+            header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         }
     }
@@ -90,6 +89,7 @@ $volumes = getFilterOptions($conn, 'antifreeze', 'volume');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Антифризы - Лал-Авто</title>
+    <link rel="icon" href="../../img/iconAuto.png" type="image/png" height="32">
     <link rel="stylesheet" href="../../css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -178,16 +178,12 @@ $volumes = getFilterOptions($conn, 'antifreeze', 'volume');
                     <form method="POST" action="">
                         <input type="hidden" name="redirect_url" value="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Логин</label>
+                            <label for="username" class="form-label">Логин<span class="text-danger">*</span></label>
                             <input type="text" name="login" class="form-control" id="username" placeholder="Введите логин" required value="<?= htmlspecialchars($form_data['login'] ?? '') ?>">
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Пароль</label>
+                            <label for="password" class="form-label">Пароль<span class="text-danger">*</span></label>
                             <input type="password" name="password" class="form-control" id="password" placeholder="Введите пароль" required value="<?= htmlspecialchars($form_data['password'] ?? '') ?>">
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" name="rememberMe" class="form-check-input" id="rememberMe">
-                            <label class="form-check-label" for="rememberMe">Запомнить меня</label>
                         </div>
                         <?php 
                         if (isset($_SESSION['error_message'])) 
