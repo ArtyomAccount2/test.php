@@ -399,7 +399,7 @@ $stats = $stats_stmt->fetch_assoc();
     </div>
 </div>
 
-<div class="modal fade" id="columnsModal" tabindex="-1">
+<div class="modal fade" id="columnsModal" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -442,7 +442,7 @@ $stats = $stats_stmt->fetch_assoc();
     </div>
 </div>
 
-<div class="modal fade" id="userDetailsModal" tabindex="-1">
+<div class="modal fade" id="userDetailsModal" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">

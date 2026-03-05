@@ -310,7 +310,6 @@
 {
     display: flex;
     align-items: center;
-    min-height: calc(100% - 1rem);
 }
 
 @media (max-width: 768px) 
@@ -356,11 +355,6 @@
     .benefits-card 
     {
         padding: 1.5rem;
-    }
-    
-    .modal-dialog 
-    {
-        margin: 1rem;
     }
 }
 

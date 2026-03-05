@@ -370,10 +370,7 @@
 
 .modal-header 
 {
-    background: #007bff;
-    color: white;
     border-radius: 12px 12px 0 0;
-    border: none;
     padding: 1.25rem 1.5rem;
 }
 

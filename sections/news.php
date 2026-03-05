@@ -354,7 +354,7 @@ unset($_SESSION['success_message']);
     </div>
 </div>
 
-<div class="modal fade" id="addNewsModal" tabindex="-1">
+<div class="modal fade" id="addNewsModal" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -389,7 +389,7 @@ unset($_SESSION['success_message']);
     </div>
 </div>
 
-<div class="modal fade" id="editNewsModal" tabindex="-1">
+<div class="modal fade" id="editNewsModal" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">

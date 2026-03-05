@@ -1,4 +1,91 @@
 <?php
+error_reporting(E_ALL);
+session_start();
+require_once("config/link.php");
+require_once("config/check_auth.php");
+
+if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true)
+{
+    header("Location: index.php");
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") 
+{
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+
+    if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
+    {
+        $_SESSION['login_error'] = true;
+        $_SESSION['error_message'] = "Неверный логин или пароль!";
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
+    }
+    else
+    {
+        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
+        $stmt->bind_param("ss", $login, $password);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) 
+        {
+            $row = $result->fetch_assoc();
+            $_SESSION['loggedin'] = true;
+            $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+            $_SESSION['user_id'] = $row['id_users'];
+            unset($_SESSION['login_error']);
+            unset($_SESSION['error_message']);
+            header("Location: " . $_SERVER['REQUEST_URI']);
+            exit();
+        } 
+        else 
+        {
+            $_SESSION['login_error'] = true;
+            $_SESSION['error_message'] = "Неверный логин или пароль!";
+            $_SESSION['form_data'] = $_POST;
+            header("Location: " . $_SERVER['REQUEST_URI']);
+            exit();
+        }
+    }
+}
+
+$form_data = $_SESSION['form_data'] ?? [];
+unset($_SESSION['form_data']);
+?>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - Лал-Авто</title>
+    <link rel="icon" href="img/iconAuto.png" type="image/png" height="32">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/register-styles.css">
+    <script>
+    document.addEventListener('DOMContentLoaded', function() 
+    {
+        <?php 
+        if (isset($_SESSION['login_error'])) 
+        { 
+        ?>
+            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+
+            <?php unset($_SESSION['login_error']); ?>
+        <?php 
+        } 
+        ?>
+    });
+    </script>
+</head>
+<body>
+
+<?php
     require_once("files/header.php");
 ?>
 
@@ -12,7 +99,7 @@
                             <h2 class="fw-bold text-primary">Регистрация для юридических лиц и ИП</h2>
                             <p class="text-muted">Создайте корпоративный аккаунт для бизнеса</p>
                         </div>
-                        <form action="files/registerAltFrom.php" method="POST" id="registrationForm" onsubmit="return validateForm();">
+                        <form action="files/registerAltFrom.php" method="POST" id="registrationForm">
                             <div class="mb-4">
                                 <label class="form-label fw-semibold" for="organizationType">Наименование организации<span class="text-danger">*</span></label>
                                 <div class="row g-2">
@@ -175,13 +262,11 @@
     </div>
 </div>
 
-<script>
-document.getElementById('discountCardCheck').addEventListener('change', function() 
-{
-    document.getElementById('discountCardNumberGroup').style.display = this.checked ? 'block' : 'none';
-});
-</script>
-
 <?php
     require_once("files/footer.php");
 ?>
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

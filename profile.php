@@ -511,683 +511,685 @@ if (isset($_POST['cancel_order']))
 </head>
 <body>
 
-<nav class="navbar navbar-expand-xl navbar-light bg-light shadow-sm fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="../index.php"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="../index.php">Главная</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="includes/assortment.php">Каталог</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="includes/orders.php">Мои заказы</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="includes/support.php">Поддержка</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" href="includes/developer.php">Настройки разработчика</a>
-                </li>
-            </ul>
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle me-1"></i><?= htmlspecialchars($_SESSION['user']); ?>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person me-2"></i>Профиль</a></li>
-                        <li><a class="dropdown-item" href="includes/orders.php"><i class="bi bi-list-check me-2"></i>Заказы</a></li>
-                        <li><a class="dropdown-item" href="includes/cart.php"><i class="bi bi-cart3 me-2"></i>Корзина</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="files/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Выйти</a></li>
-                    </ul>
+<div class="flex-grow-1">
+    <nav class="navbar navbar-expand-xl navbar-light bg-light shadow-sm fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.php"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="../index.php">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="includes/assortment.php">Каталог</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="includes/orders.php">Мои заказы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="includes/support.php">Поддержка сайта</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="includes/developer.php">Настройки разработчика</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i><?= htmlspecialchars($_SESSION['user']); ?>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person me-2"></i>Профиль</a></li>
+                            <li><a class="dropdown-item" href="includes/orders.php"><i class="bi bi-list-check me-2"></i>Заказы</a></li>
+                            <li><a class="dropdown-item" href="includes/cart.php"><i class="bi bi-cart3 me-2"></i>Корзина</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="files/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Выйти</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<div class="profile-container">
-    <div class="container py-5">
-        <?php 
-        if (isset($_SESSION['success_message']))
-        { 
-        ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                <?= $_SESSION['success_message']; ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <?php unset($_SESSION['success_message']); ?>
-        <?php 
-        } 
-
-        if (isset($_SESSION['error_message'])) 
-        {
-        ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                <?= $_SESSION['error_message']; ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <?php unset($_SESSION['error_message']); ?>
-        <?php 
-        } 
-        ?>
-        <div class="row g-4 align-items-stretch">
-            <div class="col-lg-3">
-                <div class="d-flex flex-column h-100">
-                    <div class="profile-sidebar card shadow-sm h-100 mb-0">
-                        <div class="card-body text-center">
-                            <div class="profile-avatar mb-3">
-                                <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto">
-                                    <?php 
-                                    if (!empty($userData['avatar_users'])) 
-                                    {
-                                    ?>
-                                        <img src="<?= htmlspecialchars($userData['avatar_users']) ?>" alt="Аватар" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-                                    <?php 
-                                    } 
-                                    else 
-                                    {
-                                    ?>
-                                        <i class="bi bi-person-fill" style="font-size: 2.5rem;"></i>
-                                    <?php 
-                                    } 
-                                    ?>
-                                </div>
-                                <form id="avatarForm" method="POST" enctype="multipart/form-data" class="d-inline">
-                                    <input type="file" name="avatar" id="avatarInput" accept="image/*" class="d-none" onchange="document.getElementById('avatarForm').submit()">
-                                    <button type="button" class="btn-avatar-edit" onclick="document.getElementById('avatarInput').click()" data-bs-toggle="tooltip" title="Сменить фото">
-                                        <i class="bi bi-camera-fill"></i>
-                                    </button>
-                                    <input type="hidden" name="update_avatar" value="1">
-                                </form>
-                            </div>
-                            <h5 class="card-title"><?= htmlspecialchars($_SESSION['user']); ?></h5>
-                            <p class="text-muted small">Премиум статус</p>
-                            <div class="progress mb-3" style="height: 8px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <div class="badge bg-success rounded-pill px-3 py-2 mb-3">
-                                <i class="bi bi-star-fill me-1"></i>
-                                <?= $orderStats['total_amount'] > 0 ? number_format($orderStats['total_amount'] * 0.05) : '256' ?> баллов
-                            </div>
-                        </div>
-                        <div class="list-group list-group-flush">
-                            <a href="#profile" class="list-group-item list-group-item-action active" data-bs-toggle="tab">
-                                <i class="bi bi-person me-2"></i>Профиль
-                            </a>
-                            <a href="#orders" class="list-group-item list-group-item-action" data-bs-toggle="tab">
-                                <i class="bi bi-list-check me-2"></i>Мои заказы
-                                <?php 
-                                if ($orderStats['pending_orders'] > 0)
-                                {
-                                ?>
-                                    <span class="badge bg-warning float-end"><?= $orderStats['pending_orders'] ?></span>
-                                <?php 
-                                }
-                                ?>
-                            </a>
-                            <a href="#cart" class="list-group-item list-group-item-action" data-bs-toggle="tab">
-                                <i class="bi bi-cart3 me-2"></i>Корзина
-                                <?php 
-                                if ($cartCount > 0)
-                                {
-                                ?>
-                                    <span class="badge bg-danger float-end"><?= $cartCount ?></span>
-                                <?php 
-                                }
-                                ?>
-                            </a>
-                            <a href="#wishlist" class="list-group-item list-group-item-action" data-bs-toggle="tab">
-                                <i class="bi bi-heart me-2"></i>Избранное
-                                <?php 
-                                if ($wishlistCount > 0)
-                                {
-                                ?>
-                                    <span class="badge bg-primary float-end"><?= $wishlistCount ?></span>
-                                <?php 
-                                }
-                                ?>
-                            </a>
-                            <a href="#notifications" class="list-group-item list-group-item-action" data-bs-toggle="tab">
-                                <i class="bi bi-bell me-2"></i>Уведомления
-                                <?php 
-                                if ($unreadCount > 0)
-                                {
-                                ?>
-                                    <span class="badge bg-warning float-end"><?= $unreadCount ?></span>
-                                <?php
-                                }
-                                ?>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="stats-widget card shadow-sm h-100 mt-4">
-                        <div class="card-header bg-transparent">
-                            <h6 class="mb-0"><i class="bi bi-graph-up me-2"></i>Статистика</h6>
-                        </div>
-                        <div class="card-body d-flex flex-column justify-content-center">
-                            <div class="stat-item d-flex justify-content-between mb-3">
-                                <span>Заказов:</span>
-                                <strong><?= $orderStats['total_orders'] ?></strong>
-                            </div>
-                            <div class="stat-item d-flex justify-content-between mb-3">
-                                <span>На сумму:</span>
-                                <strong><?= number_format($orderStats['total_amount'], 0, ',', ' ') ?> ₽</strong>
-                            </div>
-                            <div class="stat-item d-flex justify-content-between">
-                                <span>Активность:</span>
-                                <span class="badge bg-success">Высокая</span>
-                            </div>
-                        </div>
-                    </div>
+    <div class="profile-container">
+        <div class="container py-5">
+            <?php 
+            if (isset($_SESSION['success_message']))
+            { 
+            ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <?= $_SESSION['success_message']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="tab-content">
-                    <div class="tab-pane fade show active h-100" id="profile">
-                        <div class="d-flex flex-column h-100">
-                            <div class="card shadow-sm mb-4">
-                                <div class="card-header bg-primary text-dark d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0"><i class="bi bi-person me-2"></i>Личная информация</h5>
-                                    <?php 
-                                    if ($userId) 
-                                    {
-                                    ?>
-                                        <span class="badge bg-light text-primary">ID: <?= $userId ?></span>
-                                    <?php 
-                                    } 
-                                    ?>
-                                </div>
-                                <div class="card-body">
-                                    <form id="profileForm" method="POST">
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Фамилия</label>
-                                                <input type="text" class="form-control" value="<?= htmlspecialchars($userData['surname_users'] ?? 'Не указано') ?>" disabled>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Имя</label>
-                                                <input type="text" class="form-control" value="<?= htmlspecialchars($userData['name_users'] ?? 'Не указано') ?>" disabled>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Отчество</label>
-                                                <input type="text" class="form-control" value="<?= htmlspecialchars($userData['patronymic_users'] ?? 'Не указано') ?>" disabled>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Email<span class="text-danger">*</span></label>
-                                                <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($userData['email_users'] ?? '') ?>" required>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Телефон<span class="text-danger">*</span></label>
-                                                <input type="tel" name="phone" class="form-control" value="<?= htmlspecialchars($userData['phone_users'] ?? '') ?>" required>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Дата регистрации</label>
-                                                <input type="text" class="form-control" value="<?= date('d.m.Y', strtotime($userData['registration_date'] ?? '2024-01-01')) ?>" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex gap-2">
-                                            <button type="submit" name="update_profile" class="btn btn-primary">
-                                                <i class="bi bi-check-circle me-1"></i>Сохранить изменения
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary" onclick="location.reload()">
-                                                <i class="bi bi-arrow-clockwise me-1"></i>Отменить
-                                            </button>
-                                        </div>
+                <?php unset($_SESSION['success_message']); ?>
+            <?php 
+            } 
+
+            if (isset($_SESSION['error_message'])) 
+            {
+            ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <?= $_SESSION['error_message']; ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php unset($_SESSION['error_message']); ?>
+            <?php 
+            } 
+            ?>
+            <div class="row g-4 align-items-stretch">
+                <div class="col-lg-3">
+                    <div class="d-flex flex-column h-100">
+                        <div class="profile-sidebar card shadow-sm h-100 mb-0">
+                            <div class="card-body text-center">
+                                <div class="profile-avatar mb-3">
+                                    <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto">
+                                        <?php 
+                                        if (!empty($userData['avatar_users'])) 
+                                        {
+                                        ?>
+                                            <img src="<?= htmlspecialchars($userData['avatar_users']) ?>" alt="Аватар" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                                        <?php 
+                                        } 
+                                        else 
+                                        {
+                                        ?>
+                                            <i class="bi bi-person-fill" style="font-size: 2.5rem;"></i>
+                                        <?php 
+                                        } 
+                                        ?>
+                                    </div>
+                                    <form id="avatarForm" method="POST" enctype="multipart/form-data" class="d-inline">
+                                        <input type="file" name="avatar" id="avatarInput" accept="image/*" class="d-none" onchange="document.getElementById('avatarForm').submit()">
+                                        <button type="button" class="btn-avatar-edit" onclick="document.getElementById('avatarInput').click()" data-bs-toggle="tooltip" title="Сменить фото">
+                                            <i class="bi bi-camera-fill"></i>
+                                        </button>
+                                        <input type="hidden" name="update_avatar" value="1">
                                     </form>
                                 </div>
-                            </div>
-                            <div class="row mb-4 g-3">
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="stat-card card text-center h-100">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="bi bi-cart3 stat-icon text-primary mb-2"></i>
-                                            <h3 class="stat-number"><?= $orderStats['total_orders'] ?></h3>
-                                            <p class="stat-label">Всего<br>заказов</p>
-                                        </div>
-                                    </div>
+                                <h5 class="card-title"><?= htmlspecialchars($_SESSION['user']); ?></h5>
+                                <p class="text-muted small">Премиум статус</p>
+                                <div class="progress mb-3" style="height: 8px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="stat-card card text-center h-100">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="bi bi-cash stat-icon text-success mb-2"></i>
-                                            <h3 class="stat-number"><?= number_format($orderStats['total_amount'], 0, ',', ' ') ?> ₽</h3>
-                                            <p class="stat-label">Общая<br>сумма</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="stat-card card text-center h-100">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="bi bi-truck stat-icon text-info mb-2"></i>
-                                            <h3 class="stat-number"><?= isset($orderStats['pending_orders']) ? $orderStats['pending_orders'] : 0 ?></h3>
-                                            <p class="stat-label">Активные<br>заказы</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="stat-card card text-center h-100">
-                                        <div class="card-body d-flex flex-column justify-content-center">
-                                            <i class="bi bi-star-fill stat-icon text-warning mb-2"></i>
-                                            <h3 class="stat-number">4.8</h3>
-                                            <p class="stat-label">Рейтинг</p>
-                                        </div>
-                                    </div>
+                                <div class="badge bg-success rounded-pill px-3 py-2 mb-3">
+                                    <i class="bi bi-star-fill me-1"></i>
+                                    <?= $orderStats['total_amount'] > 0 ? number_format($orderStats['total_amount'] * 0.05) : '256' ?> баллов
                                 </div>
                             </div>
+                            <div class="list-group list-group-flush">
+                                <a href="#profile" class="list-group-item list-group-item-action active" data-bs-toggle="tab">
+                                    <i class="bi bi-person me-2"></i>Профиль
+                                </a>
+                                <a href="#orders" class="list-group-item list-group-item-action" data-bs-toggle="tab">
+                                    <i class="bi bi-list-check me-2"></i>Мои заказы
+                                    <?php 
+                                    if ($orderStats['pending_orders'] > 0)
+                                    {
+                                    ?>
+                                        <span class="badge bg-warning float-end"><?= $orderStats['pending_orders'] ?></span>
+                                    <?php 
+                                    }
+                                    ?>
+                                </a>
+                                <a href="#cart" class="list-group-item list-group-item-action" data-bs-toggle="tab">
+                                    <i class="bi bi-cart3 me-2"></i>Корзина
+                                    <?php 
+                                    if ($cartCount > 0)
+                                    {
+                                    ?>
+                                        <span class="badge bg-danger float-end"><?= $cartCount ?></span>
+                                    <?php 
+                                    }
+                                    ?>
+                                </a>
+                                <a href="#wishlist" class="list-group-item list-group-item-action" data-bs-toggle="tab">
+                                    <i class="bi bi-heart me-2"></i>Избранное
+                                    <?php 
+                                    if ($wishlistCount > 0)
+                                    {
+                                    ?>
+                                        <span class="badge bg-primary float-end"><?= $wishlistCount ?></span>
+                                    <?php 
+                                    }
+                                    ?>
+                                </a>
+                                <a href="#notifications" class="list-group-item list-group-item-action" data-bs-toggle="tab">
+                                    <i class="bi bi-bell me-2"></i>Уведомления
+                                    <?php 
+                                    if ($unreadCount > 0)
+                                    {
+                                    ?>
+                                        <span class="badge bg-warning float-end"><?= $unreadCount ?></span>
+                                    <?php
+                                    }
+                                    ?>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="stats-widget card shadow-sm h-100 mt-4">
+                            <div class="card-header bg-transparent">
+                                <h6 class="mb-0"><i class="bi bi-graph-up me-2"></i>Статистика</h6>
+                            </div>
+                            <div class="card-body d-flex flex-column justify-content-center">
+                                <div class="stat-item d-flex justify-content-between mb-3">
+                                    <span>Заказов:</span>
+                                    <strong><?= $orderStats['total_orders'] ?></strong>
+                                </div>
+                                <div class="stat-item d-flex justify-content-between mb-3">
+                                    <span>На сумму:</span>
+                                    <strong><?= number_format($orderStats['total_amount'], 0, ',', ' ') ?> ₽</strong>
+                                </div>
+                                <div class="stat-item d-flex justify-content-between">
+                                    <span>Активность:</span>
+                                    <span class="badge bg-success">Высокая</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active h-100" id="profile">
+                            <div class="d-flex flex-column h-100">
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-header bg-primary text-dark d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0"><i class="bi bi-person me-2"></i>Личная информация</h5>
+                                        <?php 
+                                        if ($userId) 
+                                        {
+                                        ?>
+                                            <span class="badge bg-light text-primary">ID: <?= $userId ?></span>
+                                        <?php 
+                                        } 
+                                        ?>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="profileForm" method="POST">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Фамилия</label>
+                                                    <input type="text" class="form-control" value="<?= htmlspecialchars($userData['surname_users'] ?? 'Не указано') ?>" disabled>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Имя</label>
+                                                    <input type="text" class="form-control" value="<?= htmlspecialchars($userData['name_users'] ?? 'Не указано') ?>" disabled>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Отчество</label>
+                                                    <input type="text" class="form-control" value="<?= htmlspecialchars($userData['patronymic_users'] ?? 'Не указано') ?>" disabled>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Email<span class="text-danger">*</span></label>
+                                                    <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($userData['email_users'] ?? '') ?>" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Телефон<span class="text-danger">*</span></label>
+                                                    <input type="tel" name="phone" class="form-control" value="<?= htmlspecialchars($userData['phone_users'] ?? '') ?>" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Дата регистрации</label>
+                                                    <input type="text" class="form-control" value="<?= date('d.m.Y', strtotime($userData['registration_date'] ?? '2024-01-01')) ?>" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                <button type="submit" name="update_profile" class="btn btn-primary">
+                                                    <i class="bi bi-check-circle me-1"></i>Сохранить изменения
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary" onclick="location.reload()">
+                                                    <i class="bi bi-arrow-clockwise me-1"></i>Отменить
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row mb-4 g-3">
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="stat-card card text-center h-100">
+                                            <div class="card-body d-flex flex-column justify-content-center">
+                                                <i class="bi bi-cart3 stat-icon text-primary mb-2"></i>
+                                                <h3 class="stat-number"><?= $orderStats['total_orders'] ?></h3>
+                                                <p class="stat-label">Всего<br>заказов</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="stat-card card text-center h-100">
+                                            <div class="card-body d-flex flex-column justify-content-center">
+                                                <i class="bi bi-cash stat-icon text-success mb-2"></i>
+                                                <h3 class="stat-number"><?= number_format($orderStats['total_amount'], 0, ',', ' ') ?> ₽</h3>
+                                                <p class="stat-label">Общая<br>сумма</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="stat-card card text-center h-100">
+                                            <div class="card-body d-flex flex-column justify-content-center">
+                                                <i class="bi bi-truck stat-icon text-info mb-2"></i>
+                                                <h3 class="stat-number"><?= isset($orderStats['pending_orders']) ? $orderStats['pending_orders'] : 0 ?></h3>
+                                                <p class="stat-label">Активные<br>заказы</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="stat-card card text-center h-100">
+                                            <div class="card-body d-flex flex-column justify-content-center">
+                                                <i class="bi bi-star-fill stat-icon text-warning mb-2"></i>
+                                                <h3 class="stat-number">4.8</h3>
+                                                <p class="stat-label">Рейтинг</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-header bg-transparent">
+                                        <h6 class="mb-0"><i class="bi bi-clock-history me-2"></i>Недавняя активность</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="activity-timeline">
+                                            <div class="activity-item">
+                                                <div class="activity-icon bg-success">
+                                                    <i class="bi bi-cart-check"></i>
+                                                </div>
+                                                <div class="activity-content">
+                                                    <span>Заказ #12345 завершен</span>
+                                                    <small class="text-muted">2 часа назад</small>
+                                                </div>
+                                            </div>
+                                            <div class="activity-item">
+                                                <div class="activity-icon bg-info">
+                                                    <i class="bi bi-chat-dots"></i>
+                                                </div>
+                                                <div class="activity-content">
+                                                    <span>Оставлен отзыв к товару</span>
+                                                    <small class="text-muted">Вчера, 15:30</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade h-100" id="orders">
                             <div class="card shadow-sm h-100">
-                                <div class="card-header bg-transparent">
-                                    <h6 class="mb-0"><i class="bi bi-clock-history me-2"></i>Недавняя активность</h6>
+                                <div class="card-header bg-primary text-dark">
+                                    <h5 class="mb-0"><i class="bi bi-cart3 me-2"></i>История заказов</h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="activity-timeline">
-                                        <div class="activity-item">
-                                            <div class="activity-icon bg-success">
-                                                <i class="bi bi-cart-check"></i>
-                                            </div>
-                                            <div class="activity-content">
-                                                <span>Заказ #12345 завершен</span>
-                                                <small class="text-muted">2 часа назад</small>
-                                            </div>
+                                    <?php 
+                                    if (!empty($ordersList)) 
+                                    {
+                                    ?>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>№ Заказа</th>
+                                                        <th>Дата</th>
+                                                        <th>Кол-во товаров</th>
+                                                        <th>Сумма</th>
+                                                        <th>Статус</th>
+                                                        <th>Действия</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php 
+                                                    foreach ($ordersList as $order)
+                                                    {
+                                                    ?>
+                                                        <tr>
+                                                            <td>#<?= htmlspecialchars($order['order_number']) ?></td>
+                                                            <td><?= date('d.m.Y', strtotime($order['order_date'])) ?></td>
+                                                            <td><?= $order['items_count'] ?></td>
+                                                            <td><?= number_format($order['total_amount'], 0, ',', ' ') ?> ₽</td>
+                                                            <td>
+                                                                <?php
+                                                                $statusClass = '';
+                                                                switch ($order['status']) 
+                                                                {
+                                                                    case 'pending':
+                                                                        $statusClass = 'warning';
+                                                                        $statusText = 'В обработке';
+                                                                        break;
+                                                                    case 'processing':
+                                                                        $statusClass = 'info';
+                                                                        $statusText = 'В процессе';
+                                                                        break;
+                                                                    case 'completed':
+                                                                        $statusClass = 'success';
+                                                                        $statusText = 'Завершен';
+                                                                        break;
+                                                                    case 'cancelled':
+                                                                        $statusClass = 'danger';
+                                                                        $statusText = 'Отменен';
+                                                                        break;
+                                                                    default:
+                                                                        $statusClass = 'secondary';
+                                                                        $statusText = $order['status'];
+                                                                }
+                                                                ?>
+                                                                <span class="badge bg-<?= $statusClass ?>"><?= $statusText ?></span>
+                                                            </td>
+                                                            <td>
+                                                                <a href="includes/order_details.php?id=<?= $order['id'] ?>" class="btn btn-sm btn-outline-primary">
+                                                                    <i class="bi bi-eye me-1"></i>Подробнее
+                                                                </a>
+                                                                <?php 
+                                                                if ($order['status'] == 'pending' || $order['status'] == 'processing')
+                                                                {
+                                                                ?>
+                                                                    <form method="POST" class="d-inline-block ms-1">
+                                                                        <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
+                                                                        <button type="submit" name="cancel_order" class="btn btn-sm btn-outline-danger" 
+                                                                                onclick="return confirm('Вы уверены, что хотите отменить заказ?')">
+                                                                            <i class="bi bi-x-circle me-1"></i>Отменить
+                                                                        </button>
+                                                                    </form>
+                                                                <?php
+                                                                }
+                                                                ?>
+                                                            </td>
+                                                        </tr>
+                                                    <?php 
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <div class="activity-item">
-                                            <div class="activity-icon bg-info">
-                                                <i class="bi bi-chat-dots"></i>
-                                            </div>
-                                            <div class="activity-content">
-                                                <span>Оставлен отзыв к товару</span>
-                                                <small class="text-muted">Вчера, 15:30</small>
-                                            </div>
+                                    <?php 
+                                    }
+                                    else
+                                    {
+                                    ?>
+                                        <div class="text-center py-5 flex-grow-1 d-flex flex-column justify-content-center">
+                                            <i class="bi bi-cart-x display-1 text-muted mb-4"></i>
+                                            <h5 class="text-muted mb-3">Нет ваших заказов</h5>
+                                            <p class="text-muted mb-4">У вас пока нет заказов</p>
+                                            <a href="includes/assortment.php" class="btn btn-primary">
+                                                <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
+                                            </a>
                                         </div>
-                                    </div>
+                                    <?php 
+                                    }
+                                    ?>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade h-100" id="orders">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-header bg-primary text-dark">
-                                <h5 class="mb-0"><i class="bi bi-cart3 me-2"></i>История заказов</h5>
-                            </div>
-                            <div class="card-body">
-                                <?php 
-                                if (!empty($ordersList)) 
-                                {
-                                ?>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>№ Заказа</th>
-                                                    <th>Дата</th>
-                                                    <th>Кол-во товаров</th>
-                                                    <th>Сумма</th>
-                                                    <th>Статус</th>
-                                                    <th>Действия</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php 
-                                                foreach ($ordersList as $order)
-                                                {
-                                                ?>
+                        <div class="tab-pane fade h-100" id="cart">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-header bg-primary text-dark d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"><i class="bi bi-cart3 me-2"></i>Корзина</h5>
+                                    <?php 
+                                    if ($cartCount > 0)
+                                    {
+                                    ?>
+                                        <span class="badge bg-danger"><?= $cartCount ?> товар(ов)</span>
+                                    <?php 
+                                    }
+                                    ?>
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <?php 
+                                    if (!empty($cartItems))
+                                    {
+                                    ?>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
                                                     <tr>
-                                                        <td>#<?= htmlspecialchars($order['order_number']) ?></td>
-                                                        <td><?= date('d.m.Y', strtotime($order['order_date'])) ?></td>
-                                                        <td><?= $order['items_count'] ?></td>
-                                                        <td><?= number_format($order['total_amount'], 0, ',', ' ') ?> ₽</td>
+                                                        <th style="width: 100px;">Фото</th>
+                                                        <th>Товар</th>
+                                                        <th class="text-center">Цена</th>
+                                                        <th class="text-center">Кол-во</th>
+                                                        <th class="text-center">Сумма</th>
+                                                        <th class="text-center">Действия</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php 
+                                                    foreach ($cartItems as $item) 
+                                                    {
+                                                    ?>
+                                                    <tr>
                                                         <td>
-                                                            <?php
-                                                            $statusClass = '';
-                                                            switch ($order['status']) 
-                                                            {
-                                                                case 'pending':
-                                                                    $statusClass = 'warning';
-                                                                    $statusText = 'В обработке';
-                                                                    break;
-                                                                case 'processing':
-                                                                    $statusClass = 'info';
-                                                                    $statusText = 'В процессе';
-                                                                    break;
-                                                                case 'completed':
-                                                                    $statusClass = 'success';
-                                                                    $statusText = 'Завершен';
-                                                                    break;
-                                                                case 'cancelled':
-                                                                    $statusClass = 'danger';
-                                                                    $statusText = 'Отменен';
-                                                                    break;
-                                                                default:
-                                                                    $statusClass = 'secondary';
-                                                                    $statusText = $order['status'];
-                                                            }
-                                                            ?>
-                                                            <span class="badge bg-<?= $statusClass ?>"><?= $statusText ?></span>
+                                                            <img src="<?= htmlspecialchars($item['product_image']) ?>" 
+                                                                alt="<?= htmlspecialchars($item['product_name']) ?>" 
+                                                                class="cart-item-image">
                                                         </td>
                                                         <td>
-                                                            <a href="includes/order_details.php?id=<?= $order['id'] ?>" class="btn btn-sm btn-outline-primary">
-                                                                <i class="bi bi-eye me-1"></i>Подробнее
-                                                            </a>
+                                                            <h6 class="mb-1"><?= htmlspecialchars($item['product_name']) ?></h6>
                                                             <?php 
-                                                            if ($order['status'] == 'pending' || $order['status'] == 'processing')
+                                                            if ($item['product_id']) 
                                                             {
-                                                            ?>
-                                                                <form method="POST" class="d-inline-block ms-1">
-                                                                    <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
-                                                                    <button type="submit" name="cancel_order" class="btn btn-sm btn-outline-danger" 
-                                                                            onclick="return confirm('Вы уверены, что хотите отменить заказ?')">
-                                                                        <i class="bi bi-x-circle me-1"></i>Отменить
-                                                                    </button>
-                                                                </form>
-                                                            <?php
+                                                                echo '<small class="text-muted">Код товара: ' . $item['product_id'] . '</small>';
+                                                            } 
+                                                            else if ($item['category_product_id']) 
+                                                            {
+                                                                echo '<small class="text-muted">Код категории: ' . $item['category_product_id'] . '</small>';
                                                             }
                                                             ?>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="cart-item-price"><?= number_format($item['price'], 0, ',', ' ') ?> ₽</span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <form method="POST" class="d-inline update-cart-form" data-item-id="<?= $item['id'] ?>">
+                                                                <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
+                                                                <div class="input-group input-group-sm" style="width: 120px;">
+                                                                    <button class="btn btn-outline-secondary minus-btn" type="button">-</button>
+                                                                    <input type="number" name="quantity" value="<?= $item['quantity'] ?>" 
+                                                                        min="1" max="99" class="form-control text-center quantity-input">
+                                                                    <button class="btn btn-outline-secondary plus-btn" type="button">+</button>
+                                                                </div>
+                                                                <button type="submit" name="update_cart_item" class="d-none submit-update"></button>
+                                                            </form>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="cart-item-total fw-bold">
+                                                                <?= number_format($item['price'] * $item['quantity'], 0, ',', ' ') ?> ₽
+                                                            </span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <form method="POST" class="d-inline remove-cart-form ms-2">
+                                                                <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
+                                                                <button type="submit" name="remove_cart_item" 
+                                                                        class="btn btn-sm btn-outline-danger">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </form>
                                                         </td>
                                                     </tr>
-                                                <?php 
-                                                }
-                                                ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                <?php 
-                                }
-                                else
-                                {
-                                ?>
-                                    <div class="text-center py-5 flex-grow-1 d-flex flex-column justify-content-center">
-                                        <i class="bi bi-cart-x display-1 text-muted mb-4"></i>
-                                        <h5 class="text-muted mb-3">Нет ваших заказов</h5>
-                                        <p class="text-muted mb-4">У вас пока нет заказов</p>
-                                        <a href="includes/assortment.php" class="btn btn-primary">
-                                            <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
-                                        </a>
-                                    </div>
-                                <?php 
-                                }
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade h-100" id="cart">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-header bg-primary text-dark d-flex justify-content-between align-items-center">
-                                <h5 class="mb-0"><i class="bi bi-cart3 me-2"></i>Корзина</h5>
-                                <?php 
-                                if ($cartCount > 0)
-                                {
-                                ?>
-                                    <span class="badge bg-danger"><?= $cartCount ?> товар(ов)</span>
-                                <?php 
-                                }
-                                ?>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <?php 
-                                if (!empty($cartItems))
-                                {
-                                ?>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 100px;">Фото</th>
-                                                    <th>Товар</th>
-                                                    <th class="text-center">Цена</th>
-                                                    <th class="text-center">Кол-во</th>
-                                                    <th class="text-center">Сумма</th>
-                                                    <th class="text-center">Действия</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php 
-                                                foreach ($cartItems as $item) 
-                                                {
-                                                ?>
-                                                <tr>
-                                                    <td>
-                                                        <img src="<?= htmlspecialchars($item['product_image']) ?>" 
-                                                            alt="<?= htmlspecialchars($item['product_name']) ?>" 
-                                                            class="cart-item-image">
-                                                    </td>
-                                                    <td>
-                                                        <h6 class="mb-1"><?= htmlspecialchars($item['product_name']) ?></h6>
-                                                        <?php 
-                                                        if ($item['product_id']) 
-                                                        {
-                                                            echo '<small class="text-muted">Код товара: ' . $item['product_id'] . '</small>';
-                                                        } 
-                                                        else if ($item['category_product_id']) 
-                                                        {
-                                                            echo '<small class="text-muted">Код категории: ' . $item['category_product_id'] . '</small>';
-                                                        }
-                                                        ?>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <span class="cart-item-price"><?= number_format($item['price'], 0, ',', ' ') ?> ₽</span>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <form method="POST" class="d-inline update-cart-form" data-item-id="<?= $item['id'] ?>">
-                                                            <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                                                            <div class="input-group input-group-sm" style="width: 120px;">
-                                                                <button class="btn btn-outline-secondary minus-btn" type="button">-</button>
-                                                                <input type="number" name="quantity" value="<?= $item['quantity'] ?>" 
-                                                                    min="1" max="99" class="form-control text-center quantity-input">
-                                                                <button class="btn btn-outline-secondary plus-btn" type="button">+</button>
-                                                            </div>
-                                                            <button type="submit" name="update_cart_item" class="d-none submit-update"></button>
-                                                        </form>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <span class="cart-item-total fw-bold">
-                                                            <?= number_format($item['price'] * $item['quantity'], 0, ',', ' ') ?> ₽
-                                                        </span>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <form method="POST" class="d-inline remove-cart-form ms-2">
-                                                            <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                                                            <button type="submit" name="remove_cart_item" 
-                                                                    class="btn btn-sm btn-outline-danger">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                                <?php 
-                                                }
-                                                ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="mt-3 pt-3 border-top">
-                                        <div class="row align-items-center">
-                                            <div class="col-md-6 mb-3 mb-md-0 button-active">
-                                                <div class="fw-bold fs-5">Итого: <?= number_format($cartTotal, 0, ',', ' ') ?> ₽</div>
-                                                <small class="text-muted">Товаров: <?= $cartCount ?> шт.</small>
-                                            </div>
-                                            <div class="col-md-6 text-md-end button-active">
-                                                <form method="POST" class="d-inline-block me-2">
-                                                    <button type="submit" name="clear_cart_profile" class="btn btn-outline-danger btn-sm" onclick="return confirm('Очистить всю корзину?')">
-                                                        <i class="bi bi-trash me-1"></i>Очистить корзину
-                                                    </button>
-                                                </form>
-                                                <a href="includes/cart.php" class="btn btn-primary">
-                                                    <i class="bi bi-arrow-right me-1"></i>Оформить заказ
-                                                </a>
+                                                    <?php 
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="mt-3 pt-3 border-top">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-6 mb-3 mb-md-0 button-active">
+                                                    <div class="fw-bold fs-5">Итого: <?= number_format($cartTotal, 0, ',', ' ') ?> ₽</div>
+                                                    <small class="text-muted">Товаров: <?= $cartCount ?> шт.</small>
+                                                </div>
+                                                <div class="col-md-6 text-md-end button-active">
+                                                    <form method="POST" class="d-inline-block me-2">
+                                                        <button type="submit" name="clear_cart_profile" class="btn btn-outline-danger btn-sm" onclick="return confirm('Очистить всю корзину?')">
+                                                            <i class="bi bi-trash me-1"></i>Очистить корзину
+                                                        </button>
+                                                    </form>
+                                                    <a href="includes/cart.php" class="btn btn-primary">
+                                                        <i class="bi bi-arrow-right me-1"></i>Оформить заказ
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                <?php 
-                                }
-                                else
-                                {
-                                ?>
-                                    <div class="text-center py-5 flex-grow-1 d-flex flex-column justify-content-center">
-                                        <i class="bi bi-cart display-1 text-muted mb-4"></i>
-                                        <h5 class="text-muted mb-3">Ваша корзина пуста</h5>
-                                        <p class="text-muted mb-4">Добавьте товары из каталога</p>
-                                        <a href="includes/assortment.php" class="btn btn-primary">
-                                            <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
-                                        </a>
-                                    </div>
-                                <?php
-                                }
-                                ?>
+                                    <?php 
+                                    }
+                                    else
+                                    {
+                                    ?>
+                                        <div class="text-center py-5 flex-grow-1 d-flex flex-column justify-content-center">
+                                            <i class="bi bi-cart display-1 text-muted mb-4"></i>
+                                            <h5 class="text-muted mb-3">Ваша корзина пуста</h5>
+                                            <p class="text-muted mb-4">Добавьте товары из каталога</p>
+                                            <a href="includes/assortment.php" class="btn btn-primary">
+                                                <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
+                                            </a>
+                                        </div>
+                                    <?php
+                                    }
+                                    ?>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade h-100" id="wishlist">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-header bg-primary text-dark">
-                                <h5 class="mb-0"><i class="bi bi-heart me-2"></i>Избранное</h5>
-                            </div>
-                            <div class="card-body">
-                                <?php 
-                                if (!empty($wishlistItems))
-                                {
-                                ?>
-                                    <div class="wishlist-items">
-                                        <?php 
-                                        foreach ($wishlistItems as $item)
-                                        {
-                                        ?>
-                                            <div class="wishlist-item d-flex align-items-center mb-3 p-3 border rounded">
-                                                <img src="<?= $item['product_image'] ?: 'img/no-image.png' ?>" 
-                                                    alt="Товар" class="wishlist-item-img me-3" style="width: 80px; height: 80px;">
-                                                <div class="flex-grow-1">
-                                                    <h6 class="mb-1"><?= htmlspecialchars($item['product_name']) ?></h6>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <span class="text-success fw-bold"><?= number_format($item['price'], 0, ',', ' ') ?> ₽</span>
-                                                        <form method="POST" class="d-inline">
-                                                            <input type="hidden" name="wishlist_id" value="<?= $item['id'] ?>">
-                                                            <button type="submit" name="remove_from_wishlist" 
-                                                                    class="btn btn-sm btn-outline-danger">
-                                                                <i class="bi bi-trash"></i> Удалить
-                                                            </button>
-                                                        </form>
+                        <div class="tab-pane fade h-100" id="wishlist">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-header bg-primary text-dark">
+                                    <h5 class="mb-0"><i class="bi bi-heart me-2"></i>Избранное</h5>
+                                </div>
+                                <div class="card-body">
+                                    <?php 
+                                    if (!empty($wishlistItems))
+                                    {
+                                    ?>
+                                        <div class="wishlist-items">
+                                            <?php 
+                                            foreach ($wishlistItems as $item)
+                                            {
+                                            ?>
+                                                <div class="wishlist-item d-flex align-items-center mb-3 p-3 border rounded">
+                                                    <img src="<?= $item['product_image'] ?: 'img/no-image.png' ?>" 
+                                                        alt="Товар" class="wishlist-item-img me-3" style="width: 80px; height: 80px;">
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-1"><?= htmlspecialchars($item['product_name']) ?></h6>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span class="text-success fw-bold"><?= number_format($item['price'], 0, ',', ' ') ?> ₽</span>
+                                                            <form method="POST" class="d-inline">
+                                                                <input type="hidden" name="wishlist_id" value="<?= $item['id'] ?>">
+                                                                <button type="submit" name="remove_from_wishlist" 
+                                                                        class="btn btn-sm btn-outline-danger">
+                                                                    <i class="bi bi-trash"></i> Удалить
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        <?php 
-                                        }
-                                        ?>
-                                    </div>
-                                <?php 
-                                }
-                                else
-                                { 
-                                ?>
-                                    <div class="text-center py-5">
-                                        <i class="bi bi-heart display-1 text-muted mb-3"></i>
-                                        <h5>Список избранного пуст</h5>
-                                        <p class="text-muted">Добавляйте товары кнопкой ❤️ в каталоге</p>
-                                        <a href="includes/assortment.php" class="btn btn-primary mt-2">
-                                            Перейти в каталог
-                                        </a>
-                                    </div>
-                                <?php 
-                                }
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade h-100" id="notifications">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-header bg-primary text-dark">
-                                <h5 class="mb-0"><i class="bi bi-bell me-2"></i>Уведомления</h5>
-                            </div>
-                            <div class="card-body" id="notificationsContainer">
-                                <?php 
-                                if (!empty($notifications))
-                                {
-                                ?>
-                                    <div class="notification-list">
-                                        <?php 
-                                        foreach ($notifications as $notification)
-                                        {
-                                            if (!$notification['is_read']) 
-                                            {
-                                                $alertClass = 'alert-info';
-                                                $bgClass = '';
-                                            } 
-                                            else 
-                                            {
-                                                $alertClass = '';
-                                                $bgClass = 'bg-light';
+                                            <?php 
                                             }
                                             ?>
-                                            <div class="notification-item alert <?= $alertClass ?> <?= $bgClass ?> mb-3 p-3 rounded" 
-                                                data-id="<?= $notification['id'] ?>"
-                                                data-read="<?= $notification['is_read'] ? '1' : '0' ?>">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div>
-                                                        <h6 class="mb-1"><?= htmlspecialchars($notification['title']) ?></h6>
-                                                        <p class="mb-1"><?= htmlspecialchars($notification['message']) ?></p>
-                                                        <small class="text-muted">
-                                                            <?= date('d.m.Y H:i', strtotime($notification['created_at'])) ?>
-                                                        </small>
-                                                    </div>
-                                                    <div class="notification-actions">
-                                                        <?php 
-                                                        if (!$notification['is_read'])
-                                                        {
-                                                        ?>
-                                                            <button class="btn btn-sm btn-outline-success mark-as-read-btn" data-id="<?= $notification['id'] ?>">
-                                                                Прочитано
+                                        </div>
+                                    <?php 
+                                    }
+                                    else
+                                    { 
+                                    ?>
+                                        <div class="text-center py-5">
+                                            <i class="bi bi-heart display-1 text-muted mb-3"></i>
+                                            <h5>Список избранного пуст</h5>
+                                            <p class="text-muted">Добавляйте товары кнопкой ❤️ в каталоге</p>
+                                            <a href="includes/assortment.php" class="btn btn-primary mt-2">
+                                                Перейти в каталог
+                                            </a>
+                                        </div>
+                                    <?php 
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade h-100" id="notifications">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-header bg-primary text-dark">
+                                    <h5 class="mb-0"><i class="bi bi-bell me-2"></i>Уведомления</h5>
+                                </div>
+                                <div class="card-body" id="notificationsContainer">
+                                    <?php 
+                                    if (!empty($notifications))
+                                    {
+                                    ?>
+                                        <div class="notification-list">
+                                            <?php 
+                                            foreach ($notifications as $notification)
+                                            {
+                                                if (!$notification['is_read']) 
+                                                {
+                                                    $alertClass = 'alert-info';
+                                                    $bgClass = '';
+                                                } 
+                                                else 
+                                                {
+                                                    $alertClass = '';
+                                                    $bgClass = 'bg-light';
+                                                }
+                                                ?>
+                                                <div class="notification-item alert <?= $alertClass ?> <?= $bgClass ?> mb-3 p-3 rounded" 
+                                                    data-id="<?= $notification['id'] ?>"
+                                                    data-read="<?= $notification['is_read'] ? '1' : '0' ?>">
+                                                    <div class="d-flex justify-content-between align-items-start">
+                                                        <div>
+                                                            <h6 class="mb-1"><?= htmlspecialchars($notification['title']) ?></h6>
+                                                            <p class="mb-1"><?= htmlspecialchars($notification['message']) ?></p>
+                                                            <small class="text-muted">
+                                                                <?= date('d.m.Y H:i', strtotime($notification['created_at'])) ?>
+                                                            </small>
+                                                        </div>
+                                                        <div class="notification-actions">
+                                                            <?php 
+                                                            if (!$notification['is_read'])
+                                                            {
+                                                            ?>
+                                                                <button class="btn btn-sm btn-outline-success mark-as-read-btn" data-id="<?= $notification['id'] ?>">
+                                                                    Прочитано
+                                                                </button>
+                                                            <?php 
+                                                            }
+                                                            ?>
+                                                            <button class="btn btn-sm btn-outline-danger delete-notification-btn" data-id="<?= $notification['id'] ?>">
+                                                                <i class="bi bi-trash"></i>
                                                             </button>
-                                                        <?php 
-                                                        }
-                                                        ?>
-                                                        <button class="btn btn-sm btn-outline-danger delete-notification-btn" data-id="<?= $notification['id'] ?>">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        <?php 
-                                        }
-                                        ?>
-                                    </div>
-                                <?php 
-                                }
-                                else
-                                {
-                                ?>
-                                    <div class="text-center py-5" id="noNotifications">
-                                        <i class="bi bi-bell-slash display-1 text-muted mb-3"></i>
-                                        <h5>Уведомлений пока нет</h5>
-                                        <p class="text-muted">Здесь будут появляться ваши уведомления</p>
-                                    </div>
-                                <?php 
-                                }
-                                ?>
+                                            <?php 
+                                            }
+                                            ?>
+                                        </div>
+                                    <?php 
+                                    }
+                                    else
+                                    {
+                                    ?>
+                                        <div class="text-center py-5" id="noNotifications">
+                                            <i class="bi bi-bell-slash display-1 text-muted mb-3"></i>
+                                            <h5>Уведомлений пока нет</h5>
+                                            <p class="text-muted">Здесь будут появляться ваши уведомления</p>
+                                        </div>
+                                    <?php 
+                                    }
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="socialFloat" class="social-float-container">
-        <button id="socialToggle" class="social-toggle-btn" title="Социальные сети">
-            <i class="bi bi-chevron-up"></i>
-        </button>
-        <div class="social-icons-container">
-            <a href="https://vk.com/lalauto" class="social-icon-float" target="_blank" title="ВКонтакте">
-                <img src="img/image 33.png" alt="VK" width="32" height="32">
-            </a>
-            <a href="https://t.me/s/lalauto" class="social-icon-float" target="_blank" title="Telegram">
-                <img src="img/image 32.png" alt="Telegram" width="32" height="32">
-            </a>
+        <div id="socialFloat" class="social-float-container">
+            <button id="socialToggle" class="social-toggle-btn" title="Социальные сети">
+                <i class="bi bi-chevron-up"></i>
+            </button>
+            <div class="social-icons-container">
+                <a href="https://vk.com/lalauto" class="social-icon-float" target="_blank" title="ВКонтакте">
+                    <img src="img/image 33.png" alt="VK" width="32" height="32">
+                </a>
+                <a href="https://t.me/s/lalauto" class="social-icon-float" target="_blank" title="Telegram">
+                    <img src="img/image 32.png" alt="Telegram" width="32" height="32">
+                </a>
+            </div>
         </div>
     </div>
 </div>

@@ -387,7 +387,7 @@ unset($_SESSION['form_data']);
     </div>
 </div>
 
-<div class="modal fade" id="returnFormModal" tabindex="-1" aria-labelledby="returnFormModalLabel" aria-hidden="true">
+<div class="modal fade" id="returnFormModal" tabindex="-1" aria-labelledby="returnFormModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">

@@ -1,35 +1,17 @@
-<?php
-error_reporting(E_ALL);
-?>
-
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Лал-Авто - Автозапчасти</title>
-    <link rel="icon" href="img/iconAuto.png" type="image/png" height="32">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/register-styles.css">
-</head>
-<body>
-
 <div class="flex-grow-1">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top header-navbar">
+    <nav class="navbar navbar-expand-xl navbar-light bg-light shadow-sm fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
+            <a class="navbar-brand" href="index.php"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="index.php">Главная</a>
+                    </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Меню
-                        </a>
+                        <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Меню</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
                             <li><a class="dropdown-item" href="includes/shops.php">Магазины</a></li>
                             <li><a class="dropdown-item" href="includes/service.php">Автосервис</a></li>
@@ -55,26 +37,63 @@ error_reporting(E_ALL);
                         <a class="nav-link text-dark" href="includes/news.php">Новости компании</a>
                     </li>
                 </ul>
-                <a href="javascript:history.back()" class="btn btn-secondary ms-3 button-link header-back-button">
-                    <i class="bi bi-backspace-reverse"></i> Назад</a>
+                <div class="d-flex flex-wrap flex-md-nowrap">
+                    <a href="#" class="btn btn-primary button-link w-md-auto mx-1" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="bi bi-box-arrow-in-right"></i> Войти
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <script>
-        function validateForm() 
-        {
-            let password = document.getElementById('password').value;
-            let confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (password !== confirmPassword) 
-            {
-                alert("Пароли не совпадают. Пожалуйста, повторите ввод.");
-                return false;
-            }
-            return true;
-        }
-    </script>
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title w-100 text-center" id="loginModalLabel">Авторизация</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="">
+                        <input type="hidden" name="redirect_url" value="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Логин<span class="text-danger">*</span></label>
+                            <input type="text" name="login" class="form-control" id="username" placeholder="Введите логин" required value="<?= htmlspecialchars($form_data['login'] ?? '') ?>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Пароль<span class="text-danger">*</span></label>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Введите пароль" required value="<?= htmlspecialchars($form_data['password'] ?? '') ?>">
+                        </div>
+                        <?php 
+                        if (isset($_SESSION['error_message'])) 
+                        {
+                        ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?= htmlspecialchars($_SESSION['error_message']); ?>
+                            </div>
+                        <?php 
+                            unset($_SESSION['error_message']);
+                        }
+                        ?>
+                        <div class="d-flex gap-2 align-items-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-box-arrow-in-right"></i> Войти
+                            </button>
+                            <a href="includes/forgot_password.php" class="btn btn-outline-secondary">
+                                <i class="bi bi-question-circle"></i> Забыли пароль?
+                            </a>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>
+                        Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="socialFloat" class="social-float-container">
         <button id="socialToggle" class="social-toggle-btn" title="Социальные сети">

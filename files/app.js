@@ -127,6 +127,12 @@ document.addEventListener('DOMContentLoaded', function()
         let prize = segments[winIndex];
         
         currentPrizeType = prize.text === "Неудача" ? 'failure' : 'success';
+
+        if (autoCloseTimer) 
+        {
+            clearInterval(autoCloseTimer);
+            autoCloseTimer = null;
+        }
         
         updatePrizeModal(prize);
         
@@ -228,8 +234,14 @@ document.addEventListener('DOMContentLoaded', function()
         let timeLeft = 10;
         let timerElement = document.getElementById('prizeTimer');
         let timerBar = document.getElementById('prizeTimerBar');
+
+        timerElement.textContent = timeLeft;
+        timerBar.style.width = '100%';
         
-        if (autoCloseTimer) clearInterval(autoCloseTimer);
+        if (autoCloseTimer) 
+        {
+            clearInterval(autoCloseTimer);
+        }
         
         autoCloseTimer = setInterval(() => {
             timeLeft--;
@@ -239,6 +251,7 @@ document.addEventListener('DOMContentLoaded', function()
             if (timeLeft <= 0) 
             {
                 clearInterval(autoCloseTimer);
+                autoCloseTimer = null;
                 resultModal.hide();
             }
         }, 1000);
@@ -249,6 +262,26 @@ document.addEventListener('DOMContentLoaded', function()
         if (autoCloseTimer) 
         {
             clearInterval(autoCloseTimer);
+            autoCloseTimer = null;
+        }
+
+        let container = document.getElementById('confetti-container');
+        container.innerHTML = '';
+
+        let copyBtn = document.querySelector('.copy-btn');
+
+        if (copyBtn) 
+        {
+            copyBtn.innerHTML = '<i class="bi bi-clipboard"></i>';
+        }
+    });
+
+    document.getElementById('wheelResultModal').addEventListener('show.bs.modal', function() 
+    {
+        if (autoCloseTimer) 
+        {
+            clearInterval(autoCloseTimer);
+            autoCloseTimer = null;
         }
     });
 

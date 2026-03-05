@@ -377,6 +377,7 @@ if ($reviews_result->num_rows > 0)
     while($review = $reviews_result->fetch_assoc())
     {
 ?>
+
 <div class="modal fade" id="editReviewModal<?php echo $review['id']; ?>" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

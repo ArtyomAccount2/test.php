@@ -620,7 +620,6 @@ switch($product_type)
         </div>
     </section>
 </main>
-
 <div id="cartNotification" class="notification">
     <i class="bi bi-check-circle-fill"></i>
     <span>Товар добавлен в корзину!</span>

@@ -1220,7 +1220,7 @@ unset($_SESSION['error_message']);
     </div>
 </div>
 
-<div class="modal fade" id="restoreModal" tabindex="-1">
+<div class="modal fade" id="restoreModal" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">

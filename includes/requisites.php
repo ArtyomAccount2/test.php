@@ -188,7 +188,6 @@ foreach ($requisites_by_category['address'] as $item)
         }
         ?>
     </div>
-
     <?php 
     if (!empty($documents))
     {
@@ -230,7 +229,6 @@ foreach ($requisites_by_category['address'] as $item)
     <?php 
     }
     ?>
-    
     <div class="row mt-5">
         <div class="col-12">
             <div class="support-section bg-primary text-white rounded-3 p-5 text-center position-relative overflow-hidden">

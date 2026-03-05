@@ -486,7 +486,7 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
         ?>
     </div>
 
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -533,7 +533,7 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
         </div>
     </div>
 
-    <div class="modal fade" id="newCodeModal" tabindex="-1" aria-labelledby="newCodeModalLabel" aria-hidden="true">
+    <div class="modal fade" id="newCodeModal" tabindex="-1" aria-labelledby="newCodeModalLabel" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">

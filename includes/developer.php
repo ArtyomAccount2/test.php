@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
                     <a class="nav-link text-dark" href="orders.php">Мои заказы</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="support.php">Поддержка</a>
+                    <a class="nav-link text-dark" href="support.php">Поддержка сайта</a>
                 </li>
             </ul>
             <div class="d-flex align-items-center">
@@ -229,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-8 mb-4">
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0"><i class="bi bi-key me-2"></i>Мои API ключи</h5>
@@ -421,8 +421,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="card shadow-sm sticky-top" style="top: 100px;">
+            <div class="col-lg-4 mb-4">
+                <div class="card shadow-sm sticky-top" style="top: 10px;">
                     <div class="card-header bg-info text-white">
                         <h5 class="mb-0"><i class="bi bi-book me-2"></i>Документация API</h5>
                     </div>
@@ -472,7 +472,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
 <?php if (isset($_SESSION['new_api_key']))
 {
 ?>
-<div class="modal fade" id="newApiKeyModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="newApiKeyModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
@@ -609,7 +609,7 @@ function showCopySuccess(button)
 function showCopyManual(text, button) 
 {
     let modalHTML = `
-        <div class="modal fade" id="manualCopyModal" tabindex="-1">
+        <div class="modal fade" id="manualCopyModal" tabindex="-1" data-bs-backdrop="static>
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header bg-warning">
