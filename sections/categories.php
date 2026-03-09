@@ -82,6 +82,11 @@ if ($in_stock_result)
 }
 
 $search = $_GET['search'] ?? '';
+$type_filter = $_GET['type_filter'] ?? 'all';
+$brand_filter = $_GET['brand_filter'] ?? 'all';
+$in_stock_filter = $_GET['in_stock_filter'] ?? 'all';
+$price_min = $_GET['price_min'] ?? '';
+$price_max = $_GET['price_max'] ?? '';
 $sort = $_GET['sort'] ?? 'name_asc';
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $per_page = 10;
@@ -92,16 +97,68 @@ if ($page < 1)
     $page = 1;
 }
 
+$brands_query = "SELECT DISTINCT brand FROM category_products WHERE brand IS NOT NULL AND brand != '' ORDER BY brand";
+$brands_result = $conn->query($brands_query);
+$brands = [];
+
+if ($brands_result) 
+{
+    while ($row = $brands_result->fetch_assoc()) 
+    {
+        $brands[] = $row['brand'];
+    }
+}
+
 $categories = [];
 
 foreach ($existing_types as $index => $type) 
 {
-    $stats_stmt = $conn->prepare("SELECT 
-        COUNT(*) as products_count,
-        COALESCE(AVG(price), 0) as avg_price,
-        SUM(CASE WHEN stock = 1 THEN 1 ELSE 0 END) as available_products
-        FROM category_products WHERE category_type = ?");
-    $stats_stmt->bind_param("s", $type);
+    if ($type_filter !== 'all' && $type !== $type_filter) 
+    {
+        continue;
+    }
+
+    $stats_sql = "SELECT COUNT(*) as products_count, COALESCE(AVG(price), 0) as avg_price, SUM(CASE WHEN stock = 1 THEN 1 ELSE 0 END) as available_products FROM category_products WHERE category_type = ?";
+    $stats_params = [$type];
+    $stats_types = "s";
+
+    if ($brand_filter !== 'all') 
+    {
+        $stats_sql .= " AND brand = ?";
+        $stats_params[] = $brand_filter;
+        $stats_types .= "s";
+    }
+
+    if ($in_stock_filter === 'in_stock') 
+    {
+        $stats_sql .= " AND stock = 1";
+    } 
+    elseif ($in_stock_filter === 'out_of_stock') 
+    {
+        $stats_sql .= " AND stock = 0";
+    }
+
+    if (!empty($price_min)) 
+    {
+        $stats_sql .= " AND price >= ?";
+        $stats_params[] = $price_min;
+        $stats_types .= "d";
+    }
+    
+    if (!empty($price_max)) 
+    {
+        $stats_sql .= " AND price <= ?";
+        $stats_params[] = $price_max;
+        $stats_types .= "d";
+    }
+    
+    $stats_stmt = $conn->prepare($stats_sql);
+    
+    if (!empty($stats_params)) 
+    {
+        $stats_stmt->bind_param($stats_types, ...$stats_params);
+    }
+    
     $stats_stmt->execute();
     $type_stats = $stats_stmt->get_result()->fetch_assoc();
 
@@ -117,15 +174,18 @@ foreach ($existing_types as $index => $type)
     {
         continue;
     }
-    
-    $categories[] = [
-        'id' => $category_id,
-        'category_type' => $type,
-        'display_name' => $display_name,
-        'products_count' => $type_stats['products_count'] ?? 0,
-        'avg_price' => $type_stats['avg_price'] ?? 0,
-        'available_products' => $type_stats['available_products'] ?? 0
-    ];
+
+    if ($type_stats['products_count'] > 0 || $type_filter === $type) 
+    {
+        $categories[] = [
+            'id' => $category_id,
+            'category_type' => $type,
+            'display_name' => $display_name,
+            'products_count' => $type_stats['products_count'] ?? 0,
+            'avg_price' => $type_stats['avg_price'] ?? 0,
+            'available_products' => $type_stats['available_products'] ?? 0
+        ];
+    }
 }
 
 usort($categories, function($a, $b) use ($sort) 
@@ -144,6 +204,10 @@ usort($categories, function($a, $b) use ($sort)
             return $b['avg_price'] <=> $a['avg_price'];
         case 'price_asc':
             return $a['avg_price'] <=> $b['avg_price'];
+        case 'id_asc':
+            return $a['id'] <=> $b['id'];
+        case 'id_desc':
+            return $b['id'] <=> $a['id'];
         default:
             return strcmp($a['display_name'], $b['display_name']);
     }
@@ -167,6 +231,7 @@ $paginated_categories = array_slice($categories, $offset, $per_page);
         </a>
     </div>
 </div>
+
 <?php 
 if (isset($_SESSION['success_message']))
 {
@@ -190,6 +255,7 @@ if (isset($_SESSION['error_message']))
 unset($_SESSION['error_message']);
 }
 ?>
+
 <div class="row mb-4">
     <div class="col-md-3">
         <div class="card text-center">
@@ -224,10 +290,11 @@ unset($_SESSION['error_message']);
         </div>
     </div>
 </div>
+
 <div class="card shadow-sm">
     <div class="card-header bg-white">
         <div class="row g-3">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <form method="GET" action="admin.php" class="d-flex">
                     <input type="hidden" name="section" value="categories">
                     <input type="hidden" name="page" value="1">
@@ -238,8 +305,8 @@ unset($_SESSION['error_message']);
                     </div>
                 </form>
             </div>
-            <div class="col-md-6">
-                <div class="d-flex justify-content-md-end gap-2">
+            <div class="col-md-8">
+                <div class="d-flex justify-content-md-end gap-2 flex-wrap">
                     <form method="GET" action="admin.php" class="d-flex">
                         <input type="hidden" name="section" value="categories">
                         <input type="hidden" name="page" value="1">
@@ -248,21 +315,191 @@ unset($_SESSION['error_message']);
                         {
                         ?>
                             <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
+                        <?php 
+                        }
+                        
+                        if ($brand_filter !== 'all')
+                        {
+                        ?>
+                            <input type="hidden" name="brand_filter" value="<?= htmlspecialchars($brand_filter) ?>">
+                        <?php 
+                        }
+                        
+                        if ($in_stock_filter !== 'all')
+                        {
+                        ?>
+                            <input type="hidden" name="in_stock_filter" value="<?= htmlspecialchars($in_stock_filter) ?>">
+                        <?php 
+                        }
+                        
+                        if (!empty($price_min))
+                        {
+                        ?>
+                            <input type="hidden" name="price_min" value="<?= htmlspecialchars($price_min) ?>">
+                        <?php 
+                        }
+                        
+                        if (!empty($price_max))
+                        {
+                        ?>
+                            <input type="hidden" name="price_max" value="<?= htmlspecialchars($price_max) ?>">
+                        <?php 
+                        }
+                        ?>
+                        <select class="form-select" name="type_filter" onchange="this.form.submit()" style="width: auto;">
+                            <option value="all" <?= $type_filter == 'all' ? 'selected' : '' ?>>Все типы</option>
                             <?php 
+                            foreach ($existing_types as $type)
+                            {
+                            ?>
+                                <option value="<?= htmlspecialchars($type) ?>" <?= $type_filter == $type ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($display_names[$type] ?? ucfirst(str_replace('-', ' ', $type))) ?>
+                                </option>
+                            <?php 
+                            }
+                            ?>
+                        </select>
+                    </form>
+                    <form method="GET" action="admin.php" class="d-flex">
+                        <input type="hidden" name="section" value="categories">
+                        <input type="hidden" name="page" value="1">
+                        <?php 
+                        if (!empty($search))
+                        {
+                        ?>
+                            <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
+                        <?php 
+                        }
+                        
+                        if ($type_filter !== 'all')
+                        {
+                        ?>
+                            <input type="hidden" name="type_filter" value="<?= htmlspecialchars($type_filter) ?>">
+                        <?php 
+                        }
+                        
+                        if ($brand_filter !== 'all') 
+                        {
+                        ?>
+                            <input type="hidden" name="brand_filter" value="<?= htmlspecialchars($brand_filter) ?>">
+                        <?php 
+                        }
+                        
+                        if ($in_stock_filter !== 'all')
+                        {
+                        ?>
+                            <input type="hidden" name="in_stock_filter" value="<?= htmlspecialchars($in_stock_filter) ?>">
+                        <?php 
+                        }
+                        
+                        if (!empty($price_min))
+                        {
+                        ?>
+                            <input type="hidden" name="price_min" value="<?= htmlspecialchars($price_min) ?>">
+                        <?php 
+                        }
+                        
+                        if (!empty($price_max))
+                        {
+                        ?>
+                            <input type="hidden" name="price_max" value="<?= htmlspecialchars($price_max) ?>">
+                        <?php 
                         }
                         ?>
                         <select class="form-select" name="sort" onchange="this.form.submit()" style="width: auto;">
                             <option value="name_asc" <?= $sort == 'name_asc' ? 'selected' : '' ?>>По названию (А-Я)</option>
                             <option value="name_desc" <?= $sort == 'name_desc' ? 'selected' : '' ?>>По названию (Я-А)</option>
+                            <option value="id_asc" <?= $sort == 'id_asc' ? 'selected' : '' ?>>По ID (возрастание)</option>
+                            <option value="id_desc" <?= $sort == 'id_desc' ? 'selected' : '' ?>>По ID (убывание)</option>
                             <option value="products_desc" <?= $sort == 'products_desc' ? 'selected' : '' ?>>По кол-ву товаров (убыв.)</option>
                             <option value="products_asc" <?= $sort == 'products_asc' ? 'selected' : '' ?>>По кол-ву товаров (возр.)</option>
                             <option value="price_desc" <?= $sort == 'price_desc' ? 'selected' : '' ?>>По цене (убыв.)</option>
                             <option value="price_asc" <?= $sort == 'price_asc' ? 'selected' : '' ?>>По цене (возр.)</option>
                         </select>
                     </form>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                        <i class="bi bi-filter me-1"></i>Фильтр
+                    </button>
                 </div>
             </div>
         </div>
+        <?php 
+        if ($type_filter !== 'all' || $brand_filter !== 'all' || $in_stock_filter !== 'all' || !empty($price_min) || !empty($price_max))
+        {
+        ?>
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="text-muted small">Активные фильтры:</span>
+                    <?php 
+                    if ($type_filter !== 'all')
+                    {
+                    ?>
+                        <span class="badge bg-info d-inline-flex align-items-center">
+                            Тип: <?= htmlspecialchars($display_names[$type_filter] ?? ucfirst(str_replace('-', ' ', $type_filter))) ?>
+                            <a href="admin.php?section=categories&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $brand_filter !== 'all' ? '&brand_filter=' . urlencode($brand_filter) : '' ?><?= $in_stock_filter !== 'all' ? '&in_stock_filter=' . urlencode($in_stock_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?>" class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                    <?php 
+                    }
+                    
+                    if ($brand_filter !== 'all')
+                    {
+                    ?>
+                        <span class="badge bg-info d-inline-flex align-items-center">
+                            Бренд: <?= htmlspecialchars($brand_filter) ?>
+                            <a href="admin.php?section=categories&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $type_filter !== 'all' ? '&type_filter=' . urlencode($type_filter) : '' ?><?= $in_stock_filter !== 'all' ? '&in_stock_filter=' . urlencode($in_stock_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?>" class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                    <?php 
+                    }
+                    
+                    if ($in_stock_filter !== 'all')
+                    {
+                    ?>
+                        <span class="badge bg-info d-inline-flex align-items-center">
+                            Наличие: <?= $in_stock_filter === 'in_stock' ? 'В наличии' : 'Нет в наличии' ?>
+                            <a href="admin.php?section=categories&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $type_filter !== 'all' ? '&type_filter=' . urlencode($type_filter) : '' ?><?= $brand_filter !== 'all' ? '&brand_filter=' . urlencode($brand_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?>" class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                    <?php 
+                    }
+                    ?>
+                    <?php 
+                    if (!empty($price_min) || !empty($price_max))
+                    {
+                    ?>
+                        <span class="badge bg-info d-inline-flex align-items-center">
+                            Цена: 
+                            <?php 
+                            if (!empty($price_min) && !empty($price_max))
+                            {
+                            ?>
+                                от <?= number_format($price_min, 0, '', ' ') ?> до <?= number_format($price_max, 0, '', ' ') ?> ₽
+                            <?php 
+                            }
+                            else if (!empty($price_min))
+                            {
+                            ?>
+                                от <?= number_format($price_min, 0, '', ' ') ?> ₽
+                            <?php 
+                            }
+                            else if (!empty($price_max))
+                            {
+                            ?>
+                                до <?= number_format($price_max, 0, '', ' ') ?> ₽
+                            <?php 
+                            }
+                            ?>
+                            <a href="admin.php?section=categories&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $type_filter !== 'all' ? '&type_filter=' . urlencode($type_filter) : '' ?><?= $brand_filter !== 'all' ? '&brand_filter=' . urlencode($brand_filter) : '' ?><?= $in_stock_filter !== 'all' ? '&in_stock_filter=' . urlencode($in_stock_filter) : '' ?>" class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                    <?php 
+                    }
+                    ?>
+                    <a href="admin.php?section=categories" class="btn btn-sm btn-outline-secondary">Сбросить все</a>
+                </div>
+            </div>
+        </div>
+        <?php 
+        }
+        ?>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -332,7 +569,7 @@ unset($_SESSION['error_message']);
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <a href="admin.php?section=categories_add&type=<?= urlencode($category['category_type']) ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>" 
+                                    <a href="admin.php?section=categories_add&type=<?= urlencode($category['category_type']) ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $type_filter !== 'all' ? '&type_filter=' . urlencode($type_filter) : '' ?><?= $brand_filter !== 'all' ? '&brand_filter=' . urlencode($brand_filter) : '' ?><?= $in_stock_filter !== 'all' ? '&in_stock_filter=' . urlencode($in_stock_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>" 
                                        class="btn btn-outline-primary">
                                         <i class="bi bi-pencil"></i>
                                     </a>
@@ -341,7 +578,7 @@ unset($_SESSION['error_message']);
                                        title="Просмотр товаров категории">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="admin.php?section=categories&delete_id=<?= $category['id'] ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>" 
+                                    <a href="admin.php?section=categories&delete_id=<?= $category['id'] ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $type_filter !== 'all' ? '&type_filter=' . urlencode($type_filter) : '' ?><?= $brand_filter !== 'all' ? '&brand_filter=' . urlencode($brand_filter) : '' ?><?= $in_stock_filter !== 'all' ? '&in_stock_filter=' . urlencode($in_stock_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>" 
                                        class="btn btn-outline-danger <?= $category['products_count'] > 0 ? 'disabled' : '' ?>"
                                        onclick="<?= $category['products_count'] > 0 ? 'return false' : 'return confirm(\'Удалить категорию?\')' ?>">
                                         <i class="bi bi-trash"></i>
@@ -386,12 +623,12 @@ unset($_SESSION['error_message']);
         <nav aria-label="Page navigation" class="mt-3 p-3">
             <ul class="pagination justify-content-center mb-0">
                 <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=categories&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>">
+                    <a class="page-link" href="admin.php?section=categories&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $type_filter !== 'all' ? '&type_filter=' . urlencode($type_filter) : '' ?><?= $brand_filter !== 'all' ? '&brand_filter=' . urlencode($brand_filter) : '' ?><?= $in_stock_filter !== 'all' ? '&in_stock_filter=' . urlencode($in_stock_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>">
                         <i class="bi bi-chevron-double-left"></i>
                     </a>
                 </li>
                 <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=categories&page=<?= $page - 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>">
+                    <a class="page-link" href="admin.php?section=categories&page=<?= $page - 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $type_filter !== 'all' ? '&type_filter=' . urlencode($type_filter) : '' ?><?= $brand_filter !== 'all' ? '&brand_filter=' . urlencode($brand_filter) : '' ?><?= $in_stock_filter !== 'all' ? '&in_stock_filter=' . urlencode($in_stock_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>">
                         <i class="bi bi-chevron-left"></i>
                     </a>
                 </li>
@@ -403,7 +640,7 @@ unset($_SESSION['error_message']);
                 {
                 ?>
                 <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                    <a class="page-link" href="admin.php?section=categories&page=<?= $i ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>">
+                    <a class="page-link" href="admin.php?section=categories&page=<?= $i ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $type_filter !== 'all' ? '&type_filter=' . urlencode($type_filter) : '' ?><?= $brand_filter !== 'all' ? '&brand_filter=' . urlencode($brand_filter) : '' ?><?= $in_stock_filter !== 'all' ? '&in_stock_filter=' . urlencode($in_stock_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>">
                         <?= $i ?>
                     </a>
                 </li>
@@ -411,12 +648,12 @@ unset($_SESSION['error_message']);
                 }
                 ?>
                 <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=categories&page=<?= $page + 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>">
+                    <a class="page-link" href="admin.php?section=categories&page=<?= $page + 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $type_filter !== 'all' ? '&type_filter=' . urlencode($type_filter) : '' ?><?= $brand_filter !== 'all' ? '&brand_filter=' . urlencode($brand_filter) : '' ?><?= $in_stock_filter !== 'all' ? '&in_stock_filter=' . urlencode($in_stock_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>">
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
                 <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=categories&page=<?= $total_pages ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>">
+                    <a class="page-link" href="admin.php?section=categories&page=<?= $total_pages ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $type_filter !== 'all' ? '&type_filter=' . urlencode($type_filter) : '' ?><?= $brand_filter !== 'all' ? '&brand_filter=' . urlencode($brand_filter) : '' ?><?= $in_stock_filter !== 'all' ? '&in_stock_filter=' . urlencode($in_stock_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>">
                         <i class="bi bi-chevron-double-right"></i>
                     </a>
                 </li>
@@ -428,5 +665,70 @@ unset($_SESSION['error_message']);
         <?php
         }
         ?>
+    </div>
+</div>
+
+<div class="modal fade" id="filterModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Расширенный фильтр категорий</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="GET" action="admin.php" id="filterForm">
+                    <input type="hidden" name="section" value="categories">
+                    <input type="hidden" name="page" value="1">
+                    <?php 
+                    if (!empty($search))
+                    {
+                    ?>
+                        <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
+                    <?php 
+                    }
+                    ?>
+                    <div class="mb-3">
+                        <label class="form-label">Бренд</label>
+                        <select class="form-select" name="brand_filter">
+                            <option value="all">Все бренды</option>
+                            <?php 
+                            foreach ($brands as $brand)
+                            {
+                            ?>
+                                <option value="<?= htmlspecialchars($brand) ?>" <?= $brand_filter == $brand ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($brand) ?>
+                                </option>
+                            <?php 
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Наличие</label>
+                        <select class="form-select" name="in_stock_filter">
+                            <option value="all">Все</option>
+                            <option value="in_stock" <?= $in_stock_filter == 'in_stock' ? 'selected' : '' ?>>В наличии</option>
+                            <option value="out_of_stock" <?= $in_stock_filter == 'out_of_stock' ? 'selected' : '' ?>>Нет в наличии</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Цена</label>
+                        <div class="row g-2">
+                            <div class="col">
+                                <input type="number" class="form-control" name="price_min" placeholder="От" value="<?= htmlspecialchars($price_min) ?>" step="0.01" min="0">
+                            </div>
+                            <div class="col">
+                                <input type="number" class="form-control" name="price_max" placeholder="До" value="<?= htmlspecialchars($price_max) ?>" step="0.01" min="0">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="admin.php?section=categories" class="btn btn-outline-secondary me-auto">Сбросить все фильтры</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('filterForm').submit()">Применить</button>
+            </div>
+        </div>
     </div>
 </div>

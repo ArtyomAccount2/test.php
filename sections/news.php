@@ -100,7 +100,30 @@ $count_result = $count_stmt->get_result();
 $total_news = $count_result->fetch_assoc()['total'];
 $total_pages = ceil($total_news / $per_page);
 
-$query = "SELECT * FROM news $where_sql ORDER BY created_at DESC LIMIT ? OFFSET ?";
+$sort = $_GET['sort'] ?? 'date_desc';
+$order_by = "created_at DESC";
+
+switch ($sort) {
+    case 'date_asc':
+        $order_by = "created_at ASC";
+        break;
+    case 'title_asc':
+        $order_by = "title ASC";
+        break;
+    case 'title_desc':
+        $order_by = "title DESC";
+        break;
+    case 'id_asc':
+        $order_by = "id ASC";
+        break;
+    case 'id_desc':
+        $order_by = "id DESC";
+        break;
+    default:
+        $order_by = "created_at DESC";
+}
+
+$query = "SELECT * FROM news $where_sql ORDER BY $order_by LIMIT ? OFFSET ?";
 $params[] = $per_page;
 $params[] = $offset;
 $types .= 'ii';
@@ -156,18 +179,28 @@ unset($_SESSION['success_message']);
             <div class="card-header bg-white">
                 <form method="GET" action="admin.php" class="row g-3 align-items-center">
                     <input type="hidden" name="section" value="news">
-                    <div class="col-md-8">
+                    <div class="col-md-5">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-search"></i></span>
                             <input type="text" class="form-control" name="search" placeholder="Поиск новостей..." value="<?= htmlspecialchars($search) ?>">
                             <button class="btn btn-outline-secondary" type="submit">Найти</button>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <select class="form-select" name="status_filter" onchange="this.form.submit()">
                             <option value="">Все статусы</option>
                             <option value="published" <?= $status_filter == 'published' ? 'selected' : '' ?>>Опубликованные</option>
                             <option value="draft" <?= $status_filter == 'draft' ? 'selected' : '' ?>>Черновики</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" name="sort" onchange="this.form.submit()">
+                            <option value="date_desc" <?= ($_GET['sort'] ?? 'date_desc') == 'date_desc' ? 'selected' : '' ?>>По дате (новые сначала)</option>
+                            <option value="date_asc" <?= ($_GET['sort'] ?? '') == 'date_asc' ? 'selected' : '' ?>>По дате (старые сначала)</option>
+                            <option value="title_asc" <?= ($_GET['sort'] ?? '') == 'title_asc' ? 'selected' : '' ?>>По названию (А-Я)</option>
+                            <option value="title_desc" <?= ($_GET['sort'] ?? '') == 'title_desc' ? 'selected' : '' ?>>По названию (Я-А)</option>
+                            <option value="id_asc" <?= ($_GET['sort'] ?? '') == 'id_asc' ? 'selected' : '' ?>>По ID (возрастание)</option>
+                            <option value="id_desc" <?= ($_GET['sort'] ?? '') == 'id_desc' ? 'selected' : '' ?>>По ID (убывание)</option>
                         </select>
                     </div>
                 </form>
@@ -266,19 +299,13 @@ unset($_SESSION['success_message']);
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
-                                <button class="btn btn-outline-primary" 
-                                        onclick="editNews(<?= $news['id'] ?>, '<?= htmlspecialchars(addslashes($news['title'])) ?>', '<?= htmlspecialchars(addslashes($news['content'])) ?>', '<?= $news['status'] ?>')"
-                                        data-bs-toggle="modal" data-bs-target="#editNewsModal">
+                                <button class="btn btn-outline-primary" onclick="editNews(<?= $news['id'] ?>, '<?= htmlspecialchars(addslashes($news['title'])) ?>', '<?= htmlspecialchars(addslashes($news['content'])) ?>', '<?= $news['status'] ?>')" data-bs-toggle="modal" data-bs-target="#editNewsModal">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <a href="admin.php?section=news&toggle_status=<?= $news['id'] ?>" 
-                                class="btn btn-outline-<?= $news['status'] == 'published' ? 'warning' : 'success' ?>"
-                                title="<?= $news['status'] == 'published' ? 'В черновики' : 'Опубликовать' ?>">
+                                <a href="admin.php?section=news&toggle_status=<?= $news['id'] ?>" class="btn btn-outline-<?= $news['status'] == 'published' ? 'warning' : 'success' ?>" title="<?= $news['status'] == 'published' ? 'В черновики' : 'Опубликовать' ?>">
                                     <i class="bi bi-<?= $news['status'] == 'published' ? 'eye-slash' : 'eye' ?>"></i>
                                 </a>
-                                <a href="admin.php?section=news&delete_id=<?= $news['id'] ?>" 
-                                class="btn btn-outline-danger"
-                                onclick="return confirm('Удалить новость?')">
+                                <a href="admin.php?section=news&delete_id=<?= $news['id'] ?>" class="btn btn-outline-danger" onclick="return confirm('Удалить новость?')">
                                     <i class="bi bi-trash"></i>
                                 </a>
                             </div>

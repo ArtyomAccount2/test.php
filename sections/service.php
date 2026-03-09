@@ -34,7 +34,7 @@ if (isset($_GET['delete_id']))
 }
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$per_page = 1;
+$per_page = 3;
 $offset = ($page - 1) * $per_page;
 
 $category_filter = $_GET['category'] ?? '';
@@ -285,14 +285,10 @@ unset($_SESSION['success_message']);
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-outline-primary"
-                                            onclick="editService(<?= $service['id'] ?>)"
-                                            data-bs-toggle="modal" data-bs-target="#editServiceModal">
+                                    <button class="btn btn-outline-primary" onclick="editService(<?= $service['id'] ?>)" data-bs-toggle="modal" data-bs-target="#editServiceModal">
                                         <i class="bi bi-pencil"></i>
                                     </button>
-                                    <a href="admin.php?section=service&delete_id=<?= $service['id'] ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= !empty($category_filter) ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>&page=<?= $page ?>" 
-                                    class="btn btn-outline-danger"
-                                    onclick="return confirm('Удалить услугу?')">
+                                    <a href="admin.php?section=service&delete_id=<?= $service['id'] ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= !empty($category_filter) ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>&page=<?= $page ?>" class="btn btn-outline-danger" onclick="return confirm('Удалить услугу?')">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>

@@ -24,6 +24,7 @@ $price_min = $_GET['price_min'] ?? '';
 $price_max = $_GET['price_max'] ?? '';
 $quantity_filter = $_GET['quantity_filter'] ?? '';
 $status_filter = $_GET['status_filter'] ?? '';
+$sort = $_GET['sort'] ?? 'id_desc';
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $per_page = 10;
@@ -97,6 +98,36 @@ if (!empty($where_conditions))
     $where_sql = 'WHERE ' . implode(' AND ', $where_conditions);
 }
 
+$order_by = "id DESC";
+switch ($sort) {
+    case 'id_asc':
+        $order_by = "id ASC";
+        break;
+    case 'id_desc':
+        $order_by = "id DESC";
+        break;
+    case 'name_asc':
+        $order_by = "name ASC";
+        break;
+    case 'name_desc':
+        $order_by = "name DESC";
+        break;
+    case 'price_asc':
+        $order_by = "price ASC";
+        break;
+    case 'price_desc':
+        $order_by = "price DESC";
+        break;
+    case 'quantity_asc':
+        $order_by = "quantity ASC";
+        break;
+    case 'quantity_desc':
+        $order_by = "quantity DESC";
+        break;
+    default:
+        $order_by = "id DESC";
+}
+
 $count_sql = "SELECT COUNT(*) as total FROM products $where_sql";
 $count_stmt = $conn->prepare($count_sql);
 
@@ -110,7 +141,7 @@ $count_result = $count_stmt->get_result();
 $total_products = $count_result->fetch_assoc()['total'];
 $total_pages = ceil($total_products / $per_page);
 
-$products_sql = "SELECT * FROM products $where_sql ORDER BY id DESC LIMIT ? OFFSET ?";
+$products_sql = "SELECT * FROM products $where_sql ORDER BY $order_by LIMIT ? OFFSET ?";
 $params_for_data = $params;
 $types_for_data = $types . 'ii';
 $params_for_data[] = $per_page;
@@ -132,14 +163,7 @@ while ($row = $result->fetch_assoc())
     $products[] = $row;
 }
 
-$stats_stmt = $conn->query("SELECT 
-    COUNT(*) as total, 
-    SUM(CASE WHEN status = 'available' THEN 1 ELSE 0 END) as available, 
-    SUM(CASE WHEN status = 'low' THEN 1 ELSE 0 END) as low, 
-    SUM(CASE WHEN status = 'out_of_stock' THEN 1 ELSE 0 END) as out_of_stock, 
-    COALESCE(AVG(price), 0) as avg_price, 
-    SUM(quantity) as total_quantity 
-    FROM products");
+$stats_stmt = $conn->query("SELECT COUNT(*) as total, SUM(CASE WHEN status = 'available' THEN 1 ELSE 0 END) as available, SUM(CASE WHEN status = 'low' THEN 1 ELSE 0 END) as low, SUM(CASE WHEN status = 'out_of_stock' THEN 1 ELSE 0 END) as out_of_stock, COALESCE(AVG(price), 0) as avg_price, SUM(quantity) as total_quantity FROM products");
 $stats = $stats_stmt->fetch_assoc();
 ?>
 
@@ -158,6 +182,7 @@ $stats = $stats_stmt->fetch_assoc();
         </a>
     </div>
 </div>
+
 <?php 
 if (isset($_SESSION['message']))
 {
@@ -170,6 +195,7 @@ if (isset($_SESSION['message']))
 unset($_SESSION['message']); 
 }
 ?>
+
 <div class="row mb-4">
     <div class="col-md-3">
         <div class="card text-center">
@@ -204,10 +230,11 @@ unset($_SESSION['message']);
         </div>
     </div>
 </div>
+
 <div class="card shadow-sm">
     <div class="card-header bg-white">
         <div class="row g-3">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <form method="GET" action="admin.php" class="d-flex">
                     <input type="hidden" name="section" value="products_catalog">
                     <input type="hidden" name="page" value="1">
@@ -218,8 +245,8 @@ unset($_SESSION['message']);
                     </div>
                 </form>
             </div>
-            <div class="col-md-6">
-                <div class="d-flex justify-content-md-end gap-2">
+            <div class="col-md-8">
+                <div class="d-flex justify-content-md-end gap-2 flex-wrap">
                     <form method="GET" action="admin.php" class="d-flex">
                         <input type="hidden" name="section" value="products_catalog">
                         <input type="hidden" name="page" value="1">
@@ -230,7 +257,32 @@ unset($_SESSION['message']);
                         <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
                         <?php 
                         }
+                        if (!empty($price_min))
+                        {
                         ?>
+                        <input type="hidden" name="price_min" value="<?= htmlspecialchars($price_min) ?>">
+                        <?php 
+                        }
+                        if (!empty($price_max))
+                        {
+                        ?>
+                        <input type="hidden" name="price_max" value="<?= htmlspecialchars($price_max) ?>">
+                        <?php 
+                        }
+                        if (!empty($quantity_filter))
+                        {
+                        ?>
+                        <input type="hidden" name="quantity_filter" value="<?= htmlspecialchars($quantity_filter) ?>">
+                        <?php 
+                        }
+                        if (!empty($status_filter))
+                        {
+                        ?>
+                        <input type="hidden" name="status_filter" value="<?= htmlspecialchars($status_filter) ?>">
+                        <?php 
+                        }
+                        ?>
+                        <input type="hidden" name="sort" value="<?= htmlspecialchars($sort) ?>">
                         <select class="form-select" name="category" onchange="this.form.submit()" style="width: auto;">
                             <option value="all" <?= $category_filter == 'all' ? 'selected' : '' ?>>Все категории</option>
                             <?php
@@ -244,12 +296,156 @@ unset($_SESSION['message']);
                             ?>
                         </select>
                     </form>
+                    <form method="GET" action="admin.php" class="d-flex">
+                        <input type="hidden" name="section" value="products_catalog">
+                        <input type="hidden" name="page" value="1">
+                        <?php 
+                        if (!empty($search))
+                        {
+                        ?>
+                        <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
+                        <?php 
+                        }
+                        if ($category_filter !== 'all')
+                        {
+                        ?>
+                        <input type="hidden" name="category" value="<?= htmlspecialchars($category_filter) ?>">
+                        <?php 
+                        }
+                        if (!empty($price_min))
+                        {
+                        ?>
+                        <input type="hidden" name="price_min" value="<?= htmlspecialchars($price_min) ?>">
+                        <?php 
+                        }
+                        if (!empty($price_max))
+                        {
+                        ?>
+                        <input type="hidden" name="price_max" value="<?= htmlspecialchars($price_max) ?>">
+                        <?php 
+                        }
+                        if (!empty($quantity_filter))
+                        {
+                        ?>
+                        <input type="hidden" name="quantity_filter" value="<?= htmlspecialchars($quantity_filter) ?>">
+                        <?php 
+                        }
+                        if (!empty($status_filter))
+                        {
+                        ?>
+                        <input type="hidden" name="status_filter" value="<?= htmlspecialchars($status_filter) ?>">
+                        <?php 
+                        }
+                        ?>
+                        <select class="form-select" name="sort" onchange="this.form.submit()" style="width: auto;">
+                            <option value="id_desc" <?= $sort == 'id_desc' ? 'selected' : '' ?>>По ID (убывание)</option>
+                            <option value="id_asc" <?= $sort == 'id_asc' ? 'selected' : '' ?>>По ID (возрастание)</option>
+                            <option value="name_asc" <?= $sort == 'name_asc' ? 'selected' : '' ?>>По названию (А-Я)</option>
+                            <option value="name_desc" <?= $sort == 'name_desc' ? 'selected' : '' ?>>По названию (Я-А)</option>
+                            <option value="price_asc" <?= $sort == 'price_asc' ? 'selected' : '' ?>>По цене (возрастание)</option>
+                            <option value="price_desc" <?= $sort == 'price_desc' ? 'selected' : '' ?>>По цене (убывание)</option>
+                            <option value="quantity_asc" <?= $sort == 'quantity_asc' ? 'selected' : '' ?>>По количеству (возрастание)</option>
+                            <option value="quantity_desc" <?= $sort == 'quantity_desc' ? 'selected' : '' ?>>По количеству (убывание)</option>
+                        </select>
+                    </form>
                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
                         <i class="bi bi-filter me-1"></i>Фильтр
                     </button>
                 </div>
             </div>
         </div>
+        <?php 
+        if ($category_filter !== 'all' || !empty($price_min) || !empty($price_max) || !empty($quantity_filter) || !empty($status_filter)) 
+        {
+        ?>
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="text-muted small">Активные фильтры:</span>
+                    <?php 
+                    if ($category_filter !== 'all')
+                    {
+                    ?>
+                        <span class="badge bg-info d-inline-flex align-items-center">
+                            Категория: <?= htmlspecialchars($category_filter) ?>
+                            <a href="admin.php?section=products_catalog&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>" class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                    <?php 
+                    }
+                    
+                    if (!empty($price_min) || !empty($price_max)) 
+                    {
+                    ?>
+                        <span class="badge bg-info d-inline-flex align-items-center">
+                            Цена: 
+                            <?php 
+                            if (!empty($price_min) && !empty($price_max))
+                            {
+                            ?>
+                                от <?= number_format($price_min, 0, '', ' ') ?> до <?= number_format($price_max, 0, '', ' ') ?> ₽
+                            <?php 
+                            }
+                            else if (!empty($price_min))
+                            {
+                            ?>
+                                от <?= number_format($price_min, 0, '', ' ') ?> ₽
+                            <?php 
+                            }
+                            else if (!empty($price_max))
+                            {
+                            ?>
+                                до <?= number_format($price_max, 0, '', ' ') ?> ₽
+                            <?php 
+                            }
+                            ?>
+                            <a href="admin.php?section=products_catalog&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>" class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                    <?php 
+                    }
+                    
+                    if (!empty($quantity_filter))
+                    {
+                    ?>
+                        <span class="badge bg-info d-inline-flex align-items-center">
+                            Наличие: 
+                            <?php 
+                            $quantity_labels = [
+                                'available' => 'В наличии',
+                                'low' => 'Мало (<10)',
+                                'out_of_stock' => 'Нет в наличии'
+                            ];
+                            echo $quantity_labels[$quantity_filter];
+                            ?>
+                            <a href="admin.php?section=products_catalog&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>" class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                    <?php 
+                    }
+                    
+                    if (!empty($status_filter))
+                    {
+                    ?>
+                        <span class="badge bg-info d-inline-flex align-items-center">
+                            Статус: 
+                            <?php 
+                            $status_labels = [
+                                'available' => 'В наличии',
+                                'low' => 'Мало',
+                                'out_of_stock' => 'Нет в наличии'
+                            ];
+                            echo $status_labels[$status_filter];
+                            ?>
+                            <a href="admin.php?section=products_catalog&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>" class="text-white ms-1" style="text-decoration: none;">×</a>
+                        </span>
+                    <?php 
+                    }
+                    ?>
+                    <a href="admin.php?section=products_catalog" class="btn btn-sm btn-outline-secondary">Сбросить все</a>
+                </div>
+            </div>
+        </div>
+        <?php 
+        }
+        ?>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -301,13 +497,10 @@ unset($_SESSION['message']);
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <a href="admin.php?section=edit_products&id=<?= $product['id'] ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>" 
-                                       class="btn btn-outline-primary">
+                                    <a href="admin.php?section=edit_products&id=<?= $product['id'] ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>" class="btn btn-outline-primary">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a href="admin.php?section=products_catalog&delete_id=<?= $product['id'] ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>" 
-                                       class="btn btn-outline-danger"
-                                       onclick="return confirm('Удалить товар?')">
+                                    <a href="admin.php?section=products_catalog&delete_id=<?= $product['id'] ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>" class="btn btn-outline-danger" onclick="return confirm('Удалить товар?')">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>
@@ -338,12 +531,12 @@ unset($_SESSION['message']);
         <nav aria-label="Page navigation" class="mt-3 p-3">
             <ul class="pagination justify-content-center mb-0">
                 <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=products_catalog&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>">
+                    <a class="page-link" href="admin.php?section=products_catalog&page=1<?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>">
                         <i class="bi bi-chevron-double-left"></i>
                     </a>
                 </li>
                 <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $page - 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>">
+                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $page - 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>">
                         <i class="bi bi-chevron-left"></i>
                     </a>
                 </li>
@@ -355,7 +548,7 @@ unset($_SESSION['message']);
                 {
                 ?>
                 <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $i ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>">
+                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $i ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>">
                         <?= $i ?>
                     </a>
                 </li>
@@ -363,12 +556,12 @@ unset($_SESSION['message']);
                 }
                 ?>
                 <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $page + 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>">
+                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $page + 1 ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>">
                         <i class="bi bi-chevron-right"></i>
                     </a>
                 </li>
                 <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
-                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $total_pages ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?>">
+                    <a class="page-link" href="admin.php?section=products_catalog&page=<?= $total_pages ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>">
                         <i class="bi bi-chevron-double-right"></i>
                     </a>
                 </li>
@@ -409,6 +602,7 @@ unset($_SESSION['message']);
                     <?php
                     }
                     ?>
+                    <input type="hidden" name="sort" value="<?= htmlspecialchars($sort) ?>">
                     <div class="mb-3">
                         <label class="form-label">Цена</label>
                         <div class="row g-2">

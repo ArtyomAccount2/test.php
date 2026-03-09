@@ -138,6 +138,7 @@ if (!empty($return_sort) && $return_sort != 'name_asc')
         </a>
     </div>
 </div>
+
 <?php 
 if ($error)
 {
@@ -149,6 +150,7 @@ if ($error)
 <?php 
 }
 ?>
+
 <div class="card shadow-sm">
     <div class="card-header bg-white">
         <h5 class="mb-0">Форма <?= $edit_mode ? 'редактирования' : 'добавления' ?> категории</h5>
@@ -168,21 +170,10 @@ if ($error)
                     <div class="mb-3">
                         <label class="form-label">Основная информация<span class="text-danger">*</span></label>
                         <label class="form-label text-muted small mb-1">Системное название (для URL)</label>
-                        <input type="text" 
-                               class="form-control mb-2" 
-                               name="category_type" 
-                               placeholder="Например: motor-oil, brake-fluid" 
-                               value="<?= htmlspecialchars($category_type) ?>" 
-                               <?= $edit_mode ? 'readonly' : '' ?>
-                               required>
+                        <input type="text" class="form-control mb-2" name="category_type" placeholder="Например: motor-oil, brake-fluid" value="<?= htmlspecialchars($category_type) ?>" <?= $edit_mode ? 'readonly' : '' ?> required>
                         <small class="text-muted d-block mb-2">Только латиница, дефисы, без пробелов</small>
                         <label class="form-label text-muted small mb-1">Отображаемое название</label>
-                        <input type="text" 
-                               class="form-control mb-2" 
-                               name="display_name" 
-                               placeholder="Например: Моторные масла" 
-                               value="<?= htmlspecialchars($display_name) ?>" 
-                               required>
+                        <input type="text" class="form-control mb-2" name="display_name" placeholder="Например: Моторные масла" value="<?= htmlspecialchars($display_name) ?>" required>
                         <textarea class="form-control" name="description" placeholder="Описание категории (необязательно)" rows="3"><?= htmlspecialchars($description) ?></textarea>
                     </div>
                 </div>
@@ -194,11 +185,7 @@ if ($error)
                     <div class="mb-3">
                         <label class="form-label">Статистика категории</label>
                         <?php
-                        $stats_stmt = $conn->prepare("SELECT 
-                            COUNT(*) as total,
-                            SUM(CASE WHEN stock = 1 THEN 1 ELSE 0 END) as available,
-                            COALESCE(AVG(price), 0) as avg_price
-                            FROM category_products WHERE category_type = ?");
+                        $stats_stmt = $conn->prepare("SELECT COUNT(*) as total, SUM(CASE WHEN stock = 1 THEN 1 ELSE 0 END) as available, COALESCE(AVG(price), 0) as avg_price FROM category_products WHERE category_type = ?");
                         $stats_stmt->bind_param("s", $category_type);
                         $stats_stmt->execute();
                         $stats = $stats_stmt->get_result()->fetch_assoc();

@@ -54,7 +54,7 @@ if (isset($_GET['delete_id']))
 }
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$per_page = 1;
+$per_page = 3;
 $offset = ($page - 1) * $per_page;
 
 $region_filter = $_GET['region'] ?? '';
@@ -332,14 +332,10 @@ unset($_SESSION['error_message']);
                                     </td>
                                     <td style="position: sticky; right: 0; background: white; z-index: 1;">
                                         <div class="btn-group btn-group-sm">
-                                            <button class="btn btn-outline-primary" title="Редактировать"
-                                                    onclick="editShop(<?= $shop['id'] ?>)"
-                                                    data-bs-toggle="modal" data-bs-target="#editShopModal">
+                                            <button class="btn btn-outline-primary" title="Редактировать" onclick="editShop(<?= $shop['id'] ?>)" data-bs-toggle="modal" data-bs-target="#editShopModal">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
-                                            <a href="admin.php?section=shops&delete_id=<?= $shop['id'] ?>" 
-                                            class="btn btn-outline-danger" title="Удалить"
-                                            onclick="return confirm('Удалить магазин?')">
+                                            <a href="admin.php?section=shops&delete_id=<?= $shop['id'] ?>" class="btn btn-outline-danger" title="Удалить" onclick="return confirm('Удалить магазин?')">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>

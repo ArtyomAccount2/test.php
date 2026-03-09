@@ -316,14 +316,10 @@ $stats = $stats_stmt->fetch_assoc();
                                 <a href="files/edit_user.php?id=<?= $user['id_users'] ?>&page=<?= $page ?>" class="btn btn-outline-primary" title="Редактировать">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <button type="button" class="btn btn-outline-info" title="Подробнее"
-                                        onclick="viewUser(<?= $user['id_users'] ?>)" 
-                                        data-bs-toggle="modal" data-bs-target="#userDetailsModal">
+                                <button type="button" class="btn btn-outline-info" title="Подробнее" onclick="viewUser(<?= $user['id_users'] ?>)" data-bs-toggle="modal" data-bs-target="#userDetailsModal">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <a href="files/delete_user.php?id=<?= $user['id_users'] ?>" 
-                                   class="btn btn-outline-danger" title="Удалить"
-                                   onclick="return confirm('Удалить пользователя?')">
+                                <a href="files/delete_user.php?id=<?= $user['id_users'] ?>" class="btn btn-outline-danger" title="Удалить" onclick="return confirm('Удалить пользователя?')">
                                     <i class="bi bi-trash"></i>
                                 </a>
                             </div>

@@ -177,10 +177,10 @@ while ($row = $brands_result->fetch_assoc())
     </div>
 </div>
 <div class="alert alert-info">
-    <i class="bi bi-info-circle me-2"></i>
-    Категория: <strong><?= htmlspecialchars($category_name) ?></strong> 
+    <i class="bi bi-info-circle me-2"></i>Категория: <strong><?= htmlspecialchars($category_name) ?></strong> 
     <code class="ms-2"><?= htmlspecialchars($category_type) ?></code>
 </div>
+
 <?php 
 if (isset($error))
 {
@@ -203,6 +203,7 @@ if (isset($_SESSION['success_message']))
 unset($_SESSION['success_message']);
 }
 ?>
+
 <div class="card shadow-sm">
     <div class="card-header bg-white">
         <ul class="nav nav-tabs card-header-tabs" id="productTabs" role="tablist">

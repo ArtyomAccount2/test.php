@@ -96,7 +96,35 @@ $count_result = $count_stmt->get_result();
 $total_reviews = $count_result->fetch_assoc()['total'];
 $total_pages = ceil($total_reviews / $per_page);
 
-$query = "SELECT * FROM reviews $where_sql ORDER BY created_at DESC LIMIT ? OFFSET ?";
+$sort = $_GET['sort'] ?? 'date_desc';
+$order_by = "created_at DESC";
+switch ($sort) {
+    case 'date_asc':
+        $order_by = "created_at ASC";
+        break;
+    case 'rating_desc':
+        $order_by = "rating DESC";
+        break;
+    case 'rating_asc':
+        $order_by = "rating ASC";
+        break;
+    case 'name_asc':
+        $order_by = "name ASC";
+        break;
+    case 'name_desc':
+        $order_by = "name DESC";
+        break;
+    case 'id_asc':
+        $order_by = "id ASC";
+        break;
+    case 'id_desc':
+        $order_by = "id DESC";
+        break;
+    default:
+        $order_by = "created_at DESC";
+}
+
+$query = "SELECT * FROM reviews $where_sql ORDER BY $order_by LIMIT ? OFFSET ?";
 $params[] = $per_page;
 $params[] = $offset;
 $types .= 'ii';
@@ -119,7 +147,7 @@ $stats = $stats_stmt->fetch_assoc();
     <h2 class="mb-3 mb-md-0">
         <i class="bi bi-chat-square-text me-2"></i>Управление отзывами
     </h2>
-    <div class="d-flex gap-2">
+    <div class="d-flex gap-2 flex-wrap">
         <div class="dropdown">
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                 <i class="bi bi-filter me-1"></i>
@@ -135,23 +163,12 @@ $stats = $stats_stmt->fetch_assoc();
                 ?>
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="admin.php?section=reviews&status=all">Все</a></li>
-                <li><a class="dropdown-item" href="admin.php?section=reviews&status=pending">На модерации</a></li>
-                <li><a class="dropdown-item" href="admin.php?section=reviews&status=approved">Одобренные</a></li>
-                <li><a class="dropdown-item" href="admin.php?section=reviews&status=rejected">Отклоненные</a></li>
+                <li><a class="dropdown-item" href="admin.php?section=reviews&status=all&sort=<?= urlencode($_GET['sort'] ?? 'date_desc') ?>">Все</a></li>
+                <li><a class="dropdown-item" href="admin.php?section=reviews&status=pending&sort=<?= urlencode($_GET['sort'] ?? 'date_desc') ?>">На модерации</a></li>
+                <li><a class="dropdown-item" href="admin.php?section=reviews&status=approved&sort=<?= urlencode($_GET['sort'] ?? 'date_desc') ?>">Одобренные</a></li>
+                <li><a class="dropdown-item" href="admin.php?section=reviews&status=rejected&sort=<?= urlencode($_GET['sort'] ?? 'date_desc') ?>">Отклоненные</a></li>
             </ul>
         </div>
-        
-        <form method="GET" action="admin.php" class="d-flex">
-            <input type="hidden" name="section" value="reviews">
-            <input type="hidden" name="status" value="<?= $filter_status ?>">
-            <div class="input-group">
-                <input type="text" class="form-control" name="search" placeholder="Поиск..." value="<?= htmlspecialchars($search) ?>">
-                <button class="btn btn-outline-secondary" type="submit">
-                    <i class="bi bi-search"></i>
-                </button>
-            </div>
-        </form>
     </div>
 </div>
 
@@ -167,6 +184,38 @@ if (isset($_SESSION['message']))
 unset($_SESSION['message']);  
 } 
 ?>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <form method="GET" action="admin.php" class="row g-3 align-items-center">
+                    <input type="hidden" name="section" value="reviews">
+                    <input type="hidden" name="status" value="<?= $filter_status ?>">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" name="search" placeholder="Поиск..." value="<?= htmlspecialchars($search) ?>">
+                            <button class="btn btn-outline-secondary" type="submit">Найти</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" name="sort" onchange="window.location.href='admin.php?section=reviews&status=<?= $filter_status ?>&search=<?= urlencode($search) ?>&sort='+this.value">
+                            <option value="date_desc" <?= ($_GET['sort'] ?? 'date_desc') == 'date_desc' ? 'selected' : '' ?>>По дате (новые сначала)</option>
+                            <option value="date_asc" <?= ($_GET['sort'] ?? '') == 'date_asc' ? 'selected' : '' ?>>По дате (старые сначала)</option>
+                            <option value="rating_desc" <?= ($_GET['sort'] ?? '') == 'rating_desc' ? 'selected' : '' ?>>По рейтингу (высокий)</option>
+                            <option value="rating_asc" <?= ($_GET['sort'] ?? '') == 'rating_asc' ? 'selected' : '' ?>>По рейтингу (низкий)</option>
+                            <option value="name_asc" <?= ($_GET['sort'] ?? '') == 'name_asc' ? 'selected' : '' ?>>По имени (А-Я)</option>
+                            <option value="name_desc" <?= ($_GET['sort'] ?? '') == 'name_desc' ? 'selected' : '' ?>>По имени (Я-А)</option>
+                            <option value="id_asc" <?= ($_GET['sort'] ?? '') == 'id_asc' ? 'selected' : '' ?>>По ID (возрастание)</option>
+                            <option value="id_desc" <?= ($_GET['sort'] ?? '') == 'id_desc' ? 'selected' : '' ?>>По ID (убывание)</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row mb-4">
     <div class="col-md-3">

@@ -85,14 +85,7 @@ while ($row = $products_result->fetch_assoc())
     $products[] = $row;
 }
 
-$stats_stmt = $conn->prepare("SELECT 
-    COUNT(*) as total,
-    SUM(CASE WHEN stock = 1 THEN 1 ELSE 0 END) as in_stock,
-    SUM(CASE WHEN stock = 0 THEN 1 ELSE 0 END) as out_of_stock,
-    COALESCE(AVG(price), 0) as avg_price,
-    SUM(price) as total_value,
-    COUNT(DISTINCT brand) as brands_count
-    FROM category_products WHERE category_type = ?");
+$stats_stmt = $conn->prepare("SELECT COUNT(*) as total, SUM(CASE WHEN stock = 1 THEN 1 ELSE 0 END) as in_stock, SUM(CASE WHEN stock = 0 THEN 1 ELSE 0 END) as out_of_stock, COALESCE(AVG(price), 0) as avg_price, SUM(price) as total_value, COUNT(DISTINCT brand) as brands_count FROM category_products WHERE category_type = ?");
 $stats_stmt->bind_param("s", $category_type);
 $stats_stmt->execute();
 $stats = $stats_stmt->get_result()->fetch_assoc();
@@ -110,6 +103,7 @@ $stats = $stats_stmt->get_result()->fetch_assoc();
         </a>
     </div>
 </div>
+
 <?php 
 if (isset($_SESSION['success_message']))
 {
@@ -133,6 +127,7 @@ if (isset($_SESSION['error_message']))
 unset($_SESSION['error_message']);
 }
 ?>
+
 <div class="row mb-4">
     <div class="col-md-3">
         <div class="card text-center">
@@ -256,15 +251,10 @@ unset($_SESSION['error_message']);
                             <td><?= htmlspecialchars($product['brand'] ?? '—') ?></td>
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <a href="admin.php?section=edit_category_product&id=<?= $product['id'] ?>&category_type=<?= urlencode($category_type) ?>&page=<?= $page ?>" 
-                                        class="btn btn-outline-primary"
-                                        title="Редактировать товар">
+                                    <a href="admin.php?section=edit_category_product&id=<?= $product['id'] ?>&category_type=<?= urlencode($category_type) ?>&page=<?= $page ?>" class="btn btn-outline-primary" title="Редактировать товар">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a href="admin.php?section=category_products&delete_product_id=<?= $product['id'] ?>&category_type=<?= urlencode($category_type) ?>" 
-                                        class="btn btn-outline-danger"
-                                        onclick="return confirm('Удалить этот товар?\n\nТовар: <?= htmlspecialchars(addslashes($product['title'])) ?>')"
-                                        title="Удалить товар">
+                                    <a href="admin.php?section=category_products&delete_product_id=<?= $product['id'] ?>&category_type=<?= urlencode($category_type) ?>" class="btn btn-outline-danger" onclick="return confirm('Удалить этот товар?\n\nТовар: <?= htmlspecialchars(addslashes($product['title'])) ?>')" title="Удалить товар">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>

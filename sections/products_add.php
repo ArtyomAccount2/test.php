@@ -102,6 +102,7 @@ while ($row = $categories_result->fetch_assoc())
         </a>
     </div>
 </div>
+
 <?php 
 if ($error)
 {
@@ -123,6 +124,7 @@ if ($success)
 <?php 
 }
 ?>
+
 <div class="card shadow-sm">
     <div class="card-header bg-white">
         <h5 class="mb-0">Форма добавления товара</h5>
