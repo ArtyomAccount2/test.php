@@ -9,6 +9,14 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['u
     header("Location: ../files/logout.php");
 }
 
+if (isset($_GET['clear_login_error']) && $_GET['clear_login_error'] == 1) 
+{
+    unset($_SESSION['login_error']);
+    unset($_SESSION['error_message']);
+    header("Location: index.php");
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $login = $_POST['login'];

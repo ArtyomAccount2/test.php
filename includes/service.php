@@ -9,6 +9,39 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['u
     header("Location: ../files/logout.php");
 }
 
+$selected_service_id = isset($_GET['service_id']) ? $_GET['service_id'] : '';
+$selected_service_name = isset($_GET['service_name']) ? urldecode($_GET['service_name']) : '';
+$selected_service_price = isset($_GET['service_price']) ? $_GET['service_price'] : '';
+
+$services_list = [];
+$services_query = "SELECT id, name, category, price FROM services WHERE status = 'active' ORDER BY category, name";
+$services_result = $conn->query($services_query);
+
+if ($services_result && $services_result->num_rows > 0) 
+{
+    while ($service_row = $services_result->fetch_assoc()) 
+    {
+        $services_list[] = $service_row;
+    }
+}
+
+if (!empty($selected_service_id) || !empty($selected_service_name)) 
+{
+    $_SESSION['locked_service'] = [
+        'id' => $selected_service_id,
+        'name' => $selected_service_name,
+        'price' => $selected_service_price
+    ];
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['service_submit'])) 
+{
+    if (isset($_SESSION['locked_service']) && !empty($_SESSION['locked_service'])) 
+    {
+        $_POST['service'] = $_SESSION['locked_service']['id'];
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     $login = $_POST['login'];
@@ -79,53 +112,115 @@ unset($_SESSION['form_data']);
             <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 
+
+        if (!empty($selected_service_id) || !empty($selected_service_name))
+        {
+        ?>
+        setTimeout(function() 
+        {
+            let serviceSelect = document.getElementById('service');
+
+            if (serviceSelect && serviceSelect.disabled) 
+            {
+                serviceSelect.classList.add('bg-light');
+
+                serviceSelect.addEventListener('keydown', function(e) 
+                {
+                    e.preventDefault();
+                    return false;
+                });
+
+                let tooltip = new bootstrap.Tooltip(serviceSelect, {
+                    title: 'Для смены услуги перейдите в каталог услуг',
+                    placement: 'top'
+                });
+            }
+
+            if (serviceSelect) 
+            {
+                <?php 
+                if (!empty($selected_service_id))
+                {
+                ?>
+                    for (let option of serviceSelect.options) 
+                    {
+                        if (option.value == '<?= $selected_service_id ?>') 
+                        {
+                            option.selected = true;
+                            break;
+                        }
+                    }
+                <?php 
+                }
+                else
+                { 
+                ?>
+                    for (let option of serviceSelect.options) 
+                    {
+                        if (option.text.includes('<?= addslashes($selected_service_name) ?>')) 
+                        {
+                            option.selected = true;
+                            break;
+                        }
+                    }
+                <?php 
+                }
+                ?>
+            }
+            
+            document.getElementById('serviceForm').scrollIntoView({ behavior: 'smooth' });
+
+            let serviceItems = document.querySelectorAll('.service-item');
+
+            serviceItems.forEach(item => {
+                let itemName = item.querySelector('h6').textContent;
+
+                if (itemName.includes('<?= addslashes($selected_service_name) ?>')) 
+                {
+                    item.style.backgroundColor = '#e7f1ff';
+                    item.style.border = '2px solid #0d6efd';
+                    item.style.transition = 'all 0.3s ease';
+                }
+            });
+        }, 500);
+        <?php 
+        }
         ?>
 
-        let serviceItems = document.querySelectorAll('.service-item');
-        serviceItems.forEach(item => {
-            item.addEventListener('click', function() 
-            {
-                let serviceName = this.querySelector('h6').textContent;
-                let serviceSelect = document.getElementById('service');
-
-                for (let option of serviceSelect.options) 
-                {
-                    if (option.text.includes(serviceName)) 
-                    {
-                        serviceSelect.value = option.value;
-                        break;
-                    }
-                }
-
-                document.getElementById('serviceForm').scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-
         let serviceForm = document.getElementById('serviceForm');
-        serviceForm.addEventListener('submit', function(e)
-        {
-            e.preventDefault();
 
-            if (this.checkValidity()) 
+        if (serviceForm) 
+        {
+            serviceForm.addEventListener('submit', function(e)
             {
-                let submitBtn = this.querySelector('button[type="submit"]');
-                submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Заявка отправлена!';
-                submitBtn.classList.remove('btn-primary');
-                submitBtn.classList.add('btn-success');
-                submitBtn.disabled = true;
-                
-                setTimeout(() => {
-                    this.reset();
-                    submitBtn.innerHTML = '<i class="bi bi-calendar-check me-2"></i>Записаться онлайн';
-                    submitBtn.classList.remove('btn-success');
-                    submitBtn.classList.add('btn-primary');
-                    submitBtn.disabled = false;
-                }, 3000);
-            }
-        });
+                e.preventDefault();
+
+                if (this.checkValidity()) 
+                {
+                    let submitBtn = this.querySelector('button[type="submit"]');
+                    submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Заявка отправлена!';
+                    submitBtn.classList.remove('btn-primary');
+                    submitBtn.classList.add('btn-success');
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        this.reset();
+                        submitBtn.innerHTML = '<i class="bi bi-calendar-check me-2"></i>Записаться онлайн';
+                        submitBtn.classList.remove('btn-success');
+                        submitBtn.classList.add('btn-primary');
+                        submitBtn.disabled = false;
+                    }, 3000);
+                }
+            });
+        }
 
         let today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').min = today;
+        let dateInput = document.getElementById('date');
+
+        if (dateInput) 
+        {
+            dateInput.min = today;
+        }
 
         function equalizeCardHeights() 
         {
@@ -162,6 +257,10 @@ unset($_SESSION['form_data']);
     <div class="hero-section text-center mb-5" style="padding-top: 85px;">
         <h1 class="display-5 fw-bold text-primary mb-3">Профессиональный автосервис</h1>
         <p class="lead text-muted mb-4">Комплексное обслуживание и ремонт автомобилей любой сложности</p>
+        <a href="services_list.php" class="btn btn-outline-primary btn-lg">
+            <i class="bi bi-grid-3x3-gap-fill me-2"></i>Смотреть все услуги
+            <span class="badge bg-primary ms-2">20+</span>
+        </a>
     </div>
     <div class="row g-4 mb-5">
         <div class="col-lg-6">
@@ -178,7 +277,7 @@ unset($_SESSION['form_data']);
                     <div class="card-body-custom p-4">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <div class="service-item h-100" data-service="diagnostics">
+                                <div class="service-item h-100">
                                     <div class="d-flex align-items-start mb-2">
                                         <div class="service-icon bg-primary me-3">
                                             <i class="bi bi-search text-white"></i>
@@ -195,7 +294,7 @@ unset($_SESSION['form_data']);
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="service-item h-100" data-service="maintenance">
+                                <div class="service-item h-100">
                                     <div class="d-flex align-items-start mb-2">
                                         <div class="service-icon bg-primary me-3">
                                             <i class="bi bi-gear-fill text-white"></i>
@@ -212,7 +311,7 @@ unset($_SESSION['form_data']);
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="service-item h-100" data-service="engine">
+                                <div class="service-item h-100">
                                     <div class="d-flex align-items-start mb-2">
                                         <div class="service-icon bg-primary me-3">
                                             <i class="bi bi-lightning-charge text-white"></i>
@@ -229,7 +328,7 @@ unset($_SESSION['form_data']);
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="service-item h-100" data-service="suspension">
+                                <div class="service-item h-100">
                                     <div class="d-flex align-items-start mb-2">
                                         <div class="service-icon bg-primary me-3">
                                             <i class="bi bi-car-front text-white"></i>
@@ -246,7 +345,7 @@ unset($_SESSION['form_data']);
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="service-item h-100" data-service="electronics">
+                                <div class="service-item h-100">
                                     <div class="d-flex align-items-start mb-2">
                                         <div class="service-icon bg-primary me-3">
                                             <i class="bi bi-cpu text-white"></i>
@@ -263,7 +362,7 @@ unset($_SESSION['form_data']);
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="service-item h-100" data-service="tires">
+                                <div class="service-item h-100">
                                     <div class="d-flex align-items-start mb-2">
                                         <div class="service-icon bg-primary me-3">
                                             <i class="bi bi-circle text-white"></i>
@@ -337,6 +436,28 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="card-body-custom p-4">
                         <div class="special-offer mb-4">
+                            <?php 
+                            if (!empty($selected_service_name))
+                            {
+                            ?>
+                                <div class="alert alert-primary mb-0">
+                                    <div class="d-flex align-items-center">
+                                    <i class="bi bi-info-circle me-2"></i>Вы выбрали:⠀<strong><?= htmlspecialchars($selected_service_name) ?></strong>
+                                        <?php 
+                                        if (!empty($selected_service_price))
+                                        {
+                                        ?>
+                                            <span class="badge bg-primary ms-2">от <?= number_format($selected_service_price, 0, ',', ' ') ?> ₽</span>
+                                        <?php 
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                            <?php 
+                            }
+                            else
+                            { 
+                            ?>
                             <div class="alert alert-info mb-0">
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-gift-fill me-3"></i>
@@ -346,6 +467,9 @@ unset($_SESSION['form_data']);
                                     </div>
                                 </div>
                             </div>
+                            <?php 
+                            }
+                            ?>
                         </div>
                         <form id="serviceForm" class="needs-validation" novalidate>
                             <div class="row">
@@ -380,16 +504,41 @@ unset($_SESSION['form_data']);
                                 <label for="service" class="form-label fw-semibold">
                                     <i class="bi bi-tools me-1"></i>Услуга<span class="text-danger">*</span>
                                 </label>
-                                <select class="form-select" id="service" required>
-                                    <option value="" selected disabled>Выберите услугу</option>
-                                    <option value="diagnostics">Компьютерная диагностика (от 1500₽)</option>
-                                    <option value="maintenance">Техническое обслуживание (от 3000₽)</option>
-                                    <option value="engine">Ремонт двигателя (от 5000₽)</option>
-                                    <option value="suspension">Ремонт ходовой части (от 2500₽)</option>
-                                    <option value="electronics">Автоэлектрика (от 2000₽)</option>
-                                    <option value="tires">Шиномонтаж (от 1000₽)</option>
-                                    <option value="other">Консультация специалиста</option>
+                                <select class="form-select" id="service" name="service" required 
+                                <?php echo (!empty($selected_service_id) || !empty($selected_service_name)) ? 'disabled' : ''; ?>>
+                                    <option value="" <?= empty($selected_service_id) ? 'selected' : '' ?> disabled>Выберите услугу</option>
+                                <?php 
+                                if (!empty($services_list))
+                                {
+                                ?>
+                                    <?php 
+                                    foreach ($services_list as $service)
+                                    {
+                                    ?>
+                                        <option value="<?= $service['id'] ?>" data-price="<?= $service['price'] ?>"
+                                            <?= ($selected_service_id == $service['id'] || $selected_service_name == $service['name']) ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($service['name']) ?> (от <?= number_format($service['price'], 0, ',', ' ') ?> ₽)
+                                        </option>
+                                    <?php 
+                                    }
+                                    ?>
+                                <?php 
+                                }
+                                ?>
                                 </select>
+                                <?php 
+                                if (!empty($selected_service_id) || !empty($selected_service_name))
+                                {
+                                ?>
+                                    <input type="hidden" name="service_id" value="<?= htmlspecialchars($selected_service_id) ?>">
+                                    <input type="hidden" name="service_name" value="<?= htmlspecialchars($selected_service_name) ?>">
+                                    <div class="form-text text-info mt-2">
+                                        <i class="bi bi-lock-fill me-1"></i>Услуга заблокирована для изменения. 
+                                        <a href="service.php" class="text-primary">Снять блокировку</a>
+                                    </div>
+                                <?php 
+                                }
+                                ?>
                                 <div class="invalid-feedback">Пожалуйста, выберите услугу</div>
                             </div>
                             <div class="row">
@@ -427,15 +576,13 @@ unset($_SESSION['form_data']);
                             </div>
                             <div class="mb-3">
                                 <label for="message" class="form-label fw-semibold">
-                                    <i class="bi bi-chat-text me-1"></i>Описание проблемы<span class="text-danger">*</span>
+                                    <i class="bi bi-chat-text me-1"></i>Описание проблемы
                                 </label>
                                 <textarea class="form-control" id="message" rows="2" placeholder="Опишите симптомы или проблему с автомобилем..."></textarea>
                             </div>
                             <div class="form-check mb-4">
                                 <input class="form-check-input" type="checkbox" id="consent" required>
-                                <label class="form-check-label small" for="consent">
-                                    Согласен на обработку персональных данных
-                                </label>
+                                <label class="form-check-label small" for="consent">Согласен на обработку персональных данных</label>
                                 <div class="invalid-feedback">Необходимо ваше согласие</div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
@@ -443,8 +590,7 @@ unset($_SESSION['form_data']);
                             </button>
                             <div class="text-center mt-3">
                                 <small class="text-muted">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    Подтверждение записи поступит в течение 15 минут
+                                    <i class="bi bi-info-circle me-1"></i>Подтверждение записи поступит в течение 15 минут
                                 </small>
                             </div>
                         </form>

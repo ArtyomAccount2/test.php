@@ -475,7 +475,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
 <div class="modal fade" id="newApiKeyModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-success text-white">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title">
                     <i class="bi bi-key me-2"></i>Новый API ключ создан
                 </h5>
@@ -513,7 +513,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="markAsSaved()">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="markAsSaved()">
                     <i class="bi bi-check-circle me-1"></i>Я сохранил ключи
                 </button>
             </div>
@@ -521,7 +521,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
     </div>
 </div>
 <?php 
-unset($_SESSION['new_api_key']); 
 }
 ?>
 
@@ -609,7 +608,7 @@ function showCopySuccess(button)
 function showCopyManual(text, button) 
 {
     let modalHTML = `
-        <div class="modal fade" id="manualCopyModal" tabindex="-1" data-bs-backdrop="static>
+        <div class="modal fade" id="manualCopyModal" tabindex="-1" data-bs-backdrop="static">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header bg-warning">
@@ -664,8 +663,13 @@ document.addEventListener('DOMContentLoaded', function()
     if (isset($_SESSION['new_api_key']))
     {
     ?>
-        let newKeyModal = new bootstrap.Modal(document.getElementById('newApiKeyModal'));
-        newKeyModal.show();
+        let newKeyModalElement = document.getElementById('newApiKeyModal');
+
+        if (newKeyModalElement) 
+        {
+            let newKeyModal = new bootstrap.Modal(newKeyModalElement);
+            newKeyModal.show();
+        }
     <?php 
     } 
     ?>
@@ -712,5 +716,8 @@ function markAsSaved()
     console.log('Ключи сохранены пользователем');
 }
 </script>
+<?php 
+    unset($_SESSION['new_api_key']); 
+?>
 </body>
 </html>

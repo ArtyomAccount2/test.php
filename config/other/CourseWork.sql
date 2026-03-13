@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 09 2026 г., 21:30
+-- Время создания: Мар 13 2026 г., 23:40
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -63,7 +63,7 @@ CREATE TABLE `api_keys` (
 INSERT INTO `api_keys` (`id`, `name`, `api_key`, `secret_key`, `status`, `permissions`, `last_used`, `created_at`, `expires_at`, `revoked_at`) VALUES
 (1, 'api_keys', 'sk_live_9f91e34cecf030985f13e1eeae02e6b3', 'sk_305308cd266a815f26aebb00613a6e2e9d9028b9946fe003', 'active', 'read,write', NULL, '2026-01-11 12:27:36', '2027-01-11 12:27:36', NULL),
 (2, 'secret', 'sk_live_0530805657771205c63ddf970a3b4365', 'sk_3d6b3db0920b13298822604a87e2e7ea83be75a7d0d363ea', 'revoked', 'read,write', NULL, '2026-01-11 14:24:16', '2027-01-11 14:24:16', '2026-01-28 18:27:17'),
-(4, 'Лал-Авто (user2)', 'sk_live_f03ea03f574f8afda76d8ea3cf6ee7be', 'sk_0615af086cdd350ca4ce64e4eb7363cbdee715d124c2aa86', 'active', 'read,write,products,orders', NULL, '2026-01-28 18:07:43', '2027-01-28 18:07:43', NULL);
+(8, 'Лал-Авто (user2)', 'sk_live_671d4f918980a27d688dabaad96a9077', 'sk_9feb09576f5a5fb229d1de670d46e4cf15dd00c2725018b1', 'active', 'read,products,orders', NULL, '2026-03-13 19:52:26', '2026-09-09 19:52:26', NULL);
 
 -- --------------------------------------------------------
 
@@ -986,7 +986,10 @@ CREATE TABLE `shops` (
   `area` decimal(10,2) DEFAULT '0.00',
   `employees` int(11) DEFAULT '0',
   `status` varchar(20) DEFAULT 'active',
+  `featured` tinyint(1) DEFAULT '0',
   `description` text,
+  `services` text,
+  `parking` varchar(50) DEFAULT NULL,
   `schedule` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -995,17 +998,12 @@ CREATE TABLE `shops` (
 -- Дамп данных таблицы `shops`
 --
 
-INSERT INTO `shops` (`id`, `name`, `type`, `region`, `phone`, `email`, `address`, `area`, `employees`, `status`, `description`, `schedule`, `created_at`) VALUES
-(1, 'Лал-Авто Центр', 'main', 'Москва', '+7 (495) 123-45-67', 'center@lal-auto.ru', 'ул. Ленина, 123, бизнес-центр \"Северный\"', '250.50', 15, 'active', 'Основной магазин компании', '09:00 - 18:00', '2026-01-07 17:00:41'),
-(2, 'Лал-Авто Север', 'branch', 'Санкт-Петербург', '+7 (812) 987-65-43', 'north@lal-auto.ru', 'пр. Мира, 45, торговый комплекс \"Европа\"', '180.00', 10, 'active', 'Филиал в Санкт-Петербурге', '10:00 - 19:00', '2026-01-07 17:00:41'),
-(3, 'Лал-Авто Южный', 'branch', 'Краснодар', '+7 (861) 234-56-78', 'south@lal-auto.ru', 'ул. Красная, 150', '210.50', 12, 'active', 'Филиал в Краснодаре', '09:00 - 20:00', '2026-03-09 17:24:21'),
-(4, 'Лал-Авто Восточный', 'branch', 'Новосибирск', '+7 (383) 345-67-89', 'east@lal-auto.ru', 'пр. Димитрова, 35', '195.00', 10, 'active', 'Филиал в Новосибирске', '09:00 - 19:00', '2026-03-09 17:24:21'),
-(5, 'Лал-Авто Западный', 'branch', 'Калининград', '+7 (4012) 78-90-12', 'west@lal-auto.ru', 'ул. Гагарина, 45', '175.30', 9, 'active', 'Филиал в Калининграде', '10:00 - 19:00', '2026-03-09 17:24:21'),
-(6, 'Лал-Авто Центральный', 'main', 'Екатеринбург', '+7 (343) 456-78-90', 'ekb@lal-auto.ru', 'ул. Ленина, 25', '280.00', 18, 'active', 'Главный офис в Екатеринбурге', '09:00 - 20:00', '2026-03-09 17:24:21'),
-(7, 'Лал-Авто Поволжье', 'branch', 'Казань', '+7 (843) 567-89-01', 'kazan@lal-auto.ru', 'ул. Баумана, 60', '190.00', 11, 'active', 'Филиал в Казани', '09:00 - 19:00', '2026-03-09 17:24:21'),
-(8, 'Лал-Авто Урал', 'branch', 'Челябинск', '+7 (351) 678-90-12', 'chel@lal-auto.ru', 'ул. Кирова, 80', '165.00', 8, 'inactive', 'Филиал в Челябинске (временно закрыт)', '10:00 - 18:00', '2026-03-09 17:24:21'),
-(9, 'Лал-Авто Сибирь', 'branch', 'Омск', '+7 (3812) 78-90-12', 'omsk@lal-auto.ru', 'пр. Мира, 42', '155.00', 7, 'maintenance', 'Филиал в Омске на ремонте', '11:00 - 19:00', '2026-03-09 17:24:21'),
-(10, 'Лал-Авто Дальневосточный', 'branch', 'Владивосток', '+7 (423) 234-56-78', 'dv@lal-auto.ru', 'ул. Светланская, 120', '210.00', 10, 'active', 'Филиал во Владивостоке', '10:00 - 19:00', '2026-03-09 17:24:21');
+INSERT INTO `shops` (`id`, `name`, `type`, `region`, `phone`, `email`, `address`, `area`, `employees`, `status`, `featured`, `description`, `services`, `parking`, `schedule`, `created_at`) VALUES
+(1, 'Центральный', 'main', 'Калининград', '+7 (4012) 65-65-65', 'center@lal-auto.ru', 'ул. Автомобильная, 12', '250.00', 17, 'active', 1, 'Флагманский магазин', 'Запчасти,Сервис,Шины,Тюнинг', 'Есть парковка', 'Пн-Пт: 9:00-20:00;Сб-Вс: 10:00-18:00', '2026-03-12 07:00:00'),
+(2, 'Московский', 'branch', 'Калининград', '+7 (4012) 76-76-76', 'moskovsky@lal-auto.ru', 'Московский пр-т, 45', '180.00', 12, 'active', 1, 'Крупный магазин', 'Запчасти,Сервис,Шины', 'Есть парковка', 'Пн-Пт: 9:00-20:00;Сб-Вс: 10:00-18:00', '2026-03-12 07:00:00'),
+(3, 'Горького', 'branch', 'Калининград', '+7 (4012) 87-87-87', 'gorkogo@lal-auto.ru', 'ул. Горького, 15', '120.00', 8, 'active', 0, 'Стандартный магазин', 'Запчасти,Шины', 'Ограниченная парковка', 'Пн-Пт: 9:00-20:00;Сб-Вс: 10:00-18:00', '2026-03-12 07:00:00'),
+(4, 'Приморский', 'branch', 'Калининград', '+7 (4012) 98-98-98', 'primorsky@lal-auto.ru', 'ул. Приморская, 8', '150.00', 9, 'active', 0, 'Стандартный магазин', 'Запчасти,Химия', 'Есть парковка', 'Пн-Пт: 9:00-20:00;Сб-Вс: 10:00-18:00', '2026-03-12 07:00:00'),
+(5, 'Советский', 'branch', 'Калининград', '+7 (4012) 54-32-10', 'sovetsky@lal-auto.ru', 'Советский пр-т, 120', '200.00', 14, 'active', 1, 'Крупный магазин', 'Запчасти,Сервис,Шины,Тюнинг', 'Есть парковка', 'Пн-Пт: 8:00-19:00;Сб-Вс: 9:00-17:00', '2026-03-12 07:00:00');
 
 -- --------------------------------------------------------
 
@@ -1318,7 +1316,7 @@ ALTER TABLE `action_logs`
 -- AUTO_INCREMENT для таблицы `api_keys`
 --
 ALTER TABLE `api_keys`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT для таблицы `backup_logs`
@@ -1408,7 +1406,7 @@ ALTER TABLE `remember_tokens`
 -- AUTO_INCREMENT для таблицы `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `services`
@@ -1426,7 +1424,7 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT для таблицы `shops`
 --
 ALTER TABLE `shops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `system_versions`

@@ -50,8 +50,77 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
 }
 
+$featured_shop_query = "SELECT * FROM shops WHERE featured = 1 ORDER BY id LIMIT 2";
+$featured_result = $conn->query($featured_shop_query);
+$featured_shops = [];
+
+while ($row = $featured_result->fetch_assoc()) 
+{
+    $featured_shops[] = $row;
+}
+
+if (count($featured_shops) < 2) 
+{
+    $main_shops_query = "SELECT * FROM shops WHERE type = 'main' ORDER BY id LIMIT 2";
+    $main_result = $conn->query($main_shops_query);
+    $featured_shops = [];
+
+    while ($row = $main_result->fetch_assoc()) 
+    {
+        $featured_shops[] = $row;
+    }
+}
+
+$all_shops_query = "SELECT * FROM shops ORDER BY CASE WHEN type = 'main' THEN 1 WHEN featured = 1 THEN 2 ELSE 3 END, id";
+$all_shops_result = $conn->query($all_shops_query);
+$all_shops = [];
+
+while ($row = $all_shops_result->fetch_assoc()) 
+{
+    $all_shops[] = $row;
+}
+
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
+
+function getServicesArray($services_string) 
+{
+    if (empty($services_string)) 
+    {
+        return [];
+    }
+
+    return explode(',', $services_string);
+}
+
+function getServiceBadgeClass($service) 
+{
+    $classes = [
+        'Запчасти' => 'bg-primary',
+        'Сервис' => 'bg-success',
+        'Шины' => 'bg-info',
+        'Тюнинг' => 'bg-warning',
+        'Химия' => 'bg-warning',
+        'Автохимия' => 'bg-warning'
+    ];
+
+    return $classes[$service] ?? 'bg-secondary';
+}
+
+function getParkingBadgeClass($parking) 
+{
+    return $parking == 'Есть парковка' ? 'bg-success' : 'bg-secondary';
+}
+
+function formatSchedule($schedule) 
+{
+    if (empty($schedule)) 
+    {
+        return 'Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00';
+    }
+
+    return str_replace(';', '<br>', $schedule);
+}
 ?>
 
 <!DOCTYPE html>
@@ -220,41 +289,71 @@ unset($_SESSION['form_data']);
         <p class="lead text-muted">Сеть автомагазинов Лал-Авто в Калининграде и области</p>
     </div>
     <div class="row g-4 mb-5">
+        <?php 
+        $counter = 0;
+
+        foreach ($featured_shops as $shop)
+        {
+            $counter++;
+            $services = getServicesArray($shop['services']);
+            $is_first = ($counter == 1);
+        ?>
         <div class="col-lg-6">
-            <div class="card shop-card featured-shop h-100">
-                <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center">
-                    <h3 class="mb-0">Центральный магазин</h3>
-                    <span class="badge bg-warning">Флагманский</span>
+            <div class="card shop-card <?= $is_first ? 'featured-shop' : '' ?> h-100">
+                <div class="card-header <?= $is_first ? 'bg-gradient-primary' : 'bg-primary' ?> text-white d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0"><?= htmlspecialchars($shop['name']) ?></h3>
+                    <?php 
+                    if ($is_first)
+                    {
+                    ?>
+                        <span class="badge bg-warning">Флагманский</span>
+                    <?php
+                    }
+                    ?>
                 </div>
                 <div class="card-body">
                     <div class="shop-info mb-4">
                         <div class="d-flex align-items-center mb-3">
                             <i class="bi bi-geo-alt-fill fs-5 text-primary me-3"></i>
                             <div>
-                                <strong>г. Калининград, ул. Автомобильная, 12</strong>
-                                <div class="text-muted small">Район: Центральный</div>
+                                <strong><?= htmlspecialchars($shop['address']) ?></strong>
+                                <div class="text-muted small">Район: <?= htmlspecialchars($shop['region']) ?></div>
                             </div>
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <i class="bi bi-clock-fill fs-5 text-primary me-3"></i>
                             <div>
-                                <strong>Пн-Пт: 9:00-20:00</strong><br>
-                                <strong>Сб-Вс: 10:00-18:00</strong>
+                                <?= formatSchedule($shop['schedule']) ?>
                             </div>
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <i class="bi bi-telephone-fill fs-5 text-primary me-3"></i>
                             <div>
-                                <strong>+7 (4012) 65-65-65</strong><br>
-                                <span class="text-muted small">Многоканальный</span>
+                                <strong><?= htmlspecialchars($shop['phone']) ?></strong><br>
+                                <span class="text-muted small"><?= $shop['email'] ? htmlspecialchars($shop['email']) : 'Многоканальный' ?></span>
                             </div>
                         </div>
-                        <div class="services-tags mt-3">
-                            <span class="badge bg-light text-dark me-1">Автосервис</span>
-                            <span class="badge bg-light text-dark me-1">Шиномонтаж</span>
-                            <span class="badge bg-light text-dark me-1">Автохимия</span>
-                            <span class="badge bg-light text-dark">Тюнинг</span>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-people-fill fs-5 text-primary me-3"></i>
+                            <strong>Количество сотрудников: <?= htmlspecialchars($shop['employees']) ?></strong>
                         </div>
+                        <?php 
+                        if (!empty($services))
+                        {
+                        ?>
+                        <div class="services-tags mt-3">
+                            <?php 
+                            foreach ($services as $service)
+                            {
+                            ?>
+                                <span class="badge bg-light text-dark me-1"><?= htmlspecialchars(trim($service)) ?></span>
+                            <?php 
+                            }
+                            ?>
+                        </div>
+                        <?php 
+                        }
+                        ?>
                     </div>
                     <div class="shop-map">
                         <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A1234567890abcdef&amp;source=constructor" width="100%" height="300" frameborder="0" style="border-radius: 8px;"></iframe>
@@ -262,54 +361,17 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="card shop-card h-100">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">Магазин на Московском</h3>
-                </div>
-                <div class="card-body">
-                    <div class="shop-info mb-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="bi bi-geo-alt-fill fs-5 text-primary me-3"></i>
-                            <div>
-                                <strong>г. Калининград, Московский пр-т, 45</strong>
-                                <div class="text-muted small">Район: Московский</div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="bi bi-clock-fill fs-5 text-primary me-3"></i>
-                            <div>
-                                <strong>Пн-Пт: 9:00-20:00</strong><br>
-                                <strong>Сб-Вс: 10:00-18:00</strong>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="bi bi-telephone-fill fs-5 text-primary me-3"></i>
-                            <div>
-                                <strong>+7 (4012) 76-76-76</strong><br>
-                                <span class="text-muted small">Многоканальный</span>
-                            </div>
-                        </div>
-                        <div class="services-tags mt-3">
-                            <span class="badge bg-light text-dark me-1">Автосервис</span>
-                            <span class="badge bg-light text-dark me-1">Шиномонтаж</span>
-                            <span class="badge bg-light text-dark">Автохимия</span>
-                        </div>
-                    </div>
-                    <div class="shop-map">
-                        <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A1234567890abcdef&amp;source=constructor" width="100%" height="300" frameborder="0" style="border-radius: 8px;"></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php 
+        }
+        ?>
     </div>
     <div class="filters-section mb-4">
         <div class="d-flex flex-wrap gap-2 justify-content-center">
             <button class="btn btn-outline-primary filter-btn active" data-filter="all">Все магазины</button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="service">С автосервисом</button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="tire">С шиномонтажем</button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="chemistry">Автохимия</button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="tuning">Тюнинг</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="Сервис">С автосервисом</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="Шины">С шиномонтажем</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="Химия">Автохимия</button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="Тюнинг">Тюнинг</button>
         </div>
     </div>
     <div class="additional-shops mb-5">
@@ -322,96 +384,66 @@ unset($_SESSION['form_data']);
                             <th><i class="bi bi-geo-alt"></i> Адрес</th>
                             <th><i class="bi bi-telephone"></i> Телефон</th>
                             <th><i class="bi bi-clock"></i> Режим работы</th>
+                            <th><i class="bi bi-tools"></i> Площадь</th>
                             <th><i class="bi bi-tools"></i> Услуги</th>
                             <th><i class="bi bi-info-circle"></i> Дополнительно</th>
                         </tr>
                     </thead>
                     <tbody id="desktop-shops-body">
-                        <tr class="shop-row desktop-row" data-services="service,tire,tuning">
+                        <?php 
+                        foreach ($all_shops as $shop)
+                        {
+                            $services = getServicesArray($shop['services']);
+                            $services_lower = array_map('strtolower', $services);
+                            $data_services = implode(',', $services_lower);
+                            $shop_type_label = '';
+
+                            if ($shop['type'] == 'main') 
+                            {
+                                $shop_type_label = 'Флагманский';
+                            } 
+                            else if ($shop['featured'] == 1) 
+                            {
+                                $shop_type_label = 'Крупный';
+                            } 
+                            else 
+                            {
+                                $shop_type_label = 'Стандарт';
+                            }
+                        ?>
+                        <tr class="shop-row desktop-row" data-services="<?= htmlspecialchars($data_services) ?>">
                             <td>
-                                <strong>Центральный</strong>
-                                <div class="text-secondary small">Флагманский</div>
+                                <strong><?= htmlspecialchars($shop['name']) ?></strong>
+                                <div class="text-secondary small"><?= $shop_type_label ?></div>
                             </td>
-                            <td>ул. Автомобильная, 12</td>
-                            <td>+7 (4012) 65-65-65</td>
-                            <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
+                            <td><?= htmlspecialchars($shop['address']) ?></td>
+                            <td><?= htmlspecialchars($shop['phone']) ?></td>
+                            <td><?= formatSchedule($shop['schedule']) ?></td>
+                            <td><?= formatSchedule($shop['area']) ?> м²</td>
                             <td>
-                                <span class="badge bg-primary me-1">Запчасти</span>
-                                <span class="badge bg-success me-1">Сервис</span>
-                                <span class="badge bg-info me-1">Шины</span>
-                                <span class="badge bg-warning">Тюнинг</span>
-                            </td>
-                            <td>
-                                <span class="badge bg-success">Есть парковка</span>
-                            </td>
-                        </tr>
-                        <tr class="shop-row desktop-row" data-services="service,tire">
-                            <td>
-                                <strong>Московский</strong>
-                                <div class="text-secondary small">Крупный</div>
-                            </td>
-                            <td>Московский пр-т, 45</td>
-                            <td>+7 (4012) 76-76-76</td>
-                            <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
-                            <td>
-                                <span class="badge bg-primary me-1">Запчасти</span>
-                                <span class="badge bg-success me-1">Сервис</span>
-                                <span class="badge bg-info">Шины</span>
-                            </td>
-                            <td>
-                                <span class="badge bg-success">Есть парковка</span>
-                            </td>
-                        </tr>
-                        <tr class="shop-row desktop-row" data-services="tire">
-                            <td>
-                                <strong>Горького</strong>
-                                <div class="text-secondary small">Стандарт</div>
-                            </td>
-                            <td>ул. Горького, 15</td>
-                            <td>+7 (4012) 87-87-87</td>
-                            <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
-                            <td>
-                                <span class="badge bg-primary me-1">Запчасти</span>
-                                <span class="badge bg-info me-1">Шины</span>
+                                <?php 
+                                foreach ($services as $service)
+                                {
+                                ?>
+                                    <span class="badge <?= getServiceBadgeClass(trim($service)) ?> me-1"><?= htmlspecialchars(trim($service)) ?></span>
+                                <?php 
+                                }
+                                ?>
                             </td>
                             <td>
-                                <span class="badge bg-secondary">Ограниченная парковка</span>
-                            </td>
-                        </tr>
-                        <tr class="shop-row desktop-row" data-services="chemistry">
-                            <td>
-                                <strong>Приморский</strong>
-                                <div class="text-secondary small">Стандарт</div>
-                            </td>
-                            <td>ул. Приморская, 8</td>
-                            <td>+7 (4012) 98-98-98</td>
-                            <td>Пн-Пт: 9:00-20:00<br>Сб-Вс: 10:00-18:00</td>
-                            <td>
-                                <span class="badge bg-primary me-1">Запчасти</span>
-                                <span class="badge bg-warning">Химия</span>
-                            </td>
-                            <td>
-                                <span class="badge bg-success">Есть парковка</span>
+                                <?php 
+                                if (!empty($shop['parking']))
+                                {
+                                ?>
+                                    <span class="badge <?= getParkingBadgeClass($shop['parking']) ?>"><?= htmlspecialchars($shop['parking']) ?></span>
+                                <?php 
+                                }
+                                ?>
                             </td>
                         </tr>
-                        <tr class="shop-row desktop-row" data-services="service,tire,tuning">
-                            <td>
-                                <strong>Советский</strong>
-                                <div class="text-secondary small">Крупный</div>
-                            </td>
-                            <td>Советский пр-т, 120</td>
-                            <td>+7 (4012) 54-32-10</td>
-                            <td>Пн-Пт: 8:00-19:00<br>Сб-Вс: 9:00-17:00</td>
-                            <td>
-                                <span class="badge bg-primary me-1">Запчасти</span>
-                                <span class="badge bg-success me-1">Сервис</span>
-                                <span class="badge bg-info me-1">Шины</span>
-                                <span class="badge bg-warning">Тюнинг</span>
-                            </td>
-                            <td>
-                                <span class="badge bg-success">Есть парковка</span>
-                            </td>
-                        </tr>
+                        <?php 
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>

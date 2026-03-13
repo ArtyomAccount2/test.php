@@ -111,12 +111,12 @@ unset($_SESSION['form_data']);
                         </button>
                     </form>
                     <div class="text-center footer-links mt-2">
-                        <a href="../index.php" class="text-decoration-none text-primary">
+                        <a href="../index.php?clear_login_error=1" class="text-decoration-none text-primary">
                             <i class="bi bi-arrow-left me-1"></i>Вернуться на главную
                         </a>
                     </div>
                     <div class="system-info">
-                        <i class="bi bi-shield-check"></i>Защищённое соединение • v2.2.0
+                        <i class="bi bi-shield-check"></i> Защищённое соединение • v2.2.0
                     </div>
                 </div>
             </div>

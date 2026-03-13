@@ -1,0 +1,251 @@
+.services-header 
+{
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 40px 0 30px;
+    margin-top: 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.services-header h1 
+{
+    color: #333;
+    font-weight: 600;
+    margin-top: 0;
+}
+
+.services-header .lead 
+{
+    color: #6c757d;
+}
+
+.category-section 
+{
+    margin-bottom: 40px;
+}
+
+.category-title 
+{
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #007bff;
+    display: inline-block;
+}
+
+.service-card 
+{
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card:hover 
+{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 123, 255, 0.15);
+    border-color: #007bff;
+}
+
+.service-card-header 
+{
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.service-card-icon 
+{
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.service-card-icon i 
+{
+    font-size: 1.5rem;
+    color: white;
+}
+
+.service-card-title 
+{
+    flex: 1;
+}
+
+.service-card-title h3 
+{
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #333;
+}
+
+.service-card-category 
+{
+    font-size: 0.8rem;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+}
+
+.service-card-category i 
+{
+    margin-right: 0.25rem;
+    font-size: 0.7rem;
+}
+
+.service-card-description 
+{
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    flex: 1;
+}
+
+.service-card-footer 
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.service-card-price 
+{
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #28a745;
+}
+
+.service-card-price small 
+{
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: #6c757d;
+}
+
+.service-card-duration 
+{
+    background: #e9ecef;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #495057;
+    display: flex;
+    align-items: center;
+}
+
+.service-card-duration i 
+{
+    margin-right: 0.25rem;
+    color: #007bff;
+}
+
+.filter-section 
+{
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+}
+
+.filter-badge 
+{
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    margin: 0.25rem;
+}
+
+.filter-badge:hover,
+.filter-badge.active
+{
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.stats-card 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    height: 100%;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.stats-card h3 
+{
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.stats-card p 
+{
+    margin-bottom: 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) 
+{
+    .services-header 
+    {
+        padding: 30px 0 20px;
+    }
+
+    .services-header h1 
+    {
+        font-size: 2rem;
+    }
+
+    .category-title 
+    {
+        font-size: 1.25rem;
+    }
+
+    .service-card-title h3 
+    {
+        font-size: 1rem;
+    }
+
+    .service-card-price 
+    {
+        font-size: 1.1rem;
+    }
+    
+    .stats-card 
+    {
+        padding: 1rem;
+    }
+    
+    .stats-card h3 
+    {
+        font-size: 1.5rem;
+    }
+}

@@ -58,7 +58,6 @@
     border-radius: 8px;
     padding: 1rem;
     margin-bottom: 0.75rem;
-    cursor: pointer;
     transition: all 0.2s ease;
     height: auto;
     min-height: 90px;
@@ -348,4 +347,27 @@
 .express-service:last-child 
 {
     margin-bottom: 0;
+}
+
+select[disabled] 
+{
+    background-color: #f8f9fa !important;
+    cursor: not-allowed !important;
+    opacity: 0.8;
+}
+
+select[disabled] + .invalid-feedback 
+{
+    display: none;
+}
+
+.form-text a 
+{
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+
+.form-text a:hover 
+{
+    border-bottom: 1px solid;
 }
