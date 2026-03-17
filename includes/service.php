@@ -34,53 +34,160 @@ if (!empty($selected_service_id) || !empty($selected_service_name))
     ];
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['service_submit'])) 
-{
-    if (isset($_SESSION['locked_service']) && !empty($_SESSION['locked_service'])) 
-    {
-        $_POST['service'] = $_SESSION['locked_service']['id'];
-    }
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
-    $login = $_POST['login'];
-    $password = $_POST['password'];
-
-    if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
+    if (isset($_POST['login']) && isset($_POST['password'])) 
     {
-        $_SESSION['login_error'] = true;
-        $_SESSION['error_message'] = "Неверный логин или пароль!";
-        header("Location: " . $_SERVER['REQUEST_URI']);
-        exit();
-    }
-    else
-    {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
-        $stmt->bind_param("ss", $login, $password);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $login = $_POST['login'];
+        $password = $_POST['password'];
 
-        if ($result->num_rows > 0) 
-        {
-            $row = $result->fetch_assoc();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
-            $_SESSION['user_id'] = $row['id_users'];
-            unset($_SESSION['login_error']);
-            unset($_SESSION['error_message']);
-            header("Location: " . $_SERVER['REQUEST_URI']);
-            exit();
-        } 
-        else 
+        if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
         {
             $_SESSION['login_error'] = true;
             $_SESSION['error_message'] = "Неверный логин или пароль!";
-            $_SESSION['form_data'] = $_POST;
             header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         }
+        else
+        {
+            $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
+            $stmt->bind_param("ss", $login, $password);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) 
+            {
+                $row = $result->fetch_assoc();
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+                $_SESSION['user_id'] = $row['id_users'];
+                unset($_SESSION['login_error']);
+                unset($_SESSION['error_message']);
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            } 
+            else 
+            {
+                $_SESSION['login_error'] = true;
+                $_SESSION['error_message'] = "Неверный логин или пароль!";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            }
+        }
     }
+    
+    if (isset($_POST['service_submit'])) 
+    {
+        $form_token = md5(serialize($_POST));
+        
+        if (isset($_SESSION['last_service_form_token']) && $_SESSION['last_service_form_token'] === $form_token) 
+        {
+            header("Location: ".$_SERVER['PHP_SELF']);
+            exit();
+        }
+
+        $name = trim($_POST['name'] ?? '');
+        $phone = trim($_POST['phone'] ?? '');
+        $car = trim($_POST['car'] ?? '');
+        $service_id = $_POST['service'] ?? '';
+        $date = $_POST['date'] ?? '';
+        $time = $_POST['time'] ?? '';
+        $message = trim($_POST['message'] ?? '');
+        $consent = isset($_POST['consent']) ? 1 : 0;
+        
+        $errors = [];
+        
+        if (empty($name)) 
+        {
+            $errors[] = "Пожалуйста, введите ваше имя";
+        }
+        
+        if (empty($phone)) 
+        {
+            $errors[] = "Пожалуйста, введите номер телефона";
+        } 
+        else if (!preg_match('/^[\+\-\d\s\(\)]{10,}$/', $phone)) 
+        {
+            $errors[] = "Пожалуйста, введите корректный номер телефона";
+        }
+        
+        if (empty($car)) 
+        {
+            $errors[] = "Пожалуйста, укажите автомобиль";
+        }
+        
+        if (empty($service_id)) 
+        {
+            $errors[] = "Пожалуйста, выберите услугу";
+        }
+        
+        if (empty($date)) 
+        {
+            $errors[] = "Пожалуйста, выберите дату";
+        }
+        
+        if (empty($time)) 
+        {
+            $errors[] = "Пожалуйста, выберите время";
+        }
+        
+        if (!$consent) 
+        {
+            $errors[] = "Необходимо ваше согласие на обработку персональных данных";
+        }
+
+        if (empty($errors)) 
+        {
+            $service_name = '';
+            $service_price = '';
+            
+            if (!empty($service_id)) 
+            {
+                $stmt = $conn->prepare("SELECT name, price FROM services WHERE id = ?");
+                $stmt->bind_param("i", $service_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($row = $result->fetch_assoc()) 
+                {
+                    $service_name = $row['name'];
+                    $service_price = $row['price'];
+                }
+
+                $stmt->close();
+            }
+            
+            $insert_query = "INSERT INTO service_requests (name, phone, car, service_id, service_name, service_price, request_date, request_time, message, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')";
+            $stmt = $conn->prepare($insert_query);
+            $stmt->bind_param("sssisssss", $name, $phone, $car, $service_id, $service_name, $service_price, $date, $time, $message);
+            
+            if ($stmt->execute()) 
+            {
+                $_SESSION['last_service_form_token'] = $form_token;
+                $_SESSION['show_service_success_modal'] = true;
+                header("Location: ".$_SERVER['PHP_SELF']);
+                exit();
+            } 
+            else 
+            {
+                $error_message = "Произошла ошибка при отправке заявки: " . $conn->error;
+            }
+            $stmt->close();
+        } 
+        else 
+        {
+            $error_message = implode("<br>", $errors);
+        }
+    }
+}
+
+$show_success_modal = false;
+
+if (isset($_SESSION['show_service_success_modal']) && $_SESSION['show_service_success_modal'] === true) 
+{
+    $show_success_modal = true;
+    unset($_SESSION['show_service_success_modal']);
 }
 
 $form_data = $_SESSION['form_data'] ?? [];
@@ -185,34 +292,28 @@ unset($_SESSION['form_data']);
         }, 500);
         <?php 
         }
-        ?>
 
-        let serviceForm = document.getElementById('serviceForm');
-
-        if (serviceForm) 
+        if (!empty($error_message))
         {
-            serviceForm.addEventListener('submit', function(e)
+        ?>
+            setTimeout(function() 
             {
-                e.preventDefault();
-
-                if (this.checkValidity()) 
-                {
-                    let submitBtn = this.querySelector('button[type="submit"]');
-                    submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Заявка отправлена!';
-                    submitBtn.classList.remove('btn-primary');
-                    submitBtn.classList.add('btn-success');
-                    submitBtn.disabled = true;
-                    
-                    setTimeout(() => {
-                        this.reset();
-                        submitBtn.innerHTML = '<i class="bi bi-calendar-check me-2"></i>Записаться онлайн';
-                        submitBtn.classList.remove('btn-success');
-                        submitBtn.classList.add('btn-primary');
-                        submitBtn.disabled = false;
-                    }, 3000);
-                }
-            });
+                alert('<?= addslashes($error_message) ?>');
+            }, 100);
+        <?php 
         }
+
+        if ($show_success_modal)
+        {
+        ?>
+            setTimeout(function() 
+            {
+                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+            }, 100);
+        <?php 
+        }
+        ?>
 
         let today = new Date().toISOString().split('T')[0];
         let dateInput = document.getElementById('date');
@@ -471,20 +572,40 @@ unset($_SESSION['form_data']);
                             }
                             ?>
                         </div>
-                        <form id="serviceForm" class="needs-validation" novalidate>
+                        <?php 
+                        if (!empty($error_message))
+                        {
+                        ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <?= $error_message ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php 
+                        }
+                        ?>
+                        <form id="serviceForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="needs-validation" novalidate>
+                            <input type="hidden" name="service_submit" value="1">
+                            <?php 
+                            if (!empty($selected_service_id))
+                            {
+                            ?>
+                                <input type="hidden" name="locked_service_id" value="<?= htmlspecialchars($selected_service_id) ?>">
+                            <?php 
+                            }
+                            ?>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="name" class="form-label fw-semibold">
                                         <i class="bi bi-person me-1"></i>Ваше имя<span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="name" placeholder="Иван Иванов" required>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Иван Иванов" required value="<?php echo htmlspecialchars($_POST['name'] ?? ''); ?>">
                                     <div class="invalid-feedback">Пожалуйста, введите ваше имя</div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="phone" class="form-label fw-semibold">
                                         <i class="bi bi-phone me-1"></i>Телефон<span class="text-danger">*</span>
                                     </label>
-                                    <input type="tel" class="form-control" id="phone" placeholder="+7 (900) 123-45-67" required pattern="[\+\-\d\s\(\)]{10,}">
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="+7 (900) 123-45-67" required pattern="[\+\-\d\s\(\)]{10,}" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
                                     <div class="invalid-feedback">Пожалуйста, введите корректный телефон</div>
                                 </div>
                             </div>
@@ -496,7 +617,7 @@ unset($_SESSION['form_data']);
                                     <span class="input-group-text">
                                         <i class="bi bi-search"></i>
                                     </span>
-                                    <input type="text" class="form-control" id="car" placeholder="Марка, модель, год" required>
+                                    <input type="text" class="form-control" id="car" name="car" placeholder="Марка, модель, год" required value="<?php echo htmlspecialchars($_POST['car'] ?? ''); ?>">
                                 </div>
                                 <div class="invalid-feedback">Пожалуйста, укажите автомобиль</div>
                             </div>
@@ -514,9 +635,18 @@ unset($_SESSION['form_data']);
                                     <?php 
                                     foreach ($services_list as $service)
                                     {
+                                        $selected = '';
+
+                                        if ($selected_service_id == $service['id'] || $selected_service_name == $service['name']) 
+                                        {
+                                            $selected = 'selected';
+                                        } 
+                                        else if (isset($_POST['service']) && $_POST['service'] == $service['id']) 
+                                        {
+                                            $selected = 'selected';
+                                        }
                                     ?>
-                                        <option value="<?= $service['id'] ?>" data-price="<?= $service['price'] ?>"
-                                            <?= ($selected_service_id == $service['id'] || $selected_service_name == $service['name']) ? 'selected' : '' ?>>
+                                        <option value="<?= $service['id'] ?>" data-price="<?= $service['price'] ?>" <?= $selected ?>>
                                             <?= htmlspecialchars($service['name']) ?> (от <?= number_format($service['price'], 0, ',', ' ') ?> ₽)
                                         </option>
                                     <?php 
@@ -530,8 +660,7 @@ unset($_SESSION['form_data']);
                                 if (!empty($selected_service_id) || !empty($selected_service_name))
                                 {
                                 ?>
-                                    <input type="hidden" name="service_id" value="<?= htmlspecialchars($selected_service_id) ?>">
-                                    <input type="hidden" name="service_name" value="<?= htmlspecialchars($selected_service_name) ?>">
+                                    <input type="hidden" name="service" value="<?= htmlspecialchars($selected_service_id) ?>">
                                     <div class="form-text text-info mt-2">
                                         <i class="bi bi-lock-fill me-1"></i>Услуга заблокирована для изменения. 
                                         <a href="service.php" class="text-primary">Снять блокировку</a>
@@ -550,7 +679,7 @@ unset($_SESSION['form_data']);
                                         <span class="input-group-text">
                                             <i class="bi bi-calendar-date"></i>
                                         </span>
-                                        <input type="date" class="form-control" id="date" required>
+                                        <input type="date" class="form-control" id="date" name="date" required value="<?php echo htmlspecialchars($_POST['date'] ?? ''); ?>">
                                     </div>
                                     <div class="invalid-feedback">Пожалуйста, выберите дату</div>
                                 </div>
@@ -558,18 +687,18 @@ unset($_SESSION['form_data']);
                                     <label for="time" class="form-label fw-semibold">
                                         <i class="bi bi-clock me-1"></i>Время<span class="text-danger">*</span>
                                     </label>
-                                    <select class="form-select" id="time" required>
-                                        <option value="" selected disabled>Выберите время</option>
-                                        <option value="09:00">09:00</option>
-                                        <option value="10:00">10:00</option>
-                                        <option value="11:00">11:00</option>
-                                        <option value="12:00">12:00</option>
-                                        <option value="13:00">13:00</option>
-                                        <option value="14:00">14:00</option>
-                                        <option value="15:00">15:00</option>
-                                        <option value="16:00">16:00</option>
-                                        <option value="17:00">17:00</option>
-                                        <option value="18:00">18:00</option>
+                                    <select class="form-select" id="time" name="time" required>
+                                        <option value="" <?php echo empty($_POST['time']) ? 'selected' : ''; ?> disabled>Выберите время</option>
+                                        <option value="09:00" <?php echo (isset($_POST['time']) && $_POST['time'] == '09:00') ? 'selected' : ''; ?>>09:00</option>
+                                        <option value="10:00" <?php echo (isset($_POST['time']) && $_POST['time'] == '10:00') ? 'selected' : ''; ?>>10:00</option>
+                                        <option value="11:00" <?php echo (isset($_POST['time']) && $_POST['time'] == '11:00') ? 'selected' : ''; ?>>11:00</option>
+                                        <option value="12:00" <?php echo (isset($_POST['time']) && $_POST['time'] == '12:00') ? 'selected' : ''; ?>>12:00</option>
+                                        <option value="13:00" <?php echo (isset($_POST['time']) && $_POST['time'] == '13:00') ? 'selected' : ''; ?>>13:00</option>
+                                        <option value="14:00" <?php echo (isset($_POST['time']) && $_POST['time'] == '14:00') ? 'selected' : ''; ?>>14:00</option>
+                                        <option value="15:00" <?php echo (isset($_POST['time']) && $_POST['time'] == '15:00') ? 'selected' : ''; ?>>15:00</option>
+                                        <option value="16:00" <?php echo (isset($_POST['time']) && $_POST['time'] == '16:00') ? 'selected' : ''; ?>>16:00</option>
+                                        <option value="17:00" <?php echo (isset($_POST['time']) && $_POST['time'] == '17:00') ? 'selected' : ''; ?>>17:00</option>
+                                        <option value="18:00" <?php echo (isset($_POST['time']) && $_POST['time'] == '18:00') ? 'selected' : ''; ?>>18:00</option>
                                     </select>
                                     <div class="invalid-feedback">Пожалуйста, выберите время</div>
                                 </div>
@@ -578,10 +707,10 @@ unset($_SESSION['form_data']);
                                 <label for="message" class="form-label fw-semibold">
                                     <i class="bi bi-chat-text me-1"></i>Описание проблемы
                                 </label>
-                                <textarea class="form-control" id="message" rows="2" placeholder="Опишите симптомы или проблему с автомобилем..."></textarea>
+                                <textarea class="form-control" id="message" name="message" rows="2" placeholder="Опишите симптомы или проблему с автомобилем..."><?php echo htmlspecialchars($_POST['message'] ?? ''); ?></textarea>
                             </div>
                             <div class="form-check mb-4">
-                                <input class="form-check-input" type="checkbox" id="consent" required>
+                                <input class="form-check-input" type="checkbox" id="consent" name="consent" required <?php echo (isset($_POST['consent']) || empty($_POST)) ? 'checked' : ''; ?>>
                                 <label class="form-check-label small" for="consent">Согласен на обработку персональных данных</label>
                                 <div class="invalid-feedback">Необходимо ваше согласие</div>
                             </div>
@@ -642,11 +771,75 @@ unset($_SESSION['form_data']);
     </div>
 </div>
 
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-check-circle-fill me-2"></i>Заявка отправлена
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php 
     require_once("footer.php"); 
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() 
+{
+    var form = document.getElementById('serviceForm');
+    
+    if (form) 
+    {
+        form.addEventListener('submit', function(event) 
+        {
+            if (!form.checkValidity()) 
+            {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            form.classList.add('was-validated');
+        });
+    }
+
+    var phoneInput = document.getElementById('phone');
+
+    if (phoneInput) 
+    {
+        phoneInput.addEventListener('input', function() 
+        {
+            this.value = this.value.replace(/[^\d\s\(\)\+\-]/g, '');
+        });
+    }
+
+    var loginModal = document.getElementById('loginModal');
+
+    if (loginModal) 
+    {
+        loginModal.addEventListener('show.bs.modal', function() 
+        {
+            var loginForm = document.querySelector('#loginModal form');
+
+            if (loginForm) 
+            {
+                loginForm.reset();
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

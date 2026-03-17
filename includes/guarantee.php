@@ -161,21 +161,18 @@ unset($_SESSION['form_data']);
                 </div>
                 <div class="documents-section">
                     <h4>Документы</h4>
-                    <div class="document-links">
-                        <a href="#" class="document-link">
-                            <i class="bi bi-file-earmark-text"></i>
-                            Гарантийный талон
-                        </a>
-                        <a href="#" class="document-link">
-                            <i class="bi bi-file-earmark-text"></i>
-                            Правила гарантийного обслуживания
-                        </a>
-                        <a href="#" class="document-link">
-                            <i class="bi bi-file-earmark-text"></i>
-                            Бланк рекламации
-                        </a>
-                    </div>
+                <div class="document-links">
+                    <a href="download_doc.php?file=garanty_talon" class="document-link" target="_blank">
+                        <i class="bi bi-file-earmark-text"></i>Гарантийный талон
+                    </a>
+                    <a href="download_doc.php?file=garanty_rules" class="document-link" target="_blank">
+                        <i class="bi bi-file-earmark-text"></i>Правила гарантийного обслуживания
+                    </a>
+                    <a href="download_doc.php?file=claim_form" class="document-link" target="_blank">
+                        <i class="bi bi-file-earmark-text"></i>Бланк рекламации
+                    </a>
                 </div>
+            </div>
             </div>
         </div>
     </div>
@@ -266,26 +263,8 @@ document.addEventListener('DOMContentLoaded', function()
     document.querySelectorAll('.document-link').forEach(link => {
         link.addEventListener('click', function(e) 
         {
-            e.preventDefault();
-
             let documentName = this.textContent.trim();
-            let modal = new bootstrap.Modal(document.getElementById('documentModal'));
-            let modalTitle = document.getElementById('documentModalLabel');
-            let modalBody = document.querySelector('#documentModal .modal-body');
-            
-            modalTitle.textContent = documentName;
-            modalBody.innerHTML = `
-                <div class="text-center py-4">
-                    <i class="bi bi-file-earmark-text display-1 text-primary mb-3"></i>
-                    <h5>${documentName}</h5>
-                    <p class="text-muted">Документ будет загружен в новом окне</p>
-                    <button class="btn btn-primary">
-                        <i class="bi bi-download me-2"></i>Скачать документ
-                    </button>
-                </div>
-            `;
-
-            modal.show();
+            console.log('Скачивание документа:', documentName);
         });
     });
 

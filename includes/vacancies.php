@@ -11,43 +11,170 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['u
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
-    $login = $_POST['login'];
-    $password = $_POST['password'];
-
-    if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
+    if (isset($_POST['login']) && isset($_POST['password'])) 
     {
-        $_SESSION['login_error'] = true;
-        $_SESSION['error_message'] = "Неверный логин или пароль!";
-        header("Location: " . $_SERVER['REQUEST_URI']);
-        exit();
-    }
-    else
-    {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
-        $stmt->bind_param("ss", $login, $password);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $login = $_POST['login'];
+        $password = $_POST['password'];
 
-        if ($result->num_rows > 0) 
-        {
-            $row = $result->fetch_assoc();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
-            $_SESSION['user_id'] = $row['id_users'];
-            unset($_SESSION['login_error']);
-            unset($_SESSION['error_message']);
-            header("Location: " . $_SERVER['REQUEST_URI']);
-            exit();
-        } 
-        else 
+        if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
         {
             $_SESSION['login_error'] = true;
             $_SESSION['error_message'] = "Неверный логин или пароль!";
-            $_SESSION['form_data'] = $_POST;
             header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         }
+        else
+        {
+            $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
+            $stmt->bind_param("ss", $login, $password);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) 
+            {
+                $row = $result->fetch_assoc();
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+                $_SESSION['user_id'] = $row['id_users'];
+                unset($_SESSION['login_error']);
+                unset($_SESSION['error_message']);
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            } 
+            else 
+            {
+                $_SESSION['login_error'] = true;
+                $_SESSION['error_message'] = "Неверный логин или пароль!";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            }
+        }
     }
+
+    if (isset($_POST['vacancy_submit'])) 
+    {
+        $form_token = md5(serialize($_POST) . serialize($_FILES));
+        
+        if (isset($_SESSION['last_vacancy_form_token']) && $_SESSION['last_vacancy_form_token'] === $form_token) 
+        {
+            header("Location: ".$_SERVER['PHP_SELF']);
+            exit();
+        }
+
+        $position = trim($_POST['position'] ?? '');
+        $full_name = trim($_POST['full_name'] ?? '');
+        $phone = trim($_POST['phone'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $message = trim($_POST['message'] ?? '');
+        $agree = isset($_POST['agree']) ? 1 : 0;
+        
+        $errors = [];
+        
+        if (empty($position)) 
+        {
+            $errors[] = "Пожалуйста, выберите вакансию";
+        }
+        
+        if (empty($full_name)) 
+        {
+            $errors[] = "Пожалуйста, введите ваше ФИО";
+        }
+        
+        if (empty($phone)) 
+        {
+            $errors[] = "Пожалуйста, укажите телефон";
+        } 
+        else if (!preg_match('/^[\+\-\d\s\(\)]{10,}$/', $phone)) 
+        {
+            $errors[] = "Пожалуйста, введите корректный номер телефона";
+        }
+        
+        if (empty($email)) 
+        {
+            $errors[] = "Пожалуйста, укажите email";
+        } 
+        else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
+        {
+            $errors[] = "Пожалуйста, введите корректный email";
+        }
+        
+        if (!$agree) 
+        {
+            $errors[] = "Необходимо ваше согласие на обработку персональных данных";
+        }
+
+        $file_name = '';
+
+        if (isset($_FILES['resume_file']) && $_FILES['resume_file']['error'] == 0) 
+        {
+            $allowed_types = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            $max_size = 5 * 1024 * 1024;
+            
+            if (!in_array($_FILES['resume_file']['type'], $allowed_types)) 
+            {
+                $errors[] = "Разрешены только файлы PDF, DOC, DOCX";
+            } 
+            else if ($_FILES['resume_file']['size'] > $max_size) 
+            {
+                $errors[] = "Размер файла не должен превышать 5MB";
+            } 
+            else 
+            {
+                $upload_dir = "../uploads/resumes/";
+
+                if (!file_exists($upload_dir)) 
+                {
+                    mkdir($upload_dir, 0777, true);
+                }
+                
+                $file_extension = pathinfo($_FILES['resume_file']['name'], PATHINFO_EXTENSION);
+                $file_name = time() . '_' . uniqid() . '.' . $file_extension;
+                $upload_path = $upload_dir . $file_name;
+                
+                if (!move_uploaded_file($_FILES['resume_file']['tmp_name'], $upload_path)) 
+                {
+                    $errors[] = "Ошибка при загрузке файла";
+                }
+            }
+        } 
+        else 
+        {
+            $errors[] = "Пожалуйста, прикрепите резюме";
+        }
+
+        if (empty($errors)) 
+        {
+            $insert_query = "INSERT INTO job_applications (position, full_name, phone, email, message, resume_file, status) VALUES (?, ?, ?, ?, ?, ?, 'new')";
+            $stmt = $conn->prepare($insert_query);
+            $stmt->bind_param("ssssss", $position, $full_name, $phone, $email, $message, $file_name);
+            
+            if ($stmt->execute()) 
+            {
+                $_SESSION['last_vacancy_form_token'] = $form_token;
+                $_SESSION['show_vacancy_success_modal'] = true;
+                header("Location: ".$_SERVER['PHP_SELF']);
+                exit();
+            } 
+            else 
+            {
+                $error_message = "Произошла ошибка при отправке отклика: " . $conn->error;
+            }
+            $stmt->close();
+        } 
+        else 
+        {
+            $error_message = implode("<br>", $errors);
+        }
+    }
+}
+
+$show_success_modal = false;
+
+if (isset($_SESSION['show_vacancy_success_modal']) && $_SESSION['show_vacancy_success_modal'] === true) 
+{
+    $show_success_modal = true;
+    unset($_SESSION['show_vacancy_success_modal']);
 }
 
 $form_data = $_SESSION['form_data'] ?? [];
@@ -79,9 +206,30 @@ unset($_SESSION['form_data']);
             <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 
+
+        if (!empty($error_message))
+        {
+        ?>
+            setTimeout(function() 
+            {
+                alert('<?= addslashes($error_message) ?>');
+            }, 100);
+        <?php 
+        }
+        
+        if ($show_success_modal)
+        {
+        ?>
+            setTimeout(function() 
+            {
+                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+            }, 100);
+        <?php 
+        }
         ?>
 
-        let fileInput = document.getElementById('vacancyFile');
+        let fileInput = document.getElementById('resume_file');
         let fileUploadBtn = document.querySelector('.file-upload-btn');
         
         if(fileInput && fileUploadBtn) 
@@ -112,34 +260,13 @@ unset($_SESSION['form_data']);
         {
             form.addEventListener('submit', function(e) 
             {
-                e.preventDefault();
-
-                if(this.checkValidity()) 
+                if (!form.checkValidity()) 
                 {
-                    let submitBtn = this.querySelector('button[type="submit"]');
-                    submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Отклик отправлен!';
-                    submitBtn.classList.remove('btn-primary');
-                    submitBtn.classList.add('btn-success');
-                    submitBtn.disabled = true;
-                    
-                    setTimeout(() => {
-                        let modal = bootstrap.Modal.getInstance(document.getElementById('responseModal'));
-                        modal.hide();
-                        
-                        this.reset();
-                        fileUploadBtn.innerHTML = `
-                            <i class="bi bi-cloud-arrow-up fs-3"></i>
-                            <p class="mb-1">Перетащите файл сюда или нажмите для выбора</p>
-                            <small class="text-muted">Форматы: PDF, DOC, DOCX (до 5MB)</small>
-                        `;
-                        fileUploadBtn.classList.remove('file-selected');
-                        
-                        submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Отправить отклик';
-                        submitBtn.classList.remove('btn-success');
-                        submitBtn.classList.add('btn-primary');
-                        submitBtn.disabled = false;
-                    }, 2000);
+                    e.preventDefault();
+                    e.stopPropagation();
                 }
+
+                form.classList.add('was-validated');
             });
         }
 
@@ -185,6 +312,17 @@ unset($_SESSION['form_data']);
         <h1 class="display-5 fw-bold text-primary mb-3">Карьера в Лал-Авто</h1>
         <p class="lead text-muted mb-4">Присоединяйтесь к команде профессионалов и развивайтесь вместе с нами</p>
     </div>
+    <?php 
+    if (!empty($error_message))
+    {
+    ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= $error_message ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php 
+    }
+    ?>
     <div class="row g-4 mb-5">
         <div class="col-md-6">
             <div class="vacancy-card-main h-100">
@@ -240,7 +378,7 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                     <div class="vacancy-footer">
-                        <button class="btn btn-primary w-100 py-2" data-bs-toggle="modal" data-bs-target="#responseModal">
+                        <button class="btn btn-primary w-100 py-2" data-bs-toggle="modal" data-bs-target="#responseModal" onclick="setPosition('Менеджер по продажам автозапчастей')">
                             <i class="bi bi-envelope me-2"></i>Откликнуться на вакансию
                         </button>
                     </div>
@@ -301,7 +439,7 @@ unset($_SESSION['form_data']);
                         </div>
                     </div>
                     <div class="vacancy-footer">
-                        <button class="btn btn-primary w-100 py-2" data-bs-toggle="modal" data-bs-target="#responseModal">
+                        <button class="btn btn-primary w-100 py-2" data-bs-toggle="modal" data-bs-target="#responseModal" onclick="setPosition('Автомеханик')">
                             <i class="bi bi-envelope me-2"></i>Откликнуться на вакансию
                         </button>
                     </div>
@@ -309,7 +447,6 @@ unset($_SESSION['form_data']);
             </div>
         </div>
     </div>
-
     <div class="employer-benefits">
         <div class="benefits-card">
             <div class="benefits-header text-center mb-4">
@@ -357,7 +494,7 @@ unset($_SESSION['form_data']);
             <div class="benefits-footer text-center mt-4">
                 <h4 class="mb-3">Не нашли подходящую вакансию?</h4>
                 <p class="text-muted mb-3">Отправьте свое резюме и мы рассмотрим вас, когда появится подходящая позиция</p>
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#responseModal">
+                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#responseModal" onclick="setPosition('Другая')">
                     <i class="bi bi-file-earmark-person me-2"></i>Отправить резюме
                 </button>
             </div>
@@ -373,55 +510,56 @@ unset($_SESSION['form_data']);
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="vacancyForm" class="needs-validation" novalidate>
+                <form id="vacancyForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <input type="hidden" name="vacancy_submit" value="1">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="vacancyPosition" class="form-label fw-semibold">Вакансия<span class="text-danger">*</span></label>
-                            <select class="form-select" id="vacancyPosition" required>
-                                <option value="" selected disabled>Выберите вакансию</option>
-                                <option value="Менеджер по продажам">Менеджер по продажам автозапчастей</option>
-                                <option value="Автомеханик">Автомеханик</option>
-                                <option value="Другая">Другая вакансия</option>
+                            <label for="position" class="form-label fw-semibold">Вакансия<span class="text-danger">*</span></label>
+                            <select class="form-select" id="position" name="position" required>
+                                <option value="" <?php echo empty($_POST['position']) ? 'selected' : ''; ?> disabled>Выберите вакансию</option>
+                                <option value="Менеджер по продажам автозапчастей" <?php echo (isset($_POST['position']) && $_POST['position'] == 'Менеджер по продажам автозапчастей') ? 'selected' : ''; ?>>Менеджер по продажам автозапчастей</option>
+                                <option value="Автомеханик" <?php echo (isset($_POST['position']) && $_POST['position'] == 'Автомеханик') ? 'selected' : ''; ?>>Автомеханик</option>
+                                <option value="Другая" <?php echo (isset($_POST['position']) && $_POST['position'] == 'Другая') ? 'selected' : ''; ?>>Другая вакансия</option>
                             </select>
                             <div class="invalid-feedback">Пожалуйста, выберите вакансию</div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="vacancyName" class="form-label fw-semibold">ФИО<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="vacancyName" placeholder="Иванов Иван Иванович" required>
+                            <label for="full_name" class="form-label fw-semibold">ФИО<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Иванов Иван Иванович" required value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>">
                             <div class="invalid-feedback">Пожалуйста, введите ваше ФИО</div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="vacancyPhone" class="form-label fw-semibold">Телефон<span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" id="vacancyPhone" placeholder="+7 (900) 123-45-67" required>
+                            <label for="phone" class="form-label fw-semibold">Телефон<span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="+7 (900) 123-45-67" required pattern="[\+\-\d\s\(\)]{10,}" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
                             <div class="invalid-feedback">Пожалуйста, введите корректный телефон</div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="vacancyEmail" class="form-label fw-semibold">Email<span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="vacancyEmail" placeholder="example@mail.ru" required>
+                            <label for="email" class="form-label fw-semibold">Email<span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="example@mail.ru" required value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
                             <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="vacancyMessage" class="form-label fw-semibold">Сопроводительное письмо</label>
-                        <textarea class="form-control" id="vacancyMessage" rows="3" placeholder="Расскажите о своем опыте и почему вы хотите работать у нас"></textarea>
+                        <label for="message" class="form-label fw-semibold">Сопроводительное письмо</label>
+                        <textarea class="form-control" id="message" name="message" rows="3" placeholder="Расскажите о своем опыте и почему вы хотите работать у нас"><?php echo htmlspecialchars($_POST['message'] ?? ''); ?></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Резюме<span class="text-danger">*</span></label>
                         <div class="file-upload">
-                            <label for="vacancyFile" class="file-upload-btn">
+                            <label for="resume_file" class="file-upload-btn">
                                 <i class="bi bi-cloud-arrow-up fs-3"></i>
                                 <p class="mb-1">Перетащите файл сюда или нажмите для выбора</p>
                                 <small class="text-muted">Форматы: PDF, DOC, DOCX (до 5MB)</small>
                             </label>
-                            <input type="file" class="form-control d-none" id="vacancyFile" accept=".pdf,.doc,.docx" required>
+                            <input type="file" class="form-control d-none" id="resume_file" name="resume_file" accept=".pdf,.doc,.docx" required>
                             <div class="invalid-feedback">Пожалуйста, прикрепите резюме</div>
                         </div>
                     </div>
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="vacancyAgree" required>
-                        <label class="form-check-label small" for="vacancyAgree">Я согласен на обработку персональных данных</label>
+                        <input type="checkbox" class="form-check-input" id="agree" name="agree" required <?php echo (isset($_POST['agree']) || empty($_POST)) ? 'checked' : ''; ?>>
+                        <label class="form-check-label small" for="agree">Я согласен на обработку персональных данных</label>
                         <div class="invalid-feedback">Необходимо ваше согласие</div>
                     </div>
                 </form>
@@ -435,6 +573,25 @@ unset($_SESSION['form_data']);
     </div>
 </div>
 
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-check-circle-fill me-2"></i>Отклик отправлен
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Ваш отклик успешно отправлен! Мы свяжемся с вами в ближайшее время.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php 
     require_once("footer.php"); 
 ?>
@@ -442,6 +599,26 @@ unset($_SESSION['form_data']);
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
 <script>
+function setPosition(position) 
+{
+    setTimeout(function() 
+    {
+        var select = document.getElementById('position');
+
+        if (select) 
+        {
+            for (var i = 0; i < select.options.length; i++) 
+            {
+                if (select.options[i].value === position) 
+                {
+                    select.options[i].selected = true;
+                    break;
+                }
+            }
+        }
+    }, 100);
+}
+
 document.addEventListener('DOMContentLoaded', function() 
 {
     var responseModal = document.getElementById('responseModal');
@@ -456,6 +633,54 @@ document.addEventListener('DOMContentLoaded', function()
             }, 10);
         });
     }
+
+    var phoneInput = document.getElementById('phone');
+
+    if (phoneInput) 
+    {
+        phoneInput.addEventListener('input', function() 
+        {
+            this.value = this.value.replace(/[^\d\s\(\)\+\-]/g, '');
+        });
+    }
+
+    var loginModal = document.getElementById('loginModal');
+
+    if (loginModal) 
+    {
+        loginModal.addEventListener('show.bs.modal', function() 
+        {
+            var loginForm = document.querySelector('#loginModal form');
+
+            if (loginForm) 
+            {
+                loginForm.reset();
+            }
+        });
+    }
+
+    responseModal.addEventListener('hidden.bs.modal', function() 
+    {
+        var form = document.getElementById('vacancyForm');
+
+        if (form) 
+        {
+            form.reset();
+            form.classList.remove('was-validated');
+            var fileUploadBtn = document.querySelector('.file-upload-btn');
+
+            if (fileUploadBtn) 
+            {
+                fileUploadBtn.innerHTML = `
+                    <i class="bi bi-cloud-arrow-up fs-3"></i>
+                    <p class="mb-1">Перетащите файл сюда или нажмите для выбора</p>
+                    <small class="text-muted">Форматы: PDF, DOC, DOCX (до 5MB)</small>
+                `;
+
+                fileUploadBtn.classList.remove('file-selected');
+            }
+        }
+    });
 });
 </script>
 </body>

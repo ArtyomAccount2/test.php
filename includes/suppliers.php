@@ -4,50 +4,174 @@ session_start();
 require_once("../config/link.php");
 require_once("../config/check_auth.php");
 
-if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['user'] == 'admin')
-{
-    header("Location: ../files/logout.php");
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
-    $login = $_POST['login'];
-    $password = $_POST['password'];
-
-    if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
+    if (isset($_POST['login']) && isset($_POST['password'])) 
     {
-        $_SESSION['login_error'] = true;
-        $_SESSION['error_message'] = "Неверный логин или пароль!";
-        header("Location: " . $_SERVER['REQUEST_URI']);
-        exit();
-    }
-    else
-    {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
-        $stmt->bind_param("ss", $login, $password);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $login = $_POST['login'];
+        $password = $_POST['password'];
 
-        if ($result->num_rows > 0) 
-        {
-            $row = $result->fetch_assoc();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
-            $_SESSION['user_id'] = $row['id_users'];
-            unset($_SESSION['login_error']);
-            unset($_SESSION['error_message']);
-            header("Location: " . $_SERVER['REQUEST_URI']);
-            exit();
-        } 
-        else 
+        if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
         {
             $_SESSION['login_error'] = true;
             $_SESSION['error_message'] = "Неверный логин или пароль!";
-            $_SESSION['form_data'] = $_POST;
             header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         }
+        else
+        {
+            $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
+            $stmt->bind_param("ss", $login, $password);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) 
+            {
+                $row = $result->fetch_assoc();
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+                $_SESSION['user_id'] = $row['id_users'];
+                unset($_SESSION['login_error']);
+                unset($_SESSION['error_message']);
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            } 
+            else 
+            {
+                $_SESSION['login_error'] = true;
+                $_SESSION['error_message'] = "Неверный логин или пароль!";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            }
+        }
     }
+
+    if (isset($_POST['supplier_submit'])) 
+    {
+        $form_token = md5(serialize($_POST));
+        
+        if (isset($_SESSION['last_supplier_form_token']) && $_SESSION['last_supplier_form_token'] === $form_token) {
+            header("Location: ".$_SERVER['PHP_SELF']);
+            exit();
+        }
+
+        $company_name = trim($_POST['company_name'] ?? '');
+        $contact_person = trim($_POST['contact_person'] ?? '');
+        $phone = trim($_POST['phone'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $product_category = $_POST['product_category'] ?? '';
+        $message = trim($_POST['message'] ?? '');
+        $agree = isset($_POST['agree']) ? 1 : 0;
+        
+        $errors = [];
+        
+        if (empty($company_name)) 
+        {
+            $errors[] = "Пожалуйста, укажите название компании";
+        }
+        
+        if (empty($contact_person)) 
+        {
+            $errors[] = "Пожалуйста, укажите контактное лицо";
+        }
+        
+        if (empty($phone)) 
+        {
+            $errors[] = "Пожалуйста, укажите телефон";
+        } 
+        else if (!preg_match('/^[\+\-\d\s\(\)]{10,}$/', $phone)) 
+        {
+            $errors[] = "Пожалуйста, введите корректный номер телефона";
+        }
+        
+        if (empty($email)) 
+        {
+            $errors[] = "Пожалуйста, укажите email";
+        } 
+        else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
+        {
+            $errors[] = "Пожалуйста, введите корректный email";
+        }
+        
+        if (empty($product_category)) 
+        {
+            $errors[] = "Пожалуйста, выберите категорию товаров";
+        }
+        
+        if (!$agree) 
+        {
+            $errors[] = "Необходимо ваше согласие на обработку персональных данных";
+        }
+
+        $file_name = '';
+
+        if (isset($_FILES['price_file']) && $_FILES['price_file']['error'] == 0) 
+        {
+            $allowed_types = ['application/pdf', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+            $max_size = 10 * 1024 * 1024;
+            
+            if (!in_array($_FILES['price_file']['type'], $allowed_types)) 
+            {
+                $errors[] = "Разрешены только файлы PDF, DOC, XLS";
+            } 
+            else if ($_FILES['price_file']['size'] > $max_size) 
+            {
+                $errors[] = "Размер файла не должен превышать 10MB";
+            } 
+            else 
+            {
+                $upload_dir = "../uploads/suppliers/";
+
+                if (!file_exists($upload_dir)) 
+                {
+                    mkdir($upload_dir, 0777, true);
+                }
+                
+                $file_extension = pathinfo($_FILES['price_file']['name'], PATHINFO_EXTENSION);
+                $file_name = time() . '_' . uniqid() . '.' . $file_extension;
+                $upload_path = $upload_dir . $file_name;
+                
+                if (!move_uploaded_file($_FILES['price_file']['tmp_name'], $upload_path)) 
+                {
+                    $errors[] = "Ошибка при загрузке файла";
+                }
+            }
+        }
+
+        if (empty($errors)) 
+        {
+            $insert_query = "INSERT INTO supplier_requests (company_name, contact_person, phone, email, product_category, message, price_file, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'new')";
+            $stmt = $conn->prepare($insert_query);
+            $stmt->bind_param("sssssss", $company_name, $contact_person, $phone, $email, $product_category, $message, $file_name);
+            
+            if ($stmt->execute()) 
+            {
+                $_SESSION['last_supplier_form_token'] = $form_token;
+                $_SESSION['show_supplier_success_modal'] = true;
+                header("Location: ".$_SERVER['PHP_SELF']);
+                exit();
+            } 
+            else 
+            {
+                $error_message = "Произошла ошибка при отправке заявки: " . $conn->error;
+            }
+
+            $stmt->close();
+        } 
+        else 
+        {
+            $error_message = implode("<br>", $errors);
+        }
+    }
+}
+
+$show_success_modal = false;
+
+if (isset($_SESSION['show_supplier_success_modal']) && $_SESSION['show_supplier_success_modal'] === true) 
+{
+    $show_success_modal = true;
+    unset($_SESSION['show_supplier_success_modal']);
 }
 
 $form_data = $_SESSION['form_data'] ?? [];
@@ -79,30 +203,28 @@ unset($_SESSION['form_data']);
             <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 
-        ?>
 
-        let supplierForm = document.getElementById('supplierForm');
-        supplierForm.addEventListener('submit', function(e) 
+        if (!empty($error_message))
         {
-            e.preventDefault();
-
-            if (this.checkValidity()) 
+        ?>
+            setTimeout(function() 
             {
-                let submitBtn = this.querySelector('button[type="submit"]');
-                submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Заявка отправлена!';
-                submitBtn.classList.remove('btn-primary');
-                submitBtn.classList.add('btn-success');
-                submitBtn.disabled = true;
-                
-                setTimeout(() => {
-                    this.reset();
-                    submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Отправить заявку';
-                    submitBtn.classList.remove('btn-success');
-                    submitBtn.classList.add('btn-primary');
-                    submitBtn.disabled = false;
-                }, 3000);
-            }
-        });
+                alert('<?= addslashes($error_message) ?>');
+            }, 100);
+        <?php 
+        }
+
+        if ($show_success_modal)
+        {
+        ?>
+            setTimeout(function() 
+            {
+                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+            }, 100);
+        <?php 
+        }
+        ?>
 
         function equalizeCardsHeight() 
         {
@@ -281,20 +403,32 @@ unset($_SESSION['form_data']);
                             </div>
                         </div>
                     </div>
-                    <form id="supplierForm" class="needs-validation" novalidate>
+                    <?php 
+                    if (!empty($error_message))
+                    {
+                    ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?= $error_message ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php 
+                    }
+                    ?>
+                    <form id="supplierForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <input type="hidden" name="supplier_submit" value="1">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="companyName" class="form-label fw-semibold">
+                                <label for="company_name" class="form-label fw-semibold">
                                     <i class="bi bi-building me-1"></i>Название компании<span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control" id="companyName" required placeholder="ООО «Лал-Авто»">
+                                <input type="text" class="form-control" id="company_name" name="company_name" required placeholder="ООО «Лал-Авто»" value="<?php echo htmlspecialchars($_POST['company_name'] ?? ''); ?>">
                                 <div class="invalid-feedback">Пожалуйста, укажите название компании</div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="contactPerson" class="form-label fw-semibold">
+                                <label for="contact_person" class="form-label fw-semibold">
                                     <i class="bi bi-person me-1"></i>Контактное лицо<span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control" id="contactPerson" required placeholder="Иванов А.П.">
+                                <input type="text" class="form-control" id="contact_person" name="contact_person" required placeholder="Иванов А.П." value="<?php echo htmlspecialchars($_POST['contact_person'] ?? ''); ?>">
                                 <div class="invalid-feedback">Пожалуйста, укажите контактное лицо</div>
                             </div>
                         </div>
@@ -303,30 +437,30 @@ unset($_SESSION['form_data']);
                                 <label for="phone" class="form-label fw-semibold">
                                     <i class="bi bi-phone me-1"></i>Телефон<span class="text-danger">*</span>
                                 </label>
-                                <input type="tel" class="form-control" id="phone" required placeholder="+7 (495) 123-45-67">
+                                <input type="tel" class="form-control" id="phone" name="phone" required placeholder="+7 (495) 123-45-67" pattern="[\+\-\d\s\(\)]{10,}" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
                                 <div class="invalid-feedback">Пожалуйста, укажите телефон</div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="email" class="form-label fw-semibold">
                                     <i class="bi bi-envelope me-1"></i>Email<span class="text-danger">*</span>
                                 </label>
-                                <input type="email" class="form-control" id="email" required placeholder="info@lal-avto.ru">
-                                <div class="invalid-feedback">Пожалуйста, укажите email</div>
+                                <input type="email" class="form-control" id="email" name="email" required placeholder="info@lal-avto.ru" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
+                                <div class="invalid-feedback">Пожалуйста, укажите корректный email</div>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="productCategory" class="form-label fw-semibold">
+                            <label for="product_category" class="form-label fw-semibold">
                                 <i class="bi bi-tags me-1"></i>Категория товаров<span class="text-danger">*</span>
                             </label>
-                            <select class="form-select" id="productCategory" required>
-                                <option value="" selected disabled>Выберите категорию</option>
-                                <option>Автозапчасти</option>
-                                <option>Масла и жидкости</option>
-                                <option>Аксессуары</option>
-                                <option>Автохимия</option>
-                                <option>Шины и диски</option>
-                                <option>Инструменты</option>
-                                <option>Другое</option>
+                            <select class="form-select" id="product_category" name="product_category" required>
+                                <option value="" <?php echo empty($_POST['product_category']) ? 'selected' : ''; ?> disabled>Выберите категорию</option>
+                                <option value="Автозапчасти" <?php echo (isset($_POST['product_category']) && $_POST['product_category'] == 'Автозапчасти') ? 'selected' : ''; ?>>Автозапчасти</option>
+                                <option value="Масла и жидкости" <?php echo (isset($_POST['product_category']) && $_POST['product_category'] == 'Масла и жидкости') ? 'selected' : ''; ?>>Масла и жидкости</option>
+                                <option value="Аксессуары" <?php echo (isset($_POST['product_category']) && $_POST['product_category'] == 'Аксессуары') ? 'selected' : ''; ?>>Аксессуары</option>
+                                <option value="Автохимия" <?php echo (isset($_POST['product_category']) && $_POST['product_category'] == 'Автохимия') ? 'selected' : ''; ?>>Автохимия</option>
+                                <option value="Шины и диски" <?php echo (isset($_POST['product_category']) && $_POST['product_category'] == 'Шины и диски') ? 'selected' : ''; ?>>Шины и диски</option>
+                                <option value="Инструменты" <?php echo (isset($_POST['product_category']) && $_POST['product_category'] == 'Инструменты') ? 'selected' : ''; ?>>Инструменты</option>
+                                <option value="Другое" <?php echo (isset($_POST['product_category']) && $_POST['product_category'] == 'Другое') ? 'selected' : ''; ?>>Другое</option>
                             </select>
                             <div class="invalid-feedback">Пожалуйста, выберите категорию</div>
                         </div>
@@ -334,17 +468,17 @@ unset($_SESSION['form_data']);
                             <label for="message" class="form-label fw-semibold">
                                 <i class="bi bi-chat-text me-1"></i>О компании и продукции
                             </label>
-                            <textarea class="form-control" id="message" rows="3" placeholder="Расскажите о вашей компании и продукции..."></textarea>
+                            <textarea class="form-control" id="message" name="message" rows="3" placeholder="Расскажите о вашей компании и продукции..."><?php echo htmlspecialchars($_POST['message'] ?? ''); ?></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="file" class="form-label fw-semibold">
+                            <label for="price_file" class="form-label fw-semibold">
                                 <i class="bi bi-file-earmark-text me-1"></i>Прайс-лист (опционально)
                             </label>
-                            <input type="file" class="form-control" id="file">
+                            <input type="file" class="form-control" id="price_file" name="price_file" accept=".pdf,.doc,.docx,.xls,.xlsx">
                             <div class="form-text">PDF, DOC, XLS до 10MB</div>
                         </div>
                         <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox" id="agree" required>
+                            <input class="form-check-input" type="checkbox" id="agree" name="agree" required <?php echo (isset($_POST['agree']) || empty($_POST)) ? 'checked' : ''; ?>>
                             <label class="form-check-label small" for="agree">
                                 Согласен на обработку персональных данных
                             </label>
@@ -402,11 +536,75 @@ unset($_SESSION['form_data']);
     </div>
 </div>
 
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-check-circle-fill me-2"></i>Заявка отправлена
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Ваша заявка успешно отправлена! Мы свяжемся с вами в течение 2 рабочих дней.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php 
     require_once("footer.php"); 
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() 
+{
+    var form = document.getElementById('supplierForm');
+    
+    if (form) 
+    {
+        form.addEventListener('submit', function(event) 
+        {
+            if (!form.checkValidity()) 
+            {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            form.classList.add('was-validated');
+        });
+    }
+    
+    var phoneInput = document.getElementById('phone');
+
+    if (phoneInput) 
+    {
+        phoneInput.addEventListener('input', function() 
+        {
+            this.value = this.value.replace(/[^\d\s\(\)\+\-]/g, '');
+        });
+    }
+
+    var loginModal = document.getElementById('loginModal');
+
+    if (loginModal) 
+    {
+        loginModal.addEventListener('show.bs.modal', function() 
+        {
+            var loginForm = document.querySelector('#loginModal form');
+
+            if (loginForm) 
+            {
+                loginForm.reset();
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

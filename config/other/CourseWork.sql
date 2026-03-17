@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 13 2026 г., 23:40
+-- Время создания: Мар 17 2026 г., 21:39
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -421,6 +421,59 @@ INSERT INTO `company_requisites` (`id`, `category`, `title`, `value`, `copy_valu
 (18, 'management', 'Генеральный директор', 'Иванов Петр Сергеевич', 'Иванов Петр Сергеевич', 1),
 (19, 'management', 'Главный бухгалтер', 'Смирнова Ольга Владимировна', 'Смирнова Ольга Владимировна', 2),
 (20, 'management', 'Действует на основании', 'Устава', 'Устава', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `contact_messages`
+--
+
+CREATE TABLE `contact_messages` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `subject` varchar(100) NOT NULL,
+  `message` text NOT NULL,
+  `status` enum('new','read','replied') DEFAULT 'new',
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `contact_messages`
+--
+
+INSERT INTO `contact_messages` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `ip_address`, `user_agent`, `created_at`) VALUES
+(1, 'Мария Иванова', 'maria.ivanova@bk.ru', '+7 (904) 567-89-01', 'cooperation', 'Представляю компанию по производству автохимии. Хочу предложить сотрудничество. Как связаться с отделом закупок?', 'read', '128.0.0.9', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0', '2026-03-17 18:15:46'),
+(2, 'Павел Григорьев', 'pavel.grigoriev@mail.ru', '+7 (909) 012-34-56', 'product', 'Интересует стоимость и наличие масла Mobil 1 5W-30, 4 литра. Также нужна консультация по подбору масла для BMW X5 2019.', 'new', '128.0.0.9', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0', '2026-03-17 18:19:54');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `job_applications`
+--
+
+CREATE TABLE `job_applications` (
+  `id` int(11) NOT NULL,
+  `position` varchar(255) NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `message` text,
+  `resume_file` varchar(255) DEFAULT NULL,
+  `status` enum('new','reviewed','interview','rejected') DEFAULT 'new',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `job_applications`
+--
+
+INSERT INTO `job_applications` (`id`, `position`, `full_name`, `phone`, `email`, `message`, `resume_file`, `status`, `created_at`) VALUES
+(1, 'Менеджер по продажам автозапчастей', 'Иванов Иван Иванович', '+7 (901) 234-56-78', 'ivanov.ivan@mail.ru', 'Имею опыт работы в продажах автозапчастей более 3 лет. Знаю программы 1С, умею работать с возражениями. Рассматриваю предложения о работе в стабильной компании.', '1773770181_69b995c5af0c5.pdf', 'reviewed', '2026-03-17 17:56:21'),
+(2, 'Автомеханик', 'Сидоров Петр Алексеевич', '+7 (903) 456-78-90', 'sidorov.petr@gmail.com', '', '1773770351_69b9966f5d7b7.pdf', 'rejected', '2026-03-17 17:59:11');
 
 -- --------------------------------------------------------
 
@@ -871,6 +924,35 @@ INSERT INTO `services` (`id`, `name`, `category`, `price`, `description`, `durat
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `service_requests`
+--
+
+CREATE TABLE `service_requests` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `car` varchar(255) NOT NULL,
+  `service_id` int(11) DEFAULT NULL,
+  `service_name` varchar(255) DEFAULT NULL,
+  `service_price` decimal(10,2) DEFAULT NULL,
+  `request_date` date NOT NULL,
+  `request_time` time NOT NULL,
+  `message` text,
+  `status` enum('new','processed','cancelled') DEFAULT 'new',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `service_requests`
+--
+
+INSERT INTO `service_requests` (`id`, `name`, `phone`, `car`, `service_id`, `service_name`, `service_price`, `request_date`, `request_time`, `message`, `status`, `created_at`) VALUES
+(1, 'Иван Петров', '+7 (901) 234-56-78', 'Toyota Camry 2018', 1, 'Замена масла', '1500.00', '2026-03-17', '15:00:00', 'Замена масла и фильтра', 'cancelled', '2026-03-16 11:59:05'),
+(2, 'Алексей Козлов', '+7 (903) 456-78-90', 'Hyundai Solaris 2021', 22, 'Нанесение керамики', '8000.00', '2026-03-22', '11:00:00', '', 'processed', '2026-03-16 12:00:33');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `settings`
 --
 
@@ -1004,6 +1086,60 @@ INSERT INTO `shops` (`id`, `name`, `type`, `region`, `phone`, `email`, `address`
 (3, 'Горького', 'branch', 'Калининград', '+7 (4012) 87-87-87', 'gorkogo@lal-auto.ru', 'ул. Горького, 15', '120.00', 8, 'active', 0, 'Стандартный магазин', 'Запчасти,Шины', 'Ограниченная парковка', 'Пн-Пт: 9:00-20:00;Сб-Вс: 10:00-18:00', '2026-03-12 07:00:00'),
 (4, 'Приморский', 'branch', 'Калининград', '+7 (4012) 98-98-98', 'primorsky@lal-auto.ru', 'ул. Приморская, 8', '150.00', 9, 'active', 0, 'Стандартный магазин', 'Запчасти,Химия', 'Есть парковка', 'Пн-Пт: 9:00-20:00;Сб-Вс: 10:00-18:00', '2026-03-12 07:00:00'),
 (5, 'Советский', 'branch', 'Калининград', '+7 (4012) 54-32-10', 'sovetsky@lal-auto.ru', 'Советский пр-т, 120', '200.00', 14, 'active', 1, 'Крупный магазин', 'Запчасти,Сервис,Шины,Тюнинг', 'Есть парковка', 'Пн-Пт: 8:00-19:00;Сб-Вс: 9:00-17:00', '2026-03-12 07:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `supplier_requests`
+--
+
+CREATE TABLE `supplier_requests` (
+  `id` int(11) NOT NULL,
+  `company_name` varchar(255) NOT NULL,
+  `contact_person` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `product_category` varchar(100) NOT NULL,
+  `message` text,
+  `price_file` varchar(255) DEFAULT NULL,
+  `status` enum('new','in_review','approved','rejected') DEFAULT 'new',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `supplier_requests`
+--
+
+INSERT INTO `supplier_requests` (`id`, `company_name`, `contact_person`, `phone`, `email`, `product_category`, `message`, `price_file`, `status`, `created_at`) VALUES
+(1, 'ООО \"АвтоДеталь', 'Петров Иван Сергеевич', '+7 (495) 123-45-67', 'info@avtodetal.ru', 'Автозапчасти', 'Производим автозапчасти для отечественных автомобилей. Готовы к долгосрочному сотрудничеству.', '', 'new', '2026-03-16 12:12:31'),
+(2, 'ИП \"АвтоСтиль', 'Козлов Андрей Петрович', '+7 (495) 345-67-89', 'info@autostyle.ru', 'Шины и диски', '', '', 'approved', '2026-03-16 12:23:21');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `support_requests`
+--
+
+CREATE TABLE `support_requests` (
+  `id` int(11) NOT NULL,
+  `problem_type` varchar(50) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `url` varchar(500) DEFAULT NULL,
+  `description` text NOT NULL,
+  `screenshot` varchar(255) DEFAULT NULL,
+  `status` enum('new','in_progress','resolved','closed') DEFAULT 'new',
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `support_requests`
+--
+
+INSERT INTO `support_requests` (`id`, `problem_type`, `email`, `url`, `description`, `screenshot`, `status`, `ip_address`, `user_agent`, `created_at`) VALUES
+(1, 'technical', 'ivan.petrov@mail.ru', 'https://lal-auto.ru/includes/assortment.php', 'При попытке добавить товар в корзину появляется ошибка 500. Пробовал в разных браузерах - ошибка повторяется.', '1773772410_69b99e7a3a394.png', 'in_progress', '128.0.0.9', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0', '2026-03-17 18:33:30'),
+(2, 'other', 'olga.novikova@yandex.ru', '', 'В форме обратной связи нет поля для выбора темы \"Техническая поддержка\". Пришлось писать сюда.', '', 'new', '128.0.0.9', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0', '2026-03-17 18:36:25');
 
 -- --------------------------------------------------------
 
@@ -1182,6 +1318,24 @@ ALTER TABLE `company_requisites`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_status` (`status`),
+  ADD KEY `idx_created` (`created_at`),
+  ADD KEY `idx_email` (`email`);
+
+--
+-- Индексы таблицы `job_applications`
+--
+ALTER TABLE `job_applications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_status` (`status`),
+  ADD KEY `idx_position` (`position`),
+  ADD KEY `idx_created` (`created_at`);
+
+--
 -- Индексы таблицы `news`
 --
 ALTER TABLE `news`
@@ -1257,6 +1411,15 @@ ALTER TABLE `services`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `service_requests`
+--
+ALTER TABLE `service_requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_service_id` (`service_id`),
+  ADD KEY `idx_status` (`status`),
+  ADD KEY `idx_created` (`created_at`);
+
+--
 -- Индексы таблицы `settings`
 --
 ALTER TABLE `settings`
@@ -1273,6 +1436,23 @@ ALTER TABLE `shops`
   ADD KEY `idx_region` (`region`),
   ADD KEY `idx_status` (`status`),
   ADD KEY `idx_type` (`type`);
+
+--
+-- Индексы таблицы `supplier_requests`
+--
+ALTER TABLE `supplier_requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_status` (`status`),
+  ADD KEY `idx_created` (`created_at`);
+
+--
+-- Индексы таблицы `support_requests`
+--
+ALTER TABLE `support_requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_status` (`status`),
+  ADD KEY `idx_created` (`created_at`),
+  ADD KEY `idx_problem_type` (`problem_type`);
 
 --
 -- Индексы таблицы `system_versions`
@@ -1316,7 +1496,7 @@ ALTER TABLE `action_logs`
 -- AUTO_INCREMENT для таблицы `api_keys`
 --
 ALTER TABLE `api_keys`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `backup_logs`
@@ -1353,6 +1533,18 @@ ALTER TABLE `company_documents`
 --
 ALTER TABLE `company_requisites`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT для таблицы `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT для таблицы `job_applications`
+--
+ALTER TABLE `job_applications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `news`
@@ -1400,7 +1592,7 @@ ALTER TABLE `product_brands`
 -- AUTO_INCREMENT для таблицы `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `reviews`
@@ -1415,6 +1607,12 @@ ALTER TABLE `services`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
+-- AUTO_INCREMENT для таблицы `service_requests`
+--
+ALTER TABLE `service_requests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT для таблицы `settings`
 --
 ALTER TABLE `settings`
@@ -1425,6 +1623,18 @@ ALTER TABLE `settings`
 --
 ALTER TABLE `shops`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT для таблицы `supplier_requests`
+--
+ALTER TABLE `supplier_requests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT для таблицы `support_requests`
+--
+ALTER TABLE `support_requests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `system_versions`
