@@ -96,3 +96,37 @@
     border-color: #007bff;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
+
+.hover-effect 
+{
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.hover-effect:hover 
+{
+    background-color: #fff !important;
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.1);
+}
+
+.contact-list a 
+{
+    color: inherit;
+}
+
+.contact-list .rounded-circle 
+{
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-body 
+{
+    max-height: 70vh;
+    overflow-y: auto;
+}

@@ -470,38 +470,48 @@ unset($_SESSION['form_data']);
                 </div>
                 <div class="col-lg-6">
                     <div class="terms-card">
-                        <h4 class="mb-4"><i class="bi bi-geo me-2"></i>Зоны доставки</h4>
-                        <div class="zones-list">
-                            <div class="zone-item">
-                                <div class="zone-marker bg-success"></div>
-                                <div class="zone-content">
-                                    <h6>Зеленая зона</h6>
-                                    <p class="mb-1">Центр Калининграда</p>
-                                    <small class="text-muted">300 ₽ (бесплатно от 5000 ₽)</small>
+                        <h4 class="mb-4"><i class="bi bi-cart-check me-2"></i>Как сделать заказ</h4>
+                        <div class="order-steps">
+                            <div class="step-item">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h6>Выберите товар</h6>
+                                    <p>Найдите нужные запчасти в каталоге или через поиск</p>
                                 </div>
                             </div>
-                            <div class="zone-item">
-                                <div class="zone-marker bg-warning"></div>
-                                <div class="zone-content">
-                                    <h6>Желтая зона</h6>
-                                    <p class="mb-1">Окраины города</p>
-                                    <small class="text-muted">400 ₽ (бесплатно от 7000 ₽)</small>
+                            <div class="step-item">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h6>Добавьте в корзину</h6>
+                                    <p>Укажите количество и нажмите "В корзину"</p>
                                 </div>
                             </div>
-                            <div class="zone-item">
-                                <div class="zone-marker bg-orange"></div>
-                                <div class="zone-content">
-                                    <h6>Оранжевая зона</h6>
-                                    <p class="mb-1">Пригороды 20-50 км</p>
-                                    <small class="text-muted">500-800 ₽</small>
+                            <div class="step-item">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h6>Оформите заказ</h6>
+                                    <p>Заполните контактные данные и выберите способ доставки</p>
                                 </div>
                             </div>
-                            <div class="zone-item">
-                                <div class="zone-marker bg-danger"></div>
-                                <div class="zone-content">
-                                    <h6>Красная зона</h6>
-                                    <p class="mb-1">Область 50+ км</p>
-                                    <small class="text-muted">от 1000 ₽</small>
+                            <div class="step-item">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h6>Подтверждение</h6>
+                                    <p>Менеджер свяжется с вами для подтверждения заказа</p>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-number">5</div>
+                                <div class="step-content">
+                                    <h6>Оплата</h6>
+                                    <p>Оплатите заказ удобным способом</p>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <div class="step-number">6</div>
+                                <div class="step-content">
+                                    <h6>Получение</h6>
+                                    <p>Заберите заказ самовывозом или получите курьером</p>
                                 </div>
                             </div>
                         </div>

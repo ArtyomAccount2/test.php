@@ -237,11 +237,116 @@ unset($_SESSION['form_data']);
                             <div class="alert alert-warning">
                                 <h6 class="alert-heading fw-bold mb-2"><i class="bi bi-exclamation-triangle me-2"></i>Внимание!</h6>
                                 <p class="small mb-2">При регистрации с указанием карты скидок вы сможете видеть цены на сайте согласно вашей скидке.</p>
-                                <p class="small mb-0">Скидка появится на сайте примерно через сутки. Если этого не произошло, <a href="#" class="alert-link">напишите менеджеру</a>.</p>
+                                <p class="small mb-0">Скидка появится на сайте примерно через сутки. Если этого не произошло, 
+                                    <a href="#" class="alert-link" data-bs-toggle="modal" data-bs-target="#contactModal">напишите менеджеру</a>.
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="contactModalLabel">
+                    <i class="bi bi-chat-dots me-2"></i> Связаться с менеджером
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="text-center mb-4">
+                    <div class="bg-light rounded-circle d-inline-flex p-3 mb-3">
+                        <i class="bi bi-person-badge fs-1 text-primary"></i>
+                    </div>
+                    <h6 class="fw-bold">Напишите нам любым удобным способом:</h6>
+                    <p class="small text-muted">Мы ответим в течение 15-30 минут в рабочее время</p>
+                </div>
+                <div class="contact-list">
+                    <a href="https://vk.com/lalauto" class="text-decoration-none" target="_blank">
+                        <div class="d-flex align-items-center p-3 mb-2 bg-light rounded-3 hover-effect">
+                            <div class="rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="background-color: #4C75A3; width: 40px; height: 40px;">
+                                <i class="bi bi-people-fill text-white"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">ВКонтакте</div>
+                                <div class="small text-muted">vk.com/lalauto</div>
+                            </div>
+                            <i class="bi bi-arrow-right-short fs-4" style="color: #4C75A3;"></i>
+                        </div>
+                    </a>
+                    <a href="https://ok.ru/lalauto" class="text-decoration-none" target="_blank">
+                        <div class="d-flex align-items-center p-3 mb-2 bg-light rounded-3 hover-effect">
+                            <div class="rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="background-color: #EE8208; width: 40px; height: 40px;">
+                                <i class="bi bi-person-standing text-white"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">Одноклассники</div>
+                                <div class="small text-muted">ok.ru/lalauto</div>
+                            </div>
+                            <i class="bi bi-arrow-right-short fs-4" style="color: #EE8208;"></i>
+                        </div>
+                    </a>
+                    <a href="https://vk.me/lalauto" class="text-decoration-none" target="_blank">
+                        <div class="d-flex align-items-center p-3 mb-2 bg-light rounded-3 hover-effect">
+                            <div class="rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="background-color: #0077FF; width: 40px; height: 40px;">
+                                <i class="bi bi-chat-dots text-white"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">VK Мессенджер</div>
+                                <div class="small text-muted">Написать в чат VK</div>
+                            </div>
+                            <i class="bi bi-arrow-right-short fs-4" style="color: #0077FF;"></i>
+                        </div>
+                    </a>
+                    <a href="mailto:info@lal-auto.ru" class="text-decoration-none">
+                        <div class="d-flex align-items-center p-3 mb-2 bg-light rounded-3 hover-effect">
+                            <div class="bg-danger text-white rounded-circle p-2 me-3">
+                                <i class="bi bi-envelope"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">Email</div>
+                                <div class="small text-muted">info@lal-auto.ru</div>
+                            </div>
+                            <i class="bi bi-arrow-right-short fs-4 text-danger"></i>
+                        </div>
+                    </a>
+                    <a href="https://yandex.ru/chat/#/connect/lalauto" class="text-decoration-none" target="_blank">
+                        <div class="d-flex align-items-center p-3 mb-2 bg-light rounded-3 hover-effect">
+                            <div class="rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="background-color: #FC3F1D; width: 40px; height: 40px;">
+                                <i class="bi bi-chat-square-text text-white"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">Яндекс Мессенджер</div>
+                                <div class="small text-muted">Чат в Яндекс</div>
+                            </div>
+                            <i class="bi bi-arrow-right-short fs-4" style="color: #FC3F1D;"></i>
+                        </div>
+                    </a>
+                    <a href="tel:+74012656565" class="text-decoration-none">
+                        <div class="d-flex align-items-center p-3 mb-2 bg-light rounded-3 hover-effect">
+                            <div class="bg-info text-white rounded-circle p-2 me-3">
+                                <i class="bi bi-telephone"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">Телефон</div>
+                                <div class="small text-muted">+7 (4012) 65-65-65</div>
+                            </div>
+                            <i class="bi bi-arrow-right-short fs-4 text-info"></i>
+                        </div>
+                    </a>
+                </div>
+                <div class="alert alert-info mt-3 mb-0 small">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Если у вас возникли проблемы с регистрацией или отображением скидки, напишите нам — мы поможем!
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
             </div>
         </div>
     </div>

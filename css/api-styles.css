@@ -201,13 +201,6 @@
     text-decoration: underline;
 }
 
-.alert 
-{
-    border-radius: 8px;
-    border: none;
-    margin: 1rem 0;
-}
-
 .alert-info 
 {
     background: #e9f9ff;

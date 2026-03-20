@@ -160,8 +160,8 @@
             <a href="https://vk.com/lalauto" class="social-icon-float" target="_blank" title="ВКонтакте">
                 <img src="../img/image 33.png" alt="VK" width="32" height="32">
             </a>
-            <a href="https://t.me/s/lalauto" class="social-icon-float" target="_blank" title="Telegram">
-                <img src="../img/image 32.png" alt="Telegram" width="32" height="32">
+            <a href="https://max.ru/lalauto" class="social-icon-float" target="_blank" title="MAX">
+                <img src="../img/image 34.png" alt="MAX" width="32" height="32">
             </a>
         </div>
     </div>

@@ -99,37 +99,87 @@ unset($_SESSION['form_data']);
         let totalPages = 1;
         let allBrandItems = document.querySelectorAll('.brand-item');
         let visibleBrandItems = [];
+        let isResizing = false;
 
         function equalizeBrandCards() 
         {
+            if (isResizing) 
+            {
+                return;
+            }
+            
             let brandCards = document.querySelectorAll('.brand-card');
-            let maxHeight = 0;
 
             brandCards.forEach(card => {
                 card.style.height = 'auto';
             });
 
-            brandCards.forEach(card => {
-                if (card.offsetHeight > maxHeight) 
-                {
-                    maxHeight = card.offsetHeight;
-                }
-            });
+            let maxHeight = 0;
             
             brandCards.forEach(card => {
-                if (card.offsetParent !== null)
+                if (card.offsetParent !== null && card.closest('.brand-item') && card.closest('.brand-item').style.display !== 'none') 
+                {
+                    let cardHeight = card.offsetHeight;
+
+                    if (cardHeight > maxHeight) 
+                    {
+                        maxHeight = cardHeight;
+                    }
+                }
+            });
+
+            brandCards.forEach(card => {
+                if (card.offsetParent !== null && card.closest('.brand-item') && card.closest('.brand-item').style.display !== 'none') 
                 {
                     card.style.height = maxHeight + 'px';
                 }
             });
         }
 
+        function smoothEqualize() 
+        {
+            if (typeof requestAnimationFrame !== 'undefined') 
+            {
+                requestAnimationFrame(function() 
+                {
+                    equalizeBrandCards();
+                });
+            } 
+            else 
+            {
+                setTimeout(equalizeBrandCards, 0);
+            }
+        }
+
+        function scrollToFilters() 
+        {
+            let filtersSection = document.getElementById('filters-section');
+
+            if (filtersSection) 
+            {
+                let offset = 50;
+                let elementPosition = filtersSection.getBoundingClientRect().top;
+                let offsetPosition = elementPosition + window.pageYOffset - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
         let resizeTimeout;
         
         window.addEventListener('resize', function() 
         {
+            isResizing = true;
             clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(equalizeBrandCards, 250);
+
+            resizeTimeout = setTimeout(function() 
+            {
+                isResizing = false;
+                smoothEqualize();
+            }, 150);
         });
 
         let filterButtons = document.querySelectorAll('.filter-btn');
@@ -184,9 +234,10 @@ unset($_SESSION['form_data']);
             {
                 filterButtons.forEach(btn => btn.classList.remove('active'));
                 this.classList.add('active');
-                
+
                 let filter = this.getAttribute('data-filter');
                 filterBrands(filter, searchInput.value.toLowerCase());
+                scrollToFilters();
             });
         });
         
@@ -229,7 +280,6 @@ unset($_SESSION['form_data']);
             updatePagination();
             showPage(currentPage);
             updateCategoryCounters(category, searchText);
-            setTimeout(equalizeBrandCards, 350);
         }
 
         function updatePagination() 
@@ -260,6 +310,7 @@ unset($_SESSION['form_data']);
                 let prevLi = document.createElement('li');
                 prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
                 prevLi.innerHTML = `<a class="page-link" href="#" aria-label="Предыдущая">‹</a>`;
+
                 prevLi.addEventListener('click', (e) => {
                     e.preventDefault();
 
@@ -267,26 +318,79 @@ unset($_SESSION['form_data']);
                     {
                         currentPage--;
                         showPage(currentPage);
+                        scrollToFilters();
                     }
                 });
-                paginationElement.appendChild(prevLi);
 
-                for (let i = 1; i <= totalPages; i++) 
+                paginationElement.appendChild(prevLi);
+                let startPage = Math.max(1, currentPage - 2);
+                let endPage = Math.min(totalPages, startPage + 4);
+                
+                if (startPage > 1) 
+                {
+                    let firstLi = document.createElement('li');
+                    firstLi.className = 'page-item';
+                    firstLi.innerHTML = `<a class="page-link" href="#">1</a>`;
+                    firstLi.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage = 1;
+                        showPage(currentPage);
+                        scrollToFilters();
+                    });
+                    paginationElement.appendChild(firstLi);
+                    
+                    if (startPage > 2) 
+                    {
+                        let dotsLi = document.createElement('li');
+                        dotsLi.className = 'page-item disabled';
+                        dotsLi.innerHTML = `<a class="page-link" href="#">...</a>`;
+                        paginationElement.appendChild(dotsLi);
+                    }
+                }
+
+                for (let i = startPage; i <= endPage; i++) 
                 {
                     let li = document.createElement('li');
                     li.className = `page-item ${i === currentPage ? 'active' : ''}`;
                     li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+
                     li.addEventListener('click', (e) => {
                         e.preventDefault();
                         currentPage = i;
                         showPage(currentPage);
+                        scrollToFilters();
                     });
+
                     paginationElement.appendChild(li);
+                }
+                
+                if (endPage < totalPages) 
+                {
+                    if (endPage < totalPages - 1) 
+                    {
+                        let dotsLi = document.createElement('li');
+                        dotsLi.className = 'page-item disabled';
+                        dotsLi.innerHTML = `<a class="page-link" href="#">...</a>`;
+                        paginationElement.appendChild(dotsLi);
+                    }
+                    
+                    let lastLi = document.createElement('li');
+                    lastLi.className = 'page-item';
+                    lastLi.innerHTML = `<a class="page-link" href="#">${totalPages}</a>`;
+                    lastLi.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage = totalPages;
+                        showPage(currentPage);
+                        scrollToFilters();
+                    });
+
+                    paginationElement.appendChild(lastLi);
                 }
                 
                 let nextLi = document.createElement('li');
                 nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
                 nextLi.innerHTML = `<a class="page-link" href="#" aria-label="Следующая">›</a>`;
+
                 nextLi.addEventListener('click', (e) => {
                     e.preventDefault();
 
@@ -294,8 +398,10 @@ unset($_SESSION['form_data']);
                     {
                         currentPage++;
                         showPage(currentPage);
+                        scrollToFilters();
                     }
                 });
+
                 paginationElement.appendChild(nextLi);
             }
         }
@@ -304,38 +410,93 @@ unset($_SESSION['form_data']);
         {
             brandItems.forEach(item => {
                 item.style.display = 'none';
-                item.style.opacity = '0';
-                item.style.transform = 'scale(0.8)';
             });
             
             let startIndex = (page - 1) * CARDS_PER_PAGE;
             let endIndex = startIndex + CARDS_PER_PAGE;
-            
-            visibleBrandItems.slice(startIndex, endIndex).forEach((item, index) => {
-                setTimeout(() => {
-                    item.style.display = 'block';
-                    setTimeout(() => {
-                        item.style.opacity = '1';
-                        item.style.transform = 'scale(1)';
-                    }, 50);
-                }, index * 50);
+            let itemsToShow = visibleBrandItems.slice(startIndex, endIndex);
+
+            itemsToShow.forEach((item) => {
+                item.style.display = 'block';
             });
+
+            setTimeout(function() 
+            {
+                smoothEqualize();
+            }, 0);
             
             updatePagination();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            equalizeBrandCards();
         }
 
         function initializePage() 
         {
             initializeCounters();
-            filterBrands('all', '');
-            equalizeBrandCards();
+
+            brandItems.forEach(item => {
+                item.style.display = 'block';
+            });
+
+            smoothEqualize();
+
+            visibleBrandItems = Array.from(brandItems);
+            currentPage = 1;
+            updatePagination();
+            showPage(currentPage);
+
+            setTimeout(function() 
+            {
+                brandItems.forEach(item => {
+                    item.classList.add('visible');
+                });
+            }, 50);
         }
 
-        window.addEventListener('load', initializePage);
-        window.addEventListener('resize', equalizeBrandCards);
-        setTimeout(equalizeBrandCards, 100);
+        window.addEventListener('load', function() 
+        {
+            initializePage();
+
+            let images = document.querySelectorAll('.brand-logo');
+            let imagesToLoad = images.length;
+            let loadedImages = 0;
+            
+            if (imagesToLoad > 0) 
+            {
+                images.forEach(img => {
+                    if (img.complete) 
+                    {
+                        loadedImages++;
+                    }
+                    else 
+                    {
+                        img.addEventListener('load', () => {
+                            loadedImages++;
+
+                            if (loadedImages === imagesToLoad) 
+                            {
+                                setTimeout(smoothEqualize, 50);
+                            }
+                        });
+                    }
+                });
+                
+                if (loadedImages === imagesToLoad) 
+                {
+                    setTimeout(smoothEqualize, 50);
+                }
+            }
+        });
+
+        if (typeof ResizeObserver !== 'undefined') 
+        {
+            let observer = new ResizeObserver(function() 
+            {
+                smoothEqualize();
+            });
+            
+            document.querySelectorAll('.brand-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
     });
     </script>
 </head>
@@ -350,15 +511,15 @@ unset($_SESSION['form_data']);
         <h1 class="display-5 fw-bold text-primary mb-3">Торговые марки</h1>
         <p class="lead text-muted mb-3">Официальный дилер ведущих мировых производителей автозапчастей</p>
         <div class="stats-row d-flex justify-content-center gap-4 flex-wrap mb-4">
-            <div class="stat-item">
+            <div class="stat-hero-item">
                 <div class="stat-number text-primary fw-bold fs-3"><?php echo count($brands); ?>+</div>
                 <div class="stat-label text-muted">брендов</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-hero-item">
                 <div class="stat-number text-primary fw-bold fs-3">10 000+</div>
                 <div class="stat-label text-muted">товаров</div>
             </div>
-            <div class="stat-item">
+            <div class="stat-hero-item">
                 <div class="stat-number text-primary fw-bold fs-3">15 лет</div>
                 <div class="stat-label text-muted">на рынке</div>
             </div>
@@ -377,13 +538,13 @@ unset($_SESSION['form_data']);
             </div>
         </div>
     </div>
-    <div class="filters-section mb-4">
+    <div id="filters-section" class="filters-section mb-4">
         <div class="d-flex flex-wrap gap-2 justify-content-center">
             <button class="btn btn-outline-primary filter-btn active" data-filter="all">Все <span class="badge bg-primary ms-1"><?php echo count($brands); ?></span></button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="premium">Премиум <span class="badge bg-primary ms-1">10</span></button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="original">Оригинальные <span class="badge bg-primary ms-1">10</span></button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="aftermarket">Аналоги <span class="badge bg-primary ms-1">10</span></button>
-            <button class="btn btn-outline-primary filter-btn" data-filter="russia">Российские <span class="badge bg-primary ms-1">10</span></button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="premium">Премиум <span class="badge bg-primary ms-1">0</span></button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="original">Оригинальные <span class="badge bg-primary ms-1">0</span></button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="aftermarket">Аналоги <span class="badge bg-primary ms-1">0</span></button>
+            <button class="btn btn-outline-primary filter-btn" data-filter="russia">Российские <span class="badge bg-primary ms-1">0</span></button>
         </div>
     </div>
     <div class="brands-grid-section mb-5">
@@ -392,23 +553,25 @@ unset($_SESSION['form_data']);
             foreach ($brands as $brand)
             {
             ?>
-            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="<?php echo $brand['category']; ?>">
+            <div class="col-xl-3 col-lg-3 col-md-6 brand-item" data-category="<?php echo htmlspecialchars($brand['category']); ?>">
                 <div class="brand-card">
                     <div class="brand-logo-container">
-                        <img src="../img/no-image.png" alt="<?php echo $brand['name']; ?>" class="brand-logo">
+                        <img src="../img/no-image.png" alt="<?php echo htmlspecialchars($brand['name']); ?>" class="brand-logo">
                     </div>
                     <div class="brand-info">
-                        <h5 class="brand-name"><?php echo $brand['name']; ?></h5>
-                        <p class="brand-country"><?php echo $brand['country']; ?></p>
-                        <div class="brand-category <?php echo $brand['category']; ?>"><?php echo $brand['category_name']; ?></div>
-                        <p class="brand-description"><?php echo $brand['description']; ?></p>
+                        <h5 class="brand-name"><?php echo htmlspecialchars($brand['name']); ?></h5>
+                        <p class="brand-country"><?php echo htmlspecialchars($brand['country']); ?></p>
+                        <div class="brand-category <?php echo htmlspecialchars($brand['category']); ?>"><?php echo htmlspecialchars($brand['category_name']); ?></div>
+                        <p class="brand-description"><?php echo htmlspecialchars($brand['description']); ?></p>
                         <div class="brand-stats">
                             <?php 
-                            foreach ($brand['stats'] as $stat)
-                            {
+                            if (!empty($brand['stats']) && is_array($brand['stats'])) {
+                                foreach ($brand['stats'] as $stat)
+                                {
                             ?>
-                            <span class="stat-item"><?php echo $stat; ?></span>
+                            <span class="stat-item"><?php echo htmlspecialchars($stat); ?></span>
                             <?php 
+                                }
                             }
                             ?>
                         </div>
@@ -418,19 +581,19 @@ unset($_SESSION['form_data']);
             <?php 
             } 
             ?>
-            <div class="pagination-section mt-5">
-                <nav aria-label="Навигация по страницам">
-                    <ul class="pagination justify-content-center" id="pagination">
-                    </ul>
-                </nav>
+        </div>
+        <div class="pagination-section mt-5">
+            <nav aria-label="Навигация по страницам">
+                <ul class="pagination justify-content-center" id="pagination">
+                </ul>
+            </nav>
+        </div>
+        <div class="no-results text-center py-5" id="noResults" style="display: none;">
+            <div class="no-results-icon mb-3">
+                <i class="bi bi-search display-1 text-muted"></i>
             </div>
-            <div class="no-results text-center py-5" id="noResults" style="display: none;">
-                <div class="no-results-icon mb-3">
-                    <i class="bi bi-search display-1 text-muted"></i>
-                </div>
-                <h4 class="text-muted mb-3">Бренды не найдены</h4>
-                <p class="text-muted">Попробуйте изменить параметры поиска или фильтрации</p>
-            </div>
+            <h4 class="text-muted mb-3">Бренды не найдены</h4>
+            <p class="text-muted">Попробуйте изменить параметры поиска или фильтрации</p>
         </div>
     </div>
 </div>

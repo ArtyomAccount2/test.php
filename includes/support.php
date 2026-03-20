@@ -248,23 +248,7 @@ unset($_SESSION['form_data']);
         <?php
         }
         ?>
-
-        let problemForm = document.getElementById('problemForm');
-
-        if (problemForm) 
-        {
-            problemForm.addEventListener('submit', function(e) 
-            {
-                if (!this.checkValidity()) 
-                {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-
-                this.classList.add('was-validated');
-            });
-        }
-
+        
         let descriptionField = document.getElementById('description');
         let charCount = document.createElement('div');
         charCount.className = 'form-text text-end';
@@ -313,34 +297,6 @@ unset($_SESSION['form_data']);
 
         window.addEventListener('load', equalizeCardHeights);
         window.addEventListener('resize', equalizeCardHeights);
-
-        let urlInput = document.getElementById('url');
-
-        if (urlInput) 
-        {
-            urlInput.addEventListener('input', function() 
-            {
-                if (this.value && !this.value.startsWith('http')) 
-                {
-                    this.value = 'https://' + this.value;
-                }
-            });
-        }
-
-        let loginModal = document.getElementById('loginModal');
-
-        if (loginModal) 
-        {
-            loginModal.addEventListener('show.bs.modal', function() 
-            {
-                let loginForm = document.querySelector('#loginModal form');
-
-                if (loginForm) 
-                {
-                    loginForm.reset();
-                }
-            });
-        }
     });
     </script>
 </head>
@@ -620,5 +576,58 @@ unset($_SESSION['form_data']);
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() 
+{
+    var problemForm = document.getElementById('problemForm');
+    
+    if (problemForm) 
+    {
+        problemForm.addEventListener('submit', function(event) 
+        {
+            if (!problemForm.checkValidity()) 
+            {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            problemForm.classList.add('was-validated');
+        });
+    }
+
+    var urlInput = document.getElementById('url');
+
+    if (urlInput) 
+    {
+        urlInput.addEventListener('input', function() 
+        {
+            if (this.value && !this.value.startsWith('http')) 
+            {
+                this.value = 'https://' + this.value;
+            }
+        });
+    }
+
+    var loginModal = document.getElementById('loginModal');
+
+    if (loginModal) 
+    {
+        loginModal.addEventListener('show.bs.modal', function() 
+        {
+            var loginForm = document.querySelector('#loginModal form');
+
+            if (loginForm) 
+            {
+                loginForm.reset();
+                var oldAlerts = loginModal.querySelectorAll('.alert');
+
+                oldAlerts.forEach(function(alert) {
+                    alert.remove();
+                });
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

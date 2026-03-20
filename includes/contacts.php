@@ -208,22 +208,6 @@ unset($_SESSION['form_data']);
         }
         ?>
 
-        let contactForm = document.getElementById('contactForm');
-
-        if (contactForm) 
-        {
-            contactForm.addEventListener('submit', function(e) 
-            {
-                if (!this.checkValidity()) 
-                {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-
-                this.classList.add('was-validated');
-            });
-        }
-
         let messageTextarea = document.getElementById('message');
         let charCounter = document.getElementById('charCounter');
         
@@ -272,31 +256,6 @@ unset($_SESSION['form_data']);
 
         window.addEventListener('load', equalizeCardHeights);
         window.addEventListener('resize', equalizeCardHeights);
-
-        let phoneInput = document.getElementById('phone');
-
-        if (phoneInput) 
-        {
-            phoneInput.addEventListener('input', function() 
-            {
-                this.value = this.value.replace(/[^\d\s\(\)\+\-]/g, '');
-            });
-        }
-
-        let loginModal = document.getElementById('loginModal');
-
-        if (loginModal) 
-        {
-            loginModal.addEventListener('show.bs.modal', function() 
-            {
-                let loginForm = document.querySelector('#loginModal form');
-
-                if (loginForm) 
-                {
-                    loginForm.reset();
-                }
-            });
-        }
     });
     </script>
 </head>
@@ -507,5 +466,50 @@ unset($_SESSION['form_data']);
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() 
+{
+    let contactForm = document.getElementById('contactForm');
+
+    if (contactForm) 
+    {
+        contactForm.addEventListener('submit', function(e) 
+        {
+            if (!this.checkValidity()) 
+            {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            this.classList.add('was-validated');
+        });
+    }
+
+    let phoneInput = document.getElementById('phone');
+
+    if (phoneInput) 
+    {
+        phoneInput.addEventListener('input', function() 
+        {
+            this.value = this.value.replace(/[^\d\s\(\)\+\-]/g, '');
+        });
+    }
+
+    let loginModal = document.getElementById('loginModal');
+
+    if (loginModal) 
+    {
+        loginModal.addEventListener('show.bs.modal', function() 
+        {
+            let loginForm = document.querySelector('#loginModal form');
+
+            if (loginForm) 
+            {
+                loginForm.reset();
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

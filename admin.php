@@ -202,6 +202,11 @@ if (isset($_GET['export']) && $current_section === 'products_catalog')
                     </li>
                 </ul>
             </li>
+            <li class="<?= isActiveSection('requests') ? 'active' : '' ?>">
+                <a href="admin.php?section=requests">
+                    <i class="bi bi-envelope-paper"></i>Заявки
+                </a>
+            </li>
             <li class="<?= isActiveSection('news') ? 'active' : '' ?>">
                 <a href="admin.php?section=news">
                     <i class="bi bi-newspaper"></i>Новости
@@ -299,6 +304,9 @@ if (isset($_GET['export']) && $current_section === 'products_catalog')
                     break;
                 case 'reviews':
                     include 'sections/reviews.php';
+                    break;
+                case 'requests':
+                    include 'sections/requests.php';
                     break;
                 case 'settings':
                     include 'sections/settings.php';

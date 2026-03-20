@@ -89,11 +89,11 @@
 {
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border: 1px solid #dee2e6;
-    border-top: none;
     border-radius: 0 0 12px 12px;
     padding: 1.5rem;
     font-size: 1rem;
     line-height: 1.6;
+    margin-top: -15px;
 }
 
 .benefit-item 

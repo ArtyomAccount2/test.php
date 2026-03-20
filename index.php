@@ -549,8 +549,8 @@ unset($_SESSION['form_data']);
             <a href="https://vk.com/lalauto" class="social-icon-float" target="_blank" title="ВКонтакте">
                 <img src="img/image 33.png" alt="VK" width="32" height="32">
             </a>
-            <a href="https://t.me/s/lalauto" class="social-icon-float" target="_blank" title="Telegram">
-                <img src="img/image 32.png" alt="Telegram" width="32" height="32">
+            <a href="https://max.ru/lalauto" class="social-icon-float" target="_blank" title="MAX">
+                <img src="img/image 34.png" alt="Telegram" width="32" height="32">
             </a>
         </div>
     </div>
@@ -694,10 +694,10 @@ unset($_SESSION['form_data']);
                 <h5 class="text-uppercase mb-4 text-center">Мы в соцсетях</h5>
                 <div class="social-links mb-4 text-center">
                     <a href="https://vk.com/lalauto" class="text-white me-3" target="_blank">
-                        <img  src="img/image 33.png" alt="VK" width="32" height="32">
+                        <img src="img/image 33.png" alt="VK" width="32" height="32">
                     </a>
-                    <a href="https://t.me/s/lalauto" class="text-white" target="_blank">
-                        <img src="img/image 32.png" alt="Telegram" width="32" height="32">
+                    <a href="https://max.ru/lalauto" class="text-white" target="_blank">
+                        <img src="img/image 34.png" alt="MAX" width="32" height="32">
                     </a>
                 </div>
                 <h5 class="text-uppercase mb-3 text-center">Подписаться на новости</h5>

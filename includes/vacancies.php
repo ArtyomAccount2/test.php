@@ -189,7 +189,7 @@ unset($_SESSION['form_data']);
     <title>Вакансии - Лал-Авто</title>
     <link rel="icon" href="../img/iconAuto.png" type="image/png" height="32">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/vacancies-styles.css">
@@ -557,7 +557,7 @@ unset($_SESSION['form_data']);
                             <div class="invalid-feedback">Пожалуйста, прикрепите резюме</div>
                         </div>
                     </div>
-                    <div class="mb-3 form-check">
+                    <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="agree" name="agree" required <?php echo (isset($_POST['agree']) || empty($_POST)) ? 'checked' : ''; ?>>
                         <label class="form-check-label small" for="agree">Я согласен на обработку персональных данных</label>
                         <div class="invalid-feedback">Необходимо ваше согласие</div>

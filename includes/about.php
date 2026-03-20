@@ -347,8 +347,8 @@ unset($_SESSION['form_data']);
             <a href="../includes/assortment.php" class="btn btn-primary btn-lg px-5 py-3 me-3 mb-3">
                 <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
             </a>
-            <a href="tel:+78001234567" class="btn btn-outline-primary btn-lg px-5 py-3 mb-3">
-                <i class="bi bi-telephone me-2"></i>8-800-123-45-67
+            <a href="tel:+74012656565" class="btn btn-outline-primary btn-lg px-5 py-3 mb-3">
+                <i class="bi bi-telephone me-2"></i>+7 (4012) 65-65-65
             </a>
         </div>
     </div>
