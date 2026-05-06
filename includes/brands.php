@@ -507,7 +507,7 @@ unset($_SESSION['form_data']);
 ?>
 
 <div class="container my-4">
-    <div class="hero-section text-center mb-4" style="padding-top: 105px;">
+    <div class="hero-section text-center mb-lg-4" style="padding-top: 105px;">
         <h1 class="display-5 fw-bold text-primary mb-3">Торговые марки</h1>
         <p class="lead text-muted mb-3">Официальный дилер ведущих мировых производителей автозапчастей</p>
         <div class="stats-row d-flex justify-content-center gap-4 flex-wrap mb-4">

@@ -74,7 +74,7 @@ foreach ($services as $service)
 
 <div class="services-header mb-4">
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center" style="padding-top: 80px;">
+        <div class="d-flex justify-content-between align-items-center" style="padding-top: 90px;">
             <div>
                 <h1 class="display-5 fw-bold mb-3">Все услуги автосервиса</h1>
                 <p class="lead mb-0">Профессиональное обслуживание и ремонт автомобилей любой сложности</p>

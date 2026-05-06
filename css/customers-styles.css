@@ -462,10 +462,28 @@
         width: 35px;
         right: -35px;
     }
+
+    .faq-section .fw-bold,
+    .loyalty-program .fw-bold,
+    .loyalty-program .lead-text,
+    .benefits-section .fw-bold
+    {
+        text-align: center;
+    }
 }
 
 @media (max-width: 576px) 
 {
+    .container 
+    {
+        overflow-x: hidden !important;
+    }
+    
+    body 
+    {
+        overflow-x: hidden !important;
+    }
+
     .hero-customers 
     {
         padding: 2rem 1rem;
@@ -506,6 +524,12 @@
     {
         width: 40px;
         height: 2px;
+    }
+
+    .fw-bold,
+    .lead-text
+    {
+        text-align: center;
     }
 }
 

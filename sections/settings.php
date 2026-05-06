@@ -208,7 +208,7 @@ unset($_SESSION['error_message']);
 ?>
 
 <div class="row">
-    <div class="col-md-3">
+    <div id="setting-bottom" class="col-xl-3">
         <div class="list-group" id="settingsTabs" role="tablist">
             <a class="list-group-item list-group-item-action <?= $active_tab == 'general' ? 'active' : '' ?>" 
                data-bs-toggle="list" href="#general" role="tab" onclick="setActiveTab('general')">
@@ -252,7 +252,7 @@ unset($_SESSION['error_message']);
             </a>
         </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-xl-9">
         <div class="tab-content">
             <div class="tab-pane fade <?= $active_tab == 'general' ? 'show active' : '' ?>" id="general" role="tabpanel">
                 <div class="card shadow-sm">
@@ -723,7 +723,7 @@ unset($_SESSION['error_message']);
                                 </tbody>
                             </table>
                         </div>
-                        <div class="d-flex gap-2 mt-3">
+                        <div id="text-column" class="d-flex gap-2 mt-3">
                             <button class="btn btn-primary" onclick="createBackup()">
                                 <i class="bi bi-plus-circle me-1"></i>Создать резервную копию
                             </button>
@@ -916,7 +916,7 @@ unset($_SESSION['error_message']);
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div id="form-select-table" class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Срок доставки (дней)</label>
                                         <input type="number" class="form-control" name="setting_delivery_days" value="<?= htmlspecialchars(get_setting('delivery_days', '3')) ?>">
@@ -1196,17 +1196,17 @@ unset($_SESSION['error_message']);
                                     </div>
                                 </div>
                             </div>
-                            <h6 class="mb-3">Проверка обновлений</h6>
-                            <div class="alert alert-success">
-                                <i class="bi bi-check-circle me-2"></i>У вас установлена последняя версия системы.
-                            </div>
-                            <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-primary" onclick="checkUpdates()">
+                            <div class="d-flex gap-2" id="buttonsAPI">
+                                <button type="button" class="btn btn-primary w-50" onclick="checkUpdates()">
                                     <i class="bi bi-arrow-clockwise me-1"></i>Проверить обновления
                                 </button>
-                                <button type="button" class="btn btn-outline-danger" onclick="updateSystem()">
+                                <button type="button" class="btn btn-outline-danger w-50" onclick="updateSystem()">
                                     <i class="bi bi-download me-1"></i>Обновить систему
                                 </button>
+                            </div>
+                            <h6 class="mt-3">Проверка обновлений</h6>
+                            <div class="alert alert-success">
+                                <i class="bi bi-check-circle me-2"></i>У вас установлена последняя версия системы.
                             </div>
                             <div class="text-end mt-3">
                                 <button type="button" class="btn btn-secondary" onclick="resetTab('maintenance')">Сбросить</button>
@@ -1221,7 +1221,7 @@ unset($_SESSION['error_message']);
 </div>
 
 <div class="modal fade" id="restoreModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Восстановление из резервной копии</h5>

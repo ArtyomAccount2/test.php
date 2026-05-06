@@ -193,8 +193,8 @@ unset($_SESSION['form_data']);
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="agreement" required>
                                     <label class="form-check-label" for="agreement">
-                                        Я согласен с <a href="#" class="text-decoration-none">Пользовательским соглашением</a> и 
-                                        <a href="#" class="text-decoration-none">Политикой конфиденциальности</a><span class="text-danger">*</span>
+                                        Я согласен с <a href="includes/terms.php" class="text-decoration-none">Пользовательским соглашением</a> и 
+                                        <a href="includes/privacy.php" class="text-decoration-none">Политикой конфиденциальности</a><span class="text-danger">*</span>
                                     </label>
                                 </div>
                             </div>
@@ -346,7 +346,9 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Закрыть
+                </button>
             </div>
         </div>
     </div>

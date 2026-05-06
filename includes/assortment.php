@@ -410,7 +410,7 @@ function buildQueryString($page, $search, $category)
 ?>
 
 <div class="container my-4">
-    <div class="hero-section text-center mb-5" style="padding-top: 105px;">
+    <div class="hero-section text-center mb-lg-5" style="padding-top: 105px;">
         <h1 class="display-5 fw-bold text-primary mb-3">Каталог автозапчастей</h1>
         <p class="lead text-muted mb-4">Более <?php echo $total_items; ?> наименований оригинальных и качественных аналогов</p>
         <?php 

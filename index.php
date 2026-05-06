@@ -9,6 +9,27 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['u
     header("Location: ../files/logout.php");
 }
 
+$user_free_spin_available = false;
+$user_free_spin_used = false;
+$user_is_authenticated = false;
+
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true && isset($_SESSION['user_id'])) 
+{
+    $user_is_authenticated = true;
+    $stmt = $conn->prepare("SELECT free_spin_used FROM users WHERE id_users = ?");
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($row = $result->fetch_assoc()) 
+    {
+        $user_free_spin_used = (bool)$row['free_spin_used'];
+        $user_free_spin_available = !$user_free_spin_used;
+    }
+
+    $stmt->close();
+}
+
 if (isset($_GET['clear_login_error']) && $_GET['clear_login_error'] == 1) 
 {
     unset($_SESSION['login_error']);
@@ -105,7 +126,7 @@ unset($_SESSION['form_data']);
                     <li class="nav-item dropdown">
                         <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Навигация</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#carouselExample">Слайдер</a></li>
+                            <li><a class="dropdown-item" href="#mainCarousel">Слайдер</a></li>
                             <li><a class="dropdown-item" href="#aboutUs">О Нас</a></li>
                             <li><a class="dropdown-item" href="#specialOffer">Колесо Фортуны</a></li>
                             <li><a class="dropdown-item" href="#nextSection">Поиск по марке автомобиля</a></li>
@@ -148,7 +169,7 @@ unset($_SESSION['form_data']);
                         </button>
                     </div>
                 </form>
-                <div class="ms-xl-3 ms-lg-2 ms-md-1">
+                <div class="ms-xl-3">
                     <?php 
                     if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) 
                     {
@@ -348,6 +369,11 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
+            <div class="carousel-scroll-indicator">
+                <a href="#aboutUs" class="scroll-down-arrow">
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+            </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -391,7 +417,7 @@ unset($_SESSION['form_data']);
                         <div class="about-card-number">02</div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="col-lg-4 col-md-12" data-aos="fade-up" data-aos-delay="300">
                     <div class="about-card h-100">
                         <div class="about-card-icon">
                             <i class="bi bi-info-circle-fill" style="font-size: 2rem;"></i>
@@ -470,13 +496,55 @@ unset($_SESSION['form_data']);
 
     <section class="container my-5 text-center" id="specialOffer">
         <h2 class="text-center mb-4">Колесо Фортуны</h2>
-        <p class="lead mb-4">Крутите колесо и получите специальное предложение!</p>
+        <p class="lead mb-4" id="wheelDescription">
+            <?php 
+            if ($user_is_authenticated && $user_free_spin_available)
+            {
+            ?>
+                🎉 Поздравляем с регистрацией! У вас есть бесплатное вращение колеса! 🎉
+            <?php 
+            }
+            else if ($user_is_authenticated && !$user_free_spin_available)
+            {
+            ?>
+                Крутите колесо и получите специальное предложение!
+            <?php 
+            }
+            else
+            {
+            ?>
+                Авторизуйтесь, чтобы получить бесплатное вращение колеса! 🎁
+            <?php 
+            }
+            ?>
+        </p>
         <br>
         <div class="wheel-container mb-4">
             <canvas id="wheelCanvas" width="300" height="300"></canvas>
             <div class="wheel-pointer"></div>
         </div>
-        <button id="spinButton" class="btn btn-primary btn-lg mb-3">Крутить колесо!</button>        
+        <button id="spinButton" class="btn btn-primary btn-lg mb-3"<?php if (!$user_is_authenticated) { ?> disabled <?php } ?>>
+            <?php 
+            if (!$user_is_authenticated)
+            {
+            ?>
+                Войдите, чтобы крутить
+            <?php 
+            }
+            else if ($user_free_spin_available)
+            {
+            ?>
+                Получить бесплатное вращение! 🎁
+            <?php 
+            }
+            else
+            {
+            ?>
+                Крутить колесо!
+            <?php 
+            }
+            ?>
+        </button>
         <div id="resultContainer" class="alert alert-success" style="display: none;">
             <h4 id="resultText"></h4>
             <p id="resultDescription" class="mb-0"></p>
@@ -543,7 +611,7 @@ unset($_SESSION['form_data']);
 
     <div id="socialFloat" class="social-float-container">
         <button id="socialToggle" class="social-toggle-btn" title="Социальные сети">
-            <i class="bi bi-chevron-up"></i>
+            <i class="bi bi-chat-text"></i>
         </button>
         <div class="social-icons-container">
             <a href="https://vk.com/lalauto" class="social-icon-float" target="_blank" title="ВКонтакте">
@@ -576,7 +644,7 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="brands-container">
                         <div class="position-relative">
-                            <div class="section-subheader d-flex justify-content-between align-items-center mb-4">
+                            <div class="section-subheader d-flex justify-content-between align-items-center mb-2">
                                 <h4 class="mb-0">Популярные марки</h4>
                                 <a href="includes/car-brands.php" class="btn btn-outline-primary btn-sm">
                                     Все марки <i class="bi bi-arrow-right ms-1"></i>
@@ -618,7 +686,7 @@ unset($_SESSION['form_data']);
                     </div>
                     <div class="parts-container">
                         <div class="position-relative">
-                            <div class="section-subheader d-flex justify-content-between align-items-center mb-4">
+                            <div class="section-subheader d-flex justify-content-between align-items-center mb-2">
                                 <h4 class="mb-0">Часто покупаемые запчасти</h4>
                                 <a href="includes/assortment.php" class="btn btn-outline-primary btn-sm">
                                     Весь каталог <i class="bi bi-arrow-right ms-1"></i>
@@ -749,7 +817,14 @@ unset($_SESSION['form_data']);
 <script src="files/app.js"></script>
 </body>
 </html>
-
+<script>
+window.userData = {
+    isAuthenticated: <?php echo json_encode($user_is_authenticated); ?>,
+    freeSpinAvailable: <?php echo json_encode($user_free_spin_available); ?>,
+    freeSpinUsed: <?php echo json_encode($user_free_spin_used); ?>,
+    userId: <?php echo json_encode($_SESSION['user_id'] ?? null); ?>
+};
+</script>
 <?php
 function getCategoryDisplayName($category, $short = false) 
 {
@@ -763,7 +838,8 @@ function getCategoryDisplayName($category, $short = false)
         'уплотнения' => ['full' => 'Уплотнения', 'short' => 'Упл.']
     ];
     
-    if ($short && isset($categoryMap[$category]['short'])) {
+    if ($short && isset($categoryMap[$category]['short'])) 
+    {
         return $categoryMap[$category]['short'];
     }
     

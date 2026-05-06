@@ -197,33 +197,33 @@ unset($_SESSION['message']);
 ?>
 
 <div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Всего товаров</h5>
                 <h2 class="text-primary"><?= $stats['total'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">В наличии</h5>
                 <h2 class="text-success"><?= $stats['available'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Средняя цена</h5>
                 <h2 class="text-warning"><?= number_format($stats['avg_price'], 2, '.', ' ') ?> ₽</h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Общий остаток</h5>
                 <h2 class="text-info"><?= $stats['total_quantity'] ?> шт.</h2>
             </div>
@@ -283,7 +283,7 @@ unset($_SESSION['message']);
                         }
                         ?>
                         <input type="hidden" name="sort" value="<?= htmlspecialchars($sort) ?>">
-                        <select class="form-select" name="category" onchange="this.form.submit()" style="width: auto;">
+                        <select id="form-select" class="form-select" name="category" onchange="this.form.submit()" style="width: auto;">
                             <option value="all" <?= $category_filter == 'all' ? 'selected' : '' ?>>Все категории</option>
                             <?php
                             $cat_result = $conn->query("SELECT DISTINCT category FROM products WHERE category IS NOT NULL ORDER BY category");
@@ -296,7 +296,7 @@ unset($_SESSION['message']);
                             ?>
                         </select>
                     </form>
-                    <form method="GET" action="admin.php" class="d-flex">
+                    <form method="GET" action="admin.php" id="form-select" class="d-flex">
                         <input type="hidden" name="section" value="products_catalog">
                         <input type="hidden" name="page" value="1">
                         <?php 
@@ -337,7 +337,7 @@ unset($_SESSION['message']);
                         <?php 
                         }
                         ?>
-                        <select class="form-select" name="sort" onchange="this.form.submit()" style="width: auto;">
+                        <select id="form-select" class="form-select" name="sort" onchange="this.form.submit()" style="width: auto;">
                             <option value="id_desc" <?= $sort == 'id_desc' ? 'selected' : '' ?>>По ID (убывание)</option>
                             <option value="id_asc" <?= $sort == 'id_asc' ? 'selected' : '' ?>>По ID (возрастание)</option>
                             <option value="name_asc" <?= $sort == 'name_asc' ? 'selected' : '' ?>>По названию (А-Я)</option>
@@ -348,7 +348,7 @@ unset($_SESSION['message']);
                             <option value="quantity_desc" <?= $sort == 'quantity_desc' ? 'selected' : '' ?>>По количеству (убывание)</option>
                         </select>
                     </form>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                    <button id="form-select" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
                         <i class="bi bi-filter me-1"></i>Фильтр
                     </button>
                 </div>
@@ -458,7 +458,7 @@ unset($_SESSION['message']);
                         <th>Цена</th>
                         <th>Остаток</th>
                         <th>Статус</th>
-                        <th width="120">Действия</th>
+                        <th class="text-end" width="120">Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -495,7 +495,7 @@ unset($_SESSION['message']);
                                 ?>
                                 <span class="badge <?= $status_badge[$status][0] ?>"><?= $status_badge[$status][1] ?></span>
                             </td>
-                            <td>
+                            <td class="text-end">
                                 <div class="btn-group btn-group-sm">
                                     <a href="admin.php?section=edit_products&id=<?= $product['id'] ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $category_filter !== 'all' ? '&category=' . urlencode($category_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= !empty($quantity_filter) ? '&quantity_filter=' . urlencode($quantity_filter) : '' ?><?= !empty($status_filter) ? '&status_filter=' . urlencode($status_filter) : '' ?><?= $sort != 'id_desc' ? '&sort=' . urlencode($sort) : '' ?>" class="btn btn-outline-primary">
                                         <i class="bi bi-pencil"></i>
@@ -577,7 +577,7 @@ unset($_SESSION['message']);
 </div>
 
 <div class="modal fade" id="filterModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Расширенный фильтр</h5>

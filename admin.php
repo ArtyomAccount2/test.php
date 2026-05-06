@@ -130,7 +130,7 @@ if (isset($_GET['export']) && $current_section === 'products_catalog')
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Административная панель - <?= ucfirst(str_replace('_', ' ', $current_section)) ?></title>
     <link rel="icon" href="img/iconAuto.png" type="image/png" height="32">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
@@ -145,12 +145,13 @@ if (isset($_GET['export']) && $current_section === 'products_catalog')
 </head>
 <body class="admin-body">
 
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
 <div class="wrapper d-flex">
     <nav id="sidebar" class="active">
         <div class="sidebar-header d-flex justify-content-between align-items-center px-3 py-2">
             <h3 class="mb-0 d-none d-lg-block">Админ-панель</h3>
-            <strong class="d-lg-none">AP</strong>
-            <button type="button" class="btn-close btn-close-white d-lg-none" id="sidebarToggle"></button>
+            <strong class="d-lg-none">Aдминка</strong>
+            <button type="button" class="btn-close btn-close-white" id="sidebarCloseBtn" aria-label="Закрыть меню"></button>
         </div>
         <ul class="list-unstyled components">
             <li class="<?= isActiveSubmenu('users') ? 'active' : '' ?>">
@@ -228,7 +229,7 @@ if (isset($_GET['export']) && $current_section === 'products_catalog')
     <div id="content" class="w-100">
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
             <div class="container-fluid px-3">
-                <button type="button" id="sidebarToggle" class="btn btn-outline-secondary me-2">
+                <button type="button" id="sidebarToggle" class="btn btn-outline-secondary me-2" aria-label="Открыть меню">
                     <i class="bi bi-list"></i>
                 </button>
                 <a class="navbar-brand me-auto" href="admin.php?section=users_list">
@@ -236,17 +237,27 @@ if (isset($_GET['export']) && $current_section === 'products_catalog')
                 </a>
                 <div class="d-flex align-items-center">
                     <div class="dropdown me-2">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-outline-secondary dropdown-toggle notification-btn" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-bell"></i>
-                            <span class="badge bg-danger">3</span>
+                            <span class="notification-badge badge bg-danger" id="notificationBadge" style="display: none;">0</span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownNotifications">
-                            <li><h6 class="dropdown-header">Уведомления</h6></li>
-                            <li><a class="dropdown-item" href="#">Новый заказ #1234</a></li>
-                            <li><a class="dropdown-item" href="#">Новый отзыв</a></li>
-                            <li><a class="dropdown-item" href="#">Системное обновление</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-primary" href="#">Показать все</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationDropdown" style="min-width: 320px; max-width: 400px;">
+                            <li class="notification-header">
+                                <h6 class="dropdown-header d-flex justify-content-between align-items-center">
+                                    <span>Уведомления</span>
+                                    <button class="btn btn-sm btn-link mark-all-read" style="font-size: 12px;">Все прочитаны</button>
+                                </h6>
+                            </li>
+                            <li class="notification-list" style="max-height: 400px; overflow-y: auto;">
+                                <div class="text-center py-3" id="notificationsLoading">
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                        <span class="visually-hidden">Загрузка...</span>
+                                    </div>
+                                </div>
+                                <div id="notificationsList"></div>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-primary" href="#" id="viewAllNotifications">Показать все</a></li>
                         </ul>
                     </div>
                     <div class="dropdown">
@@ -325,48 +336,427 @@ if (isset($_GET['export']) && $current_section === 'products_catalog')
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script>
+class NotificationManager 
+{
+    constructor() 
+    {
+        this.updateInterval = null;
+        this.init();
+    }
+    
+    init() 
+    {
+        this.loadNotifications();
+        this.setupEventListeners();
+        this.startAutoUpdate();
+    }
+    
+    loadNotifications() 
+    {
+        fetch('sections/admin-notifications.php?action=get_notifications')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) 
+                {
+                    this.renderNotifications(data.notifications);
+                    this.updateBadge(data.unread_count);
+                }
+            })
+            .catch(error => console.error('Error loading notifications:', error));
+    }
+    
+    renderNotifications(notifications) 
+    {
+        let container = document.getElementById('notificationsList');
+        let loading = document.getElementById('notificationsLoading');
+        
+        if (!container) 
+        {
+            return;
+        }
+        
+        if (loading) 
+        {
+            loading.style.display = 'none';
+        }
+        
+        if (!notifications || notifications.length === 0) 
+        {
+            container.innerHTML = '<div class="text-center py-3 text-muted">Нет уведомлений</div>';
+            return;
+        }
+        
+        container.innerHTML = notifications.map(notif => `
+            <div class="notification-item ${notif.is_read ? '' : 'unread'}" data-id="${notif.id}">
+                <div class="d-flex">
+                    <div class="notification-icon flex-shrink-0">
+                        <i class="bi bi-${this.getIconByType(notif.type)}"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <strong class="notification-title">${this.escapeHtml(notif.title)}</strong>
+                            <small class="text-muted notification-time">${this.formatDate(notif.created_at)}</small>
+                        </div>
+                        <div class="notification-message small">${this.escapeHtml(notif.message)}</div>
+                    </div>
+                    ${!notif.is_read ? '<button class="btn btn-sm btn-link mark-read-btn" data-id="' + notif.id + '">✓</button>' : ''}
+                </div>
+            </div>
+        `).join('');
+
+        document.querySelectorAll('.mark-read-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                let id = btn.getAttribute('data-id');
+                this.markAsRead(id);
+            });
+        });
+
+        document.querySelectorAll('.notification-item').forEach(item => {
+            item.addEventListener('click', () => {
+                let id = item.getAttribute('data-id');
+
+                if (!item.classList.contains('unread')) 
+                {
+                    return;
+                }
+
+                this.markAsRead(id);
+            });
+        });
+    }
+    
+    markAsRead(id) 
+    {
+        fetch(`sections/admin-notifications.php?action=mark_read&id=${id}`)
+            .then(response => response.json())
+            .then(() => {
+                this.loadNotifications();
+            });
+    }
+    
+    markAllRead() 
+    {
+        fetch('sections/admin-notifications.php?action=mark_all_read')
+            .then(response => response.json())
+            .then(() => {
+                this.loadNotifications();
+            });
+    }
+    
+    updateBadge(count) 
+    {
+        let badge = document.getElementById('notificationBadge');
+
+        if (badge) 
+        {
+            if (count > 0) 
+            {
+                badge.textContent = count > 99 ? '99+' : count;
+                badge.style.display = 'inline-block';
+            } 
+            else 
+            {
+                badge.style.display = 'none';
+            }
+        }
+    }
+    
+    getIconByType(type) 
+    {
+        let icons = {
+            'info': 'info-circle',
+            'success': 'check-circle',
+            'warning': 'exclamation-triangle',
+            'danger': 'x-circle'
+        };
+
+        return icons[type] || 'bell';
+    }
+    
+    formatDate(dateString) 
+    {
+        let date = new Date(dateString);
+        let now = new Date();
+        let diff = now - date;
+        let minutes = Math.floor(diff / 60000);
+        let hours = Math.floor(diff / 3600000);
+        let days = Math.floor(diff / 86400000);
+        
+        if (minutes < 1) 
+        {
+            return 'Только что';
+        }
+
+        if (minutes < 60) 
+        {
+            return `${minutes} мин назад`;
+        }
+
+        if (hours < 24) 
+        {
+            return `${hours} ч назад`;
+        }
+
+        if (days < 7) 
+        {
+            return `${days} дн назад`;
+        }
+        
+        return date.toLocaleDateString('ru-RU');
+    }
+    
+    escapeHtml(text) 
+    {
+        let div = document.createElement('div');
+        div.textContent = text;
+
+        return div.innerHTML;
+    }
+    
+    setupEventListeners() 
+    {
+        let markAllBtn = document.querySelector('.mark-all-read');
+
+        if (markAllBtn) 
+        {
+            markAllBtn.addEventListener('click', () => this.markAllRead());
+        }
+        
+        let viewAllBtn = document.getElementById('viewAllNotifications');
+
+        if (viewAllBtn) 
+        {
+            viewAllBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.showAllNotifications();
+            });
+        }
+
+        let dropdown = document.getElementById('notificationDropdown');
+
+        if (dropdown) 
+        {
+            dropdown.addEventListener('show.bs.dropdown', () => {
+                this.loadNotifications();
+            });
+        }
+    }
+    
+    showAllNotifications() 
+    {
+        fetch('sections/admin-notifications.php?action=get_notifications')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) 
+                {
+                    let modalHtml = `
+                        <div class="modal fade" id="notificationsModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Все уведомления</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ${data.notifications.length === 0 ? 
+                                            '<p class="text-center text-muted">Нет уведомлений</p>' :
+                                            data.notifications.map(notif => `
+                                                <div class="notification-item ${notif.is_read ? '' : 'unread'} mb-2 p-2 border rounded">
+                                                    <div class="d-flex">
+                                                        <div class="notification-icon flex-shrink-0 me-2">
+                                                            <i class="bi bi-${this.getIconByType(notif.type)}"></i>
+                                                        </div>
+                                                        <div>
+                                                            <strong>${this.escapeHtml(notif.title)}</strong>
+                                                            <div class="small text-muted">${this.formatDate(notif.created_at)}</div>
+                                                            <div class="mt-1">${this.escapeHtml(notif.message)}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `).join('')
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    let oldModal = document.getElementById('notificationsModal');
+
+                    if (oldModal) 
+                    {
+                        oldModal.remove();
+                    }
+                    
+                    document.body.insertAdjacentHTML('beforeend', modalHtml);
+                    let modal = new bootstrap.Modal(document.getElementById('notificationsModal'));
+                    modal.show();
+                }
+            });
+    }
+    
+    startAutoUpdate() 
+    {
+        this.updateInterval = setInterval(() => {
+            this.loadNotifications();
+        }, 30000);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() 
 {
     let sidebar = document.getElementById('sidebar');
     let sidebarToggle = document.getElementById('sidebarToggle');
-    
-    if (sidebarToggle) 
+    let sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+    let overlay = document.getElementById('sidebarOverlay');
+
+    let body = document.body;
+    window.notificationManager = new NotificationManager();
+
+    function openSidebar() 
     {
-        sidebarToggle.addEventListener('click', function() 
+        if (!sidebar) 
         {
-            sidebar.classList.toggle('active');
-        });
+            return;
+        }
+
+        sidebar.classList.remove('active');
+
+        if (overlay) 
+        {
+            overlay.classList.add('show');
+        }
+
+        body.style.overflow = 'hidden';
     }
 
-    document.addEventListener('click', function(e) 
+    function closeSidebar() 
     {
-        if (window.innerWidth < 992 && !sidebar.contains(e.target) && e.target !== sidebarToggle) 
+        if (!sidebar) 
         {
-            sidebar.classList.add('active');
+            return;
         }
-    });
+
+        sidebar.classList.add('active');
+
+        if (overlay) 
+        {
+            overlay.classList.remove('show');
+        }
+
+        body.style.overflow = '';
+    }
 
     function handleResize() 
     {
-        if (window.innerWidth >= 992) 
+        let isDesktop = window.innerWidth >= 992.02;
+        
+        if (isDesktop) 
         {
             sidebar.classList.remove('active');
+
+            if (overlay) 
+            {
+                overlay.classList.remove('show');
+            }
+
+            body.style.overflow = '';
+        } 
+        else 
+        {
+            sidebar.classList.add('active');
+
+            if (overlay) 
+            {
+                overlay.classList.remove('show');
+            }
+
+            body.style.overflow = '';
         }
     }
-    
-    window.addEventListener('resize', handleResize);
+
+    if (sidebarToggle) 
+    {
+        sidebarToggle.addEventListener('click', function(e) 
+        {
+            e.stopPropagation();
+
+            if (window.innerWidth < 992.02) 
+            {
+                openSidebar();
+            }
+        });
+    }
+
+    if (sidebarCloseBtn) 
+    {
+        sidebarCloseBtn.addEventListener('click', function() 
+        {
+            closeSidebar();
+        });
+    }
+
+    if (overlay) 
+    {
+        overlay.addEventListener('click', function() 
+        {
+            closeSidebar();
+        });
+    }
+
+    document.addEventListener('keydown', function(e) 
+    {
+        if (e.key === 'Escape' && window.innerWidth < 992.02 && sidebar && !sidebar.classList.contains('active')) 
+        {
+            closeSidebar();
+        }
+    });
+
+    if (sidebar) 
+    {
+        sidebar.querySelectorAll('a[href^="admin.php"]').forEach(link => {
+            link.addEventListener('click', function() 
+            {
+                if (window.innerWidth < 992.02) 
+                {
+                    setTimeout(() => {
+                        closeSidebar();
+                    }, 150);
+                }
+            });
+        });
+    }
+
+    window.addEventListener('resize', function() 
+    {
+        handleResize();
+    });
+
     handleResize();
 
-    document.querySelectorAll('.collapse').forEach(collapse => {
-        if (collapse.classList.contains('show')) 
+    document.querySelectorAll('#sidebar .dropdown-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function(e) 
         {
-            let parentLink = collapse.previousElementSibling;
+            let targetId = this.getAttribute('href');
 
-            if (parentLink) 
+            if (targetId && targetId.startsWith('#')) 
             {
-                parentLink.setAttribute('aria-expanded', 'true');
+                e.preventDefault();
+                let targetCollapse = document.querySelector(targetId);
+
+                if (targetCollapse) 
+                {
+                    let bsCollapse = bootstrap.Collapse.getOrCreateInstance(targetCollapse, {
+                        toggle: false
+                    });
+
+                    bsCollapse.toggle();
+                    let isExpanded = targetCollapse.classList.contains('show');
+                    this.setAttribute('aria-expanded', isExpanded);
+                }
             }
-        }
+        });
     });
 });
 </script>

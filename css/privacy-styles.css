@@ -268,6 +268,12 @@
     {
         margin-bottom: 1.5rem;
     }
+
+    .lead,
+    .display-5
+    {
+        text-align: center;
+    }
 }
 
 @media (max-width: 576px) 
@@ -286,4 +292,67 @@
     {
         margin-bottom: 1.5rem;
     }
+
+    .anchor-menu-title
+    {
+        width: 100%;
+        text-align: center;
+    }
+
+    .anchor-link
+    {
+        width: 100%;
+    }
+
+    .display-5
+    {
+        font-size: 28px;
+    }
+}
+
+.anchor-menu 
+{
+    background: #f8f9fa;
+    border-radius: 16px;
+    padding: 20px 24px;
+    border: 1px solid #e9ecef;
+}
+
+.anchor-menu-title 
+{
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #0a58ca;
+    border-bottom: 2px solid #0a58ca;
+    display: inline-block;
+    padding-bottom: 6px;
+    margin-bottom: 16px !important;
+}
+
+.anchor-links 
+{
+    gap: 10px;
+}
+
+.anchor-link 
+{
+    display: inline-block;
+    padding: 6px 14px;
+    background: white;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    color: #2c3e50;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid #dee2e6;
+    font-weight: 500;
+}
+
+.anchor-link:hover 
+{
+    background: #0a58ca;
+    color: white;
+    border-color: #0a58ca;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(10, 88, 202, 0.2);
 }

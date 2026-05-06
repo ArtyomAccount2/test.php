@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function()
 
     let animateStatistics = () => {
         let statNumbers = document.querySelectorAll('.stat-number');
+
         statNumbers.forEach(number => {
             let originalText = number.textContent;
             let targetValue;
@@ -65,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function()
 
     let handleTabs = () => {
         let tabLinks = document.querySelectorAll('[data-bs-toggle="tab"]');
+
         tabLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -102,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function()
             items.forEach((item, index) => {
                 item.style.opacity = '0';
                 item.style.transform = 'translateY(20px)';
+                
                 setTimeout(() => {
                     item.style.transition = 'all 0.4s ease';
                     item.style.opacity = '1';
@@ -113,12 +116,14 @@ document.addEventListener('DOMContentLoaded', function()
 
     let handleNotifications = () => {
         let notificationButtons = document.querySelectorAll('.notification-item .btn');
+
         notificationButtons.forEach(button => {
             button.addEventListener('click', function() 
             {
                 let notification = this.closest('.notification-item');
                 notification.style.opacity = '0';
                 notification.style.transform = 'translateX(-100px)';
+
                 setTimeout(() => {
                     notification.remove();
                     let badge = document.querySelector('a[href="#notifications"] .badge');
@@ -156,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function()
 
     let initWishlist = () => {
         let wishlistItems = document.querySelectorAll('.wishlist-item');
+
         wishlistItems.forEach(item => {
             let removeBtn = item.querySelector('.btn-remove-wishlist');
             if (removeBtn) 
@@ -164,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function()
                 {
                     item.style.opacity = '0';
                     item.style.transform = 'translateX(100px)';
+
                     setTimeout(() => {
                         item.remove();
                         let badge = document.querySelector('a[href="#wishlist"] .badge');

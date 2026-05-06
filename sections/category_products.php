@@ -129,33 +129,33 @@ unset($_SESSION['error_message']);
 ?>
 
 <div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Всего товаров</h5>
                 <h2 class="text-primary"><?= $stats['total'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">В наличии</h5>
                 <h2 class="text-success"><?= $stats['in_stock'] ?? 0 ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Средняя цена</h5>
                 <h2 class="text-warning"><?= number_format($stats['avg_price'] ?? 0, 2, '.', ' ') ?> ₽</h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Брендов</h5>
                 <h2 class="text-info"><?= $stats['brands_count'] ?? 0 ?></h2>
             </div>
@@ -190,7 +190,7 @@ unset($_SESSION['error_message']);
                         <th>В наличии</th>
                         <th>Хит</th>
                         <th>Бренд</th>
-                        <th width="100">Действия</th>
+                        <th class="text-end" width="100">Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -249,7 +249,7 @@ unset($_SESSION['error_message']);
                                 ?>
                             </td>
                             <td><?= htmlspecialchars($product['brand'] ?? '—') ?></td>
-                            <td>
+                            <td class="text-end">
                                 <div class="btn-group btn-group-sm">
                                     <a href="admin.php?section=edit_category_product&id=<?= $product['id'] ?>&category_type=<?= urlencode($category_type) ?>&page=<?= $page ?>" class="btn btn-outline-primary" title="Редактировать товар">
                                         <i class="bi bi-pencil"></i>

@@ -121,15 +121,31 @@
         font-size: 0.875rem;
     }
     
-    .view-order-details, .btn-outline-danger 
-    {
-        font-size: 0.75rem;
-        padding: 0.25rem 0.5rem;
-    }
-    
     .order-details .row > div 
     {
         margin-bottom: 15px;
+    }
+
+    .table-responsive .btn
+    {
+        width: 100%;
+        font-size: 0.75rem;
+    }
+
+    .table-responsive .ms-1
+    {
+        margin-left: 0 !important;
+    }
+
+    .table-responsive .d-inline-block
+    {
+        margin-top: 5px;
+        display: block !important;
+    }
+
+    .order-item .align-items-center
+    {
+        text-align: end;
     }
 }
 
@@ -249,4 +265,35 @@ body
 .btn-close 
 {
     filter: invert(1);
+}
+
+@media (max-width: 576px) 
+{
+    .order-item .col-md-2
+    {
+        font-size: 15px;
+    }
+
+    .card-body .col-md-6
+    {
+        margin-top: 10px;
+    }
+
+    .order-details-container .no-print
+    {
+        flex-direction: column;
+    }
+
+    .d-inline-block
+    {
+        display: block !important;
+        width: 100%;
+        margin: 10px 0 10px 0;
+    }
+
+    .d-flex .btn-outline-danger,
+    .d-flex .btn-outline-primary
+    {
+        width: 100%;
+    }
 }

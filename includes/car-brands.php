@@ -88,7 +88,7 @@ unset($_SESSION['form_data']);
         ?>
             var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
             loginModal.show();
-            
+
             <?php unset($_SESSION['login_error']); ?>
         <?php 
         } 
@@ -122,26 +122,57 @@ unset($_SESSION['form_data']);
                 card.style.height = 'auto';
             });
             
-            setTimeout(() => {
-                let maxHeight = 0;
-                let visibleCards = document.querySelectorAll('.car-brand-item[style*="display: block"] .car-brand-card');
+            let maxHeight = 0;
+            let visibleCards = document.querySelectorAll('.car-brand-item[style*="display: block"] .car-brand-card, .car-brand-item:not([style*="display: none"]) .car-brand-card');
 
-                visibleCards.forEach(card => {
-                    let height = card.offsetHeight;
+            visibleCards.forEach(card => {
+                let height = card.offsetHeight;
 
-                    if (height > maxHeight) 
-                    {
-                        maxHeight = height;
-                    }
-                });
-                
-                if (maxHeight > 0) 
+                if (height > maxHeight) 
                 {
-                    visibleCards.forEach(card => {
-                        card.style.height = maxHeight + 'px';
-                    });
+                    maxHeight = height;
                 }
-            }, 100);
+            });
+            
+            if (maxHeight > 0) 
+            {
+                visibleCards.forEach(card => {
+                    card.style.height = maxHeight + 'px';
+                });
+            }
+        }
+        
+        function equalizeBrandCardsImmediately() 
+        {
+            if (!modelsGridElement) 
+            {
+                return;
+            }
+
+            let cards = document.querySelectorAll('.car-brand-card');
+            
+            cards.forEach(card => {
+                card.style.height = 'auto';
+            });
+            
+            let maxHeight = 0;
+            let visibleCards = document.querySelectorAll('.car-brand-item .car-brand-card');
+            
+            visibleCards.forEach(card => {
+                let height = card.offsetHeight;
+
+                if (height > maxHeight) 
+                {
+                    maxHeight = height;
+                }
+            });
+            
+            if (maxHeight > 0) 
+            {
+                visibleCards.forEach(card => {
+                    card.style.height = maxHeight + 'px';
+                });
+            }
         }
         
         function updateCategoryCounters(activeFilter, searchText) 
@@ -212,7 +243,7 @@ unset($_SESSION['form_data']);
 
             setTimeout(() => {
                 equalizeBrandCards();
-            }, 350);
+            }, 50);
         }
         
         function updatePagination() 
@@ -253,6 +284,7 @@ unset($_SESSION['form_data']);
                 let prevLi = document.createElement('li');
                 prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
                 prevLi.innerHTML = `<a class="page-link" href="#" aria-label="Предыдущая">‹</a>`;
+
                 prevLi.addEventListener('click', (e) => {
                     e.preventDefault();
 
@@ -281,6 +313,7 @@ unset($_SESSION['form_data']);
                 let nextLi = document.createElement('li');
                 nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
                 nextLi.innerHTML = `<a class="page-link" href="#" aria-label="Следующая">›</a>`;
+
                 nextLi.addEventListener('click', (e) => {
                     e.preventDefault();
 
@@ -312,23 +345,64 @@ unset($_SESSION['form_data']);
                     setTimeout(() => {
                         item.style.opacity = '1';
                         item.style.transform = 'scale(1)';
+                        
+                        if (index === itemsToShow.length - 1) 
+                        {
+                            setTimeout(() => {
+                                equalizeBrandCards();
+                            }, 50);
+                        }
                     }, 50);
                 }, index * 30);
             });
 
             updatePagination();
 
-            setTimeout(() => {
-                equalizeBrandCards();
-
-                if (page > 1) 
+            if (page > 1) 
+            {
+                window.scrollTo({
+                    top: modelsGridElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        function setupHeightObserver() 
+        {
+            if (!modelsGridElement) 
+            {
+                return;
+            }
+            
+            let observer = new MutationObserver(function(mutations) 
+            {
+                let shouldEqualize = false;
+                
+                mutations.forEach(function(mutation) 
                 {
-                    window.scrollTo({
-                        top: modelsGridElement.offsetTop - 100,
-                        behavior: 'smooth'
+                    if (mutation.type === 'childList' || mutation.type === 'attributes' && mutation.attributeName === 'style') 
+                    {
+                        shouldEqualize = true;
+                    }
+                });
+                
+                if (shouldEqualize) 
+                {
+                    requestAnimationFrame(function() 
+                    {
+                        equalizeBrandCards();
                     });
                 }
-            }, 350);
+            });
+            
+            observer.observe(modelsGridElement, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+            
+            return observer;
         }
         
         function initializePage() 
@@ -341,7 +415,9 @@ unset($_SESSION['form_data']);
             updateCategoryCounters('all', '');
             filterBrands('all', '');
             
-            setTimeout(equalizeBrandCards, 500);
+            setTimeout(() => {
+                equalizeBrandCardsImmediately();
+            }, 100);
             
             isInitialized = true;
         }
@@ -388,18 +464,20 @@ unset($_SESSION['form_data']);
         window.addEventListener('resize', function() 
         {
             clearTimeout(resizeTimeout);
+            
             resizeTimeout = setTimeout(() => {
                 equalizeBrandCards();
-            }, 250);
+            }, 150);
         });
         
         window.addEventListener('load', function() 
         {
             initializePage();
+            setupHeightObserver();
 
             setTimeout(() => {
-                equalizeBrandCards();
-            }, 1000);
+                equalizeBrandCardsImmediately();
+            }, 500);
         });
 
         if (document.readyState === 'complete') 
@@ -420,7 +498,7 @@ unset($_SESSION['form_data']);
 ?>
 
 <div class="container my-4">
-    <div class="hero-section text-center mb-4" style="padding-top: 105px;">
+    <div class="hero-section text-center mb-lg-4" style="padding-top: 105px;">
         <h1 class="display-5 fw-bold text-primary mb-3">Все марки автомобилей</h1>
         <p class="lead text-muted mb-3">Подберите запчасти для вашего автомобиля по марке</p>
         <div class="stats-row d-flex justify-content-center gap-4 flex-wrap mb-4">

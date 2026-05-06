@@ -141,7 +141,7 @@ unset($_SESSION['form_data']);
     <div class="row mb-4">
         <div class="col-12 text-center" style="padding-top: 85px;">
             <h1 class="display-5 fw-bold text-primary mb-3">Возврат и обмен товаров</h1>
-            <p class="lead text-muted mb-4">Условия возврата и обмена товаров в соответствии с законодательством РФ</p>
+            <p class="lead text-muted mb-2">Условия возврата и обмена товаров в соответствии с законодательством РФ</p>
         </div>
     </div>
     <div class="row">

@@ -439,7 +439,7 @@ unset($_SESSION['success_message']);
 </div>
 
 <div class="modal fade" id="confirmRemoveImage" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Подтверждение удаления</h5>

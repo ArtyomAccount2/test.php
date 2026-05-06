@@ -226,7 +226,7 @@ unset($_SESSION['forgot_error'], $_SESSION['forgot_success'], $_SESSION['forgot_
                            placeholder="example@email.com" required value="<?= htmlspecialchars($email) ?>">
                     <div class="form-text">На этот email будет отправлена ссылка для сброса пароля</div>
                 </div>
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 button-submit-active">
                     <button type="submit" class="button-active btn btn-primary btn-lg w-50">
                         <i class="bi bi-send"></i> Получить код сброса
                     </button>

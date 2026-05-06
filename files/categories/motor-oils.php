@@ -137,7 +137,7 @@ $volumes = getFilterOptions($conn, 'motor-oil', 'volume');
                         <a class="nav-link text-dark" href="../../includes/oils.php?sort=default&page=1">Масла и тех. жидкости</a>
                     </li>
                 </ul>
-                <div class="ms-xl-3 ms-lg-2 ms-md-1">
+                <div class="ms-xl-3">
                     <?php 
                     if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) 
                     {
@@ -247,6 +247,32 @@ $volumes = getFilterOptions($conn, 'motor-oil', 'volume');
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle"></i> Закрыть
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="socialFloat" class="social-float-container">
+        <button id="socialToggle" class="social-toggle-btn" title="Социальные сети">
+            <i class="bi bi-chat-text"></i>
+        </button>
+        <div class="social-icons-container">
+            <a href="https://vk.com/lalauto" class="social-icon-float" target="_blank" title="ВКонтакте">
+                <img src="../../img/image 33.png" alt="VK" width="32" height="32">
+            </a>
+            <a href="https://max.ru/lalauto" class="social-icon-float" target="_blank" title="MAX">
+                <img src="../../img/image 34.png" alt="MAX" width="32" height="32">
+            </a>
+        </div>
+    </div>
+
+    <div id="cookieConsent" class="cookie-consent" style="display: none;">
+        <div class="cookie-container">
+            <div class="cookie-content">
+                <p class="cookie-text">Наш сайт использует cookies и сохраняет ваши персональные данные. Нажимая <strong>"Согласен"</strong> вы принимаете условия обработки персональных данных согласно нашей <a href="includes/privacy.php" class="cookie-link">Политике Конфиденциальности</a>.</p>
+                <div class="cookie-buttons">
+                    <button id="cookieAccept" class="btn btn-primary btn-sm cookie-btn">Согласен</button>
+                    <button id="cookieReject" class="btn btn-outline-secondary btn-sm cookie-btn">Не согласен</button>
                 </div>
             </div>
         </div>

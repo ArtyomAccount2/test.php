@@ -935,8 +935,7 @@
 {
     .scrollable-item 
     {
-        width: 235px;
-        height: 180px;
+        width: 195px;
     }
     
     .scrollable 
@@ -1726,4 +1725,66 @@
 {
     background: #007bff;
     border-color: #007bff;
+}
+
+.carousel-scroll-indicator 
+{
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    animation: bounceArrow 2s infinite;
+}
+
+.scroll-down-arrow 
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.scroll-down-arrow:hover 
+{
+    background: #007bff;
+    color: white;
+    transform: scale(1.1);
+    border-color: #007bff;
+}
+
+@keyframes bounceArrow 
+{
+    0%, 100% 
+    {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% 
+    {
+        transform: translateX(-50%) translateY(8px);
+    }
+}
+
+@media (max-width: 768px) 
+{
+    .carousel-scroll-indicator 
+    {
+        bottom: 20px;
+    }
+    
+    .scroll-down-arrow 
+    {
+        width: 38px;
+        height: 38px;
+        font-size: 1.2rem;
+    }
 }

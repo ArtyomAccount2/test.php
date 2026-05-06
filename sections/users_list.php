@@ -113,33 +113,33 @@ $stats = $stats_stmt->fetch_assoc();
 </div>
 
 <div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Всего пользователей</h5>
                 <h2 class="text-primary"><?= $stats['total'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Физ. лица</h5>
                 <h2 class="text-success"><?= $stats['physical'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Юр. лица</h5>
                 <h2 class="text-warning"><?= $stats['legal'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">С организациями</h5>
                 <h2 class="text-info"><?= $stats['with_organization'] ?></h2>
             </div>
@@ -180,7 +180,7 @@ $stats = $stats_stmt->fetch_assoc();
             </div>
             <div class="col-md-4">
                 <div class="d-flex justify-content-md-end gap-2">
-                    <form method="GET" action="admin.php" class="d-flex">
+                    <form method="GET" action="admin.php" class="d-flex form-select-button">
                         <input type="hidden" name="section" value="users_list">
                         <?php 
                         if (!empty($search))
@@ -227,7 +227,7 @@ $stats = $stats_stmt->fetch_assoc();
                         <th class="d-none d-lg-table-cell">Телефон</th>
                         <th class="d-none d-xl-table-cell">Регион</th>
                         <th>Тип</th>
-                        <th width="100">Действия</th>
+                        <th class="text-center" width="100">Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -311,7 +311,7 @@ $stats = $stats_stmt->fetch_assoc();
                             }
                             ?>
                         </td>
-                        <td>
+                        <td class="text-end">
                             <div class="btn-group btn-group-sm" role="group">
                                 <a href="files/edit_user.php?id=<?= $user['id_users'] ?>&page=<?= $page ?>" class="btn btn-outline-primary" title="Редактировать">
                                     <i class="bi bi-pencil"></i>
@@ -396,7 +396,7 @@ $stats = $stats_stmt->fetch_assoc();
 </div>
 
 <div class="modal fade" id="columnsModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Выбор отображаемых колонок</h5>
@@ -439,7 +439,7 @@ $stats = $stats_stmt->fetch_assoc();
 </div>
 
 <div class="modal fade" id="userDetailsModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Подробная информация о пользователе</h5>
@@ -469,10 +469,10 @@ function viewUser(userId)
                 editLink.href = `files/edit_user.php?id=${userId}`;
                 
                 let html = `
-                    <div class="row">
-                        <div class="col-md-6">
+                    <div id="table-column" class="row">
+                        <div id="table-bottom" class="col-md-6">
                             <h6>Основная информация</h6>
-                            <table class="table table-sm">
+                            <table id="table-size" class="table table-sm">
                                 <tr>
                                     <td><strong>ID:</strong></td>
                                     <td>${user.id_users}</td>
@@ -511,7 +511,7 @@ function viewUser(userId)
                         </div>
                         <div class="col-md-6">
                             <h6>Контактная информация</h6>
-                            <table class="table table-sm">
+                            <table id="table-size" class="table table-sm">
                                 <tr>
                                     <td><strong>Email:</strong></td>
                                     <td>${user.email_users || '—'}</td>

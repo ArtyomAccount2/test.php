@@ -285,13 +285,13 @@ unset($_SESSION['error_message']);
                     <table class="table table-hover mb-0">
                         <thead class="table-light sticky-top">
                             <tr>
-                                <th style="position: sticky; left: 0; background: #f8f9fa; z-index: 10;">ID</th>
-                                <th style="min-width: 200px;">Название</th>
-                                <th style="min-width: 200px;">Адрес</th>
-                                <th style="min-width: 120px;">Регион</th>
-                                <th style="min-width: 150px;">Телефон</th>
-                                <th style="min-width: 100px;">Статус</th>
-                                <th style="min-width: 120px; position: sticky; right: 0; background: #f8f9fa; z-index: 10;">Действия</th>
+                                <th width="50">ID</th>
+                                <th width="100">Название</th>
+                                <th width="100">Адрес</th>
+                                <th width="100">Регион</th>
+                                <th width="100">Телефон</th>
+                                <th width="100">Статус</th>
+                                <th class="text-end" width="120">Действия</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -302,7 +302,7 @@ unset($_SESSION['error_message']);
                                 {
                                 ?>
                                 <tr>
-                                    <td style="position: sticky; left: 0; background: white; z-index: 1;"><?= $shop['id'] ?></td>
+                                    <td><?= $shop['id'] ?></td>
                                     <td>
                                         <strong><?= htmlspecialchars($shop['name']) ?></strong>
                                         <br><small class="text-muted">
@@ -330,7 +330,7 @@ unset($_SESSION['error_message']);
                                         ?>
                                         <span class="badge <?= $status_badges[$status][0] ?>"><?= $status_badges[$status][1] ?></span>
                                     </td>
-                                    <td style="position: sticky; right: 0; background: white; z-index: 1;">
+                                    <td class="text-end">
                                         <div class="btn-group btn-group-sm">
                                             <button class="btn btn-outline-primary" title="Редактировать" onclick="editShop(<?= $shop['id'] ?>)" data-bs-toggle="modal" data-bs-target="#editShopModal">
                                                 <i class="bi bi-pencil"></i>
@@ -414,7 +414,7 @@ unset($_SESSION['error_message']);
 </div>
 
  <div class="modal fade" id="editShopModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Редактировать магазин</h5>
@@ -432,7 +432,7 @@ unset($_SESSION['error_message']);
 </div>
 
 <div class="modal fade" id="addShopModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Добавить новый магазин</h5>

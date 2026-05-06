@@ -284,7 +284,7 @@ function formatSchedule($schedule)
 ?>
 
 <div class="container my-5">
-    <div class="hero-section text-center mb-5" style="padding-top: 85px;">
+    <div class="hero-section text-center mb-lg-5" style="padding-top: 85px;">
         <h1 class="display-4 fw-bold text-primary mb-3">Наши магазины</h1>
         <p class="lead text-muted">Сеть автомагазинов Лал-Авто в Калининграде и области</p>
     </div>

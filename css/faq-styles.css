@@ -253,7 +253,6 @@
 {
     .faq-categories .btn 
     {
-        width: calc(50% - 0.5rem);
         margin: 0.25rem;
         text-align: center;
         font-size: 0.9rem;
@@ -290,6 +289,11 @@
 
 @media (max-width: 576px) 
 {
+    .faq-categories .btn 
+    {
+        width: calc(50% - 0.5rem);
+    }
+
     .faq-section 
     {
         padding: 1rem;

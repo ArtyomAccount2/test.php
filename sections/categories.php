@@ -257,33 +257,33 @@ unset($_SESSION['error_message']);
 ?>
 
 <div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Всего категорий</h5>
                 <h2 class="text-primary"><?= $total_categories ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">С товарами</h5>
                 <h2 class="text-success"><?= count($existing_types) ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Всего товаров</h5>
                 <h2 class="text-info"><?= $total_products ?> шт.</h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">В наличии</h5>
                 <h2 class="text-success"><?= $in_stock ?> шт.</h2>
             </div>
@@ -307,7 +307,7 @@ unset($_SESSION['error_message']);
             </div>
             <div class="col-md-8">
                 <div class="d-flex justify-content-md-end gap-2 flex-wrap">
-                    <form method="GET" action="admin.php" class="d-flex">
+                    <form method="GET" action="admin.php" id="form-select" class="d-flex">
                         <input type="hidden" name="section" value="categories">
                         <input type="hidden" name="page" value="1">
                         <?php 
@@ -346,7 +346,7 @@ unset($_SESSION['error_message']);
                         <?php 
                         }
                         ?>
-                        <select class="form-select" name="type_filter" onchange="this.form.submit()" style="width: auto;">
+                        <select id="form-select" class="form-select" name="type_filter" onchange="this.form.submit()" style="width: auto;">
                             <option value="all" <?= $type_filter == 'all' ? 'selected' : '' ?>>Все типы</option>
                             <?php 
                             foreach ($existing_types as $type)
@@ -360,7 +360,7 @@ unset($_SESSION['error_message']);
                             ?>
                         </select>
                     </form>
-                    <form method="GET" action="admin.php" class="d-flex">
+                    <form method="GET" action="admin.php" id="form-select" class="d-flex">
                         <input type="hidden" name="section" value="categories">
                         <input type="hidden" name="page" value="1">
                         <?php 
@@ -406,7 +406,7 @@ unset($_SESSION['error_message']);
                         <?php 
                         }
                         ?>
-                        <select class="form-select" name="sort" onchange="this.form.submit()" style="width: auto;">
+                        <select id="form-select" class="form-select" name="sort" onchange="this.form.submit()" style="width: auto;">
                             <option value="name_asc" <?= $sort == 'name_asc' ? 'selected' : '' ?>>По названию (А-Я)</option>
                             <option value="name_desc" <?= $sort == 'name_desc' ? 'selected' : '' ?>>По названию (Я-А)</option>
                             <option value="id_asc" <?= $sort == 'id_asc' ? 'selected' : '' ?>>По ID (возрастание)</option>
@@ -417,7 +417,7 @@ unset($_SESSION['error_message']);
                             <option value="price_asc" <?= $sort == 'price_asc' ? 'selected' : '' ?>>По цене (возр.)</option>
                         </select>
                     </form>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                    <button id="form-select" type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
                         <i class="bi bi-filter me-1"></i>Фильтр
                     </button>
                 </div>
@@ -512,7 +512,7 @@ unset($_SESSION['error_message']);
                         <th>Товаров</th>
                         <th>В наличии</th>
                         <th>Средняя цена</th>
-                        <th width="120">Действия</th>
+                        <th class="text-center" width="120">Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -567,7 +567,7 @@ unset($_SESSION['error_message']);
                                 }
                                 ?>
                             </td>
-                            <td>
+                            <td class="text-end">
                                 <div class="btn-group btn-group-sm">
                                     <a href="admin.php?section=categories_add&type=<?= urlencode($category['category_type']) ?>&page=<?= $page ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?><?= $type_filter !== 'all' ? '&type_filter=' . urlencode($type_filter) : '' ?><?= $brand_filter !== 'all' ? '&brand_filter=' . urlencode($brand_filter) : '' ?><?= $in_stock_filter !== 'all' ? '&in_stock_filter=' . urlencode($in_stock_filter) : '' ?><?= !empty($price_min) ? '&price_min=' . urlencode($price_min) : '' ?><?= !empty($price_max) ? '&price_max=' . urlencode($price_max) : '' ?><?= $sort != 'name_asc' ? '&sort=' . urlencode($sort) : '' ?>" 
                                        class="btn btn-outline-primary">
@@ -669,7 +669,7 @@ unset($_SESSION['error_message']);
 </div>
 
 <div class="modal fade" id="filterModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Расширенный фильтр категорий</h5>

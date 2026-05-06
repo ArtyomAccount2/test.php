@@ -266,7 +266,7 @@ unset($_SESSION['form_data']);
 ?>
 
 <div class="container my-5">
-    <div class="hero-section text-center mb-5" style="padding-top: 85px;">
+    <div class="hero-section text-center mb-lg-5" style="padding-top: 85px;">
         <h1 class="display-5 fw-bold text-primary mb-3">Контакты</h1>
         <p class="lead text-muted mb-4">Свяжитесь с нами удобным для вас способом</p>
     </div>
@@ -438,6 +438,55 @@ unset($_SESSION['form_data']);
         <div class="map-container">
             <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A1234567890abcdef&amp;source=constructor" width="100%" height="400" frameborder="0"></iframe>
         </div>
+        <div class="text-center mt-3">
+            <button id="routeButton" class="btn btn-primary btn-lg">
+                <i class="bi bi-compass me-2"></i>Проложить маршрут
+            </button>
+            <p class="text-muted mt-2 small">
+                <i class="bi bi-geo-alt-fill me-1"></i>г. Калининград, ул. Автомобильная, 12
+            </p>
+        </div>
+    </div>
+    <div class="schedule-section mb-5">
+        <h2 class="text-center mb-4">График работы подразделений</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered schedule-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Подразделение</th>
+                        <th>Пн-Пт</th>
+                        <th>Сб</th>
+                        <th>Вс</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="bi bi-building me-2"></i>Центральный офис</td>
+                        <td class="bg-success-light">9:00 - 20:00</td>
+                        <td class="bg-warning-light">10:00 - 18:00</td>
+                        <td class="bg-warning-light">10:00 - 18:00</td>
+                    </tr>
+                    <tr>
+                        <td><i class="bi bi-wrench me-2"></i>Сервисный центр</td>
+                        <td class="bg-success-light">8:00 - 21:00</td>
+                        <td class="bg-success-light">9:00 - 18:00</td>
+                        <td class="bg-danger-light">Выходной</td>
+                    </tr>
+                    <tr>
+                        <td><i class="bi bi-truck me-2"></i>Склад запчастей</td>
+                        <td class="bg-success-light">9:00 - 18:00</td>
+                        <td class="bg-warning-light">10:00 - 15:00</td>
+                        <td class="bg-danger-light">Выходной</td>
+                    </tr>
+                    <tr>
+                        <td><i class="bi bi-headset me-2"></i>Колл-центр</td>
+                        <td class="bg-success-light">8:00 - 20:00</td>
+                        <td class="bg-success-light">9:00 - 18:00</td>
+                        <td class="bg-success-light">9:00 - 18:00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -508,6 +557,32 @@ document.addEventListener('DOMContentLoaded', function()
                 loginForm.reset();
             }
         });
+    }
+});
+
+document.getElementById('routeButton')?.addEventListener('click', function() 
+{
+    let targetAddress = encodeURIComponent('г. Калининград, ул. Автомобильная, 12');
+    
+    if ('geolocation' in navigator) 
+    {
+        navigator.geolocation.getCurrentPosition(
+            function(position) 
+            {
+                let userLat = position.coords.latitude;
+                let userLng = position.coords.longitude;
+
+                window.open(`https://yandex.ru/maps/?rtext=${userLat},${userLng}~54.7100,20.5100&rtt=auto&ruri=ymapsbm1://geo?ll=20.5100,54.7100`, '_blank');
+            },
+            function(error) 
+            {
+                window.open(`https://yandex.ru/maps/?text=${targetAddress}`, '_blank');
+            }
+        );
+    } 
+    else 
+    {
+        window.open(`https://yandex.ru/maps/?text=${targetAddress}`, '_blank');
     }
 });
 </script>

@@ -50,6 +50,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
 }
 
+function ru_date($timestamp) 
+{
+    $months = [
+        1 => 'января', 2 => 'февраля', 3 => 'марта', 4 => 'апреля',
+        5 => 'мая', 6 => 'июня', 7 => 'июля', 8 => 'августа',
+        9 => 'сентября', 10 => 'октября', 11 => 'ноября', 12 => 'декабря'
+    ];
+
+    $day = date('d', $timestamp);
+    $month = $months[(int)date('m', $timestamp)];
+    $year = date('Y', $timestamp);
+    
+    return "$day $month $year";
+}
+
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
 ?>
@@ -93,7 +108,7 @@ unset($_SESSION['form_data']);
     <div class="row">
         <div class="col-12" style="padding-top: 60px;">
             <h1 class="display-5 fw-bold text-primary mb-3">Условия использования сайта</h1>
-            <p class="lead text-muted">Последнее обновление: 29 октября 2025 года</p>
+            <p class="lead text-muted">Последнее обновление: <?php echo ru_date(time()); ?> года</p>
             <div class="terms-summary mb-5">
                 <div class="row">
                     <div class="col-md-4 mb-3">
@@ -390,7 +405,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </section>
                 <div class="update-info p-3 text-center mt-5">
-                    <p class="mb-0"><strong>Последнее обновление условий:</strong> 29 октября 2025 года</p>
+                    <p class="mb-0"><strong>Последнее обновление:</strong> <?php echo ru_date(time()); ?> года</p>
                 </div>
             </div>
         </div>

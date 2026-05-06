@@ -131,7 +131,7 @@ foreach ($requisites_by_category['address'] as $item)
 ?>
 
 <div class="container my-5 pt-4">
-    <div class="row mb-4">
+    <div class="row mb-lg-4">
         <div class="col-12 text-center">
             <h1 class="display-4 fw-bold text-primary mb-3" style="padding-top: 60px;">Реквизиты компании</h1>
             <p class="lead fs-5 text-muted">Официальная информация о компании ООО "Лал-Авто"</p>
@@ -254,7 +254,7 @@ foreach ($requisites_by_category['address'] as $item)
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
-
+<script src="../js/script.js"></script>
 <script>
 function copyText(button) 
 {
@@ -276,11 +276,11 @@ function copyText(button)
             let originalHTML = button.innerHTML;
             button.innerHTML = '<i class="bi bi-check"></i>';
             button.classList.remove('btn-outline-secondary');
-            button.classList.add('btn-success');
+            button.classList.add('btn-primary');
 
             setTimeout(() => {
                 button.innerHTML = originalHTML;
-                button.classList.remove('btn-success');
+                button.classList.remove('btn-primary');
                 button.classList.add('btn-outline-secondary');
             }, 2000);
         } 

@@ -258,7 +258,7 @@ unset($_SESSION['form_data']);
 ?>
 
 <div class="container my-5">
-    <div class="hero-section text-center mb-5" style="padding-top: 85px;">
+    <div class="hero-section text-center mb-lg-5" style="padding-top: 85px;">
         <h1 class="display-5 fw-bold text-primary mb-3">Сотрудничество с поставщиками</h1>
         <p class="lead text-muted mb-4">Станьте частью нашей сети и развивайте бизнес вместе с Лал-Авто</p>
     </div>

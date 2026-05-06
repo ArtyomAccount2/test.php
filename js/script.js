@@ -925,11 +925,27 @@ document.addEventListener('DOMContentLoaded', function()
     let lastScrollTop = 0;
     let navbar = document.querySelector('.navbar');
     let dropdownMenus = document.querySelectorAll('.dropdown-menu');
+    let isScrollingToAnchor = false;
 
     if (navbar) 
     {
         window.addEventListener('scroll', function() 
         {
+            if (isScrollingToAnchor) 
+            {
+                return;
+            }
+            
+            if (window.innerWidth <= 1024) 
+            {
+                if (navbar.classList.contains('collapsed')) 
+                {
+                    navbar.classList.remove('collapsed');
+                }
+
+                return;
+            }
+
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
             if (scrollTop > lastScrollTop) 
@@ -1003,7 +1019,8 @@ document.addEventListener('DOMContentLoaded', function()
 
     if (brandSearch) 
     {
-        brandSearch.addEventListener('input', function() {
+        brandSearch.addEventListener('input', function() 
+        {
             filterItems(document.querySelector('#carBrandsList .scrollable'), this.value, 'no-results-brands');
         });
     }
@@ -1012,7 +1029,8 @@ document.addEventListener('DOMContentLoaded', function()
 
     if (partsSearch) 
     {
-        partsSearch.addEventListener('input', function() {
+        partsSearch.addEventListener('input', function() 
+        {
             filterItems(document.querySelector('#popularParts .scrollable'), this.value, 'no-results-parts');
         });
     }
@@ -1020,20 +1038,37 @@ document.addEventListener('DOMContentLoaded', function()
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) 
         {
-            e.preventDefault();
-            let target = document.querySelector(this.getAttribute('href'));
+            let href = this.getAttribute('href');
 
+            if (href === '#' || href === '#0' || href === '#carouselExample' || href === '#mainCarousel') 
+            {
+                return;
+            }
+            
+            e.preventDefault();
+            let target = document.querySelector(href);
+            
             if (target) 
             {
-                let navbarHeight = document.querySelector('.navbar') ? document.querySelector('.navbar').offsetHeight : 0;
-                let offset = navbarHeight + 20;
+                isScrollingToAnchor = true;
+                let navbar = document.querySelector('.navbar');
+
+                if (navbar && navbar.classList.contains('collapsed')) 
+                {
+                    navbar.classList.remove('collapsed');
+                }
                 
-                let targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                let navbarHeight = navbar ? navbar.offsetHeight : 0;
+                let targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
                 
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
                 });
+
+                setTimeout(() => {
+                    isScrollingToAnchor = false;
+                }, 1000);
             }
         });
     });
@@ -1059,7 +1094,8 @@ document.addEventListener('DOMContentLoaded', function()
 
     if (discountCheckbox) 
     {
-        discountCheckbox.addEventListener('change', function() {
+        discountCheckbox.addEventListener('change', function() 
+        {
             let group = document.getElementById('discountCardNumberGroup');
 
             if (group) 
@@ -1208,6 +1244,38 @@ document.addEventListener('DOMContentLoaded', function()
         {
             this.style.transition = 'all 0.3s ease';
         });
+    });
+
+    let aboutUsButton = document.querySelector('.carousel-caption .btn-outline-light[href="#aboutUs"]');
+
+    if (aboutUsButton) 
+    {
+        aboutUsButton.addEventListener('click', function(e) 
+        {
+            let navbar = document.querySelector('.navbar');
+
+            if (navbar && navbar.classList.contains('collapsed')) 
+            {
+                navbar.classList.remove('collapsed');
+            }
+        });
+    }
+
+    document.querySelectorAll('.carousel-caption .btn').forEach(button => {
+        let href = button.getAttribute('href');
+
+        if (href && href.startsWith('#')) 
+        {
+            button.addEventListener('click', function() 
+            {
+                let navbar = document.querySelector('.navbar');
+                
+                if (navbar && navbar.classList.contains('collapsed')) 
+                {
+                    navbar.classList.remove('collapsed');
+                }
+            });
+        }
     });
 });
 

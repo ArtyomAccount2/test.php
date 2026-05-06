@@ -308,7 +308,7 @@ unset($_SESSION['form_data']);
 ?>
 
 <div class="container my-5">
-    <div class="vacancies-hero text-center mb-5" style="padding-top: 85px;">
+    <div class="vacancies-hero text-center mb-lg-5" style="padding-top: 85px;">
         <h1 class="display-5 fw-bold text-primary mb-3">Карьера в Лал-Авто</h1>
         <p class="lead text-muted mb-4">Присоединяйтесь к команде профессионалов и развивайтесь вместе с нами</p>
     </div>
@@ -324,7 +324,7 @@ unset($_SESSION['form_data']);
     }
     ?>
     <div class="row g-4 mb-5">
-        <div class="col-md-6">
+        <div class="col-lg-6 col-md-12">
             <div class="vacancy-card-main h-100">
                 <div class="vacancy-card">
                     <div class="vacancy-header">
@@ -385,7 +385,7 @@ unset($_SESSION['form_data']);
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6 col-md-12">
             <div class="vacancy-card-main h-100">
                 <div class="vacancy-card">
                     <div class="vacancy-header">

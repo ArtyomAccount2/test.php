@@ -332,6 +332,16 @@
     {
         font-size: 1.25rem;
     }
+
+    .express-service
+    {
+        flex-direction: column;
+    }
+
+    .display-5
+    {
+        font-size: 28px;
+    }
 }
 
 .row 

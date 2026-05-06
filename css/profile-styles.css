@@ -18,7 +18,7 @@
 
 .profile-sidebar .card-body 
 {
-    padding: 2rem 1.5rem;
+    padding: 1.25rem 1.25rem;
     position: relative;
 }
 
@@ -908,25 +908,6 @@
         display: none;
     }
     
-    #cart .table tbody tr 
-    {
-        display: block;
-        margin-bottom: 1rem;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        padding: 1rem;
-    }
-    
-    #cart .table tbody td 
-    {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem;
-        border: none;
-        text-align: left !important;
-    }
-    
     #cart .table tbody td::before 
     {
         content: attr(data-label);
@@ -963,6 +944,22 @@
     #cart .d-flex.justify-content-between > div 
     {
         text-align: center;
+        width: 100%;
+    }
+
+    .button-active .d-inline-block
+    {
+        display: block !important;
+    }
+
+    .button-active .me-2
+    {
+        margin-right: 0 !important;
+        margin-bottom: 10px;
+    }
+
+    .button-active .btn
+    {
         width: 100%;
     }
 }
@@ -1031,6 +1028,11 @@
     {
         max-height: calc(100vh - 450px);
     }
+
+    #profileForm .btn
+    {
+        width: 50%;
+    }
 }
 
 @media (min-width: 768px) 
@@ -1066,6 +1068,16 @@
     {
         -ms-overflow-style: none;
         scrollbar-width: none;
+    }
+
+    #profileForm .d-flex
+    {
+        flex-direction: column;
+    }
+
+    #profileForm .btn
+    {
+        width: 100%;
     }
 }
 
@@ -1251,4 +1263,119 @@
 {
     scrollbar-width: thin;
     scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+.premium-star 
+{
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid white;
+    animation: starPulse 2s infinite;
+    z-index: 15;
+}
+
+.premium-star i 
+{
+    font-size: 1.2rem;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes starPulse 
+{
+    0% 
+    {
+        transform: scale(1);
+        box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+    }
+    50% 
+    {
+        transform: scale(1.1);
+        box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6);
+    }
+    100% 
+    {
+        transform: scale(1);
+        box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+    }
+}
+
+.profile-avatar:hover .premium-star 
+{
+    animation: starSpin 0.5s ease;
+}
+
+@keyframes starSpin 
+{
+    0% 
+    {
+        transform: rotate(0deg) scale(1);
+    }
+    100% 
+    {
+        transform: rotate(360deg) scale(1.2);
+    }
+}
+
+.premium-badge-text 
+{
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: white;
+    border: none;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+.common-badge-text 
+{
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.premium-badge-text i,
+.common-badge-text i
+{
+    margin-right: 5px;
+}
+
+@media (max-width: 768px) 
+{
+    .premium-star 
+    {
+        width: 28px;
+        height: 28px;
+        top: -4px;
+        right: -4px;
+    }
+    
+    .premium-star i 
+    {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) 
+{
+    .premium-star 
+    {
+        width: 24px;
+        height: 24px;
+        top: -3px;
+        right: -3px;
+    }
+    
+    .premium-star i 
+    {
+        font-size: 0.8rem;
+    }
 }

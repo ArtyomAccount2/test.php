@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function()
     let isSpinning = false;
     let autoCloseTimer;
     let currentPrizeType = '';
+    let isFreeSpin = false;
 
     function drawWheel() 
     {
@@ -64,15 +65,92 @@ document.addEventListener('DOMContentLoaded', function()
 
     function updateSpinStatus() 
     {
-        let spinsLeft = localStorage.getItem('wheelSpinsLeft') || 0;
-        spinButton.disabled = spinsLeft > 0;
-
-        if (spinsLeft >= 0)
+        if (!window.userData || !window.userData.isAuthenticated) 
         {
-            purchaseCounter.style.display = 'block';
+            spinButton.disabled = true;
+            purchaseCounter.style.display = 'none';
+            return;
         }
 
-        purchasesLeft.textContent = spinsLeft;
+        let spinsLeft = localStorage.getItem('wheelSpinsLeft');
+
+        if (window.userData.freeSpinAvailable) 
+        {
+            spinButton.disabled = false;
+            purchaseCounter.style.display = 'none';
+            localStorage.setItem('hasFreeSpin', 'true');
+            isFreeSpin = true;
+            return;
+        }
+
+        if (window.userData.freeSpinUsed) 
+        {
+            if (spinsLeft === null) 
+            {
+                spinsLeft = requiredPurchases;
+                localStorage.setItem('wheelSpinsLeft', spinsLeft);
+            } 
+            else 
+            {
+                spinsLeft = parseInt(spinsLeft);
+            }
+            
+            spinButton.disabled = spinsLeft > 0;
+            
+            if (spinsLeft >= 0)
+            {
+                purchaseCounter.style.display = 'block';
+                purchasesLeft.textContent = spinsLeft;
+            }
+            
+            isFreeSpin = false;
+            localStorage.removeItem('hasFreeSpin');
+        }
+    }
+
+    async function markFreeSpinUsed() 
+    {
+        if (!window.userData || !window.userData.isAuthenticated || !window.userData.freeSpinAvailable) 
+        {
+            return;
+        }
+        
+        try 
+        {
+            let response = await fetch('includes/mark_free_spin.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: window.userData.userId,
+                    used: true
+                })
+            });
+            
+            let result = await response.json();
+            
+            if (result.success) 
+            {
+                window.userData.freeSpinAvailable = false;
+                window.userData.freeSpinUsed = true;
+                localStorage.setItem('wheelSpinsLeft', requiredPurchases);
+                localStorage.removeItem('hasFreeSpin');
+
+                let wheelDescription = document.getElementById('wheelDescription');
+
+                if (wheelDescription) 
+                {
+                    wheelDescription.textContent = 'Крутите колесо и получите специальное предложение!';
+                }
+                
+                spinButton.innerHTML = 'Крутить колесо!';
+            }
+        } 
+        catch (error) 
+        {
+            console.error('Ошибка при сохранении статуса бесплатного вращения:', error);
+        }
     }
 
     spinButton.addEventListener('click', function() 
@@ -81,14 +159,19 @@ document.addEventListener('DOMContentLoaded', function()
         {
             return;
         }
-    
+
+        if (window.userData && window.userData.freeSpinAvailable) 
+        {
+            markFreeSpinUsed();
+            isFreeSpin = true;
+        }
+        
         isSpinning = true;
         spinButton.disabled = true;
     
         let spins = 5 + Math.floor(Math.random() * 3);
         let targetSegment = Math.floor(Math.random() * segments.length);
         let targetSegmentCenterAngle = targetSegment * segments_angle + segments_angle / 2;
-    
         let targetRot = spins * 2 * Math.PI + (2 * Math.PI - targetSegmentCenterAngle) - 8;
 
         animateSpin(targetRot, targetSegment);
@@ -124,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function()
     {
         isSpinning = false;
         currentWinIndex = winIndex;
+
         let prize = segments[winIndex];
         
         currentPrizeType = prize.text === "Неудача" ? 'failure' : 'success';
@@ -144,9 +228,29 @@ document.addEventListener('DOMContentLoaded', function()
         }
         
         startAutoCloseTimer();
+
+        if (!isFreeSpin && window.userData && window.userData.isAuthenticated && window.userData.freeSpinUsed) 
+        {
+            let spinsLeft = parseInt(localStorage.getItem('wheelSpinsLeft')) || requiredPurchases;
+            
+            if (spinsLeft > 0) 
+            {
+                let newSpinsLeft = spinsLeft - 1;
+                
+                if (newSpinsLeft <= 0) 
+                {
+                    localStorage.removeItem('wheelSpinsLeft');
+                } 
+                else 
+                {
+                    localStorage.setItem('wheelSpinsLeft', newSpinsLeft);
+                }
+                
+                purchasesLeft.textContent = newSpinsLeft;
+            }
+        }
         
         localStorage.setItem('wheelLastPrize', JSON.stringify(prize));
-        localStorage.setItem('wheelSpinsLeft', requiredPurchases);
         
         drawWheel();
         updateSpinStatus();
@@ -177,29 +281,48 @@ document.addEventListener('DOMContentLoaded', function()
             let generatedCode = generatePromoCode(prize.text);
             promoCode.textContent = generatedCode;
             codeSection.style.display = 'block';
-            usePrizeBtn.style.display = 'block';
-            laterBtn.style.display = 'block';
+
+            if (usePrizeBtn) 
+            {
+                usePrizeBtn.style.display = 'block';
+            }
+
+            if (laterBtn) 
+            {
+                laterBtn.style.display = 'block';
+            }
         } 
         else 
         {
             codeSection.style.display = 'none';
-            usePrizeBtn.style.display = 'none';
-            laterBtn.style.display = 'none';
+
+            if (usePrizeBtn) 
+            {
+                usePrizeBtn.style.display = 'none';
+            }
+
+            if (laterBtn) 
+            {
+                laterBtn.style.display = 'none';
+            }
         }
         
         let copyBtn = document.querySelector('.copy-btn');
-
-        copyBtn.onclick = function() 
+        
+        if (copyBtn) 
         {
-            navigator.clipboard.writeText(promoCode.textContent).then(() => {
-                let originalHtml = copyBtn.innerHTML;
-                copyBtn.innerHTML = '<i class="bi bi-check"></i>';
-
-                setTimeout(() => {
-                    copyBtn.innerHTML = originalHtml;
-                }, 2000);
-            });
-        };
+            copyBtn.onclick = function() 
+            {
+                navigator.clipboard.writeText(promoCode.textContent).then(() => {
+                    let originalHtml = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="bi bi-check"></i>';
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalHtml;
+                    }, 2000);
+                });
+            };
+        }
     }
 
     function generatePromoCode(prizeText) 
@@ -212,6 +335,12 @@ document.addEventListener('DOMContentLoaded', function()
     function createConfetti() 
     {
         let container = document.getElementById('confetti-container');
+
+        if (!container) 
+        {
+            return;
+        }
+        
         container.innerHTML = '';
         
         let colors = ['#007bff', '#28a745', '#dc3545', '#ffc107', '#6f42c1', '#fd7e14'];
@@ -234,6 +363,11 @@ document.addEventListener('DOMContentLoaded', function()
         let timeLeft = 10;
         let timerElement = document.getElementById('prizeTimer');
         let timerBar = document.getElementById('prizeTimerBar');
+        
+        if (!timerElement || !timerBar) 
+        {
+            return;
+        }
 
         timerElement.textContent = timeLeft;
         timerBar.style.width = '100%';
@@ -257,38 +391,48 @@ document.addEventListener('DOMContentLoaded', function()
         }, 1000);
     }
 
-    document.getElementById('wheelResultModal').addEventListener('hidden.bs.modal', function() 
+    let modalElement = document.getElementById('wheelResultModal');
+
+    if (modalElement) 
     {
-        if (autoCloseTimer) 
+        modalElement.addEventListener('hidden.bs.modal', function() 
         {
-            clearInterval(autoCloseTimer);
-            autoCloseTimer = null;
-        }
+            if (autoCloseTimer) 
+            {
+                clearInterval(autoCloseTimer);
+                autoCloseTimer = null;
+            }
 
-        let container = document.getElementById('confetti-container');
-        container.innerHTML = '';
+            let container = document.getElementById('confetti-container');
 
-        let copyBtn = document.querySelector('.copy-btn');
+            if (container) container.innerHTML = '';
 
-        if (copyBtn) 
+            let copyBtn = document.querySelector('.copy-btn');
+            if (copyBtn) 
+            {
+                copyBtn.innerHTML = '<i class="bi bi-clipboard"></i>';
+            }
+        });
+
+        modalElement.addEventListener('show.bs.modal', function() 
         {
-            copyBtn.innerHTML = '<i class="bi bi-clipboard"></i>';
-        }
-    });
+            if (autoCloseTimer) 
+            {
+                clearInterval(autoCloseTimer);
+                autoCloseTimer = null;
+            }
+        });
+    }
 
-    document.getElementById('wheelResultModal').addEventListener('show.bs.modal', function() 
+    let usePrizeBtn = document.getElementById('usePrizeBtn');
+
+    if (usePrizeBtn) 
     {
-        if (autoCloseTimer) 
+        usePrizeBtn.addEventListener('click', function() 
         {
-            clearInterval(autoCloseTimer);
-            autoCloseTimer = null;
-        }
-    });
-
-    document.getElementById('usePrizeBtn').addEventListener('click', function() 
-    {
-        window.location.href = 'includes/assortment.php';
-    });
+            window.location.href = 'includes/assortment.php';
+        });
+    }
 
     function addPurchase() 
     {

@@ -97,7 +97,7 @@
 
     <div id="socialFloat" class="social-float-container">
         <button id="socialToggle" class="social-toggle-btn" title="Социальные сети">
-            <i class="bi bi-chevron-up"></i>
+            <i class="bi bi-chat-text"></i>
         </button>
         <div class="social-icons-container">
             <a href="https://vk.com/lalauto" class="social-icon-float" target="_blank" title="ВКонтакте">

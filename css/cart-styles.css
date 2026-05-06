@@ -149,24 +149,6 @@
         display: none;
     }
     
-    .table tbody tr 
-    {
-        display: block;
-        margin-bottom: 1rem;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        padding: 1rem;
-    }
-    
-    .table tbody td 
-    {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem;
-        border: none;
-    }
-    
     .table tbody td::before 
     {
         content: attr(data-label);

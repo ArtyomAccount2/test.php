@@ -126,12 +126,12 @@ unset($_SESSION['form_data']);
 ?>
 
 <div class="container my-5 pt-4">
-    <div class="hero-customers text-center mb-5">
+    <div class="hero-customers text-center mb-md-5">
         <h1 class="display-4 fw-bold text-primary mb-3" style="padding-top: 60px;">Покупателям</h1>
         <p class="lead fs-5 text-muted">Всё, что нужно знать о покупках в Лал-Авто</p>
     </div>
     <div class="row g-4 mb-5">
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-6">
             <div class="info-card text-center p-4 h-100">
                 <div class="info-icon mb-3">
                     <i class="bi bi-truck fs-1"></i>
@@ -141,7 +141,7 @@ unset($_SESSION['form_data']);
                 <a href="delivery.php" class="btn btn-primary btn-lg w-100">Подробнее о доставке</a>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-6">
             <div class="info-card text-center p-4 h-100">
                 <div class="info-icon mb-3">
                     <i class="bi bi-credit-card fs-1"></i>
@@ -151,7 +151,7 @@ unset($_SESSION['form_data']);
                 <a href="delivery.php#payment" class="btn btn-primary btn-lg w-100">Способы оплаты</a>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4 col-md-12">
             <div class="info-card text-center p-4 h-100">
                 <div class="info-icon mb-3">
                     <i class="bi bi-shield-check fs-1"></i>
@@ -320,7 +320,7 @@ unset($_SESSION['form_data']);
             <div class="guarantee-section bg-white rounded-4 p-5 shadow-sm">
                 <h2 class="text-center mb-5 fw-bold"><i class="bi bi-shield-check text-primary me-2"></i>Гарантийные обязательства</h2>
                 <div class="row g-4">
-                    <div class="col-md-6">
+                    <div class="col-lg-6 col-md-12">
                         <div class="guarantee-card bg-light rounded-3 p-4 h-100">
                             <h4 class="fw-bold text-primary mb-3">Что покрывается гарантией:</h4>
                             <ul class="list-unstyled">
@@ -331,7 +331,7 @@ unset($_SESSION['form_data']);
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-lg-6 col-md-12">
                         <div class="guarantee-card bg-light rounded-3 p-4 h-100">
                             <h4 class="fw-bold text-primary mb-3">Условия гарантии:</h4>
                             <ul class="list-unstyled">

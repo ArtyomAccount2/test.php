@@ -131,12 +131,12 @@ unset($_SESSION['form_data']);
 <section class="about-hero-section" style="margin-top: 80px;">
     <div class="container">
         <div class="row align-items-center container-hero">
-            <div class="col-lg-6 mb-5 mb-lg-0 container-hero-badge">
-                <div class="hero-badge mb-4">С 2010 года</div>
+            <div class="col-lg-6 mb-4 mb-lg-0 container-hero-badge">
+                <div class="hero-badge mb-3">С 2010 года</div>
                 <h1 class="hero-title mb-4">
                     <span class="text-primary">Лал-Авто</span> - ваш надежный партнер в мире автозапчастей
                 </h1>
-                <p class="hero-subtitle mb-5">
+                <p class="hero-subtitle mb-4">
                     Мы не просто продаем запчасти - мы обеспечиваем уверенность в каждой поездке. 
                     Более 13 лет доверия тысяч автомобилистов по всей России.
                 </p>

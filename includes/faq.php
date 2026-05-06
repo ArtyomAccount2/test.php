@@ -96,7 +96,7 @@ unset($_SESSION['form_data']);
             <p class="lead">Ответы на самые популярные вопросы наших клиентов</p>
         </div>
     </div>
-    <div class="row mb-4">
+    <div class="row mb-lg-4">
         <div class="col-lg-8 mx-auto">
             <div class="search-section mb-4">
                 <div class="input-group">
@@ -550,7 +550,7 @@ unset($_SESSION['form_data']);
                                 <a href="contacts.php" class="btn btn-outline-primary">
                                     <i class="bi bi-envelope"></i> Написать нам
                                 </a>
-                                <a href="#" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#chatModal">
+                                <a href="https://vk.me/club30241739" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#chatModal">
                                     <i class="bi bi-chat"></i> Онлайн-чат
                                 </a>
                             </div>

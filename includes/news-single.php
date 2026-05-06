@@ -176,9 +176,9 @@ $stmt->close();
                         </div>
                         <div class="news-tags mt-5 pt-4">
                             <span class="me-2"><i class="bi bi-tags"></i> Метки:</span>
-                            <a href="#" class="btn btn-sm btn-outline-secondary me-2 mb-2">Новости</a>
-                            <a href="#" class="btn btn-sm btn-outline-secondary me-2 mb-2">Автомобили</a>
-                            <a href="#" class="btn btn-sm btn-outline-secondary me-2 mb-2">Обновления</a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary me-2">Новости</a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary me-2">Автомобили</a>
+                            <a href="#" class="btn btn-sm btn-outline-secondary me-2">Обновления</a>
                         </div>
                     </article>
                 </div>

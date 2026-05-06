@@ -90,9 +90,9 @@ unset($_SESSION['form_data']);
 ?>
 
 <div class="container my-5 pt-4">
-    <div class="row mb-5">
+    <div class="row mb-xl-2">
         <div class="col-12 text-center">
-            <h1 class="display-5 fw-bold text-primary mb-3" style="padding-top: 60px;">API для разработчиков</h1>
+            <h1 class="display-5 fw-bold text-primary" style="padding-top: 60px;">API для разработчиков</h1>
             <p class="lead text-muted mb-4">Интегрируйте наш каталог в ваши приложения</p>
         </div>
     </div>
@@ -254,11 +254,93 @@ print(data)</code></pre>
     </div>
 </div>
 
+<div class="modal fade" id="communityModal" tabindex="-1" aria-labelledby="communityModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content community-modal-content">
+            <div class="modal-header community-modal-header">
+                <h5 class="modal-title" id="communityModalLabel">
+                    <i class="bi bi-people-fill"></i> Сообщество разработчиков
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body community-modal-body">
+                <p class="community-desc">Присоединяйтесь к нашему сообществу, чтобы получать новости API, задавать вопросы и делиться опытом:</p>
+                <div class="community-channels">
+                    <div class="community-channel">
+                        <div class="channel-icon">
+                            <i class="bi bi-envelope-fill"></i>
+                        </div>
+                        <div class="channel-info">
+                            <h6>Email рассылка</h6>
+                            <p>Новости API, обновления и важные уведомления</p>
+                            <a href="mailto:api-support@lal-auto.ru?subject=Подписка%20на%20новости%20API" class="channel-link">Подписаться <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="community-channel">
+                        <div class="channel-icon">
+                            <i class="bi bi-github"></i>
+                        </div>
+                        <div class="channel-info">
+                            <h6>GitHub</h6>
+                            <p>Документация, примеры кода и issue-tracker</p>
+                            <a href="https://github.com/lal-auto/api" target="_blank" rel="noopener noreferrer" class="channel-link">Перейти <i class="bi bi-box-arrow-up-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="community-channel">
+                        <div class="channel-icon">
+                            <i class="bi bi-chat-dots-fill"></i>
+                        </div>
+                        <div class="channel-info">
+                            <h6>Форум поддержки</h6>
+                            <p>Задавайте вопросы и получайте ответы от команды</p>
+                            <a href="faq.php" class="channel-link" id="forumLink">Перейти <i class="bi bi-box-arrow-up-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="community-channel">
+                        <div class="channel-icon">
+                            <i class="bi bi-code-slash"></i>
+                        </div>
+                        <div class="channel-info">
+                            <h6>Stack Overflow</h6>
+                            <p>Технические вопросы с меткой #lal-auto-api</p>
+                            <a href="https://stackoverflow.com/questions/tagged/lal-auto-api" target="_blank" rel="noopener noreferrer" class="channel-link">Перейти <i class="bi bi-box-arrow-up-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="community-note">
+                    <i class="bi bi-info-circle-fill"></i>
+                    <span>По всем вопросам также можно писать на <strong>api-support@lal-auto.ru</strong></span>
+                </div>
+            </div>
+            <div class="modal-footer community-modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php 
     require_once("footer.php"); 
 ?>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() 
+{
+    let communityLink = document.querySelector('.support-contact a[href="#"]');
+
+    if (communityLink) 
+    {
+        communityLink.addEventListener('click', function(e) 
+        {
+            e.preventDefault();
+            new bootstrap.Modal(document.getElementById('communityModal')).show();
+        });
+    }
+});
+</script>
 </body>
 </html>

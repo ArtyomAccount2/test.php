@@ -1,6 +1,7 @@
 html 
 {
     scroll-behavior: smooth;
+    --scrollbar-width: 0px;
 }
 
 body 
@@ -52,10 +53,17 @@ footer
     transform: scale(1.05);
 }
 
-.modal-dialog-centered 
+body.modal-open 
 {
-    display: flex;
-    align-items: center;
+    overflow: hidden !important;
+    padding-right: 0 !important;
+}
+
+.modal-open .navbar,
+.modal-open .footer-section,
+.modal-open .social-float-container 
+{
+    padding-right: var(--scrollbar-width, 0px);
 }
 
 .overflow-hidden 

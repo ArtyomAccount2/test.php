@@ -187,33 +187,33 @@ unset($_SESSION['success_message']);
 </div>
 
 <div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Всего услуг</h5>
                 <h2 class="text-primary"><?= $stats['total'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Активные</h5>
                 <h2 class="text-success"><?= $stats['active'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Неактивные</h5>
                 <h2 class="text-secondary"><?= $stats['inactive'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Средняя цена</h5>
                 <h2 class="text-warning"><?= number_format($stats['avg_price'], 2, '.', ' ') ?> ₽</h2>
             </div>
@@ -237,7 +237,7 @@ unset($_SESSION['success_message']);
                         <th width="100">Цена</th>
                         <th width="100">Длительность</th>
                         <th width="100">Статус</th>
-                        <th width="120">Действия</th>
+                        <th class="text-end" width="120">Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -283,7 +283,7 @@ unset($_SESSION['success_message']);
                                     <?= $service['status'] == 'active' ? 'Активно' : 'Неактивно' ?>
                                 </span>
                             </td>
-                            <td>
+                            <td class="text-end">
                                 <div class="btn-group btn-group-sm">
                                     <button class="btn btn-outline-primary" onclick="editService(<?= $service['id'] ?>)" data-bs-toggle="modal" data-bs-target="#editServiceModal">
                                         <i class="bi bi-pencil"></i>
@@ -367,7 +367,7 @@ unset($_SESSION['success_message']);
 </div>
 
 <div class="modal fade" id="addServiceModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Добавить услугу</h5>
@@ -433,7 +433,7 @@ unset($_SESSION['success_message']);
 </div>
 
 <div class="modal fade" id="editServiceModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Редактировать услугу</h5>

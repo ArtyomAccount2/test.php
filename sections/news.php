@@ -210,25 +210,25 @@ unset($_SESSION['success_message']);
 </div>
 
 <div class="row mb-4">
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-4 col-12 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Всего новостей</h5>
                 <h2 class="text-primary"><?= $stats['total'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-4 col-12 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Опубликовано</h5>
                 <h2 class="text-success"><?= $stats['published'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-4 col-12 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Черновики</h5>
                 <h2 class="text-secondary"><?= $stats['draft'] ?></h2>
             </div>
@@ -251,7 +251,7 @@ unset($_SESSION['success_message']);
                         <th width="120">Дата</th>
                         <th width="150">Автор</th>
                         <th width="120">Статус</th>
-                        <th width="150">Действия</th>
+                        <th class="text-end" width="150">Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -297,7 +297,7 @@ unset($_SESSION['success_message']);
                                 <?= $status_badges[$news['status']][1] ?>
                             </span>
                         </td>
-                        <td>
+                        <td class="text-end">
                             <div class="btn-group btn-group-sm">
                                 <button class="btn btn-outline-primary" onclick="editNews(<?= $news['id'] ?>, '<?= htmlspecialchars(addslashes($news['title'])) ?>', '<?= htmlspecialchars(addslashes($news['content'])) ?>', '<?= $news['status'] ?>')" data-bs-toggle="modal" data-bs-target="#editNewsModal">
                                     <i class="bi bi-pencil"></i>
@@ -382,7 +382,7 @@ unset($_SESSION['success_message']);
 </div>
 
 <div class="modal fade" id="addNewsModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Добавить новость</h5>
@@ -417,7 +417,7 @@ unset($_SESSION['success_message']);
 </div>
 
 <div class="modal fade" id="editNewsModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Редактировать новость</h5>

@@ -421,6 +421,11 @@
 
 @media (max-width: 768px) 
 {
+    .delivery-nav
+    {
+        margin-bottom: 1rem;
+    }
+
     .terms-card 
     {
         padding: 1.75rem;

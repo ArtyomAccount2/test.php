@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 17 2026 г., 21:39
+-- Время создания: Май 06 2026 г., 20:04
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -36,6 +36,30 @@ CREATE TABLE `action_logs` (
   `user_agent` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `admin_notifications`
+--
+
+CREATE TABLE `admin_notifications` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `type` enum('info','success','warning','danger') DEFAULT 'info',
+  `is_read` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `admin_notifications`
+--
+
+INSERT INTO `admin_notifications` (`id`, `title`, `message`, `type`, `is_read`, `created_at`) VALUES
+(1, 'Добро пожаловать!', 'Вы вошли в административную панель. Управляйте сайтом эффективно.', 'success', 0, '2026-04-09 17:28:29'),
+(2, 'Настройка завершена', 'Система готова к работе. Проверьте настройки магазина.', 'info', 1, '2026-04-08 17:28:29'),
+(3, 'Новый заказ', 'Поступил новый заказ #12345 от пользователя Иванов И.', 'warning', 1, '2026-04-07 17:28:29');
 
 -- --------------------------------------------------------
 
@@ -117,7 +141,6 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `product_id`, `category_product_id`, `product_type`, `product_name`, `product_image`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
-(53, 2, 50, NULL, 'oil', 'Mobil Super 3000 X1 5W-40', 'uploads/products/696392655986c.png', '3450.00', 2, '2026-02-27 18:03:11', '2026-02-27 18:03:26'),
 (54, 2, 11, NULL, 'part', 'Масляный фильтр BMW X3 G01', 'uploads/products/696392655986c.png', '1450.00', 2, '2026-02-27 18:03:15', '2026-02-27 18:03:23'),
 (55, 2, 76, NULL, 'accessory', 'Ароматизатор CS-X3', 'uploads/products/696392655986c.png', '790.00', 1, '2026-02-27 18:03:20', '2026-02-27 18:03:20'),
 (61, 3, 2, NULL, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', 1, '2026-02-27 18:05:45', '2026-02-27 18:05:45'),
@@ -127,7 +150,8 @@ INSERT INTO `cart` (`id`, `user_id`, `product_id`, `category_product_id`, `produ
 (65, 3, 97, NULL, 'accessory', 'Коврики резиновые Universal', 'uploads/products/696392655986c.png', '1890.00', 1, '2026-02-27 18:06:13', '2026-02-27 18:06:13'),
 (66, 4, NULL, 1, 'antifreeze', 'Motul Inugel Optimal', 'uploads/products/696392655986c.png', '1100.00', 1, '2026-02-27 18:08:14', '2026-02-27 18:08:14'),
 (67, 4, NULL, 2, 'antifreeze', 'Shell Zone Ultra', 'uploads/products/696392655986c.png', '1650.00', 1, '2026-02-27 18:08:15', '2026-02-27 18:08:15'),
-(68, 4, NULL, 39, 'cooling-fluid', 'SWAG Antifreeze', 'uploads/products/696392655986c.png', '1580.00', 1, '2026-02-27 18:08:21', '2026-02-27 18:08:21');
+(68, 4, NULL, 39, 'cooling-fluid', 'SWAG Antifreeze', 'uploads/products/696392655986c.png', '1580.00', 1, '2026-02-27 18:08:21', '2026-02-27 18:08:21'),
+(69, 2, 38, NULL, 'part', 'Прокладки двигателя комплект V8', 'uploads/products/696392655986c.png', '4500.00', 1, '2026-03-18 13:19:24', '2026-03-18 13:19:24');
 
 -- --------------------------------------------------------
 
@@ -608,7 +632,6 @@ CREATE TABLE `password_resets` (
 --
 
 INSERT INTO `password_resets` (`id`, `user_id`, `token`, `short_token`, `expires_at`, `used`, `created_at`) VALUES
-(111, 2, '5164faeeaecf2e90aa48afb4d0aafc834cca68addb03315e1f261a7cf0ad5826', 'bytxPH', '2026-02-24 22:40:29', 0, '2026-02-24 18:40:29'),
 (113, 4, 'de54d70989770933b0aec5e1e03f54dcda0bbe4a60a0127d2bf881704b11690d', '7W8GfE', '2026-02-24 22:41:45', 0, '2026-02-24 18:41:45'),
 (114, 3, '1987ad5933faf2854cb20f3a7b385d00ecd7fd92129d5667b6683a410d440f2b', 'h8znbn', '2026-02-27 21:59:29', 1, '2026-02-27 17:59:29');
 
@@ -975,60 +998,60 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `setting_key`, `setting_value`, `setting_group`, `setting_type`, `label`, `description`, `options`, `is_public`, `created_at`, `updated_at`) VALUES
-(1, 'site_name', 'Лал-Авто', 'general', 'text', 'Название сайта', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-01-11 14:18:20'),
-(2, 'admin_email', 'admin@lal-auto.ru', 'general', 'email', 'Email администратора', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-01-11 14:18:20'),
-(3, 'support_phone', '+7 (999) 123-45-67', 'general', 'tel', 'Телефон поддержки', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-01-11 14:18:20'),
-(4, 'working_hours', 'Пн-Пт: 9:00-18:00, Сб: 10:00-16:00', 'general', 'text', 'Время работы', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-01-11 14:18:20'),
-(5, 'min_order_amount', '1000', 'store', 'number', 'Минимальная сумма заказа', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-01-11 14:18:20'),
-(6, 'vat_rate', '20', 'store', 'select', 'Ставка НДС', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-01-11 14:18:20'),
+(1, 'site_name', 'Лал-Авто', 'general', 'text', 'Название сайта', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-04-15 19:01:00'),
+(2, 'admin_email', 'admin@lal-auto.ru', 'general', 'email', 'Email администратора', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-04-15 19:01:00'),
+(3, 'support_phone', '+7 (999) 123-45-67', 'general', 'tel', 'Телефон поддержки', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-04-15 19:01:00'),
+(4, 'working_hours', 'Пн-Пт: 9:00-18:00, Сб: 10:00-16:00', 'general', 'text', 'Время работы', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-04-15 19:01:00'),
+(5, 'min_order_amount', '1000', 'store', 'number', 'Минимальная сумма заказа', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-04-15 19:01:00'),
+(6, 'vat_rate', '20', 'store', 'select', 'Ставка НДС', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-04-15 19:01:00'),
 (7, 'maintenance_mode', '0', 'maintenance', 'checkbox', 'Режим обслуживания', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-01-11 14:22:40'),
-(8, 'api_enabled', '1', 'api', 'checkbox', 'Включить API', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-01-11 14:18:20'),
+(8, 'api_enabled', '1', 'api', 'checkbox', 'Включить API', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-04-15 19:01:01'),
 (9, 'system_version', '2.2.0', 'system', 'text', 'Версия системы', NULL, NULL, 0, '2026-01-11 12:15:06', '2026-01-11 14:22:40'),
-(10, 'group', 'api', 'general', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:15:53', '2026-01-11 14:18:13'),
-(11, 'site_description', 'Автозапчасти и автосервис - качественное обслуживание вашего автомобиля', 'general', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:15:53', '2026-01-11 14:18:20'),
-(12, 'default_language', 'Русский', 'general', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:15:53', '2026-01-11 14:18:20'),
-(13, 'currency', 'RUB', 'general', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:15:53', '2026-01-11 14:18:20'),
-(14, 'email_new_orders', '1', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(15, 'email_payments', '1', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(16, 'email_low_stock', '1', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(17, 'sms_promo', '1', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(18, 'smtp_server', 'smtp.gmail.com', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(19, 'smtp_port', '587', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(20, 'bank_cards_enabled', '1', 'payment', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(21, 'yoomoney_enabled', '1', 'payment', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(22, 'cash_on_delivery', '1', 'payment', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(23, 'processing_fee', '2.5', 'payment', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(24, 'min_fee', '10', 'payment', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(25, 'courier_enabled', '1', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(26, 'courier_cost', '300', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(27, 'pickup_enabled', '1', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(28, 'russian_post_cost', '500', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(29, 'cdek_enabled', '1', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(30, 'cdek_cost', '450', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(31, 'free_shipping_min', '5000', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(32, 'delivery_days', '3', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(33, 'min_password_length', '8', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(34, 'password_expiry_days', '90', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(35, 'require_special_char', '1', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(36, 'require_numbers', '1', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(37, 'prevent_reuse', '1', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(38, 'max_login_attempts', '5', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(39, 'lockout_minutes', '30', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(40, 'usd_rate', '90.5', 'store', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(41, 'eur_rate', '99.8', 'store', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(42, 'low_stock_alert', '1', 'store', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(43, 'return_policy', 'Возврат товара возможен в течение 14 дней с момента покупки при сохранении товарного вида и упаковки.', 'store', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-01-11 14:18:20'),
-(44, 'request_limit', '100', 'api', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-01-11 14:18:20'),
-(45, 'webhook_url', '', 'api', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-01-11 14:18:13'),
-(46, 'meta_title', 'Лал-Авто - Автозапчасти и автосервис', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-01-11 14:18:20'),
-(47, 'meta_description', 'Качественные автозапчасти и профессиональный автосервис. Широкий ассортимент, доступные цены, гарантия качества.', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-01-11 14:18:20'),
-(48, 'meta_keywords', 'автозапчасти, автосервис, автомобильные запчасти, ремонт авто', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-01-11 14:18:20'),
-(49, 'og_title', 'Лал-Авто', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-01-11 14:18:20'),
-(50, 'og_image', '', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-01-11 14:18:13'),
-(51, 'seo_friendly_urls', '1', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-01-11 14:18:20'),
-(52, 'generate_sitemap', '1', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-01-11 14:18:20'),
-(53, 'robots_txt', 'User-agent: *\nDisallow: /admin/\nDisallow: /cart/\nAllow: /public/\nSitemap: https://lal-auto.ru/sitemap.xml', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-01-11 14:18:20'),
-(54, 'maintenance_message', 'Сайт временно недоступен. Ведутся технические работы. Приносим извинения за неудобства.', 'maintenance', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-01-11 14:18:20'),
+(10, 'group', 'seo', 'general', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:15:53', '2026-04-15 19:01:02'),
+(11, 'site_description', 'Автозапчасти и автосервис - качественное обслуживание вашего автомобиля', 'general', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:15:53', '2026-04-15 19:01:00'),
+(12, 'default_language', 'Русский', 'general', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:15:53', '2026-04-15 19:01:00'),
+(13, 'currency', 'RUB', 'general', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:15:53', '2026-04-15 19:01:00'),
+(14, 'email_new_orders', '1', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(15, 'email_payments', '1', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(16, 'email_low_stock', '1', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(17, 'sms_promo', '1', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(18, 'smtp_server', 'smtp.gmail.com', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(19, 'smtp_port', '587', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(20, 'bank_cards_enabled', '1', 'payment', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(21, 'yoomoney_enabled', '1', 'payment', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(22, 'cash_on_delivery', '1', 'payment', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(23, 'processing_fee', '2.5', 'payment', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(24, 'min_fee', '10', 'payment', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(25, 'courier_enabled', '1', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(26, 'courier_cost', '300', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(27, 'pickup_enabled', '1', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(28, 'russian_post_cost', '500', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(29, 'cdek_enabled', '1', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(30, 'cdek_cost', '450', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(31, 'free_shipping_min', '5000', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(32, 'delivery_days', '3', 'shipping', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(33, 'min_password_length', '8', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(34, 'password_expiry_days', '90', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(35, 'require_special_char', '1', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(36, 'require_numbers', '1', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(37, 'prevent_reuse', '1', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(38, 'max_login_attempts', '5', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(39, 'lockout_minutes', '30', 'security', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:01'),
+(40, 'usd_rate', '90.5', 'store', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(41, 'eur_rate', '99.8', 'store', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(42, 'low_stock_alert', '1', 'store', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(43, 'return_policy', 'Возврат товара возможен в течение 14 дней с момента покупки при сохранении товарного вида и упаковки.', 'store', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:03', '2026-04-15 19:01:00'),
+(44, 'request_limit', '100', 'api', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-04-15 19:01:01'),
+(45, 'webhook_url', '', 'api', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-04-15 19:01:01'),
+(46, 'meta_title', 'Лал-Авто - Автозапчасти и автосервис', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-04-15 19:01:02'),
+(47, 'meta_description', 'Качественные автозапчасти и профессиональный автосервис. Широкий ассортимент, доступные цены, гарантия качества.', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-04-15 19:01:02'),
+(48, 'meta_keywords', 'автозапчасти, автосервис, автомобильные запчасти, ремонт авто', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-04-15 19:01:02'),
+(49, 'og_title', 'Лал-Авто', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-04-15 19:01:02'),
+(50, 'og_image', '', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-04-15 19:01:02'),
+(51, 'seo_friendly_urls', '1', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-04-15 19:01:02'),
+(52, 'generate_sitemap', '1', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-04-15 19:01:02'),
+(53, 'robots_txt', 'User-agent: *\r\nDisallow: /admin/\r\nDisallow: /cart/\r\nAllow: /public/\r\nSitemap: https://lal-auto.ru/sitemap.xml', 'seo', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-04-15 19:01:02'),
+(54, 'maintenance_message', 'Сайт временно недоступен. Ведутся технические работы. Приносим извинения за неудобства.', 'maintenance', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:05', '2026-04-15 19:01:01'),
 (55, 'allow_backorder', '0', 'store', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:10', '2026-01-11 14:18:20'),
 (56, 'email_reviews', '0', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:10', '2026-01-11 14:18:20'),
 (57, 'email_newsletter', '0', 'notifications', 'text', NULL, NULL, NULL, 0, '2026-01-11 12:16:10', '2026-01-11 14:18:20'),
@@ -1208,19 +1231,20 @@ CREATE TABLE `users` (
   `person_users` varchar(255) DEFAULT NULL,
   `organization_users` varchar(255) DEFAULT NULL,
   `organizationType_users` varchar(255) DEFAULT NULL,
-  `user_type` varchar(20) DEFAULT NULL
+  `user_type` varchar(20) DEFAULT NULL,
+  `free_spin_used` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 - не использовал бесплатную прокрутку, 1 - уже использовал'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id_users`, `surname_users`, `name_users`, `patronymic_users`, `login_users`, `password_users`, `email_users`, `discountСardNumber_users`, `region_users`, `city_users`, `address_users`, `phone_users`, `avatar_users`, `TIN_users`, `person_users`, `organization_users`, `organizationType_users`, `user_type`) VALUES
-(1, NULL, NULL, NULL, 'admin', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
-(2, 'Иванов', 'Иван', 'Иванович', 'user1', 'user1', 'user1@gmail.com', '223344', 'Калининградская область', 'Калининград', 'Малый переулок, 3', 89113456789, 'uploads/avatars/avatar_2_1758131749.jpg', NULL, NULL, NULL, NULL, 'physical'),
-(3, NULL, NULL, NULL, 'user2', 'user2new', 'user2@gmail.com', NULL, 'Калининградская область', 'Калининград', 'Уральская улица, 20', 89114567891, NULL, 2222455179, 'Наталья Евгеньевна Графарова', 'Дизель-мастер', 'ООО', 'legal'),
-(4, NULL, NULL, NULL, 'user3', 'user3new', 'user3@gmail.com', '556677', 'Калининградская область', 'Балтийск', 'Киркенесская улица, 20', 89115678912, NULL, 5552431142, 'Виктор Викторович Викторов', 'КлассикАвто', 'ЗАО', 'legal'),
-(5, 'Рожков', 'Олег', 'Константинович', 'user4', 'user4new', 'user4@gmail.com', NULL, 'Калининградская область', 'Черняховск', 'улица Советская, 5', 89116789123, NULL, NULL, NULL, NULL, NULL, 'physical');
+INSERT INTO `users` (`id_users`, `surname_users`, `name_users`, `patronymic_users`, `login_users`, `password_users`, `email_users`, `discountСardNumber_users`, `region_users`, `city_users`, `address_users`, `phone_users`, `avatar_users`, `TIN_users`, `person_users`, `organization_users`, `organizationType_users`, `user_type`, `free_spin_used`) VALUES
+(1, NULL, NULL, NULL, 'admin', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', 1),
+(2, 'Иванов', 'Иван', 'Иванович', 'user1', 'user1', 'user1@gmail.com', '223344', 'Калининградская область', 'Калининград', 'Малый переулок, 3', 89113456789, 'uploads/avatars/avatar_2_1758131749.jpg', NULL, NULL, NULL, NULL, 'physical', 0),
+(3, NULL, NULL, NULL, 'user2', 'user2new', 'user2@gmail.com', NULL, 'Калининградская область', 'Калининград', 'Уральская улица, 20', 89114567891, NULL, 2222455179, 'Наталья Евгеньевна Графарова', 'Дизель-мастер', 'ООО', 'legal', 0),
+(4, NULL, NULL, NULL, 'user3', 'user3new', 'user3@gmail.com', '556677', 'Калининградская область', 'Балтийск', 'Киркенесская улица, 20', 89115678912, NULL, 5552431142, 'Виктор Викторович Викторов', 'КлассикАвто', 'ЗАО', 'legal', 0),
+(5, 'Рожков', 'Олег', 'Константинович', 'user4', 'user4new', 'user4@gmail.com', NULL, 'Калининградская область', 'Черняховск', 'улица Советская, 5', 89116789123, NULL, NULL, NULL, NULL, NULL, 'physical', 0);
 
 -- --------------------------------------------------------
 
@@ -1259,6 +1283,14 @@ INSERT INTO `wishlist` (`id`, `user_id`, `product_name`, `product_image`, `price
 ALTER TABLE `action_logs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Индексы таблицы `admin_notifications`
+--
+ALTER TABLE `admin_notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_read` (`is_read`),
+  ADD KEY `idx_created` (`created_at`);
 
 --
 -- Индексы таблицы `api_keys`
@@ -1493,6 +1525,12 @@ ALTER TABLE `action_logs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT для таблицы `admin_notifications`
+--
+ALTER TABLE `admin_notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT для таблицы `api_keys`
 --
 ALTER TABLE `api_keys`
@@ -1508,7 +1546,7 @@ ALTER TABLE `backup_logs`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT для таблицы `car_brands`
@@ -1592,7 +1630,7 @@ ALTER TABLE `product_brands`
 -- AUTO_INCREMENT для таблицы `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `reviews`

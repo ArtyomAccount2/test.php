@@ -248,7 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 } 
                 else 
                 {
-                    $_SESSION['error_message'] = "Размер файла не должен превышать 2MB.";
+                    $_SESSION['error_message'] = "Размер файла не должен превышать 2 МБ.";
                 }
             } 
             else 
@@ -438,6 +438,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
         header("Location: profile.php");
         exit();
     }
+
+    if (isset($_POST['delete_notification'])) 
+    {
+        $notificationId = $_POST['notification_id'] ?? 0;
+        
+        if ($notificationId && $userId) 
+        {
+            $sql = "DELETE FROM notifications WHERE id = ? AND user_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ii", $notificationId, $userId);
+            
+            if ($stmt->execute()) 
+            {
+                $_SESSION['success_message'] = "Уведомление удалено!";
+            }
+            $stmt->close();
+        }
+        
+        header("Location: profile.php");
+        exit();
+    }
 }
 
 $ordersList = [];
@@ -492,6 +513,35 @@ if (isset($_POST['cancel_order']))
         header("Location: profile.php");
         exit();
     }
+}
+
+$isPremium = false;
+
+if ($orderStats['total_amount'] > 5000) 
+{
+    $isPremium = true;
+}
+else if ($orderStats['total_orders'] > 3) 
+{
+    $isPremium = true;
+}
+else if (!empty($userData['registration_date']) && $orderStats['total_orders'] > 0) 
+{
+    $regDate = strtotime($userData['registration_date']);
+    $sixMonthsAgo = strtotime('-6 months');
+
+    if ($regDate < $sixMonthsAgo) 
+    {
+        $isPremium = true;
+    }
+}
+else if ($wishlistCount > 3) 
+{
+    $isPremium = true;
+}
+else if ($orderStats['pending_orders'] > 0) 
+{
+    $isPremium = true;
 }
 ?>
 
@@ -586,7 +636,7 @@ if (isset($_POST['cancel_order']))
                     <div class="d-flex flex-column h-100">
                         <div class="profile-sidebar card shadow-sm h-100 mb-0">
                             <div class="card-body text-center">
-                                <div class="profile-avatar mb-3">
+                                <div class="profile-avatar">
                                     <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto">
                                         <?php 
                                         if (!empty($userData['avatar_users'])) 
@@ -603,6 +653,16 @@ if (isset($_POST['cancel_order']))
                                         } 
                                         ?>
                                     </div>
+                                    <?php 
+                                    if ($isPremium)
+                                    {
+                                    ?>
+                                        <div class="premium-star" title="Премиум статус">
+                                            <i class="bi bi-star-fill"></i>
+                                        </div>
+                                    <?php 
+                                    }
+                                    ?>
                                     <form id="avatarForm" method="POST" enctype="multipart/form-data" class="d-inline">
                                         <input type="file" name="avatar" id="avatarInput" accept="image/*" class="d-none" onchange="document.getElementById('avatarForm').submit()">
                                         <button type="button" class="btn-avatar-edit" onclick="document.getElementById('avatarInput').click()" data-bs-toggle="tooltip" title="Сменить фото">
@@ -611,12 +671,31 @@ if (isset($_POST['cancel_order']))
                                         <input type="hidden" name="update_avatar" value="1">
                                     </form>
                                 </div>
-                                <h5 class="card-title"><?= htmlspecialchars($_SESSION['user']); ?></h5>
-                                <p class="text-muted small">Премиум статус</p>
-                                <div class="progress mb-3" style="height: 8px;">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                <h5 class="card-title mt-2"><?= htmlspecialchars($_SESSION['user']); ?></h5>
+                                <p class="text-muted small">
+                                    <?php 
+                                    if ($isPremium)
+                                    {
+                                    ?>
+                                        <span class="badge premium-badge-text px-3 py-2 d-inline-block">
+                                            <i class="bi bi-star-fill me-1"></i>Премиум статус
+                                        </span>
+                                    <?php 
+                                    }
+                                    else
+                                    {
+                                    ?>
+                                        <span class="badge common-badge-text px-3 py-2 d-inline-block">
+                                            <i class="bi bi-people-fill me-1"></i>Обычный статус
+                                        </span>
+                                    <?php 
+                                    }
+                                    ?>
+                                </p>
+                                <div class="progress mb-2" style="height: 8px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: <?= $isPremium ? '100' : '75' ?>%" aria-valuenow="<?= $isPremium ? '100' : '75' ?>" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
-                                <div class="badge bg-success rounded-pill px-3 py-2 mb-3">
+                                <div class="badge bg-success rounded-pill px-3 py-2">
                                     <i class="bi bi-star-fill me-1"></i>
                                     <?= $orderStats['total_amount'] > 0 ? number_format($orderStats['total_amount'] * 0.05) : '256' ?> баллов
                                 </div>
@@ -686,7 +765,9 @@ if (isset($_POST['cancel_order']))
                                 </div>
                                 <div class="stat-item d-flex justify-content-between">
                                     <span>Активность:</span>
-                                    <span class="badge bg-success">Высокая</span>
+                                    <span class="badge <?= $isPremium ? 'bg-warning text-dark' : 'bg-success' ?>">
+                                        <?= $isPremium ? 'Премиум' : 'Высокая' ?>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -1142,15 +1223,22 @@ if (isset($_POST['cancel_order']))
                                                             if (!$notification['is_read'])
                                                             {
                                                             ?>
-                                                                <button class="btn btn-sm btn-outline-success mark-as-read-btn" data-id="<?= $notification['id'] ?>">
-                                                                    Прочитано
-                                                                </button>
+                                                                <form method="POST" class="d-inline-block me-1">
+                                                                    <input type="hidden" name="notification_id" value="<?= $notification['id'] ?>">
+                                                                    <button type="submit" name="mark_notification_read" class="btn btn-sm btn-outline-success">
+                                                                        <i class="bi bi-check-lg me-1"></i>Прочитано
+                                                                    </button>
+                                                                </form>
                                                             <?php 
                                                             }
                                                             ?>
-                                                            <button class="btn btn-sm btn-outline-danger delete-notification-btn" data-id="<?= $notification['id'] ?>">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
+                                                            <form method="POST" class="d-inline-block">
+                                                                <input type="hidden" name="notification_id" value="<?= $notification['id'] ?>">
+                                                                <button type="submit" name="delete_notification" class="btn btn-sm btn-outline-danger" 
+                                                                        onclick="return confirm('Удалить уведомление?')">
+                                                                    <i class="bi bi-trash me-1"></i>Удалить
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1180,14 +1268,14 @@ if (isset($_POST['cancel_order']))
         </div>
         <div id="socialFloat" class="social-float-container">
             <button id="socialToggle" class="social-toggle-btn" title="Социальные сети">
-                <i class="bi bi-chevron-up"></i>
+                <i class="bi bi-chat-text"></i>
             </button>
             <div class="social-icons-container">
                 <a href="https://vk.com/lalauto" class="social-icon-float" target="_blank" title="ВКонтакте">
                     <img src="img/image 33.png" alt="VK" width="32" height="32">
                 </a>
-                <a href="https://t.me/s/lalauto" class="social-icon-float" target="_blank" title="Telegram">
-                    <img src="img/image 32.png" alt="Telegram" width="32" height="32">
+                <a href="https://max.ru/lalauto" class="social-icon-float" target="_blank" title="MAX">
+                    <img src="img/image 34.png" alt="Telegram" width="32" height="32">
                 </a>
             </div>
         </div>
@@ -1240,10 +1328,10 @@ if (isset($_POST['cancel_order']))
                 <h5 class="text-uppercase mb-4 text-center">Мы в соцсетях</h5>
                 <div class="social-links mb-4 text-center">
                     <a href="https://vk.com/lalauto" class="text-white me-3" target="_blank">
-                        <img  src="img/image 33.png" alt="VK" width="32" height="32">
+                        <img src="img/image 33.png" alt="VK" width="32" height="32">
                     </a>
-                    <a href="https://t.me/s/lalauto" class="text-white" target="_blank">
-                        <img src="img/image 32.png" alt="Telegram" width="32" height="32">
+                    <a href="https://max.ru/lalauto" class="text-white" target="_blank">
+                        <img src="img/image 34.png" alt="MAX" width="32" height="32">
                     </a>
                 </div>
                 <h5 class="text-uppercase mb-3 text-center">Подписаться на новости</h5>

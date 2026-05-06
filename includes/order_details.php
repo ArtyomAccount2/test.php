@@ -228,7 +228,7 @@ switch ($orderDetails['status'])
                                         <div class="col-md-1 col-3">
                                             <img src="../img/no-image.png" alt="<?= htmlspecialchars($item['product_name']) ?>" class="img-fluid rounded" style="max-width: 60px; height: auto;">
                                         </div>
-                                        <div class="col-md-5 col-9">
+                                        <div class="col-md-6 col-9">
                                             <h6 class="mb-1"><?= htmlspecialchars($item['product_name']) ?></h6>
                                             <?php 
                                             if (isset($item['product_id']) && !empty($item['product_id']))
@@ -247,7 +247,7 @@ switch ($orderDetails['status'])
                                         <div class="col-md-2 col-4 text-md-center mt-2 mt-md-0">
                                             <span class="fw-bold"><?= number_format($item['price'], 0, ',', ' ') ?> ₽</span>
                                         </div>
-                                        <div class="col-md-2 col-4 text-md-center mt-2 mt-md-0">
+                                        <div class="col-md-1 col-4 text-md-center mt-2 mt-md-0">
                                             <span class="badge bg-secondary">x<?= $item['quantity'] ?></span>
                                         </div>
                                         <div class="col-md-2 col-4 text-md-end mt-2 mt-md-0">

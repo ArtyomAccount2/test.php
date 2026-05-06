@@ -260,7 +260,6 @@
 .product-tags 
 {
     border-top: 1px solid #eaeaea;
-    padding-top: 1.5rem;
 }
 
 .product-tags .btn-outline-secondary 
@@ -327,6 +326,11 @@
     {
         font-size: 1.2rem;
     }
+
+    .price-section
+    {
+        padding: 0 0 1.5rem 0;
+    }
 }
 
 @media (max-width: 576px) 
@@ -339,6 +343,7 @@
     .product-single-title 
     {
         font-size: 1.5rem;
+        text-align: center;
     }
     
     .product-single-img img 
@@ -357,6 +362,29 @@
     {
         font-size: 1rem;
         padding: 0.75rem 1.5rem;
+    }
+
+    .product-tags 
+    {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-tags .btn-outline-secondary
+    {
+        margin: 5px 0 5px 0;
+    }
+
+    .price-section
+    {
+        margin-bottom: 0 !important;
+        text-align: center;
+    }
+
+    .me-2,
+    .product-actions
+    {
+        text-align: center;
     }
 }
 

@@ -195,6 +195,7 @@
     border-radius: 12px;
     padding: 1.5rem;
     height: 100%;
+    text-align: center;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
@@ -247,5 +248,25 @@
     .stats-card h3 
     {
         font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 567px)
+{
+    .filter-section .d-flex,
+    .services-header .d-flex
+    {
+        flex-direction: column;
+    }
+
+    .services-header h1,
+    .services-header .lead
+    {
+        text-align: center;
+    }
+
+    .services-header a
+    {
+        margin-top: 20px;
     }
 }

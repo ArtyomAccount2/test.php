@@ -218,33 +218,33 @@ unset($_SESSION['message']);
 </div>
 
 <div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Всего</h5>
                 <h2 class="text-primary"><?= $stats['total'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">На модерации</h5>
                 <h2 class="text-warning"><?= $stats['pending'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Одобренные</h5>
                 <h2 class="text-success"><?= $stats['approved'] ?></h2>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
+    <div class="col-md-3 col-6 mb-2">
+        <div class="card text-center h-100">
+            <div class="card-body" id="CardBody">
                 <h5 class="card-title">Средний рейтинг</h5>
                 <h2 class="text-info"><?= number_format($stats['avg_rating'] ?? 0, 1) ?></h2>
             </div>
@@ -268,7 +268,7 @@ unset($_SESSION['message']);
                         <th class="d-none d-md-table-cell">Оценка</th>
                         <th class="d-none d-lg-table-cell">Дата</th>
                         <th class="d-none d-sm-table-cell">Статус</th>
-                        <th>Действия</th>
+                        <th class="text-end">Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -325,7 +325,7 @@ unset($_SESSION['message']);
                                 <?= $status_badges[$review['status']][1] ?>
                             </span>
                         </td>
-                        <td>
+                        <td class="text-end">
                             <div class="btn-group btn-group-sm">
                                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editReviewModal<?= $review['id'] ?>">
                                     <i class="bi bi-pencil"></i>
@@ -428,7 +428,7 @@ if ($reviews_result->num_rows > 0)
 ?>
 
 <div class="modal fade" id="editReviewModal<?php echo $review['id']; ?>" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Редактирование отзыва #<?php echo $review['id']; ?></h5>

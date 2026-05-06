@@ -474,11 +474,17 @@
     {
         padding: 1.25rem;
     }
+
+    .section-header h2
+    {
+        text-align: center;
+    }
     
     .process-step 
     {
         flex-direction: column;
         text-align: center;
+        align-items: center;
         padding: 1rem;
     }
     

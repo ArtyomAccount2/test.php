@@ -171,7 +171,7 @@ $stmt->close();
                     foreach($current_news as $news) 
                     {
                 ?>
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-12 col-lg-4">
                     <div class="news-card">
                         <div class="news-img-container">
                             <img src="../img/no-image.png" class="news-img" alt="<?= $news['title'] ?>">

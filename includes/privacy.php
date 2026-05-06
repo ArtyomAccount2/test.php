@@ -50,6 +50,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
 }
 
+function ru_date($timestamp) 
+{
+    $months = [
+        1 => 'января', 2 => 'февраля', 3 => 'марта', 4 => 'апреля',
+        5 => 'мая', 6 => 'июня', 7 => 'июля', 8 => 'августа',
+        9 => 'сентября', 10 => 'октября', 11 => 'ноября', 12 => 'декабря'
+    ];
+
+    $day = date('d', $timestamp);
+    $month = $months[(int)date('m', $timestamp)];
+    $year = date('Y', $timestamp);
+
+    return "$day $month $year";
+}
+
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
 ?>
@@ -93,7 +108,25 @@ unset($_SESSION['form_data']);
     <div class="row">
         <div class="col-12" style="padding-top: 60px;">
             <h1 class="display-5 fw-bold text-primary mb-3">Политика конфиденциальности</h1>
-            <p class="lead text-muted">Последнее обновление: 29 октября 2025 года</p>
+            <p class="lead text-muted">Последнее обновление: <?php echo ru_date(time()); ?> года</p>
+            <div class="anchor-menu">
+                <div class="anchor-menu-title mb-2">
+                    <i class="bi bi-list-ul me-2"></i>Содержание
+                </div>
+                <div class="anchor-links d-flex flex-wrap gap-2">
+                    <a href="#general" class="anchor-link">1. Общие положения</a>
+                    <a href="#definitions" class="anchor-link">2. Основные понятия</a>
+                    <a href="#purposes" class="anchor-link">3. Цели сбора</a>
+                    <a href="#data-composition" class="anchor-link">4. Состав данных</a>
+                    <a href="#principles" class="anchor-link">5. Принципы обработки</a>
+                    <a href="#storage" class="anchor-link">6. Сроки хранения</a>
+                    <a href="#rights" class="anchor-link">7. Права субъектов</a>
+                    <a href="#protection" class="anchor-link">8. Меры защиты</a>
+                    <a href="#third-parties" class="anchor-link">9. Передача третьим лицам</a>
+                    <a href="#cookies" class="anchor-link">10. Использование cookie</a>
+                    <a href="#final" class="anchor-link">11. Заключительные положения</a>
+                </div>
+            </div>
             <div class="privacy-summary mb-5">
                 <div class="row">
                     <div class="col-md-4 mb-3">
@@ -456,7 +489,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </section>
                 <div class="update-info p-3 text-center mt-5">
-                    <p class="mb-0"><strong>Последнее обновление:</strong> 29 октября 2025 года</p>
+                    <p class="mb-0"><strong>Последнее обновление:</strong> <?php echo ru_date(time()); ?> года</p>
                 </div>
             </div>
         </div>

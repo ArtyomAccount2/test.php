@@ -170,7 +170,6 @@
 .news-single-page 
 {
     background-color: #ffffff;
-    min-height: calc(100vh - 105px);
 }
 
 .news-single-article 
@@ -310,7 +309,6 @@
 .news-tags 
 {
     border-top: 1px solid #eaeaea;
-    padding-top: 1.5rem;
 }
 
 .news-tags .btn-outline-secondary 
@@ -417,6 +415,24 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
+    }
+
+    .news-tags 
+    {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .me-2
+    {
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .news-hero .lead,
+    .news-hero .display-4
+    {
+        text-align: center;
     }
 }
 

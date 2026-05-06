@@ -107,41 +107,56 @@ unset($_SESSION['form_data']);
         let sitemapItems = document.querySelectorAll('.sitemap-list a');
         let sections = document.querySelectorAll('.sitemap-section');
 
-        if(searchInput) 
+        function updateStats() 
         {
-            searchInput.addEventListener('input', function(e) 
+            let visibleLinks = document.querySelectorAll('.sitemap-list a[style*="display: block"], .sitemap-list a:not([style*="display: none"])');
+
+            let trulyVisibleLinks = Array.from(visibleLinks).filter(link => {
+                let parent = link.parentElement;
+                return link.style.display !== 'none' && parent.style.display !== 'none';
+            });
+            
+            let visibleSections = Array.from(sections).filter(section => {
+                return section.style.display !== 'none';
+            });
+            
+            document.getElementById('totalPages').textContent = trulyVisibleLinks.length;
+            document.getElementById('totalSections').textContent = visibleSections.length;
+        }
+
+        function resetSearch() 
+        {
+            searchInput.value = '';
+            document.querySelector('.sitemap-content').classList.remove('search-active');
+            
+            sections.forEach(section => {
+                section.style.display = 'block';
+                let links = section.querySelectorAll('.sitemap-list a');
+
+                links.forEach(link => {
+                    link.style.display = 'block';
+                    link.parentElement.style.display = 'block';
+                });
+            });
+            
+            document.getElementById('noResults').style.display = 'none';
+            updateStats();
+        }
+
+        function performSearch() 
+        {
+            let searchTerm = searchInput.value.toLowerCase().trim();
+            let foundResults = false;
+
+            if (searchTerm.length > 0) 
             {
-                let searchTerm = e.target.value.toLowerCase().trim();
-                let foundResults = false;
-
-                if (searchTerm.length > 0) 
-                {
-                    document.querySelector('.sitemap-content').classList.add('search-active');
-                } 
-                else 
-                {
-                    document.querySelector('.sitemap-content').classList.remove('search-active');
-
-                    sections.forEach(section => {
-                        section.style.display = 'block';
-                        let links = section.querySelectorAll('.sitemap-list a');
-
-                        links.forEach(link => {
-                            link.style.display = 'block';
-                            link.parentElement.style.display = 'block';
-                        });
-                    });
-
-                    document.getElementById('noResults').style.display = 'none';
-                    return;
-                }
-
+                document.querySelector('.sitemap-content').classList.add('search-active');
+                
                 let visibleSectionsCount = 0;
 
                 sections.forEach(section => {
                     let sectionVisible = false;
                     let links = section.querySelectorAll('.sitemap-list a');
-                    let visibleLinksCount = 0;
                     
                     links.forEach(link => {
                         let text = link.textContent.toLowerCase();
@@ -152,7 +167,6 @@ unset($_SESSION['form_data']);
                             link.parentElement.style.display = 'block';
                             sectionVisible = true;
                             foundResults = true;
-                            visibleLinksCount++;
                         } 
                         else 
                         {
@@ -173,28 +187,26 @@ unset($_SESSION['form_data']);
                 });
 
                 document.getElementById('noResults').style.display = foundResults ? 'none' : 'block';
-                let visiblePages = document.querySelectorAll('.sitemap-list a[style*="display: block"]').length;
-                document.getElementById('totalPages').textContent = visiblePages;
-                document.getElementById('totalSections').textContent = visibleSectionsCount;
+            } 
+            else 
+            {
+                resetSearch();
+                return;
+            }
+            
+            updateStats();
+        }
+
+        if(searchInput) 
+        {
+            searchInput.addEventListener('input', function(e) 
+            {
+                performSearch();
             });
 
             document.querySelector('.btn-outline-primary').addEventListener('click', function() 
             {
-                searchInput.value = '';
-
-                sections.forEach(section => {
-                    section.style.display = 'block';
-                    let links = section.querySelectorAll('.sitemap-list a');
-                    links.forEach(link => {
-                        link.style.display = 'block';
-                        link.parentElement.style.display = 'block';
-                    });
-                });
-                
-                document.querySelector('.sitemap-content').classList.remove('search-active');
-                document.getElementById('noResults').style.display = 'none';
-                document.getElementById('totalPages').textContent = document.querySelectorAll('.sitemap-list a').length;
-                document.getElementById('totalSections').textContent = document.querySelectorAll('.sitemap-section').length;
+                resetSearch();
             });
         }
 
@@ -234,7 +246,7 @@ unset($_SESSION['form_data']);
                     </div>
                 </div>
             </div>
-            <div class="row g-3 mb-5 justify-content-center">
+            <div class="row g-3 mb-4 justify-content-center">
                 <div class="col-md-3">
                     <div class="card border-primary h-100">
                         <div class="card-body text-center">
@@ -288,6 +300,7 @@ unset($_SESSION['form_data']);
                         <li><a href="oils.php">Масла и тех. жидкости</a></li>
                         <li><a href="accessories.php">Аксессуары</a></li>
                         <li><a href="brands.php">Торговые марки</a></li>
+                        <li><a href="car-brands.php">Все марки автомобилей</a></li>
                         <li><a href="delivery.php">Оплата и доставка</a></li>
                         <li><a href="customers.php">Покупателям</a></li>
                     </ul>

@@ -104,8 +104,8 @@ if (isset($_SERVER['HTTP_REFERER']))
 </head>
 <body>
 
-<div class="container mt-5">
-    <h1>Редактирование пользователя</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Редактирование пользователя</h1>
     <form method="POST" action="">
         <input type="hidden" name="id" value="<?= $user['id_users'] ?>">
         <input type="hidden" name="page" value="<?= $page ?>">

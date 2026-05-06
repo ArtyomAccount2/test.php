@@ -220,7 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_api_key']))
         <?php 
         }
         ?>
-        <div class="row mb-4">
+        <div class="row mb-lg-4 mb-md-2">
             <div class="col-12">
                 <h1 class="display-6 fw-bold text-primary">
                     <i class="bi bi-code-slash me-2"></i>Настройки разработчика

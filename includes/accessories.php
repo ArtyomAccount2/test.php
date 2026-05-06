@@ -433,7 +433,7 @@ sort($all_categories);
 ?>
 
 <div class="container my-4">
-    <div class="hero-section text-center mb-5" style="padding-top: 105px;">
+    <div class="hero-section text-center mb-lg-4" style="padding-top: 105px;">
         <h1 class="display-5 fw-bold text-primary mb-3">Аксессуары</h1>
         <p class="lead text-muted mb-4">Найдите идеальные аксессуары для вашего автомобиля</p>
     </div>
@@ -607,7 +607,7 @@ sort($all_categories);
                     <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <div class="d-flex align-items-center mb-2 mb-md-0">
                             <span class="me-2 text-muted">Сортировка:</span>
-                            <select class="form-select form-select-sm" id="sortSelect" style="width: auto;">
+                            <select class="form-select form-select-sm" id="sortSelect">
                                 <option value="popular" <?php echo $sort === 'popular' ? 'selected' : ''; ?>>По популярности</option>
                                 <option value="price_asc" <?php echo $sort === 'price_asc' ? 'selected' : ''; ?>>По цене (сначала дешевые)</option>
                                 <option value="price_desc" <?php echo $sort === 'price_desc' ? 'selected' : ''; ?>>По цене (сначала дорогие)</option>
