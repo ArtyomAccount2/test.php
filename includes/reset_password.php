@@ -228,8 +228,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']))
             else 
             {
                 $resetData = $result->fetch_assoc();
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $updateStmt = $conn->prepare("UPDATE users SET password_users = ? WHERE id_users = ?");
-                $updateStmt->bind_param("si", $password, $resetData['user_id']);
+                $updateStmt->bind_param("si", $hashedPassword, $resetData['user_id']);
                 
                 if ($updateStmt->execute()) 
                 {
@@ -404,7 +405,7 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
                 <input type="hidden" name="action" value="reset_password">
                 <input type="hidden" name="code" value="<?= htmlspecialchars($code) ?>">
                 <input type="hidden" name="email" value="<?= htmlspecialchars($user_email) ?>">
-                <div class="mb-4">
+                <div class="mb-2">
                     <label for="password" class="form-label">
                         <i class="bi bi-lock"></i> Новый пароль
                     </label>
@@ -414,7 +415,7 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
                     </div>
                     <div class="strength-text" id="strengthText"></div>
                 </div>
-                <div class="mb-4">
+                <div class="mb-2">
                     <label for="confirm_password" class="form-label">
                         <i class="bi bi-lock-fill"></i> Подтвердите пароль
                     </label>
@@ -700,8 +701,8 @@ function checkPasswordMatch()
 
 function validateResetForm(event) 
 {
-    const password = document.getElementById('password');
-    const confirmPassword = document.getElementById('confirm_password');
+    let password = document.getElementById('password');
+    let confirmPassword = document.getElementById('confirm_password');
     
     if (!password || !confirmPassword) 
     {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Май 06 2026 г., 20:04
+-- Время создания: Июн 01 2026 г., 20:41
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -858,6 +858,24 @@ INSERT INTO `product_brands` (`id`, `name`, `country`, `category`, `category_nam
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `promo_codes`
+--
+
+CREATE TABLE `promo_codes` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `code` varchar(50) NOT NULL,
+  `discount` int(11) DEFAULT '0',
+  `type` varchar(50) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `is_used` tinyint(1) DEFAULT '0',
+  `used_at` datetime DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `remember_tokens`
 --
 
@@ -891,10 +909,14 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`id`, `name`, `email`, `rating`, `text`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Иван Петров', 'ivan@mail.ru', 5, 'Отличный сервис! Быстро и качественно починили мой автомобиль. Персонал вежливый, цены адекватные. Рекомендую всем!', 'approved', '2024-01-15 07:30:00', '2025-11-11 16:36:39'),
-(2, 'Мария Сидорова', 'maria@yandex.ru', 4, 'Хороший магазин автозапчастей. Большой выбор, консультанты помогли подобрать нужную деталь. Не хватило только скидочной системы для постоянных клиентов.', 'approved', '2024-01-20 11:45:00', '2025-11-11 16:36:39'),
-(3, 'Алексей Козлов', 'alex@mail.ru', 5, 'Лучший автосервис в городе! Делали полное ТО, всё выполнили в срок, дали полезные советы по эксплуатации. Буду обращаться только сюда.', 'approved', '2024-02-01 06:15:00', '2026-01-07 18:31:54'),
-(4, 'Наталья', 'email2@gmail.com', 4, 'Круто!', 'approved', '2026-01-07 18:33:14', '2026-03-09 17:21:03');
+(1, 'Иван Петров', 'ivan@mail.ru', 5, 'Отличный сервис! Быстро и качественно починили мой автомобиль. Персонал вежливый, цены адекватные. Рекомендую всем!', 'approved', '2026-01-15 07:30:00', '2026-11-11 16:36:39'),
+(2, 'Мария Сидорова', 'maria@yandex.ru', 4, 'Хороший магазин автозапчастей. Большой выбор, консультанты помогли подобрать нужную деталь. Не хватило только скидочной системы для постоянных клиентов.', 'approved', '2026-01-20 11:45:00', '2026-11-11 16:36:39'),
+(3, 'Алексей Козлов', 'alex@mail.ru', 5, 'Лучший автосервис в городе! Делали полное ТО, всё выполнили в срок, дали полезные советы по эксплуатации. Буду обращаться только сюда.', 'approved', '2026-02-01 06:15:00', '2026-05-07 16:44:42'),
+(4, 'Дмитрий Соколов', 'dmitry@mail.ru', 5, 'Отличный магазин! Заказывал масло Castrol 5W-30 - привезли на следующий день. Цены ниже, чем в других магазинах. Рекомендую!', 'approved', '2026-03-20 07:30:00', '2026-05-07 16:42:40'),
+(5, 'Елена Морозова', 'elena@yandex.ru', 4, 'Хороший сервис, вежливые консультанты. Единственный минус - долгая доставка в отдаленные районы (3 дня). В остальном все отлично.', 'approved', '2026-04-01 11:20:00', '2026-05-07 16:42:46'),
+(6, 'Андрей Волков', 'andrey@bk.ru', 5, 'Покупал тормозные колодки Brembo. Цена приятно удивила. Установил сам - подошли идеально. Спасибо магазину за качественные запчасти!', 'approved', '2026-04-10 06:15:00', '2026-05-07 16:42:52'),
+(7, 'Татьяна Новикова', 'tatiana@gmail.com', 5, 'Заказывала коврики в салон 3D. Качество отличное, не скользят, легко моются. Доставили быстро. Обязательно вернусь к вам снова!', 'approved', '2026-04-25 13:45:00', '2026-05-07 16:42:58'),
+(8, 'Наталья', 'email2@gmail.com', 4, 'Круто!', 'approved', '2026-05-07 16:43:05', '2026-05-07 16:43:31');
 
 -- --------------------------------------------------------
 
@@ -1219,7 +1241,7 @@ CREATE TABLE `users` (
   `name_users` varchar(255) DEFAULT NULL,
   `patronymic_users` varchar(255) DEFAULT NULL,
   `login_users` varchar(255) DEFAULT NULL,
-  `password_users` varchar(255) DEFAULT NULL,
+  `password_users` varchar(255) NOT NULL,
   `email_users` varchar(255) DEFAULT NULL,
   `discountСardNumber_users` varchar(6) DEFAULT NULL,
   `region_users` varchar(255) DEFAULT NULL,
@@ -1232,6 +1254,7 @@ CREATE TABLE `users` (
   `organization_users` varchar(255) DEFAULT NULL,
   `organizationType_users` varchar(255) DEFAULT NULL,
   `user_type` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `free_spin_used` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 - не использовал бесплатную прокрутку, 1 - уже использовал'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1239,12 +1262,29 @@ CREATE TABLE `users` (
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id_users`, `surname_users`, `name_users`, `patronymic_users`, `login_users`, `password_users`, `email_users`, `discountСardNumber_users`, `region_users`, `city_users`, `address_users`, `phone_users`, `avatar_users`, `TIN_users`, `person_users`, `organization_users`, `organizationType_users`, `user_type`, `free_spin_used`) VALUES
-(1, NULL, NULL, NULL, 'admin', 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', 1),
-(2, 'Иванов', 'Иван', 'Иванович', 'user1', 'user1', 'user1@gmail.com', '223344', 'Калининградская область', 'Калининград', 'Малый переулок, 3', 89113456789, 'uploads/avatars/avatar_2_1758131749.jpg', NULL, NULL, NULL, NULL, 'physical', 0),
-(3, NULL, NULL, NULL, 'user2', 'user2new', 'user2@gmail.com', NULL, 'Калининградская область', 'Калининград', 'Уральская улица, 20', 89114567891, NULL, 2222455179, 'Наталья Евгеньевна Графарова', 'Дизель-мастер', 'ООО', 'legal', 0),
-(4, NULL, NULL, NULL, 'user3', 'user3new', 'user3@gmail.com', '556677', 'Калининградская область', 'Балтийск', 'Киркенесская улица, 20', 89115678912, NULL, 5552431142, 'Виктор Викторович Викторов', 'КлассикАвто', 'ЗАО', 'legal', 0),
-(5, 'Рожков', 'Олег', 'Константинович', 'user4', 'user4new', 'user4@gmail.com', NULL, 'Калининградская область', 'Черняховск', 'улица Советская, 5', 89116789123, NULL, NULL, NULL, NULL, NULL, 'physical', 0);
+INSERT INTO `users` (`id_users`, `surname_users`, `name_users`, `patronymic_users`, `login_users`, `password_users`, `email_users`, `discountСardNumber_users`, `region_users`, `city_users`, `address_users`, `phone_users`, `avatar_users`, `TIN_users`, `person_users`, `organization_users`, `organizationType_users`, `user_type`, `created_at`, `free_spin_used`) VALUES
+(1, NULL, NULL, NULL, 'admin', '$2y$10$9VcNSE2fNGJuvpzdD6hnteJrGsmlPuu64Hew2lhs73mLe9GmJ0V0G', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2026-05-17 16:58:48', 1),
+(2, 'Иванов', 'Иван', 'Иванович', 'user1', '$2y$10$D5o9WLMJp3sQso71lRJ17eAuKrr0Lf1hJca42d5urlASDc1mYTBmm', 'user1@gmail.com', '223344', 'Калининградская область', 'Калининград', 'Малый переулок, 3', 89113456789, 'uploads/avatars/avatar_2_1758131749.jpg', NULL, NULL, NULL, NULL, 'physical', '2026-05-17 16:58:48', 0),
+(3, NULL, NULL, NULL, 'user2', '$2y$10$n2fp4g8P4W15qq1oajsgRu0iX/DUs2DvmREpW/Q3yDjuvr89kkMc6', 'user2@gmail.com', NULL, 'Калининградская область', 'Калининград', 'Уральская улица, 20', 89114567891, NULL, 2222455179, 'Наталья Евгеньевна Графарова', 'Дизель-мастер', 'ООО', 'legal', '2026-05-17 16:58:48', 0),
+(4, NULL, NULL, NULL, 'user3', '$2y$10$TIJhyHQ9y8ND1rSq7GPBbuuSExSjmYcUA42Yn5Q2xRBROarz.vu/S', 'user3@gmail.com', '556677', 'Калининградская область', 'Балтийск', 'Киркенесская улица, 20', 89115678912, NULL, 5552431142, 'Виктор Викторович Викторов', 'КлассикАвто', 'ЗАО', 'legal', '2026-05-17 16:58:48', 0),
+(5, 'Рожков', 'Олег', 'Константинович', 'user4', '$2y$10$Myb9zrwTcNTJMco/mcBxN.A9mC2Yj8PnelPxPJFMpWUDXgeWqLiGW', 'user4@gmail.com', NULL, 'Калининградская область', 'Черняховск', 'улица Советская, 5', 89116789123, NULL, NULL, NULL, NULL, NULL, 'physical', '2026-05-17 16:58:48', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `wheel_spins`
+--
+
+CREATE TABLE `wheel_spins` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `prize_text` varchar(50) NOT NULL,
+  `prize_type` varchar(50) NOT NULL,
+  `discount_value` int(11) DEFAULT '0',
+  `promo_code` varchar(50) DEFAULT NULL,
+  `purchases_required` int(11) DEFAULT '10',
+  `created_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1423,6 +1463,15 @@ ALTER TABLE `product_brands`
   ADD KEY `idx_name` (`name`);
 
 --
+-- Индексы таблицы `promo_codes`
+--
+ALTER TABLE `promo_codes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `code` (`code`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `expires_at` (`expires_at`);
+
+--
 -- Индексы таблицы `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
@@ -1506,6 +1555,14 @@ ALTER TABLE `update_logs`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id_users`);
+
+--
+-- Индексы таблицы `wheel_spins`
+--
+ALTER TABLE `wheel_spins`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `promo_code` (`promo_code`);
 
 --
 -- Индексы таблицы `wishlist`
@@ -1627,6 +1684,12 @@ ALTER TABLE `product_brands`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
+-- AUTO_INCREMENT для таблицы `promo_codes`
+--
+ALTER TABLE `promo_codes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
@@ -1636,7 +1699,7 @@ ALTER TABLE `remember_tokens`
 -- AUTO_INCREMENT для таблицы `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `services`
@@ -1693,6 +1756,12 @@ ALTER TABLE `users`
   MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT для таблицы `wheel_spins`
+--
+ALTER TABLE `wheel_spins`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `wishlist`
 --
 ALTER TABLE `wishlist`
@@ -1741,10 +1810,22 @@ ALTER TABLE `password_resets`
   ADD CONSTRAINT `fk_password_resets_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
 
 --
+-- Ограничения внешнего ключа таблицы `promo_codes`
+--
+ALTER TABLE `promo_codes`
+  ADD CONSTRAINT `promo_codes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
+
+--
 -- Ограничения внешнего ключа таблицы `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
   ADD CONSTRAINT `fk_remember_tokens_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `wheel_spins`
+--
+ALTER TABLE `wheel_spins`
+  ADD CONSTRAINT `wheel_spins_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `wishlist`

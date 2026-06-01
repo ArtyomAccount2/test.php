@@ -341,6 +341,39 @@ if ($is_logged_in && isset($_GET['show_review']) && $_GET['show_review'] == 'tru
 
         window.addEventListener('load', equalizeReviewHeights);
         window.addEventListener('resize', equalizeReviewHeights);
+        
+        function goToPage(page) 
+        {
+            if (page < 1) 
+            {
+                page = 1;
+            }
+
+            <?php 
+            if ($total_pages > 0) 
+            { 
+            ?>
+                if (page > <?php echo $total_pages; ?>) 
+                {
+                    page = <?php echo $total_pages; ?>;
+                }
+            <?php 
+            } 
+            ?>
+            
+            let currentUrl = window.location.pathname;
+            let newUrl = currentUrl + '?page=' + page;
+            let urlParams = new URLSearchParams(window.location.search);
+
+            if (urlParams.has('show_review')) 
+            {
+                newUrl += '&show_review=' + urlParams.get('show_review');
+            }
+            
+            window.location.href = newUrl;
+        }
+        
+        window.goToPage = goToPage;
     });
     </script>
 </head>
@@ -497,7 +530,12 @@ if ($is_logged_in && isset($_GET['show_review']) && $_GET['show_review'] == 'tru
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
-                    <a class="page-link" href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                    <a class="page-link" href="javascript:void(0)" onclick="goToPage(1)" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item <?php echo $current_page == 1 ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="javascript:void(0)" onclick="goToPage(<?php echo $current_page - 1; ?>)" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -509,28 +547,48 @@ if ($is_logged_in && isset($_GET['show_review']) && $_GET['show_review'] == 'tru
                 {
                     $end_page = min($total_pages, 5);
                 }
-
+                
                 if ($end_page == $total_pages) 
                 {
                     $start_page = max(1, $total_pages - 4);
+                }
+
+                if ($start_page > 1) 
+                {
+                    echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
                 }
                 
                 for ($i = $start_page; $i <= $end_page; $i++)
                 { 
                 ?>
                     <li class="page-item <?php echo $i == $current_page ? 'active' : ''; ?>">
-                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        <a class="page-link" href="javascript:void(0)" onclick="goToPage(<?php echo $i; ?>)"><?php echo $i; ?></a>
                     </li>
                 <?php 
                 }
+
+                if ($end_page < $total_pages) 
+                {
+                    echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                }
                 ?>
                 <li class="page-item <?php echo $current_page == $total_pages ? 'disabled' : ''; ?>">
-                    <a class="page-link" href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                    <a class="page-link" href="javascript:void(0)" onclick="goToPage(<?php echo $current_page + 1; ?>)" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item <?php echo $current_page == $total_pages ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="javascript:void(0)" onclick="goToPage(<?php echo $total_pages; ?>)" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
                     </a>
                 </li>
             </ul>
         </nav>
+        <div class="text-center mt-3 text-muted small">
+            Показаны отзывы <?php echo ($offset + 1); ?> - 
+            <?php echo min($offset + $reviews_per_page, $total_reviews); ?> 
+            из <?php echo $total_reviews; ?>
+        </div>
     </div>
     <?php 
     }

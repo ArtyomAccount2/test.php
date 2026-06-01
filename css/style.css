@@ -930,3 +930,23 @@ body.modal-open
     border-bottom: 2px solid #e9ecef;
     padding-bottom: 8px;
 }
+
+input[readonly] 
+{
+    background-color: #e9ecef !important;
+    color: #6c757d !important;
+    border-color: #dee2e6 !important;
+    cursor: not-allowed !important;
+    opacity: 0.85;
+}
+
+input[readonly]:focus 
+{
+    box-shadow: none !important;
+    border-color: #dee2e6 !important;
+}
+
+.readonly-field-wrapper 
+{
+    position: relative;
+}

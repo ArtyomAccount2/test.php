@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $username = $_POST['username'];
     $patronymic = $_POST['patronymic'];
     $login = $_POST['login'];
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $email = $_POST['email'];
     $discountCardNumber = $_POST['discountCardNumber'] ?? null;
     $region = $_POST['region'];

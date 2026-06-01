@@ -52,21 +52,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
     else
     {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
-        $stmt->bind_param("ss", $login, $password);
+        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?)");
+        $stmt->bind_param("s", $login);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) 
         {
             $row = $result->fetch_assoc();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
-            $_SESSION['user_id'] = $row['id_users'];
-            unset($_SESSION['login_error']);
-            unset($_SESSION['error_message']);
-            header("Location: " . $_SERVER['REQUEST_URI']);
-            exit();
+
+            if (password_verify($password, $row['password_users'])) 
+            {
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+                $_SESSION['user_id'] = $row['id_users'];
+                unset($_SESSION['login_error']);
+                unset($_SESSION['error_message']);
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            } 
+            else 
+            {
+                $_SESSION['login_error'] = true;
+                $_SESSION['error_message'] = "Неверный логин или пароль!";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            }
         } 
         else 
         {
@@ -117,7 +129,7 @@ unset($_SESSION['form_data']);
 <div class="flex-grow-1">
     <nav class="navbar navbar-expand-xl navbar-light bg-light shadow-sm fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
+            <a class="navbar-brand" href="index.php"><img src="img/Auto.png" alt="Лал-Авто" height="75"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -496,24 +508,84 @@ unset($_SESSION['form_data']);
 
     <section class="container my-5 text-center" id="specialOffer">
         <h2 class="text-center mb-4">Колесо Фортуны</h2>
+            <?php 
+            $remainingPurchases = null;
+            $canSpin = false;
+            $spinStatus = 'no_auth';
+            
+            if ($user_is_authenticated) 
+            {
+                $stmt = $conn->prepare("SELECT * FROM wheel_spins WHERE user_id = ? ORDER BY created_at DESC LIMIT 1");
+                $stmt->bind_param("i", $_SESSION['user_id']);
+                $stmt->execute();
+                $lastSpin = $stmt->get_result()->fetch_assoc();
+                $stmt->close();
+
+                if ($user_free_spin_available) 
+                {
+                    $canSpin = true;
+                    $spinStatus = 'free_available';
+                } 
+                else if ($lastSpin) 
+                {
+                    $stmt = $conn->prepare("SELECT COUNT(*) as count FROM orders WHERE user_id = ? AND order_date > (SELECT MAX(created_at) FROM wheel_spins WHERE user_id = ?)");
+                    $stmt->bind_param("ii", $_SESSION['user_id'], $_SESSION['user_id']);
+                    $stmt->execute();
+                    $purchaseCount = $stmt->get_result()->fetch_assoc()['count'];
+                    $stmt->close();
+                    
+                    $purchasesNeeded = $lastSpin['purchases_required'];
+                    $remainingPurchases = max(0, $purchasesNeeded - $purchaseCount);
+                    
+                    if ($remainingPurchases == 0) 
+                    {
+                        $canSpin = true;
+                        $spinStatus = 'spin_available';
+                    } 
+                    else 
+                    {
+                        $canSpin = false;
+                        $spinStatus = 'waiting';
+                    }
+                } 
+                else 
+                {
+                    $canSpin = false;
+                    $spinStatus = 'no_spins';
+                    $remainingPurchases = 10;
+                }
+            }
+            ?>
         <p class="lead mb-4" id="wheelDescription">
             <?php 
-            if ($user_is_authenticated && $user_free_spin_available)
+            if (!$user_is_authenticated) 
+            {
+            ?>
+                🔒 Авторизуйтесь, чтобы получить бесплатное вращение колеса! 🎁
+            <?php 
+            } 
+            else if ($spinStatus == 'free_available') 
             {
             ?>
                 🎉 Поздравляем с регистрацией! У вас есть бесплатное вращение колеса! 🎉
             <?php 
-            }
-            else if ($user_is_authenticated && !$user_free_spin_available)
+            } 
+            else if ($spinStatus == 'spin_available') 
             {
             ?>
-                Крутите колесо и получите специальное предложение!
+                🎰 У вас есть возможность крутить колесо! Нажмите на кнопку! 🎰
             <?php 
-            }
-            else
+            } 
+            else if ($spinStatus == 'waiting') 
             {
             ?>
-                Авторизуйтесь, чтобы получить бесплатное вращение колеса! 🎁
+                ⏳ Для следующего вращения необходимо совершить <?= $remainingPurchases ?> покупок ⏳
+            <?php 
+            } 
+            else if ($spinStatus == 'no_spins') 
+            {
+            ?>
+                🎯 Совершите <?= $remainingPurchases ?> покупок, чтобы получить возможность крутить колесо! 🎯
             <?php 
             }
             ?>
@@ -523,15 +595,15 @@ unset($_SESSION['form_data']);
             <canvas id="wheelCanvas" width="300" height="300"></canvas>
             <div class="wheel-pointer"></div>
         </div>
-        <button id="spinButton" class="btn btn-primary btn-lg mb-3"<?php if (!$user_is_authenticated) { ?> disabled <?php } ?>>
+        <button id="spinButton" class="btn btn-primary btn-lg mb-3" data-can-spin="<?= $canSpin ? 'true' : 'false' ?>" data-spin-status="<?= $spinStatus ?>"<?php if (!$canSpin) { ?> disabled <?php } ?>>
             <?php 
-            if (!$user_is_authenticated)
+            if (!$user_is_authenticated) 
             {
             ?>
                 Войдите, чтобы крутить
             <?php 
-            }
-            else if ($user_free_spin_available)
+            } 
+            else if ($spinStatus == 'free_available') 
             {
             ?>
                 Получить бесплатное вращение! 🎁
@@ -549,9 +621,32 @@ unset($_SESSION['form_data']);
             <h4 id="resultText"></h4>
             <p id="resultDescription" class="mb-0"></p>
         </div>
-        <div id="purchaseCounter" class="alert alert-info" style="display: none;">
-            <p style="margin-top: 15px;">До следующего вращения осталось: <span id="purchasesLeft">10</span> покупок</p>
-        </div>
+            <?php 
+            if ($user_is_authenticated && $spinStatus == 'waiting')
+            {
+            ?>
+                <div id="purchaseCounter" class="alert alert-info">
+                    <p style="margin-top: 15px;">До следующего вращения осталось: <span id="purchasesLeft"><?= $remainingPurchases ?></span> покупок</p>
+                </div>
+            <?php 
+            }
+            else if ($user_is_authenticated && $spinStatus == 'no_spins')
+            {
+            ?>
+                <div id="purchaseCounter" class="alert alert-info">
+                    <p style="margin-top: 15px;">Для активации колеса нужно: <span id="purchasesLeft"><?= $remainingPurchases ?></span> покупок</p>
+                </div>
+            <?php 
+            }
+            else
+            { 
+            ?>
+                <div id="purchaseCounter" class="alert alert-info" style="display: none;">
+                    <p style="margin-top: 15px;">До следующего вращения осталось: <span id="purchasesLeft">10</span> покупок</p>
+                </div>
+            <?php 
+            }
+            ?>
     </section>
 
     <div class="modal fade" id="wheelResultModal" tabindex="-1" aria-labelledby="wheelResultModalLabel" aria-hidden="true" data-bs-backdrop="static">
@@ -790,7 +885,7 @@ unset($_SESSION['form_data']);
         <hr class="my-4 bg-light">
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                <p class="mb-0">© 2026 Лал-Авто. Все права защищены.</p>
+                <p class="mb-0">© <?php echo date('Y'); ?> Лал-Авто. Все права защищены.</p>
             </div>
             <div class="col-md-6 text-center text-md-end">
                 <a href="includes/sitemap.php" class="text-white text-decoration-none me-3">Карта сайта</a>

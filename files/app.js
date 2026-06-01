@@ -20,14 +20,11 @@ document.addEventListener('DOMContentLoaded', function()
         { text: "5%", color: "#f0f0f0", desc: "Скидка 5% на следующий заказ" }
     ];
 
-    let requiredPurchases = 10;
     let segments_angle = (2 * Math.PI) / segments.length;
-    
     let rotation = 0;
     let isSpinning = false;
     let autoCloseTimer;
     let currentPrizeType = '';
-    let isFreeSpin = false;
 
     function drawWheel() 
     {
@@ -63,121 +60,51 @@ document.addEventListener('DOMContentLoaded', function()
         wheelFortune.fill();
     }
 
-    function updateSpinStatus() 
-    {
-        if (!window.userData || !window.userData.isAuthenticated) 
-        {
-            spinButton.disabled = true;
-            purchaseCounter.style.display = 'none';
-            return;
-        }
-
-        let spinsLeft = localStorage.getItem('wheelSpinsLeft');
-
-        if (window.userData.freeSpinAvailable) 
-        {
-            spinButton.disabled = false;
-            purchaseCounter.style.display = 'none';
-            localStorage.setItem('hasFreeSpin', 'true');
-            isFreeSpin = true;
-            return;
-        }
-
-        if (window.userData.freeSpinUsed) 
-        {
-            if (spinsLeft === null) 
-            {
-                spinsLeft = requiredPurchases;
-                localStorage.setItem('wheelSpinsLeft', spinsLeft);
-            } 
-            else 
-            {
-                spinsLeft = parseInt(spinsLeft);
-            }
-            
-            spinButton.disabled = spinsLeft > 0;
-            
-            if (spinsLeft >= 0)
-            {
-                purchaseCounter.style.display = 'block';
-                purchasesLeft.textContent = spinsLeft;
-            }
-            
-            isFreeSpin = false;
-            localStorage.removeItem('hasFreeSpin');
-        }
-    }
-
-    async function markFreeSpinUsed() 
-    {
-        if (!window.userData || !window.userData.isAuthenticated || !window.userData.freeSpinAvailable) 
-        {
-            return;
-        }
-        
-        try 
-        {
-            let response = await fetch('includes/mark_free_spin.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    user_id: window.userData.userId,
-                    used: true
-                })
-            });
-            
-            let result = await response.json();
-            
-            if (result.success) 
-            {
-                window.userData.freeSpinAvailable = false;
-                window.userData.freeSpinUsed = true;
-                localStorage.setItem('wheelSpinsLeft', requiredPurchases);
-                localStorage.removeItem('hasFreeSpin');
-
-                let wheelDescription = document.getElementById('wheelDescription');
-
-                if (wheelDescription) 
-                {
-                    wheelDescription.textContent = 'Крутите колесо и получите специальное предложение!';
-                }
-                
-                spinButton.innerHTML = 'Крутить колесо!';
-            }
-        } 
-        catch (error) 
-        {
-            console.error('Ошибка при сохранении статуса бесплатного вращения:', error);
-        }
-    }
-
-    spinButton.addEventListener('click', function() 
+    async function performSpin() 
     {
         if (isSpinning || spinButton.disabled) 
         {
             return;
         }
 
-        if (window.userData && window.userData.freeSpinAvailable) 
-        {
-            markFreeSpinUsed();
-            isFreeSpin = true;
-        }
-        
         isSpinning = true;
         spinButton.disabled = true;
-    
-        let spins = 5 + Math.floor(Math.random() * 3);
-        let targetSegment = Math.floor(Math.random() * segments.length);
-        let targetSegmentCenterAngle = targetSegment * segments_angle + segments_angle / 2;
-        let targetRot = spins * 2 * Math.PI + (2 * Math.PI - targetSegmentCenterAngle) - 8;
 
-        animateSpin(targetRot, targetSegment);
-    });
+        try {
+            let response = await fetch('includes/spin_handler.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            let result = await response.json();
+            
+            if (!result.success) 
+            {
+                alert(result.message);
+                isSpinning = false;
+                spinButton.disabled = false;
+                return;
+            }
 
-    function animateSpin(targetRot, targetSegment) 
+            let spins = 5 + Math.floor(Math.random() * 3);
+            let targetSegmentCenterAngle = result.winIndex * segments_angle + segments_angle / 2;
+            let targetRot = spins * 2 * Math.PI + (2 * Math.PI - targetSegmentCenterAngle) - 8;
+            
+            animateSpin(targetRot, result);
+            
+        } 
+        catch (error) 
+        {
+            console.error('Ошибка при вращении:', error);
+            alert('Произошла ошибка. Попробуйте позже.');
+            isSpinning = false;
+            spinButton.disabled = false;
+        }
+    }
+
+    function animateSpin(targetRot, serverResult) 
     {
         let start = Date.now();
         let duration = 3000;
@@ -196,21 +123,19 @@ document.addEventListener('DOMContentLoaded', function()
             } 
             else 
             {
-                finishSpin(targetSegment);
+                finishSpin(serverResult);
             }
         }
 
         animate();
     }
 
-    function finishSpin(winIndex) 
+    function finishSpin(serverResult) 
     {
         isSpinning = false;
-        currentWinIndex = winIndex;
-
-        let prize = segments[winIndex];
         
-        currentPrizeType = prize.text === "Неудача" ? 'failure' : 'success';
+        let prize = serverResult.prize;
+        currentPrizeType = prize.type === 'failure' ? 'failure' : 'success';
 
         if (autoCloseTimer) 
         {
@@ -218,8 +143,7 @@ document.addEventListener('DOMContentLoaded', function()
             autoCloseTimer = null;
         }
         
-        updatePrizeModal(prize);
-        
+        updatePrizeModal(prize, serverResult.promoCode);
         resultModal.show();
         
         if (currentPrizeType === 'success') 
@@ -228,42 +152,39 @@ document.addEventListener('DOMContentLoaded', function()
         }
         
         startAutoCloseTimer();
-
-        if (!isFreeSpin && window.userData && window.userData.isAuthenticated && window.userData.freeSpinUsed) 
-        {
-            let spinsLeft = parseInt(localStorage.getItem('wheelSpinsLeft')) || requiredPurchases;
-            
-            if (spinsLeft > 0) 
-            {
-                let newSpinsLeft = spinsLeft - 1;
-                
-                if (newSpinsLeft <= 0) 
-                {
-                    localStorage.removeItem('wheelSpinsLeft');
-                } 
-                else 
-                {
-                    localStorage.setItem('wheelSpinsLeft', newSpinsLeft);
-                }
-                
-                purchasesLeft.textContent = newSpinsLeft;
-            }
-        }
-        
-        localStorage.setItem('wheelLastPrize', JSON.stringify(prize));
-        
+        updateSpinStatus(serverResult);
         drawWheel();
-        updateSpinStatus();
     }
 
-    function updatePrizeModal(prize) 
+    function updateSpinStatus(serverResult) 
+    {
+        let wheelDescription = document.getElementById('wheelDescription');
+        
+        if (serverResult.spinType === 'free') 
+        {
+            wheelDescription.textContent = 'Крутите колесо и получите специальное предложение!';
+            spinButton.innerHTML = 'Крутить колесо!';
+        }
+        
+        if (serverResult.purchasesRequired) 
+            {
+            purchaseCounter.style.display = 'block';
+            purchasesLeft.textContent = serverResult.purchasesRequired;
+        } 
+        else 
+        {
+            purchaseCounter.style.display = 'none';
+        }
+    }
+
+    function updatePrizeModal(prize, promoCode) 
     {
         let modal = document.getElementById('wheelResultModal');
         let icon = document.getElementById('modalPrizeIcon');
         let resultText = document.getElementById('modalResultText');
         let description = document.getElementById('modalResultDescription');
         let codeSection = document.getElementById('prizeCodeSection');
-        let promoCode = document.getElementById('modalPromoCode');
+        let promoCodeSpan = document.getElementById('modalPromoCode');
         let usePrizeBtn = document.getElementById('usePrizeBtn');
         let laterBtn = document.querySelector('.prize-action-btn[data-bs-dismiss="modal"]');
         
@@ -274,37 +195,20 @@ document.addEventListener('DOMContentLoaded', function()
         
         resultText.textContent = prize.text.includes('%') ? `Скидка ${prize.text}` : prize.text;
         resultText.style.color = currentPrizeType === 'success' ? '#28a745' : '#dc3545';
-        description.textContent = prize.desc;
+        description.textContent = prize.description;
         
-        if (currentPrizeType === 'success') 
+        if (currentPrizeType === 'success' && promoCode) 
         {
-            let generatedCode = generatePromoCode(prize.text);
-            promoCode.textContent = generatedCode;
+            promoCodeSpan.textContent = promoCode;
             codeSection.style.display = 'block';
-
-            if (usePrizeBtn) 
-            {
-                usePrizeBtn.style.display = 'block';
-            }
-
-            if (laterBtn) 
-            {
-                laterBtn.style.display = 'block';
-            }
+            usePrizeBtn.style.display = 'block';
+            laterBtn.style.display = 'block';
         } 
         else 
         {
             codeSection.style.display = 'none';
-
-            if (usePrizeBtn) 
-            {
-                usePrizeBtn.style.display = 'none';
-            }
-
-            if (laterBtn) 
-            {
-                laterBtn.style.display = 'none';
-            }
+            usePrizeBtn.style.display = 'none';
+            laterBtn.style.display = 'none';
         }
         
         let copyBtn = document.querySelector('.copy-btn');
@@ -313,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function()
         {
             copyBtn.onclick = function() 
             {
-                navigator.clipboard.writeText(promoCode.textContent).then(() => {
+                navigator.clipboard.writeText(promoCodeSpan.textContent).then(() => {
                     let originalHtml = copyBtn.innerHTML;
                     copyBtn.innerHTML = '<i class="bi bi-check"></i>';
                     
@@ -323,13 +227,6 @@ document.addEventListener('DOMContentLoaded', function()
                 });
             };
         }
-    }
-
-    function generatePromoCode(prizeText) 
-    {
-        let prefix = prizeText.includes('доставка') ? 'FREE' : 'DISCOUNT';
-        let randomNum = Math.floor(1000 + Math.random() * 9000);
-        return `${prefix}${randomNum}`;
     }
 
     function createConfetti() 
@@ -434,36 +331,6 @@ document.addEventListener('DOMContentLoaded', function()
         });
     }
 
-    function addPurchase() 
-    {
-        let spinsLeft = parseInt(localStorage.getItem('wheelSpinsLeft')) || 0;
-
-        if (spinsLeft <= 0) 
-        {
-            return;
-        }
-
-        spinsLeft--;
-        purchasesLeft.textContent = spinsLeft;
-
-        if (spinsLeft <= 0) 
-        {
-            localStorage.removeItem('wheelSpinsLeft');
-            spinButton.disabled = false;
-        } 
-        else 
-        {
-            localStorage.setItem('wheelSpinsLeft', spinsLeft);
-        }
-    }
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key.toLowerCase() == 'p') 
-        {
-            addPurchase();
-        }
-    });
-
+    spinButton.addEventListener('click', performSpin);
     drawWheel();
-    updateSpinStatus();
 });

@@ -467,6 +467,25 @@ function viewUser(userId)
                 let editLink = document.getElementById('editUserLink');
                 
                 editLink.href = `files/edit_user.php?id=${userId}`;
+
+                let fullName = '';
+                let surname = user.surname_users || '';
+                let name = user.name_users || '';
+                let patronymic = user.patronymic_users || '';
+
+                if (surname.trim() === '' && name.trim() === '' && patronymic.trim() === '') 
+                {
+                    fullName = '<span class="text-muted">Не указано</span>';
+                } 
+                else 
+                {
+                    fullName = [surname, name, patronymic].filter(part => part && part.trim() !== '').join(' ');
+
+                    if (fullName === '') 
+                    {
+                        fullName = '<span class="text-muted">Не указано</span>';
+                    }
+                }
                 
                 let html = `
                     <div id="table-column" class="row">
@@ -491,7 +510,7 @@ function viewUser(userId)
                                 </tr>
                                 <tr>
                                     <td><strong>ФИО:</strong></td>
-                                    <td>${user.surname_users || ''} ${user.name_users || ''} ${user.patronymic_users || ''}</td>
+                                    <td>${fullName}</td>
                                 </tr>
                                 ${user.organization_users ? `
                                 <tr>

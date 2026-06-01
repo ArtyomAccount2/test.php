@@ -121,13 +121,13 @@ if (isset($_SERVER['HTTP_REFERER']))
             <label for="patronymic">Отчество</label>
             <input type="text" name="patronymic" class="form-control" id="patronymic" value="<?= htmlspecialchars($user['patronymic_users']) ?>">
         </div>
-        <div class="form-group">
-            <label for="login">Логин</label>
-            <input type="text" name="login" class="form-control" id="login" value="<?= htmlspecialchars($user['login_users']) ?>" required>
+        <div class="form-group readonly-field-wrapper">
+            <label for="login">Логин<i class="bi bi-lock-fill"></i></label>
+            <input type="text" name="login" class="form-control" id="login" value="<?= htmlspecialchars($user['login_users']) ?>" readonly>
         </div>
-        <div class="form-group">
-            <label for="password">Пароль</label>
-            <input type="password" name="password" class="form-control" id="password" value="<?= htmlspecialchars($user['password_users']) ?>" required>
+        <div class="form-group readonly-field-wrapper">
+            <label for="password">Пароль<i class="bi bi-lock-fill"></i></label>
+            <input type="password" name="password" class="form-control" id="password" value="<?= htmlspecialchars($user['password_users']) ?>" readonly>
         </div>
         <div class="form-group">
             <label for="email">Email</label>

@@ -378,106 +378,118 @@ unset($_SESSION['form_data']);
                     <div class="card-body-custom p-4">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <div class="service-item h-100">
-                                    <div class="d-flex align-items-start mb-2">
-                                        <div class="service-icon bg-primary me-3">
-                                            <i class="bi bi-search text-white"></i>
+                                <a href="services_list.php?category=Диагностика" class="text-decoration-none">
+                                    <div class="service-item h-100">
+                                        <div class="d-flex align-items-start mb-2">
+                                            <div class="service-icon bg-primary me-3">
+                                                <i class="bi bi-search text-white"></i>
+                                            </div>
+                                            <div class="service-content">
+                                                <h6 class="mb-1">Компьютерная диагностика</h6>
+                                                <p class="small text-muted mb-2">Полная проверка систем автомобиля</p>
+                                            </div>
                                         </div>
-                                        <div class="service-content">
-                                            <h6 class="mb-1">Компьютерная диагностика</h6>
-                                            <p class="small text-muted mb-2">Полная проверка систем автомобиля</p>
+                                        <div class="service-meta">
+                                            <span class="service-price text-primary fw-bold">от 1500₽</span>
+                                            <span class="service-time small text-muted">20-40 мин</span>
                                         </div>
                                     </div>
-                                    <div class="service-meta">
-                                        <span class="service-price text-primary fw-bold">от 1500₽</span>
-                                        <span class="service-time small text-muted">20-40 мин</span>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                             <div class="col-md-6">
-                                <div class="service-item h-100">
-                                    <div class="d-flex align-items-start mb-2">
-                                        <div class="service-icon bg-primary me-3">
-                                            <i class="bi bi-gear-fill text-white"></i>
+                                <a href="services_list.php?category=Техническое+обслуживание" class="text-decoration-none">
+                                    <div class="service-item h-100">
+                                        <div class="d-flex align-items-start mb-2">
+                                            <div class="service-icon bg-primary me-3">
+                                                <i class="bi bi-gear-fill text-white"></i>
+                                            </div>
+                                            <div class="service-content">
+                                                <h6 class="mb-1">Техобслуживание</h6>
+                                                <p class="small text-muted mb-2">Регулярное ТО по регламенту</p>
+                                            </div>
                                         </div>
-                                        <div class="service-content">
-                                            <h6 class="mb-1">Техобслуживание</h6>
-                                            <p class="small text-muted mb-2">Регулярное ТО по регламенту</p>
+                                        <div class="service-meta">
+                                            <span class="service-price text-primary fw-bold">от 3000₽</span>
+                                            <span class="service-time small text-muted">1-2 часа</span>
                                         </div>
                                     </div>
-                                    <div class="service-meta">
-                                        <span class="service-price text-primary fw-bold">от 3000₽</span>
-                                        <span class="service-time small text-muted">1-2 часа</span>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                             <div class="col-md-6">
-                                <div class="service-item h-100">
-                                    <div class="d-flex align-items-start mb-2">
-                                        <div class="service-icon bg-primary me-3">
-                                            <i class="bi bi-lightning-charge text-white"></i>
+                                <a href="services_list.php?category=Двигатель" class="text-decoration-none">
+                                    <div class="service-item h-100">
+                                        <div class="d-flex align-items-start mb-2">
+                                            <div class="service-icon bg-primary me-3">
+                                                <i class="bi bi-lightning-charge text-white"></i>
+                                            </div>
+                                            <div class="service-content">
+                                                <h6 class="mb-1">Ремонт двигателя</h6>
+                                                <p class="small text-muted mb-2">Диагностика и ремонт ДВС</p>
+                                            </div>
                                         </div>
-                                        <div class="service-content">
-                                            <h6 class="mb-1">Ремонт двигателя</h6>
-                                            <p class="small text-muted mb-2">Диагностика и ремонт ДВС</p>
+                                        <div class="service-meta">
+                                            <span class="service-price text-primary fw-bold">от 5000₽</span>
+                                            <span class="service-time small text-muted">2-6 часов</span>
                                         </div>
                                     </div>
-                                    <div class="service-meta">
-                                        <span class="service-price text-primary fw-bold">от 5000₽</span>
-                                        <span class="service-time small text-muted">2-6 часов</span>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                             <div class="col-md-6">
-                                <div class="service-item h-100">
-                                    <div class="d-flex align-items-start mb-2">
-                                        <div class="service-icon bg-primary me-3">
-                                            <i class="bi bi-car-front text-white"></i>
+                                <a href="services_list.php?category=Ремонт+ходовой" class="text-decoration-none">
+                                    <div class="service-item h-100">
+                                        <div class="d-flex align-items-start mb-2">
+                                            <div class="service-icon bg-primary me-3">
+                                                <i class="bi bi-car-front text-white"></i>
+                                            </div>
+                                            <div class="service-content">
+                                                <h6 class="mb-1">Ходовая часть</h6>
+                                                <p class="small text-muted mb-2">Ремонт подвески и рулевого управления</p>
+                                            </div>
                                         </div>
-                                        <div class="service-content">
-                                            <h6 class="mb-1">Ходовая часть</h6>
-                                            <p class="small text-muted mb-2">Ремонт подвески и рулевого управления</p>
+                                        <div class="service-meta">
+                                            <span class="service-price text-primary fw-bold">от 2500₽</span>
+                                            <span class="service-time small text-muted">1-3 часа</span>
                                         </div>
                                     </div>
-                                    <div class="service-meta">
-                                        <span class="service-price text-primary fw-bold">от 2500₽</span>
-                                        <span class="service-time small text-muted">1-3 часа</span>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                             <div class="col-md-6">
-                                <div class="service-item h-100">
-                                    <div class="d-flex align-items-start mb-2">
-                                        <div class="service-icon bg-primary me-3">
-                                            <i class="bi bi-cpu text-white"></i>
+                                <a href="services_list.php?category=Электрика" class="text-decoration-none">
+                                    <div class="service-item h-100">
+                                        <div class="d-flex align-items-start mb-2">
+                                            <div class="service-icon bg-primary me-3">
+                                                <i class="bi bi-cpu text-white"></i>
+                                            </div>
+                                            <div class="service-content">
+                                                <h6 class="mb-1">Автоэлектрика</h6>
+                                                <p class="small text-muted mb-2">Диагностика и ремонт электронных систем</p>
+                                            </div>
                                         </div>
-                                        <div class="service-content">
-                                            <h6 class="mb-1">Автоэлектрика</h6>
-                                            <p class="small text-muted mb-2">Диагностика и ремонт электронных систем</p>
+                                        <div class="service-meta">
+                                            <span class="service-price text-primary fw-bold">от 2000₽</span>
+                                            <span class="service-time small text-muted">1-4 часа</span>
                                         </div>
                                     </div>
-                                    <div class="service-meta">
-                                        <span class="service-price text-primary fw-bold">от 2000₽</span>
-                                        <span class="service-time small text-muted">1-4 часа</span>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                             <div class="col-md-6">
-                                <div class="service-item h-100">
-                                    <div class="d-flex align-items-start mb-2">
-                                        <div class="service-icon bg-primary me-3">
-                                            <i class="bi bi-circle text-white"></i>
+                                <a href="services_list.php?category=Шиномонтаж" class="text-decoration-none">
+                                    <div class="service-item h-100">
+                                        <div class="d-flex align-items-start mb-2">
+                                            <div class="service-icon bg-primary me-3">
+                                                <i class="bi bi-circle text-white"></i>
+                                            </div>
+                                            <div class="service-content">
+                                                <h6 class="mb-1">Шиномонтаж</h6>
+                                                <p class="small text-muted mb-2">Балансировка и сезонная смена шин</p>
+                                            </div>
                                         </div>
-                                        <div class="service-content">
-                                            <h6 class="mb-1">Шиномонтаж</h6>
-                                            <p class="small text-muted mb-2">Балансировка и сезонная смена шин</p>
+                                        <div class="service-meta">
+                                            <span class="service-price text-primary fw-bold">от 1000₽</span>
+                                            <span class="service-time small text-muted">30-60 мин</span>
                                         </div>
                                     </div>
-                                    <div class="service-meta">
-                                        <span class="service-price text-primary fw-bold">от 1000₽</span>
-                                        <span class="service-time small text-muted">30-60 мин</span>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                         <div class="service-alert mt-4">
@@ -543,7 +555,7 @@ unset($_SESSION['form_data']);
                             ?>
                                 <div class="alert alert-primary mb-0">
                                     <div class="d-flex align-items-center">
-                                    <i class="bi bi-info-circle me-2"></i>Вы выбрали:⠀<strong><?= htmlspecialchars($selected_service_name) ?></strong>
+                                    <i class="bi bi-info-circle me-2"></i>Вы выбрали: <strong class="ms-2"><?= htmlspecialchars($selected_service_name) ?></strong>
                                         <?php 
                                         if (!empty($selected_service_price))
                                         {

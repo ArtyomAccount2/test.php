@@ -9,7 +9,24 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['u
     header("Location: ../files/logout.php");
 }
 
-$query = "SELECT * FROM services WHERE status = 'active' ORDER BY category, name";
+$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+$from_service_page = strpos($referer, 'service.php') !== false;
+$selected_category = isset($_GET['category']) ? urldecode($_GET['category']) : '';
+
+if (!empty($selected_category)) 
+{
+    $_SESSION['filtered_category'] = $selected_category;
+    $_SESSION['came_from_service'] = $from_service_page;
+}
+
+$query = "SELECT * FROM services WHERE status = 'active'";
+
+if (!empty($selected_category)) 
+{
+    $query .= " AND category = '" . $conn->real_escape_string($selected_category) . "'";
+}
+
+$query .= " ORDER BY category, name";
 $result = $conn->query($query);
 $services = [];
 
@@ -33,6 +50,12 @@ foreach ($services as $service)
     }
 
     $grouped_services[$category][] = $service;
+}
+
+if (empty($selected_category)) 
+{
+    unset($_SESSION['filtered_category']);
+    unset($_SESSION['came_from_service']);
 }
 ?>
 
@@ -103,8 +126,8 @@ foreach ($services as $service)
         </div>
         <div class="col-md-4 mb-3">
             <?php 
-            $min_price = min(array_column($services, 'price'));
-            $max_price = max(array_column($services, 'price'));
+            $min_price = !empty($services) ? min(array_column($services, 'price')) : 0;
+            $max_price = !empty($services) ? max(array_column($services, 'price')) : 0;
             ?>
             <div class="stats-card bg-primary">
                 <i class="bi bi-cash-stack mb-3 fs-1"></i>
@@ -118,12 +141,14 @@ foreach ($services as $service)
             <i class="bi bi-funnel me-2 text-primary"></i>Фильтр по категориям
         </h5>
         <div class="d-flex flex-wrap">
-            <span class="filter-badge active" data-filter="all">Все услуги</span>
+            <span class="filter-badge <?php echo empty($selected_category) ? 'active' : ''; ?>" data-filter="all" data-from-service="<?php echo isset($_SESSION['came_from_service']) && $_SESSION['came_from_service'] ? 'true' : 'false'; ?>">
+                Все услуги
+            </span>
             <?php 
             foreach (array_keys($grouped_services) as $category)
             {
             ?>
-                <span class="filter-badge" data-filter="<?= htmlspecialchars($category) ?>">
+                <span class="filter-badge <?php echo $selected_category == $category ? 'active' : ''; ?>" data-filter="<?= htmlspecialchars($category) ?>">
                     <?= htmlspecialchars($category) ?>
                 </span>
             <?php
@@ -287,15 +312,123 @@ foreach ($services as $service)
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="../js/script.js"></script>
 <script>
+function updateFiltersFromURL() 
+{
+    let urlParams = new URLSearchParams(window.location.search);
+    let categoryFromUrl = urlParams.get('category');
+    let filterBadges = document.querySelectorAll('.filter-badge');
+    let categorySections = document.querySelectorAll('.category-section');
+    
+    filterBadges.forEach(badge => {
+        badge.classList.remove('active');
+    });
+    
+    if (categoryFromUrl) 
+    {
+        let categoryFound = false;
+
+        filterBadges.forEach(badge => {
+            let badgeFilter = decodeURIComponent(badge.dataset.filter);
+            let urlCategory = decodeURIComponent(categoryFromUrl);
+
+            if (badgeFilter === urlCategory) 
+            {
+                badge.classList.add('active');
+                categoryFound = true;
+            }
+        });
+        
+        if (!categoryFound) 
+        {
+            let allBadge = document.querySelector('.filter-badge[data-filter="all"]');
+
+            if (allBadge) 
+            {
+                allBadge.classList.add('active');
+            }
+        }
+        
+        categorySections.forEach(section => {
+            if (categoryFromUrl && section.dataset.category === categoryFromUrl) 
+            {
+                section.style.display = 'block';
+            } 
+            else if (!categoryFromUrl) 
+            {
+                section.style.display = 'block';
+            } 
+            else 
+            {
+                section.style.display = 'none';
+            }
+        });
+    } 
+    else 
+    {
+        let allBadge = document.querySelector('.filter-badge[data-filter="all"]');
+
+        if (allBadge) 
+        {
+            allBadge.classList.add('active');
+        }
+
+        categorySections.forEach(section => {
+            section.style.display = 'block';
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() 
 {
     let filterBadges = document.querySelectorAll('.filter-badge');
     let categorySections = document.querySelectorAll('.category-section');
+    let urlParams = new URLSearchParams(window.location.search);
+    let categoryFromUrl = urlParams.get('category');
+    let cameFromService = false;
+    
+    filterBadges.forEach(badge => {
+        if (badge.dataset.filter === 'all' && badge.dataset.fromService === 'true') 
+        {
+            cameFromService = true;
+        }
+    });
+    
+    updateFiltersFromURL();
+    
+    if (categoryFromUrl) 
+    {
+        setTimeout(() => {
+            let categorySection = document.querySelector('.category-section');
+            if (categorySection) {
+                categorySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
+    }
     
     filterBadges.forEach(badge => {
         badge.addEventListener('click', function() 
         {
             let filter = this.dataset.filter;
+            let fromService = this.dataset.fromService === 'true';
+            
+            if (filter === 'all' && fromService) 
+            {
+                window.location.href = window.location.pathname;
+                return;
+            }
+            
+            let newUrl = new URL(window.location.href);
+
+            if (filter === 'all') 
+            {
+                newUrl.searchParams.delete('category');
+            } 
+            else 
+            {
+                newUrl.searchParams.set('category', filter);
+            }
+
+            window.history.pushState({}, '', newUrl);
             filterBadges.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
 
@@ -312,9 +445,59 @@ document.addEventListener('DOMContentLoaded', function()
             });
         });
     });
+    
+    window.addEventListener('popstate', function() 
+    {
+        updateFiltersFromURL();
+        let newUrlParams = new URLSearchParams(window.location.search);
+        let newCategory = newUrlParams.get('category');
+        let filterBadgesLocal = document.querySelectorAll('.filter-badge');
+        let categorySectionsLocal = document.querySelectorAll('.category-section');
+        
+        if (newCategory) 
+        {
+            filterBadgesLocal.forEach(badge => {
+                if (badge.dataset.filter === newCategory) 
+                {
+                    badge.classList.add('active');
+                } 
+                else 
+                {
+                    badge.classList.remove('active');
+                }
+            });
+            categorySectionsLocal.forEach(section => {
+                if (section.dataset.category === newCategory) 
+                {
+                    section.style.display = 'block';
+                } 
+                else 
+                {
+                    section.style.display = 'none';
+                }
+            });
+        } 
+        else 
+        {
+            filterBadgesLocal.forEach(badge => {
+                if (badge.dataset.filter === 'all') 
+                {
+                    badge.classList.add('active');
+                } 
+                else 
+                {
+                    badge.classList.remove('active');
+                }
+            });
 
-    let urlParams = new URLSearchParams(window.location.search);
-    let serviceId = urlParams.get('service');
+            categorySectionsLocal.forEach(section => {
+                section.style.display = 'block';
+            });
+        }
+    });
+
+    let urlParamsForService = new URLSearchParams(window.location.search);
+    let serviceId = urlParamsForService.get('service');
     
     if (serviceId) 
     {
