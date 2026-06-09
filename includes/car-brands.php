@@ -36,21 +36,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
     else
     {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
-        $stmt->bind_param("ss", $login, $password);
+        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?)");
+        $stmt->bind_param("s", $login);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) 
         {
             $row = $result->fetch_assoc();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
-            $_SESSION['user_id'] = $row['id_users'];
-            unset($_SESSION['login_error']);
-            unset($_SESSION['error_message']);
-            header("Location: " . $_SERVER['REQUEST_URI']);
-            exit();
+
+            if (password_verify($password, $row['password_users'])) 
+            {
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+                $_SESSION['user_id'] = $row['id_users'];
+                unset($_SESSION['login_error']);
+                unset($_SESSION['error_message']);
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            } 
+            else 
+            {
+                $_SESSION['login_error'] = true;
+                $_SESSION['error_message'] = "Неверный логин или пароль!";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            }
         } 
         else 
         {
@@ -507,11 +519,11 @@ unset($_SESSION['form_data']);
                 <div class="stat-label text-muted">марок</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number text-primary fw-bold fs-3">50 000+</div>
+                <div class="stat-number text-primary fw-bold fs-3">500+</div>
                 <div class="stat-label text-muted">запчастей</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number text-primary fw-bold fs-3">15 лет</div>
+                <div class="stat-number text-primary fw-bold fs-3">21+ лет</div>
                 <div class="stat-label text-muted">опыта</div>
             </div>
         </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июн 01 2026 г., 20:41
+-- Время создания: Июн 09 2026 г., 18:25
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -141,8 +141,6 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `product_id`, `category_product_id`, `product_type`, `product_name`, `product_image`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
-(54, 2, 11, NULL, 'part', 'Масляный фильтр BMW X3 G01', 'uploads/products/696392655986c.png', '1450.00', 2, '2026-02-27 18:03:15', '2026-02-27 18:03:23'),
-(55, 2, 76, NULL, 'accessory', 'Ароматизатор CS-X3', 'uploads/products/696392655986c.png', '790.00', 1, '2026-02-27 18:03:20', '2026-02-27 18:03:20'),
 (61, 3, 2, NULL, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', 1, '2026-02-27 18:05:45', '2026-02-27 18:05:45'),
 (62, 3, 53, NULL, 'oil', 'Total Quartz 9000 5W-40', 'uploads/products/696392655986c.png', '3650.00', 1, '2026-02-27 18:05:51', '2026-02-27 18:05:51'),
 (63, 3, NULL, 87, 'kit', 'Набор для бензинового двигателя', 'uploads/products/696392655986c.png', '9500.00', 1, '2026-02-27 18:05:56', '2026-02-27 18:05:56'),
@@ -151,7 +149,9 @@ INSERT INTO `cart` (`id`, `user_id`, `product_id`, `category_product_id`, `produ
 (66, 4, NULL, 1, 'antifreeze', 'Motul Inugel Optimal', 'uploads/products/696392655986c.png', '1100.00', 1, '2026-02-27 18:08:14', '2026-02-27 18:08:14'),
 (67, 4, NULL, 2, 'antifreeze', 'Shell Zone Ultra', 'uploads/products/696392655986c.png', '1650.00', 1, '2026-02-27 18:08:15', '2026-02-27 18:08:15'),
 (68, 4, NULL, 39, 'cooling-fluid', 'SWAG Antifreeze', 'uploads/products/696392655986c.png', '1580.00', 1, '2026-02-27 18:08:21', '2026-02-27 18:08:21'),
-(69, 2, 38, NULL, 'part', 'Прокладки двигателя комплект V8', 'uploads/products/696392655986c.png', '4500.00', 1, '2026-03-18 13:19:24', '2026-03-18 13:19:24');
+(71, 2, 8, NULL, 'part', 'Тормозные диски BMW X5 E70', 'uploads/products/696392655986c.png', '8900.00', 2, '2026-06-04 16:03:53', '2026-06-06 16:32:12'),
+(72, 2, 50, NULL, 'oil', 'Mobil Super 3000 X1 5W-40', 'uploads/products/696392655986c.png', '3450.00', 1, '2026-06-04 16:03:59', '2026-06-06 16:31:46'),
+(73, 2, 51, NULL, 'oil', 'Liqui Moly Special Tec AA 5W-30', 'uploads/products/696392655986c.png', '4210.00', 1, '2026-06-06 16:32:06', '2026-06-06 16:32:06');
 
 -- --------------------------------------------------------
 
@@ -1603,7 +1603,7 @@ ALTER TABLE `backup_logs`
 -- AUTO_INCREMENT для таблицы `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT для таблицы `car_brands`

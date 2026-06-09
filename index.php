@@ -273,7 +273,7 @@ unset($_SESSION['form_data']);
                     <div class="container">
                         <div class="caption-content">
                             <h1 class="caption-title animate-slide-down">Лучшие автозапчасти</h1>
-                            <p class="caption-text animate-slide-up">Более 50,000 качественных запчастей для вашего автомобиля</p>
+                            <p class="caption-text animate-slide-up">Более 500 качественных запчастей для вашего автомобиля</p>
                             <div class="caption-features animate-fade-in">
                                 <div class="feature-item">
                                     <i class="bi bi-check-circle-fill text-primary"></i>
@@ -312,16 +312,16 @@ unset($_SESSION['form_data']);
                             <p class="caption-text animate-slide-up">Только проверенные производители с гарантией</p>
                             <div class="stats-container animate-fade-in">
                                 <div class="stat-card">
-                                    <div class="stat-number">100+</div>
-                                    <div class="stat-label">Брендов</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-number">12</div>
+                                    <div class="stat-number">21+</div>
                                     <div class="stat-label">Лет на рынке</div>
                                 </div>
                                 <div class="stat-card">
-                                    <div class="stat-number">50000+</div>
+                                    <div class="stat-number">500+</div>
                                     <div class="stat-label">Товаров</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">40+</div>
+                                    <div class="stat-label">Брендов</div>
                                 </div>
                             </div>
                             <div class="caption-actions animate-slide-up">
@@ -444,19 +444,19 @@ unset($_SESSION['form_data']);
                 <div class="row g-3 text-center">
                     <div class="col-6 col-md-3">
                         <div class="stat-item">
-                            <div class="stat-number" data-count="12">21</div>
+                            <div class="stat-number" data-count="21">21+</div>
                             <div class="stat-label">Лет на рынке</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
                         <div class="stat-item">
-                            <div class="stat-number" data-count="50000">500+</div>
+                            <div class="stat-number" data-count="500">500+</div>
                             <div class="stat-label">Товаров</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
                         <div class="stat-item">
-                            <div class="stat-number" data-count="100">39+</div>
+                            <div class="stat-number" data-count="45">40+</div>
                             <div class="stat-label">Брендов</div>
                         </div>
                     </div>
@@ -728,7 +728,7 @@ unset($_SESSION['form_data']);
                 <div class="search-section">
                     <div class="section-header text-center mb-5">
                         <h2 class="mb-3">Найдите запчасти для вашего автомобиля</h2>
-                        <p class="lead text-muted">Более 50,000 оригинальных запчастей в наличии</p>
+                        <p class="lead text-muted">Более 500 оригинальных запчастей в наличии</p>
                         <div class="search-container position-relative mx-auto" style="max-width: 600px;">
                             <input type="text" id="brandSearch" placeholder="Введите марку автомобиля..." class="form-control form-control-lg search-input">
                             <button class="btn btn-link search-clear" type="button" style="display: none;">

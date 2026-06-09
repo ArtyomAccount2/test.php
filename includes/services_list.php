@@ -26,6 +26,59 @@ if (!empty($selected_category))
     $query .= " AND category = '" . $conn->real_escape_string($selected_category) . "'";
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") 
+{
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+
+    if (strtolower($login) === 'admin' && strtolower($password) === 'admin') 
+    {
+        $_SESSION['login_error'] = true;
+        $_SESSION['error_message'] = "Неверный логин или пароль!";
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
+    }
+    else
+    {
+        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?)");
+        $stmt->bind_param("s", $login);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) 
+        {
+            $row = $result->fetch_assoc();
+
+            if (password_verify($password, $row['password_users'])) 
+            {
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+                $_SESSION['user_id'] = $row['id_users'];
+                unset($_SESSION['login_error']);
+                unset($_SESSION['error_message']);
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            } 
+            else 
+            {
+                $_SESSION['login_error'] = true;
+                $_SESSION['error_message'] = "Неверный логин или пароль!";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            }
+        } 
+        else 
+        {
+            $_SESSION['login_error'] = true;
+            $_SESSION['error_message'] = "Неверный логин или пароль!";
+            $_SESSION['form_data'] = $_POST;
+            header("Location: " . $_SERVER['REQUEST_URI']);
+            exit();
+        }
+    }
+}
+
 $query .= " ORDER BY category, name";
 $result = $conn->query($query);
 $services = [];

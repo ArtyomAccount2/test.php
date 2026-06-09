@@ -189,8 +189,266 @@ if (isset($_SESSION['user']))
     }
 }
 
+$cartItems = [];
+$cartTotal = 0;
+$cartCount = 0;
+
+if ($userId) 
+{
+    $cartSql = "SELECT * FROM cart WHERE user_id = ? ORDER BY created_at DESC";
+    $cartStmt = $conn->prepare($cartSql);
+    
+    if ($cartStmt) 
+    {
+        $cartStmt->bind_param("i", $userId);
+        $cartStmt->execute();
+        $cartResult = $cartStmt->get_result();
+        
+        while ($item = $cartResult->fetch_assoc()) 
+        {
+            $cartItems[] = $item;
+            $cartTotal += $item['price'] * $item['quantity'];
+            $cartCount += $item['quantity'];
+        }
+        $cartStmt->close();
+    }
+}
+
+$ordersList = [];
+
+if ($userId) 
+{
+    $ordersSql = "SELECT o.id, o.order_number, o.order_date, o.total_amount, o.status, o.shipping_address, o.phone, COUNT(oi.id) as items_count
+    FROM orders o
+    LEFT JOIN order_items oi ON o.id = oi.order_id
+    WHERE o.user_id = ?
+    GROUP BY o.id
+    ORDER BY o.order_date DESC";
+    
+    $ordersStmt = $conn->prepare($ordersSql);
+    
+    if ($ordersStmt) 
+    {
+        $ordersStmt->bind_param("i", $userId);
+        $ordersStmt->execute();
+        $ordersResult = $ordersStmt->get_result();
+        
+        while ($row = $ordersResult->fetch_assoc()) 
+        {
+            $ordersList[] = $row;
+        }
+
+        $ordersStmt->close();
+    }
+}
+
+$isPremium = false;
+
+if ($orderStats['total_amount'] > 5000) 
+{
+    $isPremium = true;
+}
+else if ($orderStats['total_orders'] > 3) 
+{
+    $isPremium = true;
+}
+else if (!empty($userData['registration_date']) && $orderStats['total_orders'] > 0) 
+{
+    $regDate = strtotime($userData['registration_date']);
+    $sixMonthsAgo = strtotime('-6 months');
+
+    if ($regDate < $sixMonthsAgo) 
+    {
+        $isPremium = true;
+    }
+}
+else if ($wishlistCount > 3) 
+{
+    $isPremium = true;
+}
+else if ($orderStats['pending_orders'] > 0) 
+{
+    $isPremium = true;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') 
 {
+    if (isset($_POST['update_cart_item_ajax'])) 
+    {
+        header('Content-Type: application/json');
+        
+        if (!$userId) 
+        {
+            echo json_encode(['success' => false, 'message' => 'Пользователь не авторизован']);
+            exit();
+        }
+        
+        $itemId = intval($_POST['item_id'] ?? 0);
+        $quantity = max(1, min(99, intval($_POST['quantity'] ?? 1)));
+        
+        if ($itemId <= 0) 
+        {
+            echo json_encode(['success' => false, 'message' => 'Неверный ID товара']);
+            exit();
+        }
+        
+        $updateSql = "UPDATE cart SET quantity = ? WHERE id = ? AND user_id = ?";
+        $updateStmt = $conn->prepare($updateSql);
+        $updateStmt->bind_param("iii", $quantity, $itemId, $userId);
+        $success = $updateStmt->execute();
+        $updateStmt->close();
+        
+        if ($success) 
+        {
+            $cartItems = [];
+            $cartTotal = 0;
+            $cartCount = 0;
+            
+            $cartSql = "SELECT * FROM cart WHERE user_id = ?";
+            $cartStmt = $conn->prepare($cartSql);
+            $cartStmt->bind_param("i", $userId);
+            $cartStmt->execute();
+            $cartResult = $cartStmt->get_result();
+            
+            while ($item = $cartResult->fetch_assoc()) 
+            {
+                $cartItems[] = $item;
+                $cartTotal += $item['price'] * $item['quantity'];
+                $cartCount += $item['quantity'];
+            }
+            $cartStmt->close();
+            
+            $response = [
+                'success' => true,
+                'message' => 'Корзина обновлена!',
+                'cart_total' => $cartTotal,
+                'cart_total_formatted' => number_format($cartTotal, 0, ',', ' ') . ' ₽',
+                'cart_count' => $cartCount,
+                'items' => []
+            ];
+            
+            foreach ($cartItems as $item) 
+            {
+                $response['items'][] = [
+                    'id' => $item['id'],
+                    'quantity' => $item['quantity'],
+                    'total' => $item['price'] * $item['quantity'],
+                    'total_formatted' => number_format($item['price'] * $item['quantity'], 0, ',', ' ') . ' ₽'
+                ];
+            }
+            
+            echo json_encode($response);
+        } 
+        else 
+        {
+            echo json_encode(['success' => false, 'message' => 'Ошибка обновления']);
+        }
+        exit();
+    }
+    
+    if (isset($_POST['remove_cart_item_ajax'])) 
+    {
+        header('Content-Type: application/json');
+        
+        if (!$userId) 
+        {
+            echo json_encode(['success' => false, 'message' => 'Пользователь не авторизован']);
+            exit();
+        }
+        
+        $itemId = intval($_POST['item_id'] ?? 0);
+        
+        if ($itemId <= 0) 
+        {
+            echo json_encode(['success' => false, 'message' => 'Неверный ID товара']);
+            exit();
+        }
+        
+        $deleteSql = "DELETE FROM cart WHERE id = ? AND user_id = ?";
+        $deleteStmt = $conn->prepare($deleteSql);
+        $deleteStmt->bind_param("ii", $itemId, $userId);
+        $success = $deleteStmt->execute();
+        $deleteStmt->close();
+        
+        if ($success) 
+        {
+            $cartItems = [];
+            $cartTotal = 0;
+            $cartCount = 0;
+            
+            $cartSql = "SELECT * FROM cart WHERE user_id = ?";
+            $cartStmt = $conn->prepare($cartSql);
+            $cartStmt->bind_param("i", $userId);
+            $cartStmt->execute();
+            $cartResult = $cartStmt->get_result();
+            
+            while ($item = $cartResult->fetch_assoc()) 
+            {
+                $cartItems[] = $item;
+                $cartTotal += $item['price'] * $item['quantity'];
+                $cartCount += $item['quantity'];
+            }
+            $cartStmt->close();
+            
+            $response = [
+                'success' => true,
+                'message' => 'Товар удален из корзины',
+                'cart_total' => $cartTotal,
+                'cart_total_formatted' => number_format($cartTotal, 0, ',', ' ') . ' ₽',
+                'cart_count' => $cartCount,
+                'items' => []
+            ];
+            
+            foreach ($cartItems as $item) 
+            {
+                $response['items'][] = [
+                    'id' => $item['id'],
+                    'quantity' => $item['quantity'],
+                    'total' => $item['price'] * $item['quantity'],
+                    'total_formatted' => number_format($item['price'] * $item['quantity'], 0, ',', ' ') . ' ₽'
+                ];
+            }
+            
+            echo json_encode($response);
+        } 
+        else 
+        {
+            echo json_encode(['success' => false, 'message' => 'Ошибка удаления']);
+        }
+        exit();
+    }
+    
+    if (isset($_POST['clear_cart_ajax'])) 
+    {
+        header('Content-Type: application/json');
+        
+        if (!$userId) 
+        {
+            echo json_encode(['success' => false, 'message' => 'Пользователь не авторизован']);
+            exit();
+        }
+        
+        $clearSql = "DELETE FROM cart WHERE user_id = ?";
+        $clearStmt = $conn->prepare($clearSql);
+        $clearStmt->bind_param("i", $userId);
+        $success = $clearStmt->execute();
+        $clearStmt->close();
+        
+        if ($success) 
+        {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Корзина очищена!',
+                'cart_count' => 0
+            ]);
+        } 
+        else 
+        {
+            echo json_encode(['success' => false, 'message' => 'Ошибка очистки']);
+        }
+        exit();
+    }
+
     if (isset($_POST['update_avatar']) && $userId) 
     {
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) 
@@ -200,11 +458,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
             $fileType = mime_content_type($avatar['tmp_name']);
             
-            if (in_array($fileType, $allowedTypes)) {
-                
+            if (in_array($fileType, $allowedTypes)) 
+            {
                 if ($avatar['size'] <= 2 * 1024 * 1024) 
                 {
-                    
                     $uploadDir = 'uploads/avatars/';
                     
                     if (!file_exists($uploadDir)) 
@@ -364,35 +621,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         header("Location: profile.php");
         exit();
     }
-}
 
-$cartItems = [];
-$cartTotal = 0;
-$cartCount = 0;
-
-if ($userId) 
-{
-    $cartSql = "SELECT * FROM cart WHERE user_id = ? ORDER BY created_at DESC";
-    $cartStmt = $conn->prepare($cartSql);
-    
-    if ($cartStmt) 
-    {
-        $cartStmt->bind_param("i", $userId);
-        $cartStmt->execute();
-        $cartResult = $cartStmt->get_result();
-        
-        while ($item = $cartResult->fetch_assoc()) 
-        {
-            $cartItems[] = $item;
-            $cartTotal += $item['price'] * $item['quantity'];
-            $cartCount += $item['quantity'];
-        }
-        $cartStmt->close();
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId) 
-{
     if (isset($_POST['update_cart_item'])) 
     {
         $itemId = $_POST['item_id'] ?? 0;
@@ -459,89 +688,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId)
         header("Location: profile.php");
         exit();
     }
-}
 
-$ordersList = [];
-
-if ($userId) 
-{
-    $ordersSql = "SELECT o.id, o.order_number, o.order_date, o.total_amount, o.status, o.shipping_address, o.phone, COUNT(oi.id) as items_count
-    FROM orders o
-    LEFT JOIN order_items oi ON o.id = oi.order_id
-    WHERE o.user_id = ?
-    GROUP BY o.id
-    ORDER BY o.order_date DESC";
-    
-    $ordersStmt = $conn->prepare($ordersSql);
-    
-    if ($ordersStmt) 
+    if (isset($_POST['cancel_order'])) 
     {
-        $ordersStmt->bind_param("i", $userId);
-        $ordersStmt->execute();
-        $ordersResult = $ordersStmt->get_result();
+        $orderId = $_POST['order_id'] ?? 0;
         
-        while ($row = $ordersResult->fetch_assoc()) 
+        if ($orderId && $userId) 
         {
-            $ordersList[] = $row;
-        }
-
-        $ordersStmt->close();
-    }
-}
-
-if (isset($_POST['cancel_order'])) 
-{
-    $orderId = $_POST['order_id'] ?? 0;
-    
-    if ($orderId && $userId) 
-    {
-        $updateSql = "UPDATE orders SET status = 'cancelled' WHERE id = ? AND user_id = ?";
-        $updateStmt = $conn->prepare($updateSql);
-        
-        if ($updateStmt) 
-        {
-            $updateStmt->bind_param("ii", $orderId, $userId);
+            $updateSql = "UPDATE orders SET status = 'cancelled' WHERE id = ? AND user_id = ?";
+            $updateStmt = $conn->prepare($updateSql);
             
-            if ($updateStmt->execute()) 
+            if ($updateStmt) 
             {
-                $_SESSION['success_message'] = "Заказ успешно отменен!";
+                $updateStmt->bind_param("ii", $orderId, $userId);
+                
+                if ($updateStmt->execute()) 
+                {
+                    $_SESSION['success_message'] = "Заказ успешно отменен!";
+                }
+
+                $updateStmt->close();
             }
-
-            $updateStmt->close();
+            
+            header("Location: profile.php");
+            exit();
         }
-        
-        header("Location: profile.php");
-        exit();
     }
-}
-
-$isPremium = false;
-
-if ($orderStats['total_amount'] > 5000) 
-{
-    $isPremium = true;
-}
-else if ($orderStats['total_orders'] > 3) 
-{
-    $isPremium = true;
-}
-else if (!empty($userData['registration_date']) && $orderStats['total_orders'] > 0) 
-{
-    $regDate = strtotime($userData['registration_date']);
-    $sixMonthsAgo = strtotime('-6 months');
-
-    if ($regDate < $sixMonthsAgo) 
-    {
-        $isPremium = true;
-    }
-}
-else if ($wishlistCount > 3) 
-{
-    $isPremium = true;
-}
-else if ($orderStats['pending_orders'] > 0) 
-{
-    $isPremium = true;
 }
 ?>
 
@@ -1004,14 +1176,7 @@ else if ($orderStats['pending_orders'] > 0)
                             <div class="card shadow-sm h-100">
                                 <div class="card-header bg-primary text-dark d-flex justify-content-between align-items-center">
                                     <h5 class="mb-0"><i class="bi bi-cart3 me-2"></i>Корзина</h5>
-                                    <?php 
-                                    if ($cartCount > 0)
-                                    {
-                                    ?>
-                                        <span class="badge bg-danger"><?= $cartCount ?> товар(ов)</span>
-                                    <?php 
-                                    }
-                                    ?>
+                                    <span class="badge bg-danger cart-badge"><?= $cartCount ?> товар(ов)</span>
                                 </div>
                                 <div class="card-body d-flex flex-column">
                                     <?php 
@@ -1030,12 +1195,12 @@ else if ($orderStats['pending_orders'] > 0)
                                                         <th class="text-center">Действия</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="cart-items-container">
                                                     <?php 
                                                     foreach ($cartItems as $item) 
                                                     {
                                                     ?>
-                                                    <tr>
+                                                    <tr class="cart-item-row" data-item-id="<?= $item['id'] ?>" data-price="<?= $item['price'] ?>">
                                                         <td>
                                                             <img src="<?= htmlspecialchars($item['product_image']) ?>" 
                                                                 alt="<?= htmlspecialchars($item['product_name']) ?>" 
@@ -1058,30 +1223,24 @@ else if ($orderStats['pending_orders'] > 0)
                                                             <span class="cart-item-price"><?= number_format($item['price'], 0, ',', ' ') ?> ₽</span>
                                                         </td>
                                                         <td class="text-center">
-                                                            <form method="POST" class="d-inline update-cart-form" data-item-id="<?= $item['id'] ?>">
-                                                                <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                                                                <div class="input-group input-group-sm" style="width: 120px;">
-                                                                    <button class="btn btn-outline-secondary minus-btn" type="button">-</button>
-                                                                    <input type="number" name="quantity" value="<?= $item['quantity'] ?>" 
-                                                                        min="1" max="99" class="form-control text-center quantity-input">
-                                                                    <button class="btn btn-outline-secondary plus-btn" type="button">+</button>
-                                                                </div>
-                                                                <button type="submit" name="update_cart_item" class="d-none submit-update"></button>
-                                                            </form>
+                                                            <div class="input-group input-group-sm" style="width: 120px;">
+                                                                <button class="btn btn-outline-secondary cart-minus-btn" type="button" data-item-id="<?= $item['id'] ?>">-</button>
+                                                                <input type="number" class="form-control text-center cart-quantity-input no-spinner" 
+                                                                    data-item-id="<?= $item['id'] ?>" 
+                                                                    value="<?= $item['quantity'] ?>" 
+                                                                    min="1" max="99">
+                                                                <button class="btn btn-outline-secondary cart-plus-btn" type="button" data-item-id="<?= $item['id'] ?>">+</button>
+                                                            </div>
                                                         </td>
                                                         <td class="text-center">
-                                                            <span class="cart-item-total fw-bold">
+                                                            <span class="cart-item-total fw-bold" data-item-id="<?= $item['id'] ?>">
                                                                 <?= number_format($item['price'] * $item['quantity'], 0, ',', ' ') ?> ₽
                                                             </span>
                                                         </td>
                                                         <td class="text-center">
-                                                            <form method="POST" class="d-inline remove-cart-form ms-2">
-                                                                <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                                                                <button type="submit" name="remove_cart_item" 
-                                                                        class="btn btn-sm btn-outline-danger">
-                                                                    <i class="bi bi-trash"></i>
-                                                                </button>
-                                                            </form>
+                                                            <button type="button" class="btn btn-sm btn-outline-danger cart-remove-btn" data-item-id="<?= $item['id'] ?>">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                     <?php 
@@ -1093,15 +1252,13 @@ else if ($orderStats['pending_orders'] > 0)
                                         <div class="mt-3 pt-3 border-top">
                                             <div class="row align-items-center">
                                                 <div class="col-md-6 mb-3 mb-md-0 button-active">
-                                                    <div class="fw-bold fs-5">Итого: <?= number_format($cartTotal, 0, ',', ' ') ?> ₽</div>
-                                                    <small class="text-muted">Товаров: <?= $cartCount ?> шт.</small>
+                                                    <div class="fw-bold fs-5 cart-total-display">Итого: <?= number_format($cartTotal, 0, ',', ' ') ?> ₽</div>
+                                                    <small class="text-muted cart-count-display">Товаров: <?= $cartCount ?> шт.</small>
                                                 </div>
                                                 <div class="col-md-6 text-md-end button-active">
-                                                    <form method="POST" class="d-inline-block me-2">
-                                                        <button type="submit" name="clear_cart_profile" class="btn btn-outline-danger btn-sm" onclick="return confirm('Очистить всю корзину?')">
-                                                            <i class="bi bi-trash me-1"></i>Очистить корзину
-                                                        </button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-outline-danger btn-sm me-2 cart-clear-btn">
+                                                        <i class="bi bi-trash me-1"></i>Очистить корзину
+                                                    </button>
                                                     <a href="includes/cart.php" class="btn btn-primary">
                                                         <i class="bi bi-arrow-right me-1"></i>Оформить заказ
                                                     </a>
@@ -1113,7 +1270,7 @@ else if ($orderStats['pending_orders'] > 0)
                                     else
                                     {
                                     ?>
-                                        <div class="text-center py-5 flex-grow-1 d-flex flex-column justify-content-center">
+                                        <div class="text-center py-5 flex-grow-1 d-flex flex-column justify-content-center empty-cart-message">
                                             <i class="bi bi-cart display-1 text-muted mb-4"></i>
                                             <h5 class="text-muted mb-3">Ваша корзина пуста</h5>
                                             <p class="text-muted mb-4">Добавьте товары из каталога</p>
@@ -1369,146 +1526,5 @@ else if ($orderStats['pending_orders'] > 0)
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="js/script.js"></script>
 <script src="js/profile.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() 
-{
-    let formSubmissionInProgress = false;
-
-    document.addEventListener('click', function(e) 
-    {
-        let target = e.target;
-
-        if (target.classList.contains('plus-btn')) 
-        {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            
-            if (formSubmissionInProgress)
-            {
-                return;
-            }
-            
-            let input = target.closest('.input-group').querySelector('.quantity-input');
-            let form = target.closest('.update-cart-form');
-            
-            if (!input || !form) 
-            {
-                return;
-            }
-            
-            let currentValue = parseInt(input.value) || 1;
-            
-            if (currentValue < 99) 
-            {
-                input.value = currentValue + 1;
-                submitCartForm(form);
-            }
-        }
-
-        if (target.classList.contains('minus-btn')) 
-        {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            
-            if (formSubmissionInProgress)
-            {
-                return;
-            }
-            
-            let input = target.closest('.input-group').querySelector('.quantity-input');
-            let form = target.closest('.update-cart-form');
-            
-            if (!input || !form) 
-            {
-                return;
-            }
-            
-            let currentValue = parseInt(input.value) || 1;
-
-            if (currentValue > 1) 
-            {
-                input.value = currentValue - 1;
-                submitCartForm(form);
-            }
-        }
-    });
-
-    document.addEventListener('change', function(e) 
-    {
-        if (e.target.classList.contains('quantity-input'))
-        {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            
-            if (formSubmissionInProgress) 
-            {
-                return;
-            }
-            
-            let input = e.target;
-            let form = input.closest('.update-cart-form');
-            
-            if (!form) 
-            {
-                return;
-            }
-            
-            let value = parseInt(input.value) || 1;
-            
-            if (value < 1) 
-            {
-                input.value = 1;
-                return;
-            }
-
-            if (value > 99) 
-            {
-                input.value = 99;
-            }
-            
-            submitCartForm(form);
-        }
-    });
-
-    function submitCartForm(form) 
-    {
-        if (formSubmissionInProgress) 
-        {
-            return;
-        }
-        
-        formSubmissionInProgress = true;
-        
-        let submitBtn = form.querySelector('.submit-update');
-
-        if (submitBtn) 
-        {
-            submitBtn.click();
-        }
-
-        setTimeout(() => {
-            formSubmissionInProgress = false;
-        }, 300);
-    }
-
-    document.addEventListener('submit', function(e) 
-    {
-        let form = e.target;
-        
-        if (form.classList.contains('remove-cart-form')) 
-        {
-            if (!confirm('Удалить товар из корзины?')) 
-            {
-                e.preventDefault();
-                return false;
-            }
-        }
-    });
-
-    document.querySelectorAll('.plus-btn, .minus-btn').forEach(btn => {
-        btn.replaceWith(btn.cloneNode(true));
-    });
-});
-</script>
 </body>
 </html>

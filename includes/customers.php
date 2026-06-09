@@ -23,21 +23,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
     else
     {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
-        $stmt->bind_param("ss", $login, $password);
+        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?)");
+        $stmt->bind_param("s", $login);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) 
         {
             $row = $result->fetch_assoc();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
-            $_SESSION['user_id'] = $row['id_users'];
-            unset($_SESSION['login_error']);
-            unset($_SESSION['error_message']);
-            header("Location: " . $_SERVER['REQUEST_URI']);
-            exit();
+
+            if (password_verify($password, $row['password_users'])) 
+            {
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+                $_SESSION['user_id'] = $row['id_users'];
+                unset($_SESSION['login_error']);
+                unset($_SESSION['error_message']);
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            } 
+            else 
+            {
+                $_SESSION['login_error'] = true;
+                $_SESSION['error_message'] = "Неверный логин или пароль!";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            }
         } 
         else 
         {
@@ -323,7 +335,7 @@ unset($_SESSION['form_data']);
                     <div class="col-lg-6 col-md-12">
                         <div class="guarantee-card bg-light rounded-3 p-4 h-100">
                             <h4 class="fw-bold text-primary mb-3">Что покрывается гарантией:</h4>
-                            <ul class="list-unstyled">
+                            <ul class="list-unstyled list-unstyled-list">
                                 <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>Заводские дефекты и брак</li>
                                 <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>Несоответствие техническим характеристикам</li>
                                 <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>Преждевременный износ при правильной эксплуатации</li>
@@ -334,7 +346,7 @@ unset($_SESSION['form_data']);
                     <div class="col-lg-6 col-md-12">
                         <div class="guarantee-card bg-light rounded-3 p-4 h-100">
                             <h4 class="fw-bold text-primary mb-3">Условия гарантии:</h4>
-                            <ul class="list-unstyled">
+                            <ul class="list-unstyled list-unstyled-list">
                                 <li class="mb-2"><i class="bi bi-clock-fill text-primary me-2"></i>Срок гарантии: 6-24 месяца (зависит от товара)</li>
                                 <li class="mb-2"><i class="bi bi-receipt text-primary me-2"></i>Наличие товарного чека или документа покупки</li>
                                 <li class="mb-2"><i class="bi bi-gear-fill text-primary me-2"></i>Соблюдение правил эксплуатации</li>

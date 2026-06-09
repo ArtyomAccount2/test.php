@@ -36,25 +36,99 @@ if (isset($_SESSION['user']))
     }
 }
 
-if ($userId) 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') 
 {
-    $cartSql = "SELECT * FROM cart WHERE user_id = ? ORDER BY created_at DESC";
-    $cartStmt = $conn->prepare($cartSql);
+    header('Content-Type: application/json');
     
-    if ($cartStmt) 
+    if (!$userId) 
     {
-        $cartStmt->bind_param("i", $userId);
-        $cartStmt->execute();
-        $cartResult = $cartStmt->get_result();
-        
-        while ($item = $cartResult->fetch_assoc()) 
-        {
-            $cartItems[] = $item;
-            $cartTotal += $item['price'] * $item['quantity'];
-            $cartCount += $item['quantity'];
-        }
-        $cartStmt->close();
+        echo json_encode(['success' => false, 'message' => 'Пользователь не найден']);
+        exit();
     }
+
+    if (isset($_POST['ajax_update'])) 
+    {
+        $itemId = (int)$_POST['item_id'];
+        $quantity = max(1, min(99, (int)$_POST['quantity']));
+        
+        $checkSql = "SELECT * FROM cart WHERE id = ? AND user_id = ?";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->bind_param("ii", $itemId, $userId);
+        $checkStmt->execute();
+        $item = $checkStmt->get_result()->fetch_assoc();
+        $checkStmt->close();
+        
+        if ($item) 
+        {
+            $updateSql = "UPDATE cart SET quantity = ? WHERE id = ? AND user_id = ?";
+            $updateStmt = $conn->prepare($updateSql);
+            $updateStmt->bind_param("iii", $quantity, $itemId, $userId);
+            $updateStmt->execute();
+            $updateStmt->close();
+            
+            $totalSql = "SELECT SUM(price * quantity) as total, SUM(quantity) as count FROM cart WHERE user_id = ?";
+            $totalStmt = $conn->prepare($totalSql);
+            $totalStmt->bind_param("i", $userId);
+            $totalStmt->execute();
+            $totalResult = $totalStmt->get_result()->fetch_assoc();
+            $totalStmt->close();
+            
+            echo json_encode([
+                'success' => true,
+                'quantity' => $quantity,
+                'price' => (float)$item['price'],
+                'cart_total' => (float)($totalResult['total'] ?? 0),
+                'cart_count' => (int)($totalResult['count'] ?? 0)
+            ]);
+        } 
+        else 
+        {
+            echo json_encode(['success' => false]);
+        }
+
+        exit();
+    }
+
+    if (isset($_POST['ajax_remove'])) 
+    {
+        $itemId = (int)$_POST['item_id'];
+
+        $deleteSql = "DELETE FROM cart WHERE id = ? AND user_id = ?";
+        $deleteStmt = $conn->prepare($deleteSql);
+        $deleteStmt->bind_param("ii", $itemId, $userId);
+        $deleteStmt->execute();
+        $deleteStmt->close();
+        
+        $totalSql = "SELECT SUM(price * quantity) as total, SUM(quantity) as count FROM cart WHERE user_id = ?";
+        $totalStmt = $conn->prepare($totalSql);
+        $totalStmt->bind_param("i", $userId);
+        $totalStmt->execute();
+        $totalResult = $totalStmt->get_result()->fetch_assoc();
+        $totalStmt->close();
+        
+        echo json_encode([
+            'success' => true,
+            'cart_total' => (float)($totalResult['total'] ?? 0),
+            'cart_count' => (int)($totalResult['count'] ?? 0)
+        ]);
+
+        exit();
+    }
+
+    if (isset($_POST['ajax_clear'])) 
+    {
+        $clearSql = "DELETE FROM cart WHERE user_id = ?";
+        $clearStmt = $conn->prepare($clearSql);
+        $clearStmt->bind_param("i", $userId);
+        $clearStmt->execute();
+        $clearStmt->close();
+        
+        echo json_encode(['success' => true]);
+        exit();
+    }
+    
+    echo json_encode(['success' => false, 'message' => 'Неизвестный запрос']);
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') 
@@ -149,9 +223,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         exit();
     }
     
+    if (isset($_POST['clear_cart'])) 
+    {
+        $clearSql = "DELETE FROM cart WHERE user_id = ?";
+        $clearStmt = $conn->prepare($clearSql);
+        $clearStmt->bind_param("i", $userId);
+        $clearStmt->execute();
+        $clearStmt->close();
+        
+        $_SESSION['success_message'] = "Корзина очищена!";
+        header("Location: cart.php");
+        exit();
+    }
+    
     if (isset($_POST['checkout'])) 
     {
-        if (empty($cartItems)) 
+        $cartSql = "SELECT * FROM cart WHERE user_id = ?";
+        $cartStmt = $conn->prepare($cartSql);
+        $cartStmt->bind_param("i", $userId);
+        $cartStmt->execute();
+        $cartResult = $cartStmt->get_result();
+        $currentCartItems = [];
+        $currentCartTotal = 0;
+        
+        while ($item = $cartResult->fetch_assoc()) 
+        {
+            $currentCartItems[] = $item;
+            $currentCartTotal += $item['price'] * $item['quantity'];
+        }
+
+        $cartStmt->close();
+        
+        if (empty($currentCartItems)) 
         {
             $_SESSION['cart_error'] = "Корзина пуста!";
             header("Location: cart.php");
@@ -180,13 +283,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
         $orderSql = "INSERT INTO orders (order_number, user_id, total_amount, shipping_address, phone, notes) VALUES (?, ?, ?, ?, ?, ?)";
         $orderStmt = $conn->prepare($orderSql);
-        $orderStmt->bind_param("sidsss", $orderNumber, $userId, $cartTotal, $shippingAddress, $phone, $notes);
+        $orderStmt->bind_param("sidsss", $orderNumber, $userId, $currentCartTotal, $shippingAddress, $phone, $notes);
         
         if ($orderStmt->execute()) 
         {
             $orderId = $orderStmt->insert_id;
             
-            foreach ($cartItems as $item) 
+            foreach ($currentCartItems as $item) 
             {
                 $product_id = !empty($item['product_id']) && $item['product_id'] > 0 ? $item['product_id'] : null;
                 $category_product_id = !empty($item['category_product_id']) ? $item['category_product_id'] : null;
@@ -216,18 +319,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             exit();
         }
     }
+}
+
+if ($userId) 
+{
+    $cartSql = "SELECT * FROM cart WHERE user_id = ? ORDER BY created_at DESC";
+    $cartStmt = $conn->prepare($cartSql);
     
-    if (isset($_POST['clear_cart'])) 
+    if ($cartStmt) 
     {
-        $clearSql = "DELETE FROM cart WHERE user_id = ?";
-        $clearStmt = $conn->prepare($clearSql);
-        $clearStmt->bind_param("i", $userId);
-        $clearStmt->execute();
-        $clearStmt->close();
+        $cartStmt->bind_param("i", $userId);
+        $cartStmt->execute();
+        $cartResult = $cartStmt->get_result();
         
-        $_SESSION['success_message'] = "Корзина очищена!";
-        header("Location: cart.php");
-        exit();
+        while ($item = $cartResult->fetch_assoc()) 
+        {
+            $cartItems[] = $item;
+            $cartTotal += $item['price'] * $item['quantity'];
+            $cartCount += $item['quantity'];
+        }
+
+        $cartStmt->close();
     }
 }
 ?>
@@ -288,7 +400,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                         if ($cartCount > 0) 
                         {
                         ?>
-                            <span class="badge bg-light text-primary"><?= $cartCount ?> товар(ов)</span>
+                            <span class="badge bg-light text-primary" id="cart-badge"><?= $cartCount ?> товар(ов)</span>
                         <?php 
                         }
                         ?>
@@ -325,12 +437,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                                     <th class="text-center">Действия</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="cart-items-body">
                                                 <?php 
                                                 foreach ($cartItems as $item)
                                                 {
                                                 ?>
-                                                <tr>
+                                                <tr data-item-id="<?= $item['id'] ?>" data-item-price="<?= $item['price'] ?>">
                                                     <td>
                                                         <img src="../<?= htmlspecialchars($item['product_image']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>" class="cart-item-image">
                                                     </td>
@@ -351,33 +463,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                                         <span class="cart-item-price"><?= number_format($item['price'], 0, ',', ' ') ?> ₽</span>
                                                     </td>
                                                     <td class="text-center">
-                                                        <form method="POST" class="d-inline">
-                                                            <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                                                            <div class="input-group input-group-sm" style="width: 120px;">
-                                                                <button class="btn btn-outline-secondary minus-btn" type="button">-</button>
-                                                                <input type="number" name="quantity" value="<?= $item['quantity'] ?>" 
-                                                                       min="1" max="99" class="form-control text-center quantity-input">
-                                                                <button class="btn btn-outline-secondary plus-btn" type="button">+</button>
-                                                            </div>
-                                                            <button type="submit" name="update_cart" class="btn btn-link btn-sm mt-1" style="display: none;">
-                                                                Обновить
-                                                            </button>
-                                                        </form>
+                                                        <div class="input-group input-group-sm" style="width: 120px;">
+                                                            <button class="btn btn-outline-secondary minus-btn" type="button" data-id="<?= $item['id'] ?>">-</button>
+                                                            <input type="number" class="form-control text-center quantity-input" 
+                                                                   value="<?= $item['quantity'] ?>" min="1" max="99" 
+                                                                   data-id="<?= $item['id'] ?>" data-price="<?= $item['price'] ?>">
+                                                            <button class="btn btn-outline-secondary plus-btn" type="button" data-id="<?= $item['id'] ?>">+</button>
+                                                        </div>
                                                     </td>
                                                     <td class="text-center">
-                                                        <span class="cart-item-total fw-bold">
+                                                        <span class="cart-item-total fw-bold" data-id="<?= $item['id'] ?>">
                                                             <?= number_format($item['price'] * $item['quantity'], 0, ',', ' ') ?> ₽
                                                         </span>
                                                     </td>
                                                     <td class="text-center">
-                                                        <form method="POST" class="d-inline">
-                                                            <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                                                            <button type="submit" name="remove_from_cart" 
-                                                                    class="btn btn-sm btn-outline-danger"
-                                                                    onclick="return confirm('Удалить товар из корзины?')">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
-                                                        </form>
+                                                        <button type="button" class="btn btn-sm btn-outline-danger remove-item" data-id="<?= $item['id'] ?>">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                                 <?php 
@@ -387,13 +489,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                         </table>
                                     </div>
                                     <div class="mt-3">
-                                        <form method="POST">
-                                            <button type="submit" name="clear_cart" 
-                                                    class="btn btn-outline-danger btn-sm"
-                                                    onclick="return confirm('Очистить всю корзину?')">
-                                                <i class="bi bi-trash me-1"></i>Очистить корзину
-                                            </button>
-                                        </form>
+                                        <button type="button" id="clear-cart-btn" class="btn btn-outline-danger btn-sm">
+                                            <i class="bi bi-trash me-1"></i>Очистить корзину
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -405,8 +503,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                             <div class="order-summary mb-4">
                                                 <h6 class="mb-3">Сводка заказа</h6>
                                                 <div class="d-flex justify-content-between mb-2">
-                                                    <span>Товары (<?= $cartCount ?>):</span>
-                                                    <span><?= number_format($cartTotal, 0, ',', ' ') ?> ₽</span>
+                                                    <span>Товары (<span id="cart-count"><?= $cartCount ?></span>):</span>
+                                                    <span id="cart-total"><?= number_format($cartTotal, 0, ',', ' ') ?> ₽</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between mb-2">
                                                     <span>Доставка:</span>
@@ -415,10 +513,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                                 <hr>
                                                 <div class="d-flex justify-content-between fw-bold fs-5">
                                                     <span>Итого:</span>
-                                                    <span class="text-primary"><?= number_format($cartTotal, 0, ',', ' ') ?> ₽</span>
+                                                    <span class="text-primary" id="cart-grand-total"><?= number_format($cartTotal, 0, ',', ' ') ?> ₽</span>
                                                 </div>
                                             </div>
-                                            <form method="POST">
+                                            <form method="POST" id="checkout-form">
                                                 <div class="mb-3">
                                                     <label for="shipping_address" class="form-label">Адрес доставки</label>
                                                     <textarea name="shipping_address" id="shipping_address" class="form-control" rows="2" placeholder="г. Калининград, ул. Автомобильная, 12"></textarea>

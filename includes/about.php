@@ -23,21 +23,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
     else
     {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?) AND LOWER(password_users) = LOWER(?)");
-        $stmt->bind_param("ss", $login, $password);
+        $stmt = $conn->prepare("SELECT * FROM users WHERE LOWER(login_users) = LOWER(?)");
+        $stmt->bind_param("s", $login);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) 
         {
             $row = $result->fetch_assoc();
-            $_SESSION['loggedin'] = true;
-            $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
-            $_SESSION['user_id'] = $row['id_users'];
-            unset($_SESSION['login_error']);
-            unset($_SESSION['error_message']);
-            header("Location: " . $_SERVER['REQUEST_URI']);
-            exit();
+
+            if (password_verify($password, $row['password_users'])) 
+            {
+                $_SESSION['loggedin'] = true;
+                $_SESSION['user'] = !empty($row['surname_users']) ? $row['surname_users'] . " " . $row['name_users'] . " " . $row['patronymic_users'] : $row['person_users'];
+                $_SESSION['user_id'] = $row['id_users'];
+                unset($_SESSION['login_error']);
+                unset($_SESSION['error_message']);
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            } 
+            else 
+            {
+                $_SESSION['login_error'] = true;
+                $_SESSION['error_message'] = "Неверный логин или пароль!";
+                $_SESSION['form_data'] = $_POST;
+                header("Location: " . $_SERVER['REQUEST_URI']);
+                exit();
+            }
         } 
         else 
         {
@@ -88,6 +100,7 @@ unset($_SESSION['form_data']);
             let finalValue = parseInt(stat.textContent);
             let currentValue = 0;
             let increment = finalValue / 50;
+            let originalText = stat.textContent;
             
             let timer = setInterval(() => {
                 currentValue += increment;
@@ -98,7 +111,7 @@ unset($_SESSION['form_data']);
                     clearInterval(timer);
                 }
 
-                stat.textContent = Math.floor(currentValue);
+                stat.textContent = Math.floor(currentValue) + '+';
             }, 30);
         });
 
@@ -171,7 +184,7 @@ unset($_SESSION['form_data']);
                     <div class="stat-icon mb-3">
                         <i class="bi bi-calendar-check"></i>
                     </div>
-                    <div class="stat-number mb-2">13</div>
+                    <div class="stat-number mb-2">21</div>
                     <div class="stat-label">Лет успешной работы</div>
                 </div>
             </div>
@@ -180,7 +193,7 @@ unset($_SESSION['form_data']);
                     <div class="stat-icon mb-3">
                         <i class="bi bi-box-seam"></i>
                     </div>
-                    <div class="stat-number mb-2">5000</div>
+                    <div class="stat-number mb-2">500</div>
                     <div class="stat-label">Позиций в каталоге</div>
                 </div>
             </div>
@@ -189,7 +202,7 @@ unset($_SESSION['form_data']);
                     <div class="stat-icon mb-3">
                         <i class="bi bi-award"></i>
                     </div>
-                    <div class="stat-number mb-2">50</div>
+                    <div class="stat-number mb-2">40</div>
                     <div class="stat-label">Официальных брендов</div>
                 </div>
             </div>
@@ -342,7 +355,7 @@ unset($_SESSION['form_data']);
 <section class="about-cta-section">
     <div class="container text-center">
         <h2 class="cta-title mb-4">Готовы обновить ваше авто?</h2>
-        <p class="cta-subtitle mb-5">Более 5000 качественных запчастей уже ждут вас в каталоге</p>
+        <p class="cta-subtitle mb-5">Более 500 качественных запчастей уже ждут вас в каталоге</p>
         <div class="cta-actions">
             <a href="../includes/assortment.php" class="btn btn-primary btn-lg px-5 py-3 me-3 mb-3">
                 <i class="bi bi-arrow-right me-2"></i>Перейти в каталог
