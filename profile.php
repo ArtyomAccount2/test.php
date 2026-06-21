@@ -714,6 +714,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             exit();
         }
     }
+
+    if (isset($_POST['mark_notification_read_ajax'])) 
+    {
+        header('Content-Type: application/json');
+        
+        if (!$userId) 
+        {
+            echo json_encode(['success' => false, 'message' => 'Пользователь не авторизован']);
+            exit();
+        }
+        
+        $notificationId = intval($_POST['notification_id'] ?? 0);
+        
+        if ($notificationId <= 0) 
+        {
+            echo json_encode(['success' => false, 'message' => 'Неверный ID уведомления']);
+            exit();
+        }
+        
+        $sql = "UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $notificationId, $userId);
+        $success = $stmt->execute();
+        $stmt->close();
+        
+        echo json_encode(['success' => $success]);
+        exit();
+    }
+
+    if (isset($_POST['delete_notification_ajax'])) 
+    {
+        header('Content-Type: application/json');
+        
+        if (!$userId) 
+        {
+            echo json_encode(['success' => false, 'message' => 'Пользователь не авторизован']);
+            exit();
+        }
+        
+        $notificationId = intval($_POST['notification_id'] ?? 0);
+        
+        if ($notificationId <= 0) 
+        {
+            echo json_encode(['success' => false, 'message' => 'Неверный ID уведомления']);
+            exit();
+        }
+        
+        $sql = "DELETE FROM notifications WHERE id = ? AND user_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $notificationId, $userId);
+        $success = $stmt->execute();
+        $stmt->close();
+        
+        echo json_encode(['success' => $success]);
+        exit();
+    }
+
+    if (isset($_POST['remove_from_wishlist_ajax'])) 
+    {
+        header('Content-Type: application/json');
+        
+        if (!$userId) 
+        {
+            echo json_encode(['success' => false, 'message' => 'Пользователь не авторизован']);
+            exit();
+        }
+        
+        $wishlistId = intval($_POST['wishlist_id'] ?? 0);
+        
+        if ($wishlistId <= 0) 
+        {
+            echo json_encode(['success' => false, 'message' => 'Неверный ID']);
+            exit();
+        }
+        
+        $sql = "DELETE FROM wishlist WHERE id = ? AND user_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $wishlistId, $userId);
+        $success = $stmt->execute();
+        $stmt->close();
+        
+        echo json_encode(['success' => $success]);
+        exit();
+    }
 }
 ?>
 
@@ -1364,9 +1448,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                                     $bgClass = 'bg-light';
                                                 }
                                                 ?>
-                                                <div class="notification-item alert <?= $alertClass ?> <?= $bgClass ?> mb-3 p-3 rounded" 
-                                                    data-id="<?= $notification['id'] ?>"
-                                                    data-read="<?= $notification['is_read'] ? '1' : '0' ?>">
+                                                <div class="notification-item alert <?= $alertClass ?> <?= $bgClass ?> mb-3 p-3 rounded" data-id="<?= $notification['id'] ?>" data-read="<?= $notification['is_read'] ? '1' : '0' ?>">
                                                     <div class="d-flex justify-content-between align-items-start">
                                                         <div>
                                                             <h6 class="mb-1"><?= htmlspecialchars($notification['title']) ?></h6>
@@ -1391,8 +1473,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                                             ?>
                                                             <form method="POST" class="d-inline-block">
                                                                 <input type="hidden" name="notification_id" value="<?= $notification['id'] ?>">
-                                                                <button type="submit" name="delete_notification" class="btn btn-sm btn-outline-danger" 
-                                                                        onclick="return confirm('Удалить уведомление?')">
+                                                                <button type="submit" name="delete_notification" class="btn btn-sm btn-outline-danger">
                                                                     <i class="bi bi-trash me-1"></i>Удалить
                                                                 </button>
                                                             </form>

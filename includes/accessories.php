@@ -148,7 +148,23 @@ if ($result->num_rows > 0)
 
 $search_term = isset($_GET['search']) ? strtolower(trim($_GET['search'])) : '';
 $category_filter = isset($_GET['category']) ? $_GET['category'] : '';
-$brand_filters = isset($_GET['brands']) ? (is_array($_GET['brands']) ? $_GET['brands'] : [$_GET['brands']]) : [];
+
+if (isset($_GET['brands'])) 
+{
+    if (is_array($_GET['brands'])) 
+    {
+        $brand_filters = $_GET['brands'];
+    } 
+    else 
+    {
+        $brand_filters = explode(',', $_GET['brands']);
+    }
+} 
+else 
+{
+    $brand_filters = [];
+}
+
 $min_price = isset($_GET['min_price']) ? intval($_GET['min_price']) : 0;
 $max_price = isset($_GET['max_price']) ? intval($_GET['max_price']) : 0;
 $brand_counts = [];
@@ -830,19 +846,9 @@ function buildQueryString($page, $search, $category, $brands, $min_price, $max_p
         $params['category'] = $category;
     }
 
-    if (!empty($brands)) 
+    if (!empty($brands) && is_array($brands)) 
     {
-        if (is_array($brands)) 
-        {
-            foreach ($brands as $brand) 
-            {
-                $params['brands[]'] = $brand;
-            }
-        } 
-        else 
-        {
-            $params['brands[]'] = $brands;
-        }
+        $params['brands'] = implode(',', $brands);
     }
 
     if ($min_price > 0) 

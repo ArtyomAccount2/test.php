@@ -114,102 +114,349 @@ document.addEventListener('DOMContentLoaded', function()
         }
     };
 
+    let showToast = (message, type = 'info') => {
+        let toastContainer = document.getElementById('toastContainer');
+
+        if (!toastContainer) 
+        {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toastContainer';
+            toastContainer.style.position = 'fixed';
+            toastContainer.style.bottom = '20px';
+            toastContainer.style.right = '20px';
+            toastContainer.style.zIndex = '9999';
+            toastContainer.style.maxWidth = '350px';
+            document.body.appendChild(toastContainer);
+        }
+
+        let bgClass = type === 'success' ? 'bg-success' : type === 'danger' ? 'bg-danger' : type === 'warning' ? 'bg-warning' : 'bg-info';
+        let textClass = type === 'warning' ? 'text-dark' : 'text-white';
+
+        let toast = document.createElement('div');
+        toast.className = `toast align-items-center ${bgClass} ${textClass} border-0 mb-2`;
+        toast.role = 'alert';
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : type === 'danger' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill'} me-2"></i>
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        let bsToast = new bootstrap.Toast(toast, { delay: 3000 });
+        bsToast.show();
+        
+        toast.addEventListener('hidden.bs.toast', function() 
+        {
+            this.remove();
+        });
+    };
+
     let handleNotifications = () => {
-        let notificationButtons = document.querySelectorAll('.notification-item .btn');
-
-        notificationButtons.forEach(button => {
-            button.addEventListener('click', function() 
+        document.querySelectorAll('.notification-item .btn-outline-success').forEach(button => {
+            button.addEventListener('click', function(e) 
             {
-                let notification = this.closest('.notification-item');
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateX(-100px)';
+                e.preventDefault();
+                let form = this.closest('form');
 
-                setTimeout(() => {
-                    notification.remove();
-                    let badge = document.querySelector('a[href="#notifications"] .badge');
+                if (!form) 
+                {
+                    return;
+                }
 
-                    if (badge) 
-                    {
-                        let count = parseInt(badge.textContent);
+                let notificationId = form.querySelector('input[name="notification_id"]')?.value;
 
-                        if (count > 1) 
-                        {
-                            badge.textContent = count - 1;
-                        } 
-                        else 
-                        {
-                            badge.remove();
-                        }
-                    }
+                if (!notificationId) 
+                {
+                    return;
+                }
 
-                    let notifications = document.querySelectorAll('.notification-item');
+                let notificationItem = this.closest('.notification-item');
+                markNotificationRead(notificationId, notificationItem);
+            });
+        });
 
-                    if (notifications.length === 0) 
-                    {
-                        let notificationList = document.querySelector('.notification-list');
-                        notificationList.innerHTML = `
-                            <div class="text-center py-5">
-                                <i class="bi bi-bell-slash display-1 text-muted"></i>
-                                <p class="text-muted mt-3">Нет непрочитанных уведомлений</p>
-                            </div>
-                        `;
-                    }
-                }, 300);
+        document.querySelectorAll('.notification-item .btn-outline-danger').forEach(button => {
+            button.addEventListener('click', function(e) 
+            {
+                e.preventDefault();
+
+                if (!confirm('Удалить уведомление?')) 
+                {
+                    return;
+                }
+
+                let form = this.closest('form');
+
+                if (!form) 
+                {
+                    return;
+                }
+
+                let notificationId = form.querySelector('input[name="notification_id"]')?.value;
+
+                if (!notificationId) 
+                {
+                    return;
+                }
+
+                let notificationItem = this.closest('.notification-item');
+                deleteNotification(notificationId, notificationItem);
             });
         });
     };
 
-    let initWishlist = () => {
-        let wishlistItems = document.querySelectorAll('.wishlist-item');
+    let markNotificationRead = async (notificationId, notificationItem) => {
+        try 
+        {
+            let formData = new URLSearchParams();
+            formData.append('mark_notification_read_ajax', '1');
+            formData.append('notification_id', notificationId);
 
-        wishlistItems.forEach(item => {
-            let removeBtn = item.querySelector('.btn-remove-wishlist');
-            if (removeBtn) 
+            let response = await fetch('profile.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formData.toString()
+            });
+
+            let data = await response.json();
+
+            if (data.success) 
             {
-                removeBtn.addEventListener('click', function() 
+                notificationItem.classList.remove('alert-info');
+                notificationItem.classList.add('bg-light');
+                notificationItem.dataset.read = '1';
+                let markBtn = notificationItem.querySelector('.btn-outline-success');
+
+                if (markBtn) 
                 {
-                    item.style.opacity = '0';
-                    item.style.transform = 'translateX(100px)';
+                    markBtn.closest('form')?.remove();
+                }
+                
+                updateNotificationBadge();
+                showToast('Уведомление отмечено как прочитанное', 'success');
+            }
+        } 
+        catch (error) 
+        {
+            console.error('Ошибка:', error);
+            showToast('Ошибка при обновлении', 'danger');
+        }
+    };
 
-                    setTimeout(() => {
-                        item.remove();
-                        let badge = document.querySelector('a[href="#wishlist"] .badge');
+    let deleteNotification = async (notificationId, notificationItem) => {
+        try 
+        {
+            let formData = new URLSearchParams();
+            formData.append('delete_notification_ajax', '1');
+            formData.append('notification_id', notificationId);
 
-                        if (badge) 
+            let response = await fetch('profile.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formData.toString()
+            });
+
+            let data = await response.json();
+
+            if (data.success) 
+            {
+                notificationItem.style.transition = 'all 0.3s ease';
+                notificationItem.style.opacity = '0';
+                notificationItem.style.transform = 'translateX(-100px)';
+                
+                setTimeout(() => {
+                    notificationItem.remove();
+                    updateNotificationBadge();
+                    
+                    let remaining = document.querySelectorAll('.notification-item');
+
+                    if (remaining.length === 0) 
+                    {
+                        let container = document.querySelector('#notificationsContainer');
+
+                        if (container) 
                         {
-                            let count = parseInt(badge.textContent);
-
-                            if (count > 1) 
-                            {
-                                badge.textContent = count - 1;
-                            } 
-                            else 
-                            {
-                                badge.remove();
-                            }
-                        }
-
-                        let wishlistItems = document.querySelectorAll('.wishlist-item');
-
-                        if (wishlistItems.length === 0) 
-                        {
-                            let wishlistContainer = document.querySelector('#wishlist .card-body');
-                            wishlistContainer.innerHTML = `
-                                <div class="text-center py-5">
-                                    <i class="bi bi-heart display-1 text-muted"></i>
-                                    <p class="text-muted mt-3">В избранном пока нет товаров</p>
-                                    <a href="includes/assortment.php" class="btn btn-primary mt-2">Перейти в каталог</a>
+                            container.innerHTML = `
+                                <div class="text-center py-5" id="noNotifications">
+                                    <i class="bi bi-bell-slash display-1 text-muted mb-3"></i>
+                                    <h5>Уведомлений пока нет</h5>
+                                    <p class="text-muted">Здесь будут появляться ваши уведомления</p>
                                 </div>
                             `;
                         }
-                    }, 300);
-                });
+                    }
+
+                    showToast('Уведомление удалено', 'success');
+                }, 300);
             }
+        } 
+        catch (error) 
+        {
+            console.error('Ошибка:', error);
+            showToast('Ошибка при удалении', 'danger');
+        }
+    };
+
+    let updateNotificationBadge = () => {
+        let unreadItems = document.querySelectorAll('.notification-item[data-read="0"]');
+        let count = unreadItems.length;
+        let badge = document.querySelector('a[href="#notifications"] .badge');
+        let link = document.querySelector('a[href="#notifications"]');
+        
+        if (count > 0) 
+        {
+            if (badge) 
+            {
+                badge.textContent = count;
+            } 
+            else if (link) 
+            {
+                let newBadge = document.createElement('span');
+                newBadge.className = 'badge bg-warning float-end';
+                newBadge.textContent = count;
+                link.appendChild(newBadge);
+            }
+        } 
+        else 
+        {
+            if (badge) 
+            {
+                badge.remove();
+            }
+        }
+    };
+
+    let initWishlist = () => {
+        document.querySelectorAll('.wishlist-item .btn-outline-danger').forEach(button => {
+            button.addEventListener('click', function(e) 
+            {
+                e.preventDefault();
+                
+                if (!confirm('Удалить товар из избранного?')) 
+                {
+                    return;
+                }
+                
+                let form = this.closest('form');
+
+                if (!form) 
+                {
+                    return;
+                }
+
+                let wishlistId = form.querySelector('input[name="wishlist_id"]')?.value;
+
+                if (!wishlistId) 
+                {
+                    return;
+                }
+
+                let wishlistItem = this.closest('.wishlist-item');
+
+                removeFromWishlist(wishlistId, wishlistItem);
+            });
         });
     };
 
+    let removeFromWishlist = async (wishlistId, wishlistItem) => {
+        try 
+        {
+            let formData = new URLSearchParams();
+            formData.append('remove_from_wishlist_ajax', '1');
+            formData.append('wishlist_id', wishlistId);
+
+            let response = await fetch('profile.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: formData.toString()
+            });
+
+            let data = await response.json();
+
+            if (data.success) 
+            {
+                wishlistItem.style.transition = 'all 0.3s ease';
+                wishlistItem.style.opacity = '0';
+                wishlistItem.style.transform = 'translateX(100px)';
+                
+                setTimeout(() => {
+                    wishlistItem.remove();
+                    updateWishlistBadge();
+                    
+                    let remaining = document.querySelectorAll('.wishlist-item');
+
+                    if (remaining.length === 0) 
+                    {
+                        let container = document.querySelector('#wishlist .card-body');
+
+                        if (container) 
+                        {
+                            container.innerHTML = `
+                                <div class="text-center py-5">
+                                    <i class="bi bi-heart display-1 text-muted mb-3"></i>
+                                    <h5>Список избранного пуст</h5>
+                                    <p class="text-muted">Добавляйте товары кнопкой ❤️ в каталоге</p>
+                                    <a href="includes/assortment.php" class="btn btn-primary mt-2">
+                                        Перейти в каталог
+                                    </a>
+                                </div>
+                            `;
+                        }
+                    }
+
+                    showToast('Удалено из избранного', 'success');
+                }, 300);
+            }
+        } 
+        catch (error) 
+        {
+            console.error('Ошибка:', error);
+            showToast('Ошибка при удалении', 'danger');
+        }
+    };
+
+    let updateWishlistBadge = () => {
+        let items = document.querySelectorAll('.wishlist-item');
+        let count = items.length;
+        let badge = document.querySelector('a[href="#wishlist"] .badge');
+        let link = document.querySelector('a[href="#wishlist"]');
+        
+        if (count > 0) 
+        {
+            if (badge) 
+            {
+                badge.textContent = count;
+            } 
+            else if (link) 
+            {
+                let newBadge = document.createElement('span');
+                newBadge.className = 'badge bg-primary float-end';
+                newBadge.textContent = count;
+                link.appendChild(newBadge);
+            }
+        } 
+        else 
+        {
+            if (badge) 
+            {
+                badge.remove();
+            }
+        }
+    };
+
     let updateCartUI = (data) => {
-        if (!data.items) 
+        if (!data.items)
         {
             return;
         }
@@ -271,7 +518,7 @@ document.addEventListener('DOMContentLoaded', function()
         {
             let cartLink = document.querySelector('a[href="#cart"]');
 
-            if (cartLink && !cartLink.querySelector('.badge')) 
+            if (cartLink) 
             {
                 let badge = document.createElement('span');
                 badge.className = 'badge bg-danger float-end';
@@ -416,6 +663,7 @@ document.addEventListener('DOMContentLoaded', function()
             if (data.success) 
             {
                 showEmptyCart();
+                showToast('Корзина очищена', 'success');
             }
         } 
         catch (error) 
@@ -467,12 +715,14 @@ document.addEventListener('DOMContentLoaded', function()
                     }
                 }
             }
+
             if (target.classList.contains('cart-remove-btn')) 
             {
                 e.preventDefault();
                 let itemId = target.getAttribute('data-item-id');
                 await removeCartItem(itemId);
             }
+
             if (target.classList.contains('cart-clear-btn')) 
             {
                 e.preventDefault();
@@ -498,7 +748,7 @@ document.addEventListener('DOMContentLoaded', function()
                     value = 99;
                     input.value = 99;
                 }
-                
+
                 await updateCartItem(itemId, value);
             }
         });

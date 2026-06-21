@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июн 09 2026 г., 18:25
+-- Время создания: Июн 21 2026 г., 14:35
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -222,6 +222,74 @@ INSERT INTO `car_brands` (`id`, `name`, `country`, `category`, `category_name`, 
 (43, 'Volkswagen', 'Германия', 'mass', 'Массовый', 'Немецкий производитель автомобилей', '../img/no-image.png', '[\"Passat\", \"Tiguan\", \"Polo\", \"Golf\"]', '2026-03-03 10:45:33', '2026-03-03 10:45:33'),
 (44, 'Volvo', 'Швеция', 'premium', 'Премиум', 'Шведский производитель автомобилей', '../img/no-image.png', '[\"XC90\", \"XC60\", \"S90\", \"V90\"]', '2026-03-03 10:45:33', '2026-03-03 10:45:33'),
 (45, 'UAZ', 'Россия', 'offroad', 'Внедорожник', 'Российский производитель внедорожников', '../img/no-image.png', '[\"Patriot\", \"Hunter\", \"Pickup\", \"Profi\"]', '2026-03-03 10:45:33', '2026-03-03 10:45:33');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `car_brands_display`
+--
+
+CREATE TABLE `car_brands_display` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `image` varchar(500) DEFAULT 'img/no-image.png',
+  `search_term` varchar(100) NOT NULL,
+  `display_order` int(11) DEFAULT '0',
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `car_brands_display`
+--
+
+INSERT INTO `car_brands_display` (`id`, `name`, `image`, `search_term`, `display_order`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Acura', 'img/Stamps/Acura.png', 'acura', 1, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(2, 'Aixam', 'img/Stamps/Aixam.png', 'aixam', 2, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(3, 'Alfa Romeo', 'img/Stamps/Alfa Romeo.png', 'alfa romeo', 3, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(4, 'Aston Martin', 'img/Stamps/Aston Martin.png', 'aston martin', 4, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(5, 'Audi', 'img/Stamps/Audi.png', 'audi', 5, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(6, 'BMW', 'img/Stamps/BMW.png', 'bmw', 6, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(7, 'Bentley', 'img/Stamps/Bentley.png', 'bentley', 7, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(8, 'Buick', 'img/Stamps/Buick.png', 'buick', 8, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(9, 'Cadillac', 'img/Stamps/Cadillac.png', 'cadillac', 9, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(10, 'Chevrolet', 'img/Stamps/Chevrolet.png', 'chevrolet', 10, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(11, 'Chrysler', 'img/Stamps/Chrysler.png', 'chrysler', 11, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(12, 'Dodge', 'img/Stamps/Dodge.png', 'dodge', 12, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(13, 'Fiat', 'img/Stamps/Fiat.png', 'fiat', 13, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(14, 'Ford', 'img/Stamps/Ford.png', 'ford', 14, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(15, 'Gaz', 'img/Stamps/Gaz.png', 'gaz', 15, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(16, 'Honda', 'img/Stamps/Honda.png', 'honda', 16, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(17, 'Hummer', 'img/Stamps/Hummer.png', 'hummer', 17, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(18, 'Hyundai', 'img/Stamps/Hyundai.png', 'hyundai', 18, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(19, 'Infiniti', 'img/Stamps/Infiniti.png', 'infiniti', 19, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(20, 'Jaguar', 'img/Stamps/Jaguar.png', 'jaguar', 20, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(21, 'Jeep', 'img/Stamps/Jeep.png', 'jeep', 21, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(22, 'Kia', 'img/Stamps/Kia.png', 'kia', 22, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(23, 'Lada', 'img/Stamps/Lada.png', 'lada', 23, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(24, 'Lamborghini', 'img/Stamps/Lamborghini.png', 'lamborghini', 24, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(25, 'Lancia', 'img/Stamps/Lancia.png', 'lancia', 25, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(26, 'Land Rover', 'img/Stamps/Land Rover.png', 'land rover', 26, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(27, 'Lexus', 'img/Stamps/Lexus.png', 'lexus', 27, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(28, 'Lotus', 'img/Stamps/Lotus.png', 'lotus', 28, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(29, 'Mazda', 'img/no-image.png', 'mazda', 29, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(30, 'Mercedes-Benz', 'img/no-image.png', 'mercedes-benz', 30, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(31, 'Mini', 'img/no-image.png', 'mini', 31, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(32, 'Mitsubishi', 'img/no-image.png', 'mitsubishi', 32, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(33, 'Nissan', 'img/no-image.png', 'nissan', 33, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(34, 'Opel', 'img/no-image.png', 'opel', 34, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(35, 'Peugeot', 'img/no-image.png', 'peugeot', 35, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(36, 'Porsche', 'img/no-image.png', 'porsche', 36, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(37, 'Renault', 'img/no-image.png', 'renault', 37, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(38, 'Skoda', 'img/no-image.png', 'skoda', 38, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(39, 'Subaru', 'img/no-image.png', 'subaru', 39, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(40, 'Suzuki', 'img/no-image.png', 'suzuki', 40, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(41, 'Tesla', 'img/no-image.png', 'tesla', 41, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(42, 'Toyota', 'img/no-image.png', 'toyota', 42, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(43, 'Volkswagen', 'img/no-image.png', 'volkswagen', 43, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(44, 'Volvo', 'img/no-image.png', 'volvo', 44, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28'),
+(45, 'UAZ', 'img/no-image.png', 'uaz', 45, 1, '2026-06-19 16:56:28', '2026-06-19 16:56:28');
 
 -- --------------------------------------------------------
 
@@ -638,6 +706,44 @@ INSERT INTO `password_resets` (`id`, `user_id`, `token`, `short_token`, `expires
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `popular_parts_display`
+--
+
+CREATE TABLE `popular_parts_display` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `short_name` varchar(100) NOT NULL,
+  `image` varchar(500) DEFAULT 'img/SpareParts/default.png',
+  `category` varchar(100) NOT NULL,
+  `category_short` varchar(50) DEFAULT NULL,
+  `search_term` varchar(100) NOT NULL,
+  `display_order` int(11) DEFAULT '0',
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `popular_parts_display`
+--
+
+INSERT INTO `popular_parts_display` (`id`, `name`, `short_name`, `image`, `category`, `category_short`, `search_term`, `display_order`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Коленчатый вал', 'Коленч. вал', 'img/SpareParts/image1.png', 'двигатель', 'Двиг.', 'коленчатый вал', 1, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03'),
+(2, 'Прокладки двигателя', 'Прокл. двиг.', 'img/SpareParts/image2.png', 'двигатель', 'Двиг.', 'прокладки двигателя', 2, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03'),
+(3, 'Топливный насос', 'Топл. насос', 'img/SpareParts/image3.png', 'двигатель', 'Двиг.', 'топливный насос', 3, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03'),
+(4, 'Распределительный вал', 'Распред. вал', 'img/SpareParts/image4.png', 'двигатель', 'Двиг.', 'распределительный вал', 4, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03'),
+(5, 'Тормозной цилиндр', 'Торм. цилиндр', 'img/SpareParts/image5.png', 'тормозная система', 'Торм.', 'тормозной цилиндр', 5, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03'),
+(6, 'Тормозные колодки', 'Торм. колодки', 'img/SpareParts/image6.png', 'тормозная система', 'Торм.', 'тормозные колодки', 6, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03'),
+(7, 'Стабилизатор', 'Стабилизатор', 'img/SpareParts/image7.png', 'ходовая часть', 'Ход.', 'стабилизатор', 7, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03'),
+(8, 'Тормозные суппорта', 'Торм. суппорта', 'img/SpareParts/image8.png', 'тормозная система', 'Торм.', 'тормозные суппорта', 8, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03'),
+(9, 'Топливный фильтр', 'Топл. фильтр', 'img/SpareParts/image9.png', 'фильтры', 'Фильтр', 'топливный фильтр', 9, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03'),
+(10, 'Тормозные диски', 'Торм. диски', 'img/SpareParts/image10.png', 'тормозная система', 'Торм.', 'тормозные диски', 10, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03'),
+(11, 'Цапфа', 'Цапфа', 'img/SpareParts/image11.png', 'ходовая часть', 'Ход.', 'цапфа', 11, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03'),
+(12, 'Сальники', 'Сальники', 'img/SpareParts/image12.png', 'двигатель', 'Двиг.', 'сальники', 12, 1, '2026-06-19 16:57:03', '2026-06-19 16:57:03');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `products`
 --
 
@@ -886,6 +992,13 @@ CREATE TABLE `remember_tokens` (
   `expires_at` datetime NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `remember_tokens`
+--
+
+INSERT INTO `remember_tokens` (`id`, `user_id`, `token`, `expires_at`, `created_at`) VALUES
+(1, 2, '61cd7c778135ac6fe54529f400834ee99be27b59a4dfd3b57517610fe99e0cf5', '2026-07-21 13:44:34', '2026-06-21 10:44:34');
 
 -- --------------------------------------------------------
 
@@ -1369,6 +1482,14 @@ ALTER TABLE `car_brands`
   ADD KEY `idx_name` (`name`);
 
 --
+-- Индексы таблицы `car_brands_display`
+--
+ALTER TABLE `car_brands_display`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_search_term` (`search_term`),
+  ADD KEY `idx_display_order` (`display_order`);
+
+--
 -- Индексы таблицы `category_products`
 --
 ALTER TABLE `category_products`
@@ -1444,6 +1565,15 @@ ALTER TABLE `password_resets`
   ADD KEY `idx_token` (`token`),
   ADD KEY `idx_user_id` (`user_id`),
   ADD KEY `idx_expires` (`expires_at`);
+
+--
+-- Индексы таблицы `popular_parts_display`
+--
+ALTER TABLE `popular_parts_display`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_search_term` (`search_term`),
+  ADD KEY `idx_category` (`category`),
+  ADD KEY `idx_display_order` (`display_order`);
 
 --
 -- Индексы таблицы `products`
@@ -1612,6 +1742,12 @@ ALTER TABLE `car_brands`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
+-- AUTO_INCREMENT для таблицы `car_brands_display`
+--
+ALTER TABLE `car_brands_display`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
 -- AUTO_INCREMENT для таблицы `category_products`
 --
 ALTER TABLE `category_products`
@@ -1672,6 +1808,12 @@ ALTER TABLE `password_resets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
+-- AUTO_INCREMENT для таблицы `popular_parts_display`
+--
+ALTER TABLE `popular_parts_display`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
@@ -1693,7 +1835,7 @@ ALTER TABLE `promo_codes`
 -- AUTO_INCREMENT для таблицы `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `reviews`

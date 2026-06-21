@@ -421,10 +421,12 @@ if (isset($_GET['auto_code']) && isset($code) && !empty($code) && !$showForm && 
                     </label>
                     <input type="password" name="confirm_password" class="form-control" id="confirm_password" 
                            placeholder="Повторите пароль" required minlength="6">
-                    <div class="invalid-feedback" id="confirmError"></div>
+                    <div class="password-match-error" id="passwordMatchError">
+                        <i class="bi bi-exclamation-circle"></i> Пароли не совпадают
+                    </div>
                 </div>
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary btn-lg">
+                    <button type="submit" class="btn btn-primary btn-lg" id="submitResetBtn" disabled>
                         <i class="bi bi-check-circle"></i> Изменить пароль
                     </button>
                     <a href="../index.php" class="btn btn-outline-secondary">
@@ -678,24 +680,75 @@ function checkPasswordMatch()
 {
     let password = document.getElementById('password');
     let confirmPassword = document.getElementById('confirm_password');
-    let confirmError = document.getElementById('confirmError');
+    let submitBtn = document.getElementById('submitResetBtn');
+    let matchError = document.getElementById('passwordMatchError');
     
-    if (!password || !confirmPassword || !confirmError) 
+    if (!password || !confirmPassword || !submitBtn || !matchError) 
     {
         return;
     }
     
-    if (confirmPassword.value && password.value !== confirmPassword.value) 
+    let passwordsMatch = (password.value === confirmPassword.value);
+    let isPasswordValid = password.value.length >= 6;
+    let isConfirmFilled = confirmPassword.value.length > 0;
+
+    if (isConfirmFilled && !passwordsMatch) 
     {
         confirmPassword.classList.add('is-invalid');
-        confirmError.textContent = 'Пароли не совпадают';
-        confirmError.style.display = 'block';
+        confirmPassword.classList.remove('is-valid');
+        matchError.classList.add('show');
+        submitBtn.disabled = true;
+        submitBtn.title = "Пароли не совпадают";
+    } 
+    else if (isConfirmFilled && passwordsMatch) 
+    {
+        confirmPassword.classList.remove('is-invalid');
+        confirmPassword.classList.add('is-valid');
+        matchError.classList.remove('show');
+
+        if (isPasswordValid) 
+        {
+            submitBtn.disabled = false;
+            submitBtn.title = "";
+        } 
+        else 
+        {
+            submitBtn.disabled = true;
+            submitBtn.title = "Пароль должен содержать минимум 6 символов";
+        }
     } 
     else 
     {
-        confirmPassword.classList.remove('is-invalid');
-        confirmError.textContent = '';
-        confirmError.style.display = 'none';
+        confirmPassword.classList.remove('is-invalid', 'is-valid');
+        matchError.classList.remove('show');
+        submitBtn.disabled = true;
+        submitBtn.title = "Заполните оба поля";
+    }
+
+    if (password.value.length > 0) 
+    {
+        if (password.value.length < 6) 
+        {
+            password.classList.add('is-invalid');
+            password.classList.remove('is-valid');
+            submitBtn.disabled = true;
+            submitBtn.title = "Пароль должен содержать минимум 6 символов";
+        } 
+        else 
+        {
+            password.classList.remove('is-invalid');
+            password.classList.add('is-valid');
+
+            if (passwordsMatch && confirmPassword.value.length > 0) 
+            {
+                submitBtn.disabled = false;
+                submitBtn.title = "";
+            }
+        }
+    } 
+    else 
+    {
+        password.classList.remove('is-invalid', 'is-valid');
     }
 }
 
@@ -703,41 +756,30 @@ function validateResetForm(event)
 {
     let password = document.getElementById('password');
     let confirmPassword = document.getElementById('confirm_password');
+    let submitBtn = document.getElementById('submitResetBtn');
     
     if (!password || !confirmPassword) 
     {
         return true;
     }
-    
+
     if (password.value.length < 6) 
     {
         event.preventDefault();
-        alert('Пароль должен содержать минимум 6 символов');
-        password.focus();
+        password.classList.add('is-invalid');
+        submitBtn.disabled = true;
         return false;
     }
     
     if (password.value !== confirmPassword.value) 
     {
         event.preventDefault();
-        alert('Пароли не совпадают');
-        confirmPassword.focus();
-
+        confirmPassword.classList.add('is-invalid');
+        document.getElementById('passwordMatchError').classList.add('show');
+        submitBtn.disabled = true;
         return false;
     }
-    
-    let strength = checkPasswordStrength(password.value);
 
-    if (strength <= 2) 
-    {
-        if (!confirm('Пароль слабый. Вы уверены, что хотите продолжить?')) 
-        {
-            event.preventDefault();
-
-            return false;
-        }
-    }
-    
     return true;
 }
 
@@ -758,6 +800,7 @@ document.addEventListener('DOMContentLoaded', function()
     let passwordInput = document.getElementById('password');
     let confirmPassword = document.getElementById('confirm_password');
     let resetForm = document.getElementById('resetForm');
+    let submitBtn = document.getElementById('submitResetBtn');
     
     if (passwordInput) 
     {
@@ -779,6 +822,12 @@ document.addEventListener('DOMContentLoaded', function()
     if (resetForm) 
     {
         resetForm.addEventListener('submit', validateResetForm);
+    }
+
+    if (submitBtn) 
+    {
+        submitBtn.disabled = true;
+        submitBtn.title = "Заполните пароль и подтверждение";
     }
 });
 

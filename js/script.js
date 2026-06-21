@@ -1,57 +1,58 @@
+function loadBrandsFromDB() 
+{
+    return fetch('includes/get_display_data.php?action=get_brands')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data) 
+            {
+                return data.data;
+            }
+            return [];
+        })
+        .catch(error => {
+            console.error('Ошибка загрузки брендов:', error);
+            return [];
+        });
+}
+
+function loadPartsFromDB() 
+{
+    return fetch('includes/get_display_data.php?action=get_parts')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data) 
+            {
+                return data.data;
+            }
+            return [];
+        })
+        .catch(error => {
+            console.error('Ошибка загрузки запчастей:', error);
+            return [];
+        });
+}
+
 function initBrandCards() 
 {
-    let brands = [
-        { name: "Acura", image: "img/Stamps/Acura.png", search_term: "acura" },
-        { name: "Aixam", image: "img/Stamps/Aixam.png", search_term: "aixam" },
-        { name: "Alfa Romeo", image: "img/Stamps/Alfa Romeo.png", search_term: "alfa romeo" },
-        { name: "Aston Martin", image: "img/Stamps/Aston Martin.png", search_term: "aston martin" },
-        { name: "Audi", image: "img/Stamps/Audi.png", search_term: "audi" },
-        { name: "BMW", image: "img/Stamps/BMW.png", search_term: "bmw" },
-        { name: "Bentley", image: "img/Stamps/Bentley.png", search_term: "bentley" },
-        { name: "Buick", image: "img/Stamps/Buick.png", search_term: "buick" },
-        { name: "Cadillac", image: "img/Stamps/Cadillac.png", search_term: "cadillac" },
-        { name: "Chevrolet", image: "img/Stamps/Chevrolet.png", search_term: "chevrolet" },
-        { name: "Chrysler", image: "img/Stamps/Chrysler.png", search_term: "chrysler" },
-        { name: "Dodge", image: "img/Stamps/Dodge.png", search_term: "dodge" },
-        { name: "Fiat", image: "img/Stamps/Fiat.png", search_term: "fiat" },
-        { name: "Ford", image: "img/Stamps/Ford.png", search_term: "ford" },
-        { name: "Gaz", image: "img/Stamps/Gaz.png", search_term: "gaz" },
-        { name: "Honda", image: "img/Stamps/Honda.png", search_term: "honda" },
-        { name: "Hummer", image: "img/Stamps/Hummer.png", search_term: "hummer" },
-        { name: "Hyundai", image: "img/Stamps/Hyundai.png", search_term: "hyundai" },
-        { name: "Infiniti", image: "img/Stamps/Infiniti.png", search_term: "infiniti" },
-        { name: "Jaguar", image: "img/Stamps/Jaguar.png", search_term: "jaguar" },
-        { name: "Jeep", image: "img/Stamps/Jeep.png", search_term: "jeep" },
-        { name: "Kia", image: "img/Stamps/Kia.png", search_term: "kia" },
-        { name: "Lada", image: "img/Stamps/Lada.png", search_term: "lada" },
-        { name: "Lamborghini", image: "img/Stamps/Lamborghini.png", search_term: "lamborghini" },
-        { name: "Lancia", image: "img/Stamps/Lancia.png", search_term: "lancia" },
-        { name: "Land Rover", image: "img/Stamps/Land Rover.png", search_term: "land rover" },
-        { name: "Lexus", image: "img/Stamps/Lexus.png", search_term: "lexus" },
-        { name: "Lotus", image: "img/Stamps/Lotus.png", search_term: "lotus" },
-        { name: "Mazda", image: "img/no-image.png", search_term: "mazda" },
-        { name: "Mercedes-Benz", image: "img/no-image.png", search_term: "mercedes-benz" },
-        { name: "Mini", image: "img/no-image.png", search_term: "mini" },
-        { name: "Mitsubishi", image: "img/no-image.png", search_term: "mitsubishi" },
-        { name: "Nissan", image: "img/no-image.png", search_term: "nissan" },
-        { name: "Opel", image: "img/no-image.png", search_term: "opel" },
-        { name: "Peugeot", image: "img/no-image.png", search_term: "peugeot" },
-        { name: "Porsche", image: "img/no-image.png", search_term: "porsche" },
-        { name: "Renault", image: "img/no-image.png", search_term: "renault" },
-        { name: "Skoda", image: "img/no-image.png", search_term: "skoda" },
-        { name: "Subaru", image: "img/no-image.png", search_term: "subaru" },
-        { name: "Suzuki", image: "img/no-image.png", search_term: "suzuki" },
-        { name: "Tesla", image: "img/no-image.png", search_term: "tesla" },
-        { name: "Toyota", image: "img/no-image.png", search_term: "toyota" },
-        { name: "Volkswagen", image: "img/no-image.png", search_term: "volkswagen" },
-        { name: "Volvo", image: "img/no-image.png", search_term: "volvo" },
-        { name: "UAZ", image: "img/no-image.png", search_term: "uaz" }
-    ];
-
     let container = document.getElementById('carBrandsBlock');
-
-    if (container) 
+    
+    if (!container) 
     {
+        return;
+    }
+    
+    loadBrandsFromDB().then(brands => {
+        if (brands.length === 0) 
+        {
+            container.innerHTML = `
+                <div class="alert alert-warning w-100 text-center">
+                    <i class="bi bi-exclamation-triangle"></i> 
+                    Данные о брендах временно недоступны
+                </div>
+            `;
+            return;
+        }
+
         container.innerHTML = '';
 
         brands.forEach(brand => {
@@ -97,77 +98,30 @@ function initBrandCards()
                 item.style.animationDelay = `${index * 0.1}s`;
             });
         }, 100);
-    }
+    });
 }
 
 function initPartsCards() 
 {
-    let parts = [
-        { name: "Коленчатый вал", short_name: "Коленч. вал", 
-          image: "img/SpareParts/image1.png", 
-          category: "двигатель", category_short: "Двиг.",
-          search_term: "коленчатый вал" },
-        
-        { name: "Прокладки двигателя", short_name: "Прокл. двиг.", 
-          image: "img/SpareParts/image2.png", 
-          category: "двигатель", category_short: "Двиг.",
-          search_term: "прокладки двигателя" },
-        
-        { name: "Топливный насос", short_name: "Топл. насос", 
-          image: "img/SpareParts/image3.png", 
-          category: "двигатель", category_short: "Двиг.",
-          search_term: "топливный насос" },
-        
-        { name: "Распределительный вал", short_name: "Распред. вал", 
-          image: "img/SpareParts/image4.png", 
-          category: "двигатель", category_short: "Двиг.",
-          search_term: "распределительный вал" },
-        
-        { name: "Тормозной цилиндр", short_name: "Торм. цилиндр", 
-          image: "img/SpareParts/image5.png", 
-          category: "тормозная система", category_short: "Торм.",
-          search_term: "тормозной цилиндр" },
-        
-        { name: "Тормозные колодки", short_name: "Торм. колодки", 
-          image: "img/SpareParts/image6.png", 
-          category: "тормозная система", category_short: "Торм.",
-          search_term: "тормозные колодки" },
-        
-        { name: "Стабилизатор", short_name: "Стабилизатор", 
-          image: "img/SpareParts/image7.png", 
-          category: "ходовая часть", category_short: "Ход.",
-          search_term: "стабилизатор" },
-        
-        { name: "Тормозные суппорта", short_name: "Торм. суппорта", 
-          image: "img/SpareParts/image8.png", 
-          category: "тормозная система", category_short: "Торм.",
-          search_term: "тормозные суппорта" },
-        
-        { name: "Топливный фильтр", short_name: "Топл. фильтр", 
-          image: "img/SpareParts/image9.png", 
-          category: "фильтры", category_short: "Фильтр",
-          search_term: "топливный фильтр" },
-        
-        { name: "Тормозные диски", short_name: "Торм. диски", 
-          image: "img/SpareParts/image10.png", 
-          category: "тормозная система", category_short: "Торм.",
-          search_term: "тормозные диски" },
-        
-        { name: "Цапфа", short_name: "Цапфа", 
-          image: "img/SpareParts/image11.png", 
-          category: "ходовая часть", category_short: "Ход.",
-          search_term: "цапфа" },
-        
-        { name: "Сальники", short_name: "Сальники", 
-          image: "img/SpareParts/image12.png", 
-          category: "двигатель", category_short: "Двиг.",
-          search_term: "сальники" }
-    ];
-
     let container = document.getElementById('partsContainer');
-
-    if (container) 
+    
+    if (!container) 
     {
+        return;
+    }
+    
+    loadPartsFromDB().then(parts => {
+        if (parts.length === 0) 
+        {
+            container.innerHTML = `
+                <div class="alert alert-warning w-100 text-center">
+                    <i class="bi bi-exclamation-triangle"></i> 
+                    Данные о запчастях временно недоступны
+                </div>
+            `;
+            return;
+        }
+        
         container.innerHTML = '';
 
         parts.forEach(part => {
@@ -229,7 +183,7 @@ function initPartsCards()
                 item.style.animationDelay = `${index * 0.1}s`;
             });
         }, 100);
-    }
+    });
 }
 
 function initScrollButtons() 
@@ -902,6 +856,116 @@ function getVisibleItemsCount(container)
     return Math.max(1, visibleCount);
 }
 
+function initCookieConsent() 
+{
+    let cookieConsent = document.getElementById('cookieConsent');
+    let cookieAccept = document.getElementById('cookieAccept');
+    let cookieReject = document.getElementById('cookieReject');
+
+    let cookieDecision = getCookie('cookie_decision');
+        
+    if (!cookieDecision) 
+    {
+        setTimeout(() => {
+            cookieConsent.style.display = 'block';
+            setTimeout(() => {
+                cookieConsent.classList.add('show');
+            }, 50);
+        }, 1000);
+    }
+
+    if (cookieAccept) 
+    {
+        cookieAccept.addEventListener('click', function() 
+        {
+            setCookie('cookie_decision', 'accepted', 365);
+            hideCookieConsent();
+        });
+    }
+
+    if (cookieReject) 
+    {
+        cookieReject.addEventListener('click', function() 
+        {
+            setCookie('cookie_decision', 'rejected', 365);
+            hideCookieConsent();
+        });
+    }
+}
+
+function hideCookieConsent() 
+{
+    let cookieConsent = document.getElementById('cookieConsent');
+
+    if (cookieConsent) 
+    {
+        cookieConsent.classList.remove('show');
+        cookieConsent.classList.add('hiding');
+        
+        setTimeout(() => {
+            cookieConsent.style.display = 'none';
+            cookieConsent.classList.remove('hiding');
+        }, 500);
+    }
+}
+
+function setCookie(name, value, days) 
+{
+    let date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Lax";
+}
+
+function getCookie(name) 
+{
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+
+    for (let i = 0; i < ca.length; i++) 
+    {
+        let c = ca[i];
+
+        while (c.charAt(0) === ' ') 
+        {
+            c = c.substring(1, c.length);
+        }
+
+        if (c.indexOf(nameEQ) === 0) 
+        {
+            return c.substring(nameEQ.length, c.length);
+        }
+    }
+
+    return null;
+}
+
+function deleteCookie(name) 
+{
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+}
+
+function checkCookieConsent() 
+{
+    let decision = getCookie('cookie_decision');
+    return decision === 'accepted';
+}
+
+function debounce(func, wait) 
+{
+    let timeout;
+    
+    return function executedFunction(...args) 
+    {
+        let later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 document.addEventListener('DOMContentLoaded', function() 
 {
     initBrandCards();
@@ -1278,113 +1342,3 @@ document.addEventListener('DOMContentLoaded', function()
         }
     });
 });
-
-function initCookieConsent() 
-{
-    let cookieConsent = document.getElementById('cookieConsent');
-    let cookieAccept = document.getElementById('cookieAccept');
-    let cookieReject = document.getElementById('cookieReject');
-
-    let cookieDecision = getCookie('cookie_decision');
-        
-    if (!cookieDecision) 
-    {
-        setTimeout(() => {
-            cookieConsent.style.display = 'block';
-            setTimeout(() => {
-                cookieConsent.classList.add('show');
-            }, 100);
-        }, 1000);
-    }
-
-    if (cookieAccept) 
-    {
-        cookieAccept.addEventListener('click', function() 
-        {
-            setCookie('cookie_decision', 'accepted', 365);
-            hideCookieConsent();
-        });
-    }
-
-    if (cookieReject) 
-    {
-        cookieReject.addEventListener('click', function() 
-        {
-            setCookie('cookie_decision', 'rejected', 365);
-            hideCookieConsent();
-            rejectAllCookies();
-        });
-    }
-}
-
-function setCookie(name, value, days) 
-{
-    let date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    let expires = "expires=" + date.toUTCString();
-    document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Lax";
-}
-
-function getCookie(name) 
-{
-    let nameEQ = name + "=";
-    let ca = document.cookie.split(';');
-
-    for (let i = 0; i < ca.length; i++) 
-    {
-        let c = ca[i];
-
-        while (c.charAt(0) === ' ') 
-        {
-            c = c.substring(1, c.length);
-        }
-
-        if (c.indexOf(nameEQ) === 0) 
-        {
-            return c.substring(nameEQ.length, c.length);
-        }
-    }
-
-    return null;
-}
-
-function deleteCookie(name) 
-{
-    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-}
-
-function hideCookieConsent() 
-{
-    let cookieConsent = document.getElementById('cookieConsent');
-
-    if (cookieConsent) 
-    {
-        cookieConsent.classList.remove('show');
-        cookieConsent.classList.add('hide');
-            
-        setTimeout(() => {
-            cookieConsent.style.display = 'none';
-        }, 500);
-    }
-}
-
-function checkCookieConsent() 
-{
-    let decision = getCookie('cookie_decision');
-    return decision === 'accepted';
-}
-
-function debounce(func, wait) 
-{
-    let timeout;
-    
-    return function executedFunction(...args) 
-    {
-        let later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}

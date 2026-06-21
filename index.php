@@ -91,6 +91,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
 }
 
+$brands_count = 0;
+$parts_count = 0;
+
+$brands_result = $conn->query("SELECT COUNT(*) as count FROM car_brands_display WHERE is_active = 1");
+
+if ($brands_result && $row = $brands_result->fetch_assoc()) 
+{
+    $brands_count = $row['count'];
+}
+
+$parts_result = $conn->query("SELECT COUNT(*) as count FROM popular_parts_display WHERE is_active = 1");
+
+if ($parts_result && $row = $parts_result->fetch_assoc()) 
+{
+    $parts_count = $row['count'];
+}
+
 $form_data = $_SESSION['form_data'] ?? [];
 unset($_SESSION['form_data']);
 ?>

@@ -94,7 +94,7 @@
 
 @media (min-width: 1200px) 
 {
-    .modal-dialog-centered
+    #oilSelectorModal .modal-dialog-centered
     {
         min-height: auto;
     }

@@ -1,0 +1,1506 @@
+-- AutoShop Database Backup
+-- Date: 2026-06-19 20:35:11
+-- PHP Version: 8.0.22
+-- MySQL Version: 50739
+
+SET FOREIGN_KEY_CHECKS=0;
+
+--
+-- Структура таблицы `action_logs`
+--
+
+DROP TABLE IF EXISTS `action_logs`;
+CREATE TABLE `action_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `action` varchar(100) NOT NULL,
+  `description` text,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `action_logs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Структура таблицы `admin_notifications`
+--
+
+DROP TABLE IF EXISTS `admin_notifications`;
+CREATE TABLE `admin_notifications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `type` enum('info','success','warning','danger') DEFAULT 'info',
+  `is_read` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_read` (`is_read`),
+  KEY `idx_created` (`created_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `admin_notifications`
+-- Всего записей: 3
+--
+
+INSERT INTO `admin_notifications` (`id`, `title`, `message`, `type`, `is_read`, `created_at`) VALUES 
+('1', 'Добро пожаловать!', 'Вы вошли в административную панель. Управляйте сайтом эффективно.', 'success', '0', '2026-04-09 20:28:29'),
+('2', 'Настройка завершена', 'Система готова к работе. Проверьте настройки магазина.', 'info', '1', '2026-04-08 20:28:29'),
+('3', 'Новый заказ', 'Поступил новый заказ #12345 от пользователя Иванов И.', 'warning', '1', '2026-04-07 20:28:29');
+
+--
+-- Структура таблицы `api_keys`
+--
+
+DROP TABLE IF EXISTS `api_keys`;
+CREATE TABLE `api_keys` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `api_key` varchar(100) NOT NULL,
+  `secret_key` varchar(100) NOT NULL,
+  `status` varchar(20) DEFAULT 'active',
+  `permissions` text,
+  `last_used` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `revoked_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `api_key` (`api_key`),
+  KEY `idx_api_key` (`api_key`),
+  KEY `idx_status` (`status`),
+  KEY `idx_expires` (`expires_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `api_keys`
+-- Всего записей: 3
+--
+
+INSERT INTO `api_keys` (`id`, `name`, `api_key`, `secret_key`, `status`, `permissions`, `last_used`, `created_at`, `expires_at`, `revoked_at`) VALUES 
+('1', 'api_keys', 'sk_live_9f91e34cecf030985f13e1eeae02e6b3', 'sk_305308cd266a815f26aebb00613a6e2e9d9028b9946fe003', 'active', 'read,write', NULL, '2026-01-11 15:27:36', '2027-01-11 15:27:36', NULL),
+('2', 'secret', 'sk_live_0530805657771205c63ddf970a3b4365', 'sk_3d6b3db0920b13298822604a87e2e7ea83be75a7d0d363ea', 'revoked', 'read,write', NULL, '2026-01-11 17:24:16', '2027-01-11 17:24:16', '2026-01-28 21:27:17'),
+('8', 'Лал-Авто (user2)', 'sk_live_671d4f918980a27d688dabaad96a9077', 'sk_9feb09576f5a5fb229d1de670d46e4cf15dd00c2725018b1', 'active', 'read,products,orders', NULL, '2026-03-13 22:52:26', '2026-09-09 22:52:26', NULL);
+
+--
+-- Структура таблицы `backup_logs`
+--
+
+DROP TABLE IF EXISTS `backup_logs`;
+CREATE TABLE `backup_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `filename` varchar(255) NOT NULL,
+  `file_size` int(11) DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'pending',
+  `source` varchar(50) DEFAULT 'manual',
+  `action` varchar(50) DEFAULT 'backup',
+  `error_message` text,
+  `downloads` int(11) DEFAULT '0',
+  `last_download` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_status` (`status`),
+  KEY `idx_created` (`created_at`),
+  KEY `idx_filename` (`filename`(100))
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `backup_logs`
+-- Всего записей: 2
+--
+
+INSERT INTO `backup_logs` (`id`, `filename`, `file_size`, `status`, `source`, `action`, `error_message`, `downloads`, `last_download`, `created_at`) VALUES 
+('9', 'backup_2026-01-11_15-45-53.sql', '28680', 'success', 'manual', 'backup', NULL, '0', NULL, '2026-01-11 15:45:53'),
+('10', 'uploaded_backup_backup_2026-01-11_15-45-53_2026-01-11_15-46-08.sql', '28680', 'uploaded', 'user_upload', 'backup', NULL, '0', NULL, '2026-01-11 15:46:08');
+
+--
+-- Структура таблицы `car_brands`
+--
+
+DROP TABLE IF EXISTS `car_brands`;
+CREATE TABLE `car_brands` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `country` varchar(100) DEFAULT NULL,
+  `category` varchar(50) DEFAULT NULL COMMENT 'premium, luxury, mass, offroad, sport, electric, commercial, special',
+  `category_name` varchar(100) DEFAULT NULL,
+  `description` text,
+  `image` varchar(500) DEFAULT '../img/no-image.png',
+  `models` text COMMENT 'JSON массив с моделями',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_category` (`category`),
+  KEY `idx_name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `car_brands`
+-- Всего записей: 45
+--
+
+INSERT INTO `car_brands` (`id`, `name`, `country`, `category`, `category_name`, `description`, `image`, `models`, `created_at`, `updated_at`) VALUES 
+('1', 'Acura', 'Япония', 'premium', 'Премиум', 'Японский премиальный бренд, принадлежащий Honda', '../img/Stamps/Acura.png', '[\"MDX\", \"RDX\", \"TLX\", \"NSX\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('2', 'Aixam', 'Франция', 'special', 'Микрокары', 'Французский производитель микроавтомобилей', '../img/Stamps/Aixam.png', '[\"City\", \"Crossover\", \"E-City\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('3', 'Alfa Romeo', 'Италия', 'premium', 'Премиум', 'Итальянский производитель спортивных автомобилей', '../img/Stamps/Alfa Romeo.png', '[\"Giulia\", \"Stelvio\", \"Tonale\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('4', 'Aston Martin', 'Великобритания', 'luxury', 'Люкс', 'Британский производитель роскошных спортивных автомобилей', '../img/Stamps/Aston Martin.png', '[\"DB11\", \"Vantage\", \"DBS\", \"Valhalla\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('5', 'Audi', 'Германия', 'premium', 'Премиум', 'Немецкий производитель автомобилей премиум-класса', '../img/Stamps/Audi.png', '[\"A4\", \"A6\", \"Q5\", \"Q7\", \"TT\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('6', 'BMW', 'Германия', 'premium', 'Премиум', 'Немецкий производитель автомобилей и мотоциклов', '../img/Stamps/BMW.png', '[\"3 серии\", \"5 серии\", \"X5\", \"X3\", \"i8\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('7', 'Bentley', 'Великобритания', 'luxury', 'Люкс', 'Британский производитель роскошных автомобилей', '../img/Stamps/Bentley.png', '[\"Continental\", \"Flying Spur\", \"Bentayga\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('8', 'Buick', 'США', 'premium', 'Премиум', 'Американский бренд автомобилей премиум-класса', '../img/Stamps/Buick.png', '[\"Enclave\", \"Encore\", \"Regal\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('9', 'Cadillac', 'США', 'luxury', 'Люкс', 'Американский производитель автомобилей класса люкс', '../img/Stamps/Cadillac.png', '[\"Escalade\", \"XT5\", \"CT5\", \"Lyriq\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('10', 'Chevrolet', 'США', 'mass', 'Массовый', 'Американский производитель массовых автомобилей', '../img/Stamps/Chevrolet.png', '[\"Camaro\", \"Malibu\", \"Tahoe\", \"Equinox\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('11', 'Chrysler', 'США', 'premium', 'Премиум', 'Американский производитель автомобилей', '../img/Stamps/Chrysler.png', '[\"Pacifica\", \"300\", \"Voyager\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('12', 'Dodge', 'США', 'sport', 'Спорт', 'Американский производитель спортивных автомобилей', '../img/Stamps/Dodge.png', '[\"Charger\", \"Challenger\", \"Durango\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('13', 'Fiat', 'Италия', 'mass', 'Массовый', 'Итальянский производитель автомобилей', '../img/Stamps/Fiat.png', '[\"500\", \"Panda\", \"Tipo\", \"Doblo\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('14', 'Ford', 'США', 'mass', 'Массовый', 'Американский производитель автомобилей', '../img/Stamps/Ford.png', '[\"Focus\", \"Fiesta\", \"Mustang\", \"Explorer\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('15', 'Gaz', 'Россия', 'commercial', 'Коммерческий', 'Российский производитель грузовых и легковых автомобилей', '../img/Stamps/Gaz.png', '[\"Волга\", \"Газель\", \"Соболь\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('16', 'Honda', 'Япония', 'mass', 'Массовый', 'Японский производитель автомобилей и мотоциклов', '../img/Stamps/Honda.png', '[\"Civic\", \"Accord\", \"CR-V\", \"Pilot\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('17', 'Hummer', 'США', 'offroad', 'Внедорожник', 'Американский бренд внедорожников', '../img/Stamps/Hummer.png', '[\"H2\", \"H3\", \"EV\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('18', 'Hyundai', 'Корея', 'mass', 'Массовый', 'Южнокорейский производитель автомобилей', '../img/Stamps/Hyundai.png', '[\"Solaris\", \"Tucson\", \"Santa Fe\", \"Elantra\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('19', 'Infiniti', 'Япония', 'premium', 'Премиум', 'Японский премиальный бренд, принадлежащий Nissan', '../img/Stamps/Infiniti.png', '[\"Q50\", \"QX60\", \"QX80\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('20', 'Jaguar', 'Великобритания', 'luxury', 'Люкс', 'Британский производитель роскошных автомобилей', '../img/Stamps/Jaguar.png', '[\"XF\", \"F-Pace\", \"E-Pace\", \"I-Pace\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('21', 'Jeep', 'США', 'offroad', 'Внедорожник', 'Американский производитель внедорожников', '../img/Stamps/Jeep.png', '[\"Wrangler\", \"Grand Cherokee\", \"Renegade\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('22', 'Kia', 'Корея', 'mass', 'Массовый', 'Южнокорейский производитель автомобилей', '../img/Stamps/Kia.png', '[\"Rio\", \"Sportage\", \"Sorento\", \"K5\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('23', 'Lada', 'Россия', 'mass', 'Массовый', 'Российский производитель автомобилей', '../img/Stamps/Lada.png', '[\"Vesta\", \"Granta\", \"Niva\", \"XRAY\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('24', 'Lamborghini', 'Италия', 'luxury', 'Люкс', 'Итальянский производитель суперкаров', '../img/Stamps/Lamborghini.png', '[\"Aventador\", \"Huracan\", \"Urus\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('25', 'Lancia', 'Италия', 'premium', 'Премиум', 'Итальянский производитель автомобилей', '../img/Stamps/Lancia.png', '[\"Ypsilon\", \"Delta\", \"Thema\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('26', 'Land Rover', 'Великобритания', 'offroad', 'Внедорожник', 'Британский производитель внедорожников', '../img/Stamps/Land Rover.png', '[\"Range Rover\", \"Discovery\", \"Defender\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('27', 'Lexus', 'Япония', 'luxury', 'Люкс', 'Японский бренд автомобилей класса люкс, принадлежащий Toyota', '../img/Stamps/Lexus.png', '[\"RX\", \"NX\", \"ES\", \"LS\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('28', 'Lotus', 'Великобритания', 'sport', 'Спорт', 'Британский производитель спортивных автомобилей', '../img/Stamps/Lotus.png', '[\"Evora\", \"Emira\", \"Elise\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('29', 'Mazda', 'Япония', 'mass', 'Массовый', 'Японский производитель автомобилей', '../img/no-image.png', '[\"3\", \"6\", \"CX-5\", \"MX-5\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('30', 'Mercedes-Benz', 'Германия', 'luxury', 'Люкс', 'Немецкий производитель автомобилей премиум-класса', '../img/no-image.png', '[\"C-класс\", \"E-класс\", \"S-класс\", \"GLE\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('31', 'Mini', 'Великобритания', 'premium', 'Премиум', 'Британский производитель малолитражных автомобилей', '../img/no-image.png', '[\"Cooper\", \"Countryman\", \"Clubman\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('32', 'Mitsubishi', 'Япония', 'mass', 'Массовый', 'Японский производитель автомобилей', '../img/no-image.png', '[\"Outlander\", \"Pajero Sport\", \"Lancer\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('33', 'Nissan', 'Япония', 'mass', 'Массовый', 'Японский производитель автомобилей', '../img/no-image.png', '[\"Qashqai\", \"X-Trail\", \"Note\", \"GT-R\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('34', 'Opel', 'Германия', 'mass', 'Массовый', 'Немецкий производитель автомобилей', '../img/no-image.png', '[\"Astra\", \"Corsa\", \"Insignia\", \"Mokka\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('35', 'Peugeot', 'Франция', 'mass', 'Массовый', 'Французский производитель автомобилей', '../img/no-image.png', '[\"308\", \"3008\", \"508\", \"2008\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('36', 'Porsche', 'Германия', 'luxury', 'Люкс', 'Немецкий производитель спортивных автомобилей', '../img/no-image.png', '[\"911\", \"Cayenne\", \"Panamera\", \"Macan\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('37', 'Renault', 'Франция', 'mass', 'Массовый', 'Французский производитель автомобилей', '../img/no-image.png', '[\"Logan\", \"Sandero\", \"Duster\", \"Kaptur\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('38', 'Skoda', 'Чехия', 'mass', 'Массовый', 'Чешский производитель автомобилей', '../img/no-image.png', '[\"Octavia\", \"Kodiaq\", \"Karoq\", \"Superb\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('39', 'Subaru', 'Япония', 'mass', 'Массовый', 'Японский производитель автомобилей', '../img/no-image.png', '[\"Forester\", \"Outback\", \"Impreza\", \"XV\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('40', 'Suzuki', 'Япония', 'mass', 'Массовый', 'Японский производитель автомобилей', '../img/no-image.png', '[\"Vitara\", \"Swift\", \"SX4\", \"Jimny\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('41', 'Tesla', 'США', 'electric', 'Электрический', 'Американский производитель электромобилей', '../img/no-image.png', '[\"Model 3\", \"Model S\", \"Model X\", \"Model Y\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('42', 'Toyota', 'Япония', 'mass', 'Массовый', 'Японский производитель автомобилей', '../img/no-image.png', '[\"Camry\", \"RAV4\", \"Land Cruiser\", \"Corolla\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('43', 'Volkswagen', 'Германия', 'mass', 'Массовый', 'Немецкий производитель автомобилей', '../img/no-image.png', '[\"Passat\", \"Tiguan\", \"Polo\", \"Golf\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('44', 'Volvo', 'Швеция', 'premium', 'Премиум', 'Шведский производитель автомобилей', '../img/no-image.png', '[\"XC90\", \"XC60\", \"S90\", \"V90\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33'),
+('45', 'UAZ', 'Россия', 'offroad', 'Внедорожник', 'Российский производитель внедорожников', '../img/no-image.png', '[\"Patriot\", \"Hunter\", \"Pickup\", \"Profi\"]', '2026-03-03 13:45:33', '2026-03-03 13:45:33');
+
+--
+-- Структура таблицы `car_brands_display`
+--
+
+DROP TABLE IF EXISTS `car_brands_display`;
+CREATE TABLE `car_brands_display` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `image` varchar(500) DEFAULT 'img/no-image.png',
+  `search_term` varchar(100) NOT NULL,
+  `display_order` int(11) DEFAULT '0',
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_search_term` (`search_term`),
+  KEY `idx_display_order` (`display_order`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `car_brands_display`
+-- Всего записей: 45
+--
+
+INSERT INTO `car_brands_display` (`id`, `name`, `image`, `search_term`, `display_order`, `is_active`, `created_at`, `updated_at`) VALUES 
+('1', 'Acura', 'img/Stamps/Acura.png', 'acura', '1', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('2', 'Aixam', 'img/Stamps/Aixam.png', 'aixam', '2', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('3', 'Alfa Romeo', 'img/Stamps/Alfa Romeo.png', 'alfa romeo', '3', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('4', 'Aston Martin', 'img/Stamps/Aston Martin.png', 'aston martin', '4', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('5', 'Audi', 'img/Stamps/Audi.png', 'audi', '5', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('6', 'BMW', 'img/Stamps/BMW.png', 'bmw', '6', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('7', 'Bentley', 'img/Stamps/Bentley.png', 'bentley', '7', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('8', 'Buick', 'img/Stamps/Buick.png', 'buick', '8', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('9', 'Cadillac', 'img/Stamps/Cadillac.png', 'cadillac', '9', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('10', 'Chevrolet', 'img/Stamps/Chevrolet.png', 'chevrolet', '10', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('11', 'Chrysler', 'img/Stamps/Chrysler.png', 'chrysler', '11', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('12', 'Dodge', 'img/Stamps/Dodge.png', 'dodge', '12', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('13', 'Fiat', 'img/Stamps/Fiat.png', 'fiat', '13', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('14', 'Ford', 'img/Stamps/Ford.png', 'ford', '14', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('15', 'Gaz', 'img/Stamps/Gaz.png', 'gaz', '15', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('16', 'Honda', 'img/Stamps/Honda.png', 'honda', '16', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('17', 'Hummer', 'img/Stamps/Hummer.png', 'hummer', '17', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('18', 'Hyundai', 'img/Stamps/Hyundai.png', 'hyundai', '18', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('19', 'Infiniti', 'img/Stamps/Infiniti.png', 'infiniti', '19', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('20', 'Jaguar', 'img/Stamps/Jaguar.png', 'jaguar', '20', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('21', 'Jeep', 'img/Stamps/Jeep.png', 'jeep', '21', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('22', 'Kia', 'img/Stamps/Kia.png', 'kia', '22', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('23', 'Lada', 'img/Stamps/Lada.png', 'lada', '23', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('24', 'Lamborghini', 'img/Stamps/Lamborghini.png', 'lamborghini', '24', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('25', 'Lancia', 'img/Stamps/Lancia.png', 'lancia', '25', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('26', 'Land Rover', 'img/Stamps/Land Rover.png', 'land rover', '26', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('27', 'Lexus', 'img/Stamps/Lexus.png', 'lexus', '27', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('28', 'Lotus', 'img/Stamps/Lotus.png', 'lotus', '28', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('29', 'Mazda', 'img/no-image.png', 'mazda', '29', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('30', 'Mercedes-Benz', 'img/no-image.png', 'mercedes-benz', '30', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('31', 'Mini', 'img/no-image.png', 'mini', '31', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('32', 'Mitsubishi', 'img/no-image.png', 'mitsubishi', '32', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('33', 'Nissan', 'img/no-image.png', 'nissan', '33', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('34', 'Opel', 'img/no-image.png', 'opel', '34', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('35', 'Peugeot', 'img/no-image.png', 'peugeot', '35', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('36', 'Porsche', 'img/no-image.png', 'porsche', '36', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('37', 'Renault', 'img/no-image.png', 'renault', '37', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('38', 'Skoda', 'img/no-image.png', 'skoda', '38', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('39', 'Subaru', 'img/no-image.png', 'subaru', '39', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('40', 'Suzuki', 'img/no-image.png', 'suzuki', '40', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('41', 'Tesla', 'img/no-image.png', 'tesla', '41', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('42', 'Toyota', 'img/no-image.png', 'toyota', '42', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('43', 'Volkswagen', 'img/no-image.png', 'volkswagen', '43', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('44', 'Volvo', 'img/no-image.png', 'volvo', '44', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28'),
+('45', 'UAZ', 'img/no-image.png', 'uaz', '45', '1', '2026-06-19 19:56:28', '2026-06-19 19:56:28');
+
+--
+-- Структура таблицы `cart`
+--
+
+DROP TABLE IF EXISTS `cart`;
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `category_product_id` int(11) DEFAULT NULL,
+  `product_type` varchar(50) DEFAULT NULL COMMENT 'part - запчасть (products), oil - масло (products), accessory - аксессуар (products), antifreeze - антифриз (category_products), brake-fluid - тормозная жидкость (category_products), cooling-fluid - охлаждающая жидкость (category_products), power-steering - жидкость ГУР (category_products), special-fluid - специальная жидкость (category_products), kit - комплект (category_products), transmission-oil - трансмиссионное масло (category_products), motor-oil - моторное масло (category_products)',
+  `product_name` varchar(255) NOT NULL,
+  `product_image` varchar(255) DEFAULT 'no-image.png',
+  `price` decimal(10,2) NOT NULL,
+  `quantity` int(11) DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `fk_cart_product` (`product_id`),
+  KEY `idx_cart_category_product` (`category_product_id`),
+  CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE,
+  CONSTRAINT `fk_cart_category_product` FOREIGN KEY (`category_product_id`) REFERENCES `category_products` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_cart_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `cart`
+-- Всего записей: 11
+--
+
+INSERT INTO `cart` (`id`, `user_id`, `product_id`, `category_product_id`, `product_type`, `product_name`, `product_image`, `price`, `quantity`, `created_at`, `updated_at`) VALUES 
+('61', '3', '2', NULL, 'part', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', '1', '2026-02-27 21:05:45', '2026-02-27 21:05:45'),
+('62', '3', '53', NULL, 'oil', 'Total Quartz 9000 5W-40', 'uploads/products/696392655986c.png', '3650.00', '1', '2026-02-27 21:05:51', '2026-02-27 21:05:51'),
+('63', '3', NULL, '87', 'kit', 'Набор для бензинового двигателя', 'uploads/products/696392655986c.png', '9500.00', '1', '2026-02-27 21:05:56', '2026-02-27 21:05:56'),
+('64', '3', NULL, '40', 'cooling-fluid', 'Hepu Antifreeze', 'uploads/products/696392655986c.png', '780.00', '1', '2026-02-27 21:06:04', '2026-02-27 21:06:04'),
+('65', '3', '97', NULL, 'accessory', 'Коврики резиновые Universal', 'uploads/products/696392655986c.png', '1890.00', '1', '2026-02-27 21:06:13', '2026-02-27 21:06:13'),
+('66', '4', NULL, '1', 'antifreeze', 'Motul Inugel Optimal', 'uploads/products/696392655986c.png', '1100.00', '1', '2026-02-27 21:08:14', '2026-02-27 21:08:14'),
+('67', '4', NULL, '2', 'antifreeze', 'Shell Zone Ultra', 'uploads/products/696392655986c.png', '1650.00', '1', '2026-02-27 21:08:15', '2026-02-27 21:08:15'),
+('68', '4', NULL, '39', 'cooling-fluid', 'SWAG Antifreeze', 'uploads/products/696392655986c.png', '1580.00', '1', '2026-02-27 21:08:21', '2026-02-27 21:08:21'),
+('71', '2', '8', NULL, 'part', 'Тормозные диски BMW X5 E70', 'uploads/products/696392655986c.png', '8900.00', '2', '2026-06-04 19:03:53', '2026-06-06 19:32:12'),
+('72', '2', '50', NULL, 'oil', 'Mobil Super 3000 X1 5W-40', 'uploads/products/696392655986c.png', '3450.00', '1', '2026-06-04 19:03:59', '2026-06-06 19:31:46'),
+('73', '2', '51', NULL, 'oil', 'Liqui Moly Special Tec AA 5W-30', 'uploads/products/696392655986c.png', '4210.00', '1', '2026-06-06 19:32:06', '2026-06-06 19:32:06');
+
+--
+-- Структура таблицы `category_products`
+--
+
+DROP TABLE IF EXISTS `category_products`;
+CREATE TABLE `category_products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_type` varchar(50) NOT NULL COMMENT 'antifreeze, brake-fluid, cooling-fluid, power-steering, special-fluid, kit, transmission-oil, motor-oil',
+  `title` varchar(255) NOT NULL,
+  `art` varchar(100) DEFAULT NULL,
+  `volume` varchar(50) DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `stock` tinyint(1) DEFAULT '1',
+  `hit` tinyint(1) DEFAULT '0',
+  `brand` varchar(100) DEFAULT NULL,
+  `image` varchar(500) DEFAULT 'uploads/products/696392655986c.png',
+  `type` varchar(100) DEFAULT NULL,
+  `color` varchar(50) DEFAULT NULL,
+  `viscosity` varchar(50) DEFAULT NULL,
+  `standard` varchar(50) DEFAULT NULL,
+  `application` varchar(100) DEFAULT NULL,
+  `freezing` varchar(20) DEFAULT NULL,
+  `dry_boil` varchar(20) DEFAULT NULL,
+  `wet_boil` varchar(20) DEFAULT NULL,
+  `contents` text,
+  `api` varchar(50) DEFAULT NULL,
+  `acea` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_category_type` (`category_type`),
+  KEY `idx_brand` (`brand`),
+  KEY `idx_price` (`price`)
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `category_products`
+-- Всего записей: 120
+--
+
+INSERT INTO `category_products` (`id`, `category_type`, `title`, `art`, `volume`, `price`, `stock`, `hit`, `brand`, `image`, `type`, `color`, `viscosity`, `standard`, `application`, `freezing`, `dry_boil`, `wet_boil`, `contents`, `api`, `acea`, `created_at`, `updated_at`) VALUES 
+('1', 'antifreeze', 'Motul Inugel Optimal', 'ANTI001', '2 л', '1100.00', '1', '1', 'Motul', 'uploads/products/696392655986c.png', 'G12', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('2', 'antifreeze', 'Shell Zone Ultra', 'SHELL-AF01', '5 л', '1650.00', '1', '0', 'Shell', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('3', 'antifreeze', 'Liqui Moly Kuhlerfrostschutz', 'LM-AF001', '1.5 л', '1250.00', '1', '1', 'Liqui Moly', 'uploads/products/696392655986c.png', 'G12++', 'Синий', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('4', 'antifreeze', 'Castrol Radicool SF', 'CAST-AF01', '5 л', '1890.00', '1', '0', 'Castrol', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('5', 'antifreeze', 'Total Glacelf Auto Supra', 'TOTAL-AF01', '5 л', '1450.00', '0', '0', 'Total', 'uploads/products/696392655986c.png', 'G12', 'Синий', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('6', 'antifreeze', 'Mobil Antifreeze Advanced', 'MOB-AF001', '1 л', '680.00', '1', '1', 'Mobil', 'uploads/products/696392655986c.png', 'G12++', 'Оранжевый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('7', 'antifreeze', 'Febi Bilstein Antifreeze', 'FEBI-AF01', '1.5 л', '850.00', '1', '0', 'Febi', 'uploads/products/696392655986c.png', 'G12', 'Синий', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('8', 'antifreeze', 'Ravenol Original Green', 'RAV-AF001', '1.5 л', '920.00', '1', '0', 'Ravenol', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('9', 'antifreeze', 'SWAG Antifreeze', 'SWAG-AF01', '5 л', '1580.00', '1', '1', 'SWAG', 'uploads/products/696392655986c.png', 'G12+', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('10', 'antifreeze', 'Hepu Antifreeze', 'HEPU-AF01', '1.5 л', '780.00', '1', '0', 'Hepu', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('11', 'antifreeze', 'Motul Inugel Expert', 'ANTI002', '5 л', '2200.00', '1', '0', 'Motul', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('12', 'antifreeze', 'Shell Helix Ultra', 'SHELL-AF02', '2 л', '1350.00', '1', '1', 'Shell', 'uploads/products/696392655986c.png', 'G12+', 'Оранжевый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('13', 'antifreeze', 'Liqui Moly G12 Plus', 'LM-AF002', '5 л', '1950.00', '1', '0', 'Liqui Moly', 'uploads/products/696392655986c.png', 'G12+', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('14', 'antifreeze', 'Castrol SF Concentrate', 'CAST-AF02', '1 л', '950.00', '1', '0', 'Castrol', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('15', 'antifreeze', 'Total Antifreeze', 'TOTAL-AF02', '2 л', '1200.00', '0', '0', 'Total', 'uploads/products/696392655986c.png', 'G12', 'Синий', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('16', 'brake-fluid', 'Liqui Moly Bremsflussigkeit DOT 4', 'BRAKE001', '0.5 л', '650.00', '1', '1', 'Liqui Moly', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '255°C', '165°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('17', 'brake-fluid', 'Castrol React DOT 4', 'CAST-BF01', '0.5 л', '580.00', '1', '0', 'Castrol', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '250°C', '160°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('18', 'brake-fluid', 'Motul DOT 5.1', 'MOT-BF01', '0.5 л', '890.00', '1', '1', 'Motul', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 5.1', NULL, NULL, '270°C', '180°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('19', 'brake-fluid', 'Brembo LCF 600 Plus DOT 4', 'BREM-BF01', '0.5 л', '720.00', '1', '0', 'Brembo', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '260°C', '170°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('20', 'brake-fluid', 'ATE SL.6 DOT 4', 'ATE-BF001', '1 л', '950.00', '1', '1', 'ATE', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '255°C', '165°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('21', 'brake-fluid', 'TRW PFG550 DOT 4', 'TRW-BF001', '0.5 л', '520.00', '0', '0', 'TRW', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '250°C', '160°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('22', 'brake-fluid', 'Bosch ESI6-32N DOT 4', 'BOSCH-BF01', '1 л', '780.00', '1', '0', 'Bosch', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '265°C', '175°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('23', 'brake-fluid', 'Febi Bilstein DOT 4', 'FEBI-BF01', '0.5 л', '480.00', '1', '0', 'Febi', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '250°C', '160°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('24', 'brake-fluid', 'Ravenol DOT 5.1', 'RAV-BF001', '0.5 л', '820.00', '1', '1', 'Ravenol', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 5.1', NULL, NULL, '270°C', '180°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('25', 'brake-fluid', 'Shell DOT 4', 'SHELL-BF01', '0.5 л', '550.00', '1', '0', 'Shell', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '255°C', '165°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('26', 'brake-fluid', 'Liqui Moly DOT 5.1', 'BRAKE002', '0.5 л', '920.00', '1', '0', 'Liqui Moly', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 5.1', NULL, NULL, '275°C', '185°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('27', 'brake-fluid', 'Castrol React DOT 5.1', 'CAST-BF02', '0.5 л', '850.00', '1', '0', 'Castrol', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 5.1', NULL, NULL, '270°C', '180°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('28', 'brake-fluid', 'Motul DOT 4', 'MOT-BF02', '1 л', '1100.00', '1', '1', 'Motul', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '265°C', '175°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('29', 'brake-fluid', 'Brembo DOT 5.1', 'BREM-BF02', '0.5 л', '950.00', '0', '0', 'Brembo', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 5.1', NULL, NULL, '275°C', '185°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('30', 'brake-fluid', 'ATE TYP 200 DOT 4', 'ATE-BF002', '1 л', '1200.00', '1', '1', 'ATE', 'uploads/products/696392655986c.png', NULL, NULL, NULL, 'DOT 4', NULL, NULL, '260°C', '170°C', NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('31', 'cooling-fluid', 'Liqui Moly Kuhlerfrostschutz GTL 12 Plus', 'COOL001', '1.5 л', '1250.00', '1', '1', 'Liqui Moly', 'uploads/products/696392655986c.png', 'G12++', 'Синий', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('32', 'cooling-fluid', 'Castrol Radicool SF', 'CAST-CF01', '5 л', '1890.00', '1', '0', 'Castrol', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, '-35°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('33', 'cooling-fluid', 'Motul Inugel Optimal', 'MOT-CF001', '2 л', '1100.00', '1', '1', 'Motul', 'uploads/products/696392655986c.png', 'G12', 'Красный', NULL, NULL, NULL, '-37°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('34', 'cooling-fluid', 'Shell Zone Ultra', 'SHELL-CF01', '5 л', '1650.00', '1', '0', 'Shell', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('35', 'cooling-fluid', 'Total Glacelf Auto Supra', 'TOTAL-CF01', '5 л', '1450.00', '0', '0', 'Total', 'uploads/products/696392655986c.png', 'G12', 'Синий', NULL, NULL, NULL, '-35°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('36', 'cooling-fluid', 'Mobil Antifreeze Advanced', 'MOB-CF001', '1 л', '680.00', '1', '1', 'Mobil', 'uploads/products/696392655986c.png', 'G12++', 'Оранжевый', NULL, NULL, NULL, '-37°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('37', 'cooling-fluid', 'Febi Bilstein Kuhlerfrostschutz', 'FEBI-CF01', '1.5 л', '850.00', '1', '0', 'Febi', 'uploads/products/696392655986c.png', 'G12', 'Синий', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('38', 'cooling-fluid', 'Ravenol Original Green', 'RAV-CF001', '1.5 л', '920.00', '1', '0', 'Ravenol', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, '-35°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('39', 'cooling-fluid', 'SWAG Antifreeze', 'SWAG-CF01', '5 л', '1580.00', '1', '1', 'SWAG', 'uploads/products/696392655986c.png', 'G12+', 'Красный', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('40', 'cooling-fluid', 'Hepu Antifreeze', 'HEPU-CF01', '1.5 л', '780.00', '1', '0', 'Hepu', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, '-37°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('41', 'cooling-fluid', 'Liqui Moly G13', 'COOL002', '1.5 л', '1350.00', '1', '0', 'Liqui Moly', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('42', 'cooling-fluid', 'Castrol G12++', 'CAST-CF02', '5 л', '1950.00', '1', '1', 'Castrol', 'uploads/products/696392655986c.png', 'G12++', 'Синий', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('43', 'cooling-fluid', 'Motul G11', 'MOT-CF002', '2 л', '950.00', '1', '0', 'Motul', 'uploads/products/696392655986c.png', 'G11', 'Зеленый', NULL, NULL, NULL, '-35°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('44', 'cooling-fluid', 'Shell G12+', 'SHELL-CF02', '5 л', '1750.00', '0', '0', 'Shell', 'uploads/products/696392655986c.png', 'G12+', 'Красный', NULL, NULL, NULL, '-37°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('45', 'cooling-fluid', 'Mobil G13', 'MOB-CF002', '1 л', '720.00', '1', '1', 'Mobil', 'uploads/products/696392655986c.png', 'G13', 'Фиолетовый', NULL, NULL, NULL, '-40°C', NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:29', '2026-02-16 20:49:29'),
+('46', 'power-steering', 'Liqui Moly Lenkungs-Getriebeoil', 'PSF001', '1 л', '1450.00', '1', '1', 'Liqui Moly', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('47', 'power-steering', 'Febi Bilstein Hydraulikol', 'FEBI-PS01', '1 л', '980.00', '1', '0', 'Febi', 'uploads/products/696392655986c.png', 'PSF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('48', 'power-steering', 'Ravenol Hydraulik Fluid', 'RAV-PS001', '1 л', '1120.00', '1', '1', 'Ravenol', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('49', 'power-steering', 'SWAG Power Steering Fluid', 'SWAG-PS01', '1 л', '890.00', '0', '0', 'SWAG', 'uploads/products/696392655986c.png', 'PSF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('50', 'power-steering', 'Mannol Power Steering Fluid', 'MANN-PS01', '1 л', '760.00', '1', '0', 'Mannol', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('51', 'power-steering', 'Motul Multi ATF', 'MOT-PS001', '1 л', '1280.00', '1', '1', 'Motul', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('52', 'power-steering', 'Castrol Transmax ATF', 'CAST-PS01', '1 л', '1350.00', '1', '0', 'Castrol', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('53', 'power-steering', 'Mobil ATF 320', 'MOB-PS001', '1 л', '1100.00', '1', '0', 'Mobil', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('54', 'power-steering', 'Pentosin CHF 11S', 'PENT-PS01', '1 л', '1650.00', '1', '1', 'Pentosin', 'uploads/products/696392655986c.png', 'CHF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('55', 'power-steering', 'Comma PSF-MV', 'COMM-PS01', '1 л', '820.00', '1', '0', 'Comma', 'uploads/products/696392655986c.png', 'PSF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('56', 'power-steering', 'Liqui Moly ATF Synth', 'PSF002', '1 л', '1550.00', '1', '0', 'Liqui Moly', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('57', 'power-steering', 'Febi Hydraulic Oil', 'FEBI-PS02', '1 л', '1050.00', '1', '0', 'Febi', 'uploads/products/696392655986c.png', 'PSF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('58', 'power-steering', 'Ravenol ATF Fluid', 'RAV-PS002', '1 л', '1250.00', '1', '1', 'Ravenol', 'uploads/products/696392655986c.png', 'ATF', 'Красный', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('59', 'power-steering', 'Motul Dexron III', 'MOT-PS002', '1 л', '1380.00', '1', '0', 'Motul', 'uploads/products/696392655986c.png', 'ATF', 'Красный', '', '', '', '', '', '', '', '', '', '2026-02-16 20:49:30', '2026-02-19 20:04:27'),
+('60', 'power-steering', 'Pentosin CHF 202', 'PENT-PS02', '1 л', '1750.00', '1', '1', 'Pentosin', 'uploads/products/696392655986c.png', 'CHF', 'Зеленый', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('61', 'special-fluid', 'Liqui Moly Scheiben-Reiniger', 'SPEC001', '2 л', '450.00', '1', '1', 'Liqui Moly', 'uploads/products/696392655986c.png', 'Омыватель', NULL, NULL, NULL, 'Лобовое стекло', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('62', 'special-fluid', 'Sonax AdBlue', 'SONAX-AB01', '10 л', '890.00', '1', '0', 'Sonax', 'uploads/products/696392655986c.png', 'AdBlue', NULL, NULL, NULL, 'Система SCR', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('63', 'special-fluid', 'Wynns Injector Cleaner', 'WYNNS-IC01', '0.25 л', '680.00', '1', '1', 'Wynns', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Инжектор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('64', 'special-fluid', 'Motul Clean Brake', 'MOT-SP001', '0.4 л', '520.00', '1', '0', 'Motul', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Тормоза', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('65', 'special-fluid', 'Bardahl No Frost', 'BARD-SP01', '0.5 л', '320.00', '0', '0', 'Bardahl', 'uploads/products/696392655986c.png', 'Антиобледенитель', NULL, NULL, NULL, 'Замки', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('66', 'special-fluid', 'Gunk Engine Degreaser', 'GUNK-SP01', '0.5 л', '580.00', '1', '1', 'Gunk', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Двигатель', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('67', 'special-fluid', 'CRC Contact Cleaner', 'CRC-SP001', '0.4 л', '420.00', '1', '0', 'CRC', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Электрика', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('68', 'special-fluid', 'Permatex Anti-Seize', 'PERM-SP01', '0.1 л', '350.00', '1', '0', 'Permatex', 'uploads/products/696392655986c.png', 'Смазка', NULL, NULL, NULL, 'Резьба', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('69', 'special-fluid', 'WD-40 Specialist', 'WD40-SP01', '0.4 л', '480.00', '1', '1', 'WD-40', 'uploads/products/696392655986c.png', 'Смазка', NULL, NULL, NULL, 'Универсальная', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('70', 'special-fluid', '3M Windshield Wash', '3M-SP001', '1 л', '290.00', '1', '0', '3M', 'uploads/products/696392655986c.png', 'Омыватель', NULL, NULL, NULL, 'Стекло', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('71', 'special-fluid', 'Liqui Moly Kühlerschutz', 'SPEC002', '1.5 л', '550.00', '1', '0', 'Liqui Moly', 'uploads/products/696392655986c.png', 'Охлаждающая', NULL, NULL, NULL, 'Радиатор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('72', 'special-fluid', 'Sonax Glass Cleaner', 'SONAX-GC01', '0.5 л', '380.00', '1', '0', 'Sonax', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Стекло', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('73', 'special-fluid', 'Wynns Diesel Cleaner', 'WYNNS-DC01', '0.25 л', '720.00', '1', '1', 'Wynns', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Дизель', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('74', 'special-fluid', 'Motul Chain Clean', 'MOT-SP002', '0.4 л', '610.00', '1', '0', 'Motul', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Цепь', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('75', 'special-fluid', 'Bardahl Injector Clean', 'BARD-SP02', '0.3 л', '490.00', '0', '0', 'Bardahl', 'uploads/products/696392655986c.png', 'Очиститель', NULL, NULL, NULL, 'Инжектор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('76', 'kit', 'Комплект замены масла Castrol', 'KIT001', '1 компл', '5200.00', '1', '1', 'Castrol', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 4л + фильтр', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('77', 'kit', 'Набор Liqui Moly для ТО', 'KIT002', '1 компл', '7800.00', '1', '0', 'Liqui Moly', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 5л + фильтры + свечи', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('78', 'kit', 'Комплект тормозной жидкости', 'KIT003', '1 компл', '1850.00', '1', '1', 'ATE', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Тормозная жидкость 1л + очиститель', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('79', 'kit', 'Набор охлаждающей жидкости', 'KIT004', '1 компл', '2450.00', '0', '0', 'Motul', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Антифриз 5л + дистиллированная вода', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('80', 'kit', 'Комплект трансмиссионного масла', 'KIT005', '1 компл', '3200.00', '1', '0', 'Liqui Moly', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 2л + прокладка', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('81', 'kit', 'Набор для ГУР', 'KIT006', '1 компл', '1980.00', '1', '1', 'Febi', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Жидкость ГУР 1л + очиститель', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('82', 'kit', 'Комплект полного ТО', 'KIT007', '1 компл', '12500.00', '1', '1', 'Various', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло, фильтры, свечи, жидкости', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('83', 'kit', 'Набор для замены АКПП', 'KIT008', '1 компл', '6800.00', '1', '0', 'Mobil', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло АКПП 4л + фильтр', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('84', 'kit', 'Комплект зимнего ТО', 'KIT009', '1 компл', '4200.00', '1', '1', 'Various', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Омыватель, антифриз, свечи, жидкости', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('85', 'kit', 'Набор для дизельного двигателя', 'KIT010', '1 компл', '8900.00', '1', '0', 'Liqui Moly', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 5л + фильтры + присадка', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('86', 'kit', 'Комплект замены масла Mobil', 'KIT011', '1 компл', '5800.00', '1', '0', 'Mobil', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 4л + фильтр', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('87', 'kit', 'Набор для бензинового двигателя', 'KIT012', '1 компл', '9500.00', '1', '1', 'Castrol', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Масло 5л + фильтры + свечи', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('88', 'kit', 'Комплект тормозной системы', 'KIT013', '1 компл', '3200.00', '1', '0', 'Brembo', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Тормозная жидкость + колодки', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('89', 'kit', 'Набор для кондиционера', 'KIT014', '1 компл', '2800.00', '0', '0', 'Various', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Фреон + очиститель', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('90', 'kit', 'Комплект летнего ТО', 'KIT015', '1 компл', '3800.00', '1', '1', 'Various', 'uploads/products/696392655986c.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Омыватель, антифриз, фильтры', NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('91', 'transmission-oil', 'Castrol TRANSMAX 75W-90', 'TRANS001', '1 л', '1890.00', '1', '1', 'Castrol', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-90', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('92', 'transmission-oil', 'Mobilube 1 SHC 75W-90', 'MOB-TR001', '1 л', '2150.00', '1', '0', 'Mobil', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-90', NULL, 'МКПП, АКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('93', 'transmission-oil', 'Liqui Moly Hochleistungs-Getriebeoil 75W-90', 'LM-TR001', '1 л', '1980.00', '1', '1', 'Liqui Moly', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-90', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('94', 'transmission-oil', 'Motul Gear 300 75W-90', 'MOT-TR001', '1 л', '2450.00', '1', '0', 'Motul', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-90', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('95', 'transmission-oil', 'Shell Spirax S6 GX 80W-90', 'SHELL-TR01', '1 л', '1650.00', '1', '0', 'Shell', 'uploads/products/696392655986c.png', 'Минеральное', NULL, '80W-90', NULL, 'МКПП, редуктор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('96', 'transmission-oil', 'Total Transmission FE 75W-80', 'TOTAL-TR01', '1 л', '1780.00', '0', '0', 'Total', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-80', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('97', 'transmission-oil', 'ZIC G-F Top 75W-85', 'ZIC-TR001', '1 л', '1520.00', '1', '1', 'ZIC', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-85', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('98', 'transmission-oil', 'ELF Tranself NFJ 75W-80', 'ELF-TR001', '1 л', '1920.00', '1', '0', 'ELF', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-80', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('99', 'transmission-oil', 'Ravenol MTF-2 75W-80', 'RAV-TR001', '1 л', '1680.00', '1', '0', 'Ravenol', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-80', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('100', 'transmission-oil', 'Febi Bilstein Getriebeoil 75W-90', 'FEBI-TR01', '1 л', '1350.00', '1', '0', 'Febi', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-90', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('101', 'transmission-oil', 'Castrol TRANSMAX 80W-90', 'TRANS002', '1 л', '1750.00', '1', '0', 'Castrol', 'uploads/products/696392655986c.png', 'Минеральное', NULL, '80W-90', NULL, 'МКПП, редуктор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('102', 'transmission-oil', 'Mobilube GX 80W-90', 'MOB-TR002', '1 л', '1420.00', '1', '0', 'Mobil', 'uploads/products/696392655986c.png', 'Минеральное', NULL, '80W-90', NULL, 'МКПП, редуктор', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('103', 'transmission-oil', 'Liqui Moly Getriebeoil 75W-80', 'LM-TR002', '1 л', '1850.00', '1', '1', 'Liqui Moly', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '75W-80', NULL, 'МКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('104', 'transmission-oil', 'Motul Multi ATF', 'MOT-TR002', '1 л', '1950.00', '1', '0', 'Motul', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, 'ATF', NULL, 'АКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('105', 'transmission-oil', 'Shell Spirax S4 ATF MD3', 'SHELL-TR02', '1 л', '1250.00', '1', '0', 'Shell', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, 'ATF', NULL, 'АКПП', NULL, NULL, NULL, NULL, NULL, NULL, '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('106', 'motor-oil', 'Castrol EDGE 5W-30', '15698E4', '4 л', '3890.00', '1', '1', 'Castrol', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A3/B4', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('107', 'motor-oil', 'Mobil Super 3000 X1 5W-40', '152343', '4 л', '3450.00', '1', '0', 'Mobil', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A3/B4', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('108', 'motor-oil', 'Liqui Moly Special Tec AA 5W-30', '1123DE', '5 л', '4210.00', '1', '1', 'Liqui Moly', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A5/B5', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('109', 'motor-oil', 'Shell Helix HX7 10W-40', '87654F', '4 л', '2890.00', '0', '0', 'Shell', 'uploads/products/696392655986c.png', 'Полусинтетическое', NULL, '10W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A3/B4', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('110', 'motor-oil', 'Total Quartz 9000 5W-40', 'TQ9000', '5 л', '3650.00', '1', '0', 'Total', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A3/B4', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('111', 'motor-oil', 'Motul 8100 X-clean 5W-30', 'M8100', '5 л', '4890.00', '1', '1', 'Motul', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'C3', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('112', 'motor-oil', 'ZIC X9 5W-30', 'ZX9-5W30', '4 л', '2990.00', '1', '0', 'ZIC', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A5/B5', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('113', 'motor-oil', 'ELF Evolution 900 NF 5W-40', 'ELF900', '5 л', '3750.00', '1', '0', 'ELF', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A3/B4', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('114', 'motor-oil', 'Castrol MAGNATEC 5W-30', 'CAST567', '4 л', '3250.00', '1', '1', 'Castrol', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A1/B1', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('115', 'motor-oil', 'Mobil 1 0W-40', 'MOB1-0W40', '4 л', '4450.00', '1', '0', 'Mobil', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '0W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A3/B4', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('116', 'motor-oil', 'Castrol EDGE 0W-20', '15698E5', '4 л', '3990.00', '1', '0', 'Castrol', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '0W-20', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A1/B1', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('117', 'motor-oil', 'Mobil Super 3000 5W-30', '152344', '4 л', '3550.00', '1', '0', 'Mobil', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A3/B4', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('118', 'motor-oil', 'Liqui Moly Molygen 5W-40', '1124DE', '5 л', '4510.00', '1', '1', 'Liqui Moly', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A3/B4', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('119', 'motor-oil', 'Shell Helix Ultra 5W-30', '87655F', '4 л', '3290.00', '1', '0', 'Shell', 'uploads/products/696392655986c.png', 'Синтетическое', NULL, '5W-30', NULL, NULL, NULL, NULL, NULL, NULL, 'SN/CF', 'A5/B5', '2026-02-16 20:49:30', '2026-02-16 20:49:30'),
+('120', 'motor-oil', 'Total Quartz 7000 10W-40', 'TQ7000', '4 л', '2750.00', '1', '0', 'Total', 'uploads/products/696392655986c.png', 'Полусинтетическое', NULL, '10W-40', NULL, NULL, NULL, NULL, NULL, NULL, 'SN', 'A3/B4', '2026-02-16 20:49:30', '2026-02-16 20:49:30');
+
+--
+-- Структура таблицы `company_documents`
+--
+
+DROP TABLE IF EXISTS `company_documents`;
+CREATE TABLE `company_documents` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `description` text,
+  `file_name` varchar(255) DEFAULT NULL,
+  `file_size` varchar(20) DEFAULT NULL,
+  `display_order` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `company_documents`
+-- Всего записей: 3
+--
+
+INSERT INTO `company_documents` (`id`, `title`, `description`, `file_name`, `file_size`, `display_order`) VALUES 
+('1', 'Устав компании', 'Учредительный документ ООО \"Лал-Авто\"', 'Устав_ООО_Лал-Авто.pdf', '2.3 MB', '1'),
+('2', 'Свидетельство ОГРН', 'Свидетельство о государственной регистрации', 'Свидетельство_ОГРН.pdf', '1.8 MB', '2'),
+('3', 'Свидетельство ИНН', 'Свидетельство о постановке на налоговый учет', 'Свидетельство_ИНН.pdf', '1.5 MB', '3');
+
+--
+-- Структура таблицы `company_requisites`
+--
+
+DROP TABLE IF EXISTS `company_requisites`;
+CREATE TABLE `company_requisites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` varchar(50) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  `copy_value` varchar(500) DEFAULT NULL,
+  `display_order` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `company_requisites`
+-- Всего записей: 20
+--
+
+INSERT INTO `company_requisites` (`id`, `category`, `title`, `value`, `copy_value`, `display_order`) VALUES 
+('1', 'general', 'Полное наименование', 'Общество с ограниченной ответственностью \"Лал-Авто\"', 'Общество с ограниченной ответственностью \"Лал-Авто\"', '1'),
+('2', 'general', 'Сокращенное наименование', 'ООО \"Лал-Авто\"', 'ООО \"Лал-Авто\"', '2'),
+('3', 'general', 'ИНН', '3900000000', '3900000000', '3'),
+('4', 'general', 'КПП', '390001001', '390001001', '4'),
+('5', 'general', 'ОГРН', '1023900000000', '1023900000000', '5'),
+('6', 'general', 'ОКПО', '12345678', '12345678', '6'),
+('7', 'general', 'ОКВЭД', '45.32.1 Торговля автомобильными деталями, узлами и принадлежностями', '45.32.1 Торговля автомобильными деталями, узлами и принадлежностями', '7'),
+('8', 'bank', 'Расчетный счет', '40702810500000000001', '40702810500000000001', '1'),
+('9', 'bank', 'Банк', 'ПАО \"Сбербанк\"', 'ПАО \"Сбербанк\"', '2'),
+('10', 'bank', 'БИК', '044525225', '044525225', '3'),
+('11', 'bank', 'Корреспондентский счет', '30101810400000000225', '30101810400000000225', '4'),
+('12', 'bank', 'Юридический адрес банка', '117997, г. Москва, ул. Вавилова, д. 19', '117997, г. Москва, ул. Вавилова, д. 19', '5'),
+('13', 'address', 'Юридический адрес', '236000, г. Калининград, ул. Автомобильная, д. 12', '236000, г. Калининград, ул. Автомобильная, д. 12', '1'),
+('14', 'address', 'Фактический адрес', '236000, г. Калининград, ул. Автомобильная, д. 12', '236000, г. Калининград, ул. Автомобильная, д. 12', '2'),
+('15', 'address', 'Телефон', '+7 (4012) 65-65-65', '+74012656565', '3'),
+('16', 'address', 'Email', 'info@lal-auto.ru', 'info@lal-auto.ru', '4'),
+('17', 'address', 'Сайт', 'www.lal-auto.ru', 'www.lal-auto.ru', '5'),
+('18', 'management', 'Генеральный директор', 'Иванов Петр Сергеевич', 'Иванов Петр Сергеевич', '1'),
+('19', 'management', 'Главный бухгалтер', 'Смирнова Ольга Владимировна', 'Смирнова Ольга Владимировна', '2'),
+('20', 'management', 'Действует на основании', 'Устава', 'Устава', '3');
+
+--
+-- Структура таблицы `contact_messages`
+--
+
+DROP TABLE IF EXISTS `contact_messages`;
+CREATE TABLE `contact_messages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `subject` varchar(100) NOT NULL,
+  `message` text NOT NULL,
+  `status` enum('new','read','replied') DEFAULT 'new',
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_status` (`status`),
+  KEY `idx_created` (`created_at`),
+  KEY `idx_email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `contact_messages`
+-- Всего записей: 2
+--
+
+INSERT INTO `contact_messages` (`id`, `name`, `email`, `phone`, `subject`, `message`, `status`, `ip_address`, `user_agent`, `created_at`) VALUES 
+('1', 'Мария Иванова', 'maria.ivanova@bk.ru', '+7 (904) 567-89-01', 'cooperation', 'Представляю компанию по производству автохимии. Хочу предложить сотрудничество. Как связаться с отделом закупок?', 'read', '128.0.0.9', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0', '2026-03-17 21:15:46'),
+('2', 'Павел Григорьев', 'pavel.grigoriev@mail.ru', '+7 (909) 012-34-56', 'product', 'Интересует стоимость и наличие масла Mobil 1 5W-30, 4 литра. Также нужна консультация по подбору масла для BMW X5 2019.', 'new', '128.0.0.9', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0', '2026-03-17 21:19:54');
+
+--
+-- Структура таблицы `job_applications`
+--
+
+DROP TABLE IF EXISTS `job_applications`;
+CREATE TABLE `job_applications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `position` varchar(255) NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `message` text,
+  `resume_file` varchar(255) DEFAULT NULL,
+  `status` enum('new','reviewed','interview','rejected') DEFAULT 'new',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_status` (`status`),
+  KEY `idx_position` (`position`),
+  KEY `idx_created` (`created_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `job_applications`
+-- Всего записей: 2
+--
+
+INSERT INTO `job_applications` (`id`, `position`, `full_name`, `phone`, `email`, `message`, `resume_file`, `status`, `created_at`) VALUES 
+('1', 'Менеджер по продажам автозапчастей', 'Иванов Иван Иванович', '+7 (901) 234-56-78', 'ivanov.ivan@mail.ru', 'Имею опыт работы в продажах автозапчастей более 3 лет. Знаю программы 1С, умею работать с возражениями. Рассматриваю предложения о работе в стабильной компании.', '1773770181_69b995c5af0c5.pdf', 'reviewed', '2026-03-17 20:56:21'),
+('2', 'Автомеханик', 'Сидоров Петр Алексеевич', '+7 (903) 456-78-90', 'sidorov.petr@gmail.com', '', '1773770351_69b9966f5d7b7.pdf', 'rejected', '2026-03-17 20:59:11');
+
+--
+-- Структура таблицы `news`
+--
+
+DROP TABLE IF EXISTS `news`;
+CREATE TABLE `news` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `content` text,
+  `author` varchar(100) DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'draft',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `published_at` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `news`
+-- Всего записей: 8
+--
+
+INSERT INTO `news` (`id`, `title`, `content`, `author`, `status`, `created_at`, `published_at`) VALUES 
+('1', 'Открытие нового магазина в Москве', 'Рады сообщить, что мы открыли новый магазин автозапчастей в центре Москвы! Теперь у наших клиентов есть еще одна удобная точка для покупки качественных запчастей и аксессуаров для автомобилей. В новом магазине представлен расширенный ассортимент товаров, а также работает профессиональная консультационная служба. Ждем вас по адресу: ул. Тверская, 25.', 'Администратор', 'published', '2026-01-10 10:30:00', '2026-01-10'),
+('2', 'Новые поступления моторных масел', 'В нашем магазине появились новые виды моторных масел от ведущих производителей: Shell, Mobil, Castrol. Все масла соответствуют современным стандартам качества и подходят для различных типов двигателей. Специально для наших клиентов мы подготовили выгодные предложения при покупке от 5 литров. Акция действует до конца месяца.', 'Менеджер', 'published', '2026-01-11 14:20:00', '2026-01-17'),
+('3', 'Скидки на тормозные системы', 'С 15 января по 15 февраля действуют специальные скидки на все комплектующие тормозных систем. Тормозные колодки, диски, суппорты - все со скидкой до 25%! Не упустите возможность обновить тормозную систему вашего автомобиля с выгодой. Гарантия на все товары - 12 месяцев.', 'Администратор', 'draft', '2026-01-12 09:15:00', NULL),
+('4', 'Обновление сервисного центра', 'Завершилась модернизация нашего сервисного центра. Теперь мы предлагаем еще более качественный и быстрый сервис по ремонту и обслуживанию автомобилей. Установлено новое диагностическое оборудование, расширен штат специалистов. Записаться на обслуживание можно онлайн или по телефону.', 'Технический директор', 'draft', '2026-01-13 11:45:00', NULL),
+('5', 'Работа в праздничные дни', 'Уважаемые клиенты! Сообщаем о графике работы в праздничные дни. 1-2 января - выходные дни. С 3 января магазины и сервисный центр работают в обычном режиме. Онлайн-заказы принимаются круглосуточно. С наступающим Новым годом!', 'Администратор', 'published', '2026-01-14 16:30:00', '2026-01-17'),
+('6', 'Мастер-класс по замене фильтров', 'Приглашаем всех желающих на бесплатный мастер-класс \"Самостоятельная замена воздушного и салонного фильтров\", который состоится 20 января в 18:00 в нашем сервисном центре. Наши специалисты покажут, как правильно выполнить замену, и ответят на все вопросы. Количество мест ограничено, требуется предварительная регистрация.', 'Сервисный менеджер', 'published', '2026-01-15 08:20:00', '2026-01-15'),
+('7', 'Расширение ассортимента аккумуляторов', 'Теперь в нашем магазине представлены аккумуляторы новых брендов: Varta, Bosch, Tudor. Все аккумуляторы проходят предпродажную проверку и имеют гарантию 24 месяца. Для постоянных клиентов - дополнительные скидки. Также доступна услуга профессиональной установки.', 'Менеджер по закупкам', 'published', '2026-01-16 13:10:00', '2026-01-16'),
+('8', 'Система лояльности для клиентов', 'Запускаем новую программу лояльности! Теперь за каждую покупку вы получаете бонусные баллы, которые можно использовать для оплаты следующих покупок. Регистрируйтесь в нашей программе и получайте дополнительные преимущества: персональные скидки, приоритетное обслуживание, информацию о новинках.', 'Маркетолог', 'published', '2026-01-17 17:40:00', '2026-01-17');
+
+--
+-- Структура таблицы `notifications`
+--
+
+DROP TABLE IF EXISTS `notifications`;
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `is_read` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `notifications`
+-- Всего записей: 5
+--
+
+INSERT INTO `notifications` (`id`, `user_id`, `title`, `message`, `is_read`, `created_at`) VALUES 
+('1', '2', 'Новое поступление', 'Появились в наличии запчасти для Toyota Camry', '0', '2026-01-15 16:29:33'),
+('2', '2', 'Заказ готов к выдаче', 'Ваш заказ #12345 готов к получению', '0', '2026-01-15 16:29:33'),
+('3', '3', 'Скидка 15%', 'Специальное предложение для вас действует до конца недели', '0', '2026-01-15 16:29:33'),
+('4', '4', 'Изменение графика работы', 'В праздничные дни магазин работает с 10:00 до 18:00', '1', '2026-01-15 16:29:33'),
+('5', '5', 'Бонусные баллы', 'На ваш счет начислено 100 бонусных баллов', '1', '2026-01-15 16:29:33');
+
+--
+-- Структура таблицы `order_items`
+--
+
+DROP TABLE IF EXISTS `order_items`;
+CREATE TABLE `order_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `category_product_id` int(11) DEFAULT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_type` varchar(50) DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`),
+  CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `order_items`
+-- Всего записей: 8
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `category_product_id`, `product_name`, `product_type`, `price`, `quantity`) VALUES 
+('77', '23', '74', NULL, 'Коврики в салон 3D', 'accessory', '6790.00', '1'),
+('78', '23', '83', NULL, 'Автоодеяло с подогревом', 'accessory', '5490.00', '1'),
+('79', '23', NULL, '51', 'Motul Multi ATF', 'power-steering', '1280.00', '2'),
+('80', '23', NULL, '102', 'Mobilube GX 80W-90', 'transmission-oil', '1420.00', '1'),
+('81', '23', NULL, '77', 'Набор Liqui Moly для ТО', 'kit', '7800.00', '1'),
+('82', '23', '51', NULL, 'Liqui Moly Special Tec AA 5W-30', 'oil', '4210.00', '1'),
+('83', '23', '50', NULL, 'Mobil Super 3000 X1 5W-40', 'oil', '3450.00', '1'),
+('84', '23', '39', NULL, 'Топливный насос высокого давления', 'part', '8900.00', '2');
+
+--
+-- Структура таблицы `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_number` varchar(50) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `total_amount` decimal(10,2) NOT NULL,
+  `status` enum('pending','processing','completed','cancelled') DEFAULT 'pending',
+  `order_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `shipping_address` text,
+  `phone` varchar(20) DEFAULT NULL,
+  `notes` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `order_number` (`order_number`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `orders`
+-- Всего записей: 1
+--
+
+INSERT INTO `orders` (`id`, `order_number`, `user_id`, `total_amount`, `status`, `order_date`, `shipping_address`, `phone`, `notes`) VALUES 
+('23', 'ORD-20260227-66F89CC9', '2', '49520.00', 'pending', '2026-02-27 21:02:16', '', '89113456789', '');
+
+--
+-- Структура таблицы `password_resets`
+--
+
+DROP TABLE IF EXISTS `password_resets`;
+CREATE TABLE `password_resets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `short_token` varchar(10) DEFAULT NULL,
+  `expires_at` datetime NOT NULL,
+  `used` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_short_token` (`short_token`),
+  KEY `idx_token` (`token`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_expires` (`expires_at`),
+  CONSTRAINT `fk_password_resets_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `password_resets`
+-- Всего записей: 2
+--
+
+INSERT INTO `password_resets` (`id`, `user_id`, `token`, `short_token`, `expires_at`, `used`, `created_at`) VALUES 
+('113', '4', 'de54d70989770933b0aec5e1e03f54dcda0bbe4a60a0127d2bf881704b11690d', '7W8GfE', '2026-02-24 22:41:45', '0', '2026-02-24 21:41:45'),
+('114', '3', '1987ad5933faf2854cb20f3a7b385d00ecd7fd92129d5667b6683a410d440f2b', 'h8znbn', '2026-02-27 21:59:29', '1', '2026-02-27 20:59:29');
+
+--
+-- Структура таблицы `popular_parts_display`
+--
+
+DROP TABLE IF EXISTS `popular_parts_display`;
+CREATE TABLE `popular_parts_display` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `short_name` varchar(100) NOT NULL,
+  `image` varchar(500) DEFAULT 'img/SpareParts/default.png',
+  `category` varchar(100) NOT NULL,
+  `category_short` varchar(50) DEFAULT NULL,
+  `search_term` varchar(100) NOT NULL,
+  `display_order` int(11) DEFAULT '0',
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_search_term` (`search_term`),
+  KEY `idx_category` (`category`),
+  KEY `idx_display_order` (`display_order`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `popular_parts_display`
+-- Всего записей: 12
+--
+
+INSERT INTO `popular_parts_display` (`id`, `name`, `short_name`, `image`, `category`, `category_short`, `search_term`, `display_order`, `is_active`, `created_at`, `updated_at`) VALUES 
+('1', 'Коленчатый вал', 'Коленч. вал', 'img/SpareParts/image1.png', 'двигатель', 'Двиг.', 'коленчатый вал', '1', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03'),
+('2', 'Прокладки двигателя', 'Прокл. двиг.', 'img/SpareParts/image2.png', 'двигатель', 'Двиг.', 'прокладки двигателя', '2', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03'),
+('3', 'Топливный насос', 'Топл. насос', 'img/SpareParts/image3.png', 'двигатель', 'Двиг.', 'топливный насос', '3', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03'),
+('4', 'Распределительный вал', 'Распред. вал', 'img/SpareParts/image4.png', 'двигатель', 'Двиг.', 'распределительный вал', '4', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03'),
+('5', 'Тормозной цилиндр', 'Торм. цилиндр', 'img/SpareParts/image5.png', 'тормозная система', 'Торм.', 'тормозной цилиндр', '5', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03'),
+('6', 'Тормозные колодки', 'Торм. колодки', 'img/SpareParts/image6.png', 'тормозная система', 'Торм.', 'тормозные колодки', '6', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03'),
+('7', 'Стабилизатор', 'Стабилизатор', 'img/SpareParts/image7.png', 'ходовая часть', 'Ход.', 'стабилизатор', '7', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03'),
+('8', 'Тормозные суппорта', 'Торм. суппорта', 'img/SpareParts/image8.png', 'тормозная система', 'Торм.', 'тормозные суппорта', '8', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03'),
+('9', 'Топливный фильтр', 'Топл. фильтр', 'img/SpareParts/image9.png', 'фильтры', 'Фильтр', 'топливный фильтр', '9', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03'),
+('10', 'Тормозные диски', 'Торм. диски', 'img/SpareParts/image10.png', 'тормозная система', 'Торм.', 'тормозные диски', '10', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03'),
+('11', 'Цапфа', 'Цапфа', 'img/SpareParts/image11.png', 'ходовая часть', 'Ход.', 'цапфа', '11', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03'),
+('12', 'Сальники', 'Сальники', 'img/SpareParts/image12.png', 'двигатель', 'Двиг.', 'сальники', '12', '1', '2026-06-19 19:57:03', '2026-06-19 19:57:03');
+
+--
+-- Структура таблицы `product_brands`
+--
+
+DROP TABLE IF EXISTS `product_brands`;
+CREATE TABLE `product_brands` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `country` varchar(100) DEFAULT NULL,
+  `category` varchar(50) DEFAULT NULL COMMENT 'premium, original, aftermarket, russia',
+  `category_name` varchar(100) DEFAULT NULL,
+  `description` text,
+  `logo` varchar(500) DEFAULT '../img/no-image.png',
+  `stats` text COMMENT 'JSON массив с характеристиками',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_category` (`category`),
+  KEY `idx_name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `product_brands`
+-- Всего записей: 40
+--
+
+INSERT INTO `product_brands` (`id`, `name`, `country`, `category`, `category_name`, `description`, `logo`, `stats`, `created_at`, `updated_at`) VALUES 
+('1', 'Bosch', 'Германия', 'premium', 'Премиум', 'Мировой лидер в производстве автокомпонентов и систем', '../img/no-image.png', '[\"Более 1000 товаров\", \"Гарантия 2 года\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('2', 'Castrol', 'Великобритания', 'premium', 'Премиум', 'Ведущий производитель моторных масел и смазочных материалов', '../img/no-image.png', '[\"Более 500 товаров\", \"Одобрено OEM\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('3', 'Mann-Filter', 'Германия', 'premium', 'Премиум', 'Эксперты в области фильтрации для автомобильной промышленности', '../img/no-image.png', '[\"Более 300 товаров\", \"ОЕМ поставщик\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('4', 'Brembo', 'Италия', 'premium', 'Премиум', 'Мировой лидер в производстве тормозных систем', '../img/no-image.png', '[\"Более 400 товаров\", \"Спорт-кар качество\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('5', 'Continental', 'Германия', 'premium', 'Премиум', 'Инновационные шины и автокомпоненты', '../img/no-image.png', '[\"Более 800 товаров\", \"Немецкое качество\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('6', 'Mobil', 'США', 'premium', 'Премиум', 'Высококачественные моторные масла', '../img/no-image.png', '[\"Более 400 товаров\", \"Мировой лидер\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('7', 'Valeo', 'Франция', 'premium', 'Премиум', 'Системы комфорта и безопасности', '../img/no-image.png', '[\"Более 550 товаров\", \"Французские технологии\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('8', 'ZF', 'Германия', 'premium', 'Премиум', 'Трансмиссии и шасси', '../img/no-image.png', '[\"Более 450 товаров\", \"Инженерное превосходство\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('9', 'Michelin', 'Франция', 'premium', 'Премиум', 'Премиальные шины мирового уровня', '../img/no-image.png', '[\"Более 250 товаров\", \"Инновации в шинах\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('10', 'Bridgestone', 'Япония', 'premium', 'Премиум', 'Высокотехнологичные шины', '../img/no-image.png', '[\"Более 230 товаров\", \"Японские технологии\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('11', 'VW Original', 'Германия', 'original', 'Оригинальные', 'Оригинальные запчасти Volkswagen Group', '../img/no-image.png', '[\"Более 2000 товаров\", \"Официальный дилер\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('12', 'Toyota Original', 'Япония', 'original', 'Оригинальные', 'Оригинальные запчасти Toyota Motor Corporation', '../img/no-image.png', '[\"Более 1500 товаров\", \"Гарантия качества\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('13', 'BMW Original', 'Германия', 'original', 'Оригинальные', 'Оригинальные запчасти BMW Group', '../img/no-image.png', '[\"Более 1200 товаров\", \"Сертифицировано\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('14', 'Mercedes Original', 'Германия', 'original', 'Оригинальные', 'Оригинальные запчасти Mercedes-Benz', '../img/no-image.png', '[\"Более 1100 товаров\", \"Премиум качество\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('15', 'Hyundai Original', 'Корея', 'original', 'Оригинальные', 'Оригинальные запчасти Hyundai', '../img/no-image.png', '[\"Более 900 товаров\", \"Официальный дилер\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('16', 'Kia Original', 'Корея', 'original', 'Оригинальные', 'Оригинальные запчасти Kia Motors', '../img/no-image.png', '[\"Более 850 товаров\", \"Гарантия качества\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('17', 'Ford Original', 'США', 'original', 'Оригинальные', 'Оригинальные запчасти Ford', '../img/no-image.png', '[\"Более 1100 товаров\", \"Американское качество\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('18', 'Nissan Original', 'Япония', 'original', 'Оригинальные', 'Оригинальные запчасти Nissan', '../img/no-image.png', '[\"Более 950 товаров\", \"Японская надежность\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('19', 'Mazda Original', 'Япония', 'original', 'Оригинальные', 'Оригинальные запчасти Mazda', '../img/no-image.png', '[\"Более 800 товаров\", \"Технологии Zoom-Zoom\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('20', 'Honda Original', 'Япония', 'original', 'Оригинальные', 'Оригинальные запчасти Honda', '../img/no-image.png', '[\"Более 850 товаров\", \"Надежность Honda\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('21', 'Febi Bilstein', 'Германия', 'aftermarket', 'Аналоги', 'Качественные аналоги европейских автомобилей', '../img/no-image.png', '[\"Более 800 товаров\", \"Соответствие OE\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('22', 'Blue Print', 'Япония', 'aftermarket', 'Аналоги', 'Высококачественные аналоги для азиатских авто', '../img/no-image.png', '[\"Более 600 товаров\", \"Японское качество\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('23', 'SWAG', 'Германия', 'aftermarket', 'Аналоги', 'Немецкое качество по доступным ценам', '../img/no-image.png', '[\"Более 500 товаров\", \"Германские стандарты\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('24', 'Mapco', 'Германия', 'aftermarket', 'Аналоги', 'Надежные аналоги для европейских автомобилей', '../img/no-image.png', '[\"Более 400 товаров\", \"Проверенное качество\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('25', 'Mahle', 'Германия', 'aftermarket', 'Аналоги', 'Качественные аналоги для всех марок', '../img/no-image.png', '[\"Более 700 товаров\", \"Немецкие стандарты\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('26', 'Hella', 'Германия', 'aftermarket', 'Аналоги', 'Осветительные приборы и электроника', '../img/no-image.png', '[\"Более 600 товаров\", \"Инновации\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('27', 'Bosch Car Service', 'Германия', 'aftermarket', 'Аналоги', 'Сервисные решения и компоненты', '../img/no-image.png', '[\"Более 500 товаров\", \"Профессиональные решения\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('28', 'NGK', 'Япония', 'aftermarket', 'Аналоги', 'Свечи зажигания и датчики', '../img/no-image.png', '[\"Более 300 товаров\", \"Технологии зажигания\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('29', 'Corteco', 'Германия', 'aftermarket', 'Аналоги', 'Уплотнительные элементы и сальники высокого качества', '../img/no-image.png', '[\"Более 350 товаров\", \"Немецкая точность\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('30', 'Behr', 'Германия', 'aftermarket', 'Аналоги', 'Системы охлаждения и отопления для автомобилей', '../img/no-image.png', '[\"Более 450 товаров\", \"Тепловые решения\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('31', 'Трек', 'Россия', 'russia', 'Российские', 'Ведущий российский производитель фильтров', '../img/no-image.png', '[\"Более 200 товаров\", \"Лучшая цена\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('32', 'СтартВОЛЬТ', 'Россия', 'russia', 'Российские', 'Российские аккумуляторы премиум-класса', '../img/no-image.png', '[\"Более 50 товаров\", \"Адаптированы к климату\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('33', 'FENOX', 'Беларусь/Россия', 'russia', 'Российские', 'Качественные автокомпоненты для СНГ рынка', '../img/no-image.png', '[\"Более 300 товаров\", \"Оптимальное соотношение\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('34', 'БелМаг', 'Россия', 'russia', 'Российские', 'Магнитолы и аудиосистемы российского производства', '../img/no-image.png', '[\"Более 100 товаров\", \"Лучшая цена\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('35', 'Кама', 'Россия', 'russia', 'Российские', 'Российские шины премиум-класса', '../img/no-image.png', '[\"Более 150 товаров\", \"Адаптированы к дорогам\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('36', 'СОАТЭ', 'Россия', 'russia', 'Российские', 'Автоэлектрика и компоненты', '../img/no-image.png', '[\"Более 200 товаров\", \"Надежность\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('37', 'АВТОВАЗ', 'Россия', 'russia', 'Российские', 'Оригинальные запчасти LADA', '../img/no-image.png', '[\"Более 2000 товаров\", \"Официальный поставщик\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('38', 'ОМНИ', 'Россия', 'russia', 'Российские', 'Аккумуляторы и электрооборудование', '../img/no-image.png', '[\"Более 180 товаров\", \"Российское качество\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('39', 'КВЗ', 'Россия', 'russia', 'Российские', 'Радиаторы и компоненты системы охлаждения', '../img/no-image.png', '[\"Более 120 товаров\", \"Проверенная надежность\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37'),
+('40', 'АГАТ', 'Россия', 'russia', 'Российские', 'Тормозные колодки и диски российского производства', '../img/no-image.png', '[\"Более 180 товаров\", \"Безопасность прежде всего\"]', '2026-03-03 13:44:37', '2026-03-03 13:44:37');
+
+--
+-- Структура таблицы `products`
+--
+
+DROP TABLE IF EXISTS `products`;
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `category` varchar(100) DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `old_price` decimal(10,2) DEFAULT NULL,
+  `quantity` int(11) DEFAULT '0',
+  `article` varchar(100) DEFAULT NULL,
+  `image` varchar(500) DEFAULT NULL,
+  `badge` varchar(50) DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'available',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `product_type` varchar(50) DEFAULT NULL COMMENT 'part - запчасть, oil - масло, accessory - аксессуар',
+  `brand` varchar(100) DEFAULT NULL,
+  `viscosity` varchar(50) DEFAULT NULL,
+  `oil_type` varchar(50) DEFAULT NULL,
+  `volume` varchar(20) DEFAULT NULL,
+  `hit` tinyint(1) DEFAULT '0',
+  `art` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_category` (`category`),
+  KEY `idx_status` (`status`),
+  KEY `idx_price` (`price`)
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `products`
+-- Всего записей: 120
+--
+
+INSERT INTO `products` (`id`, `name`, `description`, `category`, `price`, `old_price`, `quantity`, `article`, `image`, `badge`, `status`, `created_at`, `updated_at`, `product_type`, `brand`, `viscosity`, `oil_type`, `volume`, `hit`, `art`) VALUES 
+('1', 'Фильтр масляный Audi A4 B8 2.0 TFSI', 'Качественный масляный фильтр для Audi A4 B8', 'фильтры', '1250.00', NULL, '25', 'AUDI-FILTER-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('2', 'Тормозные колодки Audi A6 C7', 'Передние тормозные колодки для Audi A6 C7', 'тормозная система', '3890.00', '4500.00', '15', 'AUDI-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('3', 'Свечи зажигания Audi Q5 2.0 TDI', 'Свечи зажигания для дизельного двигателя', 'двигатель', '850.00', NULL, '30', 'AUDI-SPARK-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('4', 'Сцепление Audi A3 8V', 'Комплект сцепления для Audi A3', 'трансмиссия', '12500.00', NULL, '8', 'AUDI-CLUTCH-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('5', 'Генератор Audi A4 B9', 'Генератор 150A для Audi A4 B9', 'электрика', '15600.00', NULL, '12', 'AUDI-GEN-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('6', 'Воздушный фильтр Audi Q7 4L', 'Воздушный фильтр салона', 'фильтры', '2100.00', NULL, '20', 'AUDI-AIR-001', 'uploads/products/696392655986c.png', 'Для Audi', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('7', 'Фара передняя BMW 3 series F30', 'Передняя фара левая', 'кузовные детали', '18700.00', NULL, '6', 'BMW-LIGHT-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('8', 'Тормозные диски BMW X5 E70', 'Вентилируемые тормозные диски', 'тормозная система', '8900.00', NULL, '10', 'BMW-DISC-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('9', 'Аккумулятор BMW 5 series F10', 'Аккумулятор 80Ah', 'электрика', '12500.00', NULL, '14', 'BMW-BATTERY-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('10', 'Ремень ГРМ BMW 7 series G11', 'Ремень газораспределительного механизма', 'двигатель', '3200.00', NULL, '18', 'BMW-TIMING-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('11', 'Масляный фильтр BMW X3 G01', 'Фильтр моторного масла', 'фильтры', '1450.00', NULL, '22', 'BMW-OILFILTER-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('12', 'Тормозные колодки BMW 1 series F20', 'Комплект передних колодок', 'тормозная система', '5200.00', NULL, '16', 'BMW-BRAKEPAD-001', 'uploads/products/696392655986c.png', 'Для BMW', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('13', 'Моторное масло 5W-40', 'Синтетическое моторное масло для всех типов двигателей', 'масла и жидкости', '2500.00', NULL, '50', 'OIL-5W40-001', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('14', 'Воздушный фильтр', 'Воздушный фильтр для легковых автомобилей', 'фильтры', '800.00', NULL, '40', 'FILTER-AIR-001', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('15', 'Тормозные колодки', 'Передние тормозные колодки универсальные', 'тормозная система', '3200.00', NULL, '25', 'BRAKEPAD-UNIV-001', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('16', 'Аккумулятор 60Ah', 'Свинцово-кислотный аккумулятор 60Ah', 'электрика', '5500.00', NULL, '18', 'BATTERY-60AH', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('17', 'Аккумулятор Mercedes-Benz E-class W213', 'Аккумулятор 90Ah для Mercedes', 'электрика', '12500.00', NULL, '10', 'MB-BATTERY-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('18', 'Тормозные колодки Mercedes C-class W205', 'Передние тормозные колодки', 'тормозная система', '4500.00', NULL, '15', 'MB-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('19', 'Воздушный фильтр Mercedes GLC X253', 'Воздушный фильтр салона', 'фильтры', '1850.00', NULL, '20', 'MB-AIR-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('20', 'Свечи зажигания Mercedes E-class W212', 'Иридиевые свечи зажигания', 'двигатель', '1200.00', NULL, '25', 'MB-SPARK-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('21', 'Сцепление Mercedes A-class W176', 'Комплект сцепления', 'трансмиссия', '13800.00', NULL, '8', 'MB-CLUTCH-001', 'uploads/products/696392655986c.png', 'Для Mercedes', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('22', 'Ремень ГРМ Toyota Camry XV70', 'Ремень ГРМ с натяжителем', 'двигатель', '3200.00', NULL, '15', 'TOYOTA-TIMING-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('23', 'Масляный фильтр Toyota RAV4 XA50', 'Масляный фильтр оригинальный', 'фильтры', '950.00', NULL, '22', 'TOYOTA-OIL-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('24', 'Амортизатор Toyota Corolla E210', 'Амортизатор передний', 'ходовая часть', '3800.00', NULL, '12', 'TOYOTA-SHOCK-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('25', 'Тормозные колодки Toyota Land Cruiser 200', 'Комплект передних колодок', 'тормозная система', '6700.00', NULL, '10', 'TOYOTA-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('26', 'Стартер Toyota Prius XW30', 'Стартер для гибридной системы', 'электрика', '14200.00', NULL, '6', 'TOYOTA-STARTER-001', 'uploads/products/696392655986c.png', 'Для Toyota', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('27', 'Воздушный фильтр Ford Focus MK4', 'Воздушный фильтр салона', 'фильтры', '950.00', NULL, '18', 'FORD-AIR-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('28', 'Тормозные колодки Ford Kuga II', 'Передние тормозные колодки', 'тормозная система', '2900.00', NULL, '14', 'FORD-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('29', 'Бампер передний Ford Fiesta MK7', 'Бампер передний оригинальный', 'кузовные детали', '15600.00', NULL, '8', 'FORD-BUMPER-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('30', 'Турбина Ford Mondeo MK5', 'Турбокомпрессор 2.0 TDCi', 'двигатель', '23400.00', NULL, '5', 'FORD-TURBO-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('31', 'Генератор Ford Explorer U502', 'Генератор 180A', 'электрика', '16700.00', NULL, '7', 'FORD-GEN-001', 'uploads/products/696392655986c.png', 'Для Ford', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('32', 'Амортизатор Hyundai Solaris II', 'Амортизатор задний', 'ходовая часть', '3800.00', NULL, '16', 'HYUNDAI-SHOCK-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('33', 'Тормозные колодки Hyundai Tucson TL', 'Передние тормозные колодки', 'тормозная система', '2900.00', NULL, '18', 'HYUNDAI-BRAKE-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('34', 'Генератор Hyundai Santa Fe TM', 'Генератор 150A', 'электрика', '13400.00', NULL, '9', 'HYUNDAI-GEN-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('35', 'Топливный фильтр Hyundai Elantra MD', 'Топливный фильтр тонкой очистки', 'фильтры', '1250.00', NULL, '20', 'HYUNDAI-FUEL-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('36', 'Ремень ГРМ Hyundai Creta', 'Ремень ГРМ с роликами', 'двигатель', '2800.00', NULL, '15', 'HYUNDAI-TIMING-001', 'uploads/products/696392655986c.png', 'Для Hyundai', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('37', 'Коленчатый вал двигателя 2.0 TSI', 'Коленчатый вал оригинальный', 'двигатель', '18700.00', NULL, '4', 'CRANKSHAFT-001', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('38', 'Прокладки двигателя комплект V8', 'Полный комплект прокладок', 'двигатель', '4500.00', NULL, '8', 'GASKET-V8', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('39', 'Топливный насос высокого давления', 'ТНВД дизельный', 'двигатель', '8900.00', NULL, '6', 'FUEL-PUMP-001', 'uploads/products/696392655986c.png', 'Новинка', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('40', 'Распределительный вал 16V', 'Распредвал для 16-клапанного двигателя', 'двигатель', '12300.00', NULL, '5', 'CAMSHAFT-16V', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('41', 'Тормозной цилиндр главный', 'Главный тормозной цилиндр', 'тормозная система', '3400.00', NULL, '12', 'BRAKE-CYL-001', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('42', 'Тормозные колодки керамические', 'Керамические тормозные колодки', 'тормозная система', '5600.00', NULL, '10', 'CERAMIC-PADS', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('43', 'Стабилизатор поперечной устойчивости', 'Стойка стабилизатора', 'ходовая часть', '6700.00', NULL, '15', 'STABILIZER-001', 'uploads/products/696392655986c.png', 'Новинка', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('44', 'Тормозные суппорта передние', 'Суппорта тормозные ремонтные', 'тормозная система', '12800.00', NULL, '8', 'CALIPER-SET', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('45', 'Топливный фильтр тонкой очистки', 'Фильтр топливный тонкой очистки', 'фильтры', '2100.00', NULL, '20', 'FUEL-FILTER-FINE', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('46', 'Тормозные диски вентилируемые', 'Вентилируемые тормозные диски', 'тормозная система', '7800.00', NULL, '12', 'VENT-DISCS', 'uploads/products/696392655986c.png', 'Новинка', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('47', 'Цапфа поворотная', 'Поворотная цапфа передняя', 'ходовая часть', '4500.00', NULL, '14', 'KNUCKLE-001', 'uploads/products/696392655986c.png', 'Акция', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('48', 'Сальники коленвала комплект', 'Комплект сальников коленчатого вала', 'двигатель', '3200.00', NULL, '18', 'SEAL-KIT', 'uploads/products/696392655986c.png', 'Хит', 'available', '2026-02-08 19:31:56', '2026-02-08 19:31:56', 'part', NULL, NULL, NULL, NULL, '0', NULL),
+('49', 'Castrol EDGE 5W-30', 'Моторное масло Castrol 5W-30, 4 л', 'Масла и технические жидкости', '3890.00', NULL, '50', '15698E4', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 17:58:10', '2026-02-12 19:31:24', 'oil', 'Castrol', '5W-30', 'Синтетическое', '4 л', '1', NULL),
+('50', 'Mobil Super 3000 X1 5W-40', 'Моторное масло Mobil 5W-40, 4 л', 'Масла и технические жидкости', '3450.00', NULL, '50', '152343', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:31:37', 'oil', 'Mobil', '5W-40', 'Синтетическое', '4 л', '0', NULL),
+('51', 'Liqui Moly Special Tec AA 5W-30', 'Моторное масло Liqui Moly 5W-30, 5 л', 'Масла и технические жидкости', '4210.00', NULL, '50', '1123DE', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 17:58:10', '2026-02-12 19:31:52', 'oil', 'Liqui Moly', '5W-30', 'Синтетическое', '5 л', '1', NULL),
+('52', 'Shell Helix HX7 10W-40', 'Моторное масло Shell 10W-40, 4 л', 'Масла и технические жидкости', '2890.00', NULL, '0', '87654F', 'uploads/products/696392655986c.png', NULL, 'out_of_stock', '2026-02-12 17:58:10', '2026-02-12 19:32:01', 'oil', 'Shell', '10W-40', 'Полусинтетическое', '4 л', '0', NULL),
+('53', 'Total Quartz 9000 5W-40', 'Моторное масло Total 5W-40, 5 л', 'Масла и технические жидкости', '3650.00', NULL, '50', 'TQ9000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:32:11', 'oil', 'Total', '5W-40', 'Синтетическое', '5 л', '0', NULL),
+('54', 'Motul 8100 X-clean 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '4890.00', NULL, '50', 'M8100', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 17:58:10', '2026-02-12 19:32:20', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', '1', NULL),
+('55', 'ZIC X9 5W-30', 'Моторное масло ZIC 5W-30, 4 л', 'Масла и технические жидкости', '2990.00', NULL, '50', 'ZX9-5W30', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:32:29', 'oil', 'ZIC', '5W-30', 'Синтетическое', '4 л', '0', NULL),
+('56', 'ELF Evolution 900 NF 5W-40', 'Моторное масло ELF 5W-40, 5 л', 'Масла и технические жидкости', '3750.00', NULL, '50', 'ELF900', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:32:40', 'oil', 'ELF', '5W-40', 'Синтетическое', '5 л', '0', NULL),
+('57', 'Castrol MAGNATEC 5W-30', 'Моторное масло Castrol 5W-30, 4 л', 'Масла и технические жидкости', '3250.00', NULL, '50', 'CAST567', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 17:58:10', '2026-02-12 19:32:50', 'oil', 'Castrol', '5W-30', 'Синтетическое', '4 л', '1', NULL),
+('58', 'Mobil 1 0W-40', 'Моторное масло Mobil 0W-40, 4 л', 'Масла и технические жидкости', '4450.00', NULL, '50', 'MOB1-0W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:33:00', 'oil', 'Mobil', '0W-40', 'Синтетическое', '4 л', '0', NULL),
+('59', 'Liqui Moly Molygen 5W-40', 'Моторное масло Liqui Moly 5W-40, 5 л', 'Масла и технические жидкости', '5120.00', NULL, '50', 'LM-MOLY', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 17:58:10', '2026-02-12 19:33:11', 'oil', 'Liqui Moly', '5W-40', 'Синтетическое', '5 л', '1', NULL),
+('60', 'Shell Helix Ultra 5W-40', 'Моторное масло Shell 5W-40, 4 л', 'Масла и технические жидкости', '3980.00', NULL, '50', 'SHU-5W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:33:25', 'oil', 'Shell', '5W-40', 'Синтетическое', '4 л', '0', NULL),
+('61', 'Total Quartz INEO ECS 5W-30', 'Моторное масло Total 5W-30, 5 л', 'Масла и технические жидкости', '4120.00', NULL, '0', 'TQ-ECS', 'uploads/products/696392655986c.png', NULL, 'out_of_stock', '2026-02-12 17:58:10', '2026-02-12 19:33:36', 'oil', 'Total', '5W-30', 'Синтетическое', '5 л', '0', NULL),
+('62', 'Motul 8100 Eco-nergy 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '4670.00', NULL, '50', 'MOT-ECO', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 17:58:10', '2026-02-12 19:33:47', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', '1', NULL),
+('63', 'ZIC X7 10W-40', 'Моторное масло ZIC 10W-40, 4 л', 'Масла и технические жидкости', '2450.00', NULL, '50', 'ZX7-10W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:33:58', 'oil', 'ZIC', '10W-40', 'Полусинтетическое', '4 л', '0', NULL),
+('64', 'ELF Evolution 700 STI 10W-40', 'Моторное масло ELF 10W-40, 4 л', 'Масла и технические жидкости', '2780.00', NULL, '50', 'ELF700', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:34:07', 'oil', 'ELF', '10W-40', 'Полусинтетическое', '4 л', '0', NULL),
+('65', 'Castrol EDGE 0W-20', 'Моторное масло Castrol 0W-20, 4 л', 'Масла и технические жидкости', '4120.00', NULL, '50', 'CAST-0W20', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 17:58:10', '2026-02-12 19:34:18', 'oil', 'Castrol', '0W-20', 'Синтетическое', '4 л', '1', NULL),
+('66', 'Mobil Super 2000 10W-40', 'Моторное масло Mobil 10W-40, 4 л', 'Масла и технические жидкости', '2670.00', NULL, '50', 'MS2000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:34:27', 'oil', 'Mobil', '10W-40', 'Полусинтетическое', '4 л', '0', NULL),
+('67', 'Liqui Moly Leichtlauf 10W-40', 'Моторное масло Liqui Moly 10W-40, 5 л', 'Масла и технические жидкости', '3890.00', NULL, '50', 'LM-LEICHT', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:34:38', 'oil', 'Liqui Moly', '10W-40', 'Синтетическое', '5 л', '0', NULL),
+('68', 'Shell Helix HX8 5W-30', 'Моторное масло Shell 5W-30, 4 л', 'Масла и технические жидкости', '3450.00', NULL, '50', 'SH-HX8', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 17:58:10', '2026-02-12 19:34:49', 'oil', 'Shell', '5W-30', 'Синтетическое', '4 л', '1', NULL),
+('69', 'Total Quartz 7000 10W-40', 'Моторное масло Total 10W-40, 4 л', 'Масла и технические жидкости', '2780.00', NULL, '50', 'TQ7000', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:35:00', 'oil', 'Total', '10W-40', 'Полусинтетическое', '4 л', '0', NULL),
+('70', 'Motul 8100 X-clean+ 5W-30', 'Моторное масло Motul 5W-30, 5 л', 'Масла и технические жидкости', '5120.00', NULL, '50', 'MOT-CLEAN+', 'uploads/products/696392655986c.png', '0', 'available', '2026-02-12 17:58:10', '2026-02-12 19:35:12', 'oil', 'Motul', '5W-30', 'Синтетическое', '5 л', '1', NULL),
+('71', 'ZIC X5 10W-40', 'Моторное масло ZIC 10W-40, 4 л', 'Масла и технические жидкости', '2230.00', NULL, '50', 'ZX5-10W40', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:35:22', 'oil', 'ZIC', '10W-40', 'Минеральное', '4 л', '0', NULL),
+('72', 'ELF Evolution SXR 5W-30', 'Моторное масло ELF 5W-30, 5 л', 'Масла и технические жидкости', '3980.00', NULL, '50', 'ELF-SXR', 'uploads/products/696392655986c.png', NULL, 'available', '2026-02-12 17:58:10', '2026-02-12 19:35:32', 'oil', 'ELF', '5W-30', 'Синтетическое', '5 л', '0', NULL),
+('73', 'Чехлы на сиденья Premium', 'Качественные автомобильные чехлы из экокожи', 'Для салона', '4290.00', '5050.00', '50', 'ACS-001', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'AutoStyle', NULL, NULL, NULL, '1', NULL),
+('74', 'Коврики в салон 3D', 'Трехмерные коврики для защиты салона', 'Для салона', '6790.00', '0.00', '45', 'ACS-002', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'WeatherTech', NULL, NULL, NULL, '1', NULL),
+('75', 'Органайзер для багажника', 'Удобный органайзер для багажного отделения', 'Для салона', '3490.00', '0.00', '60', 'ACS-003', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'CarMate', NULL, NULL, NULL, '0', NULL),
+('76', 'Ароматизатор CS-X3', 'Автомобильный ароматизатор с запахом свежести', 'Для салона', '790.00', '0.00', '100', 'ACS-004', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Air Spencer', NULL, NULL, NULL, '1', NULL),
+('77', 'Автохолодильник 12V', 'Портативный автомобильный холодильник', 'Для салона', '8990.00', '10500.00', '20', 'ACS-005', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'CoolMaster', NULL, NULL, NULL, '0', NULL),
+('78', 'Видеорегистратор 4K', 'Автомобильный видеорегистратор с записью 4K', 'Электроника', '12490.00', '0.00', '30', 'ACS-006', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'RoadEye', NULL, NULL, NULL, '1', NULL),
+('79', 'Чехол на руль из кожи', 'Кожаный чехол для рулевого колеса', 'Для салона', '2190.00', '0.00', '70', 'ACS-007', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'SteeringPro', NULL, NULL, NULL, '1', NULL),
+('80', 'Компрессор автомобильный', 'Автомобильный компрессор для подкачки шин', 'Электроника', '3590.00', '4490.00', '40', 'ACS-008', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'AirForce', NULL, NULL, NULL, '0', NULL),
+('81', 'Держатель магнитный', 'Магнитный держатель для телефона в авто', 'Электроника', '1290.00', '0.00', '80', 'ACS-009', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'PhoneMount', NULL, NULL, NULL, '0', NULL),
+('82', 'Парктроник 8 датчиков', 'Парковочный радар с 8 датчиками', 'Электроника', '7890.00', '0.00', '25', 'ACS-010', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'ParkMaster', NULL, NULL, NULL, '1', NULL),
+('83', 'Автоодеяло с подогревом', 'Одеяло для автомобиля с подогревом', 'Для салона', '5490.00', '0.00', '35', 'ACS-011', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'ComfortCar', NULL, NULL, NULL, '1', NULL),
+('84', 'Набор автомобильных инструментов', 'Универсальный набор инструментов для авто', 'Для экстерьера', '6990.00', '8200.00', '30', 'ACS-012', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'ToolPro', NULL, NULL, NULL, '0', NULL),
+('85', 'Воск для полировки кузова', 'Профессиональный воск для полировки', 'Уход за авто', '1890.00', '0.00', '60', 'ACS-013', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Meguire\'s', NULL, NULL, NULL, '0', NULL),
+('86', 'Щетки стеклоочистителя', 'Комплект стеклоочистителей Bosch', 'Для экстерьера', '2490.00', '2990.00', '50', 'ACS-014', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Bosch', NULL, NULL, NULL, '0', NULL),
+('87', 'Чехол на автомобиль', 'Защитный чехол для всего автомобиля', 'Для экстерьера', '8990.00', '0.00', '20', 'ACS-015', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'CoverKing', NULL, NULL, NULL, '1', NULL),
+('88', 'Шумоизоляция салона', 'Комплект для шумоизоляции автомобиля', 'Для салона', '12990.00', '0.00', '25', 'ACS-016', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'NoiseGuard', NULL, NULL, NULL, '1', NULL),
+('89', 'Автосканер OBD2', 'Диагностический сканер для автомобиля', 'Электроника', '4590.00', '0.00', '40', 'ACS-017', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Launch', NULL, NULL, NULL, '0', NULL),
+('90', 'Коврик багажника', 'Резиновый коврик для багажника', 'Для салона', '4290.00', '0.00', '55', 'ACS-018', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'WeatherTech', NULL, NULL, NULL, '0', NULL),
+('91', 'Зарядное устройство USB', 'Быстрая зарядка для автомобиля', 'Электроника', '1590.00', '1990.00', '90', 'ACS-019', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Anker', NULL, NULL, NULL, '0', NULL),
+('92', 'Очиститель кондиционера', 'Средство для очистки кондиционера', 'Уход за авто', '890.00', '0.00', '70', 'ACS-020', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Wynn\'s', NULL, NULL, NULL, '0', NULL),
+('93', 'Брелок с сигнализацией', 'Брелок сигнализации с автозапуском', 'Для экстерьера', '2990.00', '0.00', '45', 'ACS-021', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'KeySafe', NULL, NULL, NULL, '0', NULL),
+('94', 'Насос для подкачки шин', 'Автомобильный насос с манометром', 'Для экстерьера', '3290.00', '0.00', '60', 'ACS-022', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Michelin', NULL, NULL, NULL, '0', NULL),
+('95', 'Чистящее средство для салона', 'Пена для чистки салона автомобиля', 'Уход за авто', '1290.00', '0.00', '80', 'ACS-023', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Sonax', NULL, NULL, NULL, '0', NULL),
+('96', 'Антидождь для стекол', 'Средство для защиты стекол от дождя', 'Уход за авто', '1490.00', '0.00', '85', 'ACS-024', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'RainX', NULL, NULL, NULL, '1', NULL),
+('97', 'Коврики резиновые Universal', 'Универсальные резиновые коврики', 'Для салона', '1890.00', '2290.00', '75', 'ACS-025', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'AutoPro', NULL, NULL, NULL, '0', NULL),
+('98', 'Чехол на сиденье с подогревом', 'Автомобильный чехол с подогревом', 'Для салона', '6590.00', '0.00', '40', 'ACS-026', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'HotSeat', NULL, NULL, NULL, '1', NULL),
+('99', 'Авто пылесос мощный', 'Портативный автомобильный пылесос', 'Для салона', '3290.00', '3990.00', '50', 'ACS-027', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Black+Decker', NULL, NULL, NULL, '0', NULL),
+('100', 'Зеркало видеорегистратора', 'Зеркало заднего вида с видеорегистратором', 'Электроника', '8990.00', '0.00', '35', 'ACS-028', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'MirrorCam', NULL, NULL, NULL, '1', NULL),
+('101', 'Навигатор 7 дюймов', 'GPS навигатор с экраном 7 дюймов', 'Электроника', '12990.00', '14990.00', '25', 'ACS-029', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Garmin', NULL, NULL, NULL, '0', NULL),
+('102', 'Радар-детектор Pro', 'Радар-детектор с дальним обнаружением', 'Электроника', '7590.00', '0.00', '40', 'ACS-030', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'StreetStorm', NULL, NULL, NULL, '0', NULL),
+('103', 'Автосигнализация с автозапуском', 'Современная автосигнализация', 'Электроника', '15990.00', '18990.00', '20', 'ACS-031', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'StarLine', NULL, NULL, NULL, '1', NULL),
+('104', 'Камера заднего вида', 'Камера заднего вида для автомобиля', 'Электроника', '4290.00', '0.00', '45', 'ACS-032', 'uploads/products/696392655986c.png', 'success', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'ParkMaster', NULL, NULL, NULL, '1', NULL),
+('105', 'Фаркоп универсальный', 'Универсальный фаркоп для автомобиля', 'Для экстерьера', '8990.00', '0.00', '30', 'ACS-033', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Bosch', NULL, NULL, NULL, '0', NULL),
+('106', 'Дефлекторы окон', 'Ветровики для окон автомобиля', 'Для экстерьера', '3490.00', '0.00', '50', 'ACS-034', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'WeatherTech', NULL, NULL, NULL, '0', NULL),
+('107', 'Спойлер задний', 'Декоративный задний спойлер', 'Для экстерьера', '7890.00', '8990.00', '25', 'ACS-035', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'AutoStyle', NULL, NULL, NULL, '0', NULL),
+('108', 'Накладки на пороги', 'Защитные накладки на пороги', 'Для экстерьера', '4590.00', '0.00', '40', 'ACS-036', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'SteelGuard', NULL, NULL, NULL, '1', NULL),
+('109', 'Шумоизоляция дверей', 'Шумоизоляция для дверей автомобиля', 'Для салона', '6990.00', '0.00', '30', 'ACS-037', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'NoiseGuard', NULL, NULL, NULL, '0', NULL),
+('110', 'Полироль для кузова', 'Полироль для восстановления цвета', 'Уход за авто', '1290.00', '1590.00', '70', 'ACS-038', 'uploads/products/696392655986c.png', 'warning', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Turtle Wax', NULL, NULL, NULL, '0', NULL),
+('111', 'Очиститель тормозных дисков', 'Специальное средство для тормозов', 'Уход за авто', '890.00', '0.00', '80', 'ACS-039', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:39:06', 'accessory', 'LIQUI MOLY', NULL, NULL, NULL, '0', NULL),
+('112', 'Воск для шин', 'Воск для защиты и блеска шин', 'Уход за авто', '790.00', '0.00', '90', 'ACS-040', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'Sonax', NULL, NULL, NULL, '0', NULL),
+('113', 'Щетка для снега', 'Автомобильная щетка для снега со скребком', 'Для экстерьера', '1590.00', '1990.00', '60', 'ACS-041', 'uploads/products/696392655986c.png', 'danger', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'SnowJoe', NULL, NULL, NULL, '0', NULL),
+('114', 'Антизапотеватель стекол', 'Средство против запотевания стекол', 'Уход за авто', '490.00', '0.00', '100', 'ACS-042', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'GlassCare', NULL, NULL, NULL, '0', NULL),
+('115', 'Домкрат гидравлический', 'Гидравлический домкрат 2 тонны', 'Для экстерьера', '3890.00', '0.00', '40', 'ACS-043', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'ForceFlex', NULL, NULL, NULL, '0', NULL),
+('116', 'Знак аварийной остановки', 'Светоотражающий знак аварийной остановки', 'Для экстерьера', '590.00', '0.00', '120', 'ACS-044', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'AutoSafe', NULL, NULL, NULL, '0', NULL),
+('117', 'Огнетушитель автомобильный', 'Компактный огнетушитель для авто', 'Для экстерьера', '1290.00', '0.00', '80', 'ACS-045', 'uploads/products/696392655986c.png', 'info', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'FireStop', NULL, NULL, NULL, '1', NULL),
+('118', 'Аптечка первой помощи', 'Автомобильная аптечка ФЭСТ', 'Для экстерьера', '1890.00', '0.00', '70', 'ACS-046', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'MediKit', NULL, NULL, NULL, '0', NULL),
+('119', 'Багажные ремни', 'Ремни для фиксации груза', 'Для салона', '1290.00', '0.00', '90', 'ACS-047', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-13 18:38:45', 'accessory', 'CargoTie', NULL, NULL, NULL, '0', NULL),
+('120', 'Органайзер для бардачка', 'Органайзер для хранения вещей в бардачке', 'Для салона', '890.00', '0.00', '100', 'ACS-048', 'uploads/products/696392655986c.png', '', 'available', '2026-02-13 18:38:45', '2026-02-19 20:07:33', 'accessory', 'CarOrganizer', '', '', '', '0', NULL);
+
+--
+-- Структура таблицы `promo_codes`
+--
+
+DROP TABLE IF EXISTS `promo_codes`;
+CREATE TABLE `promo_codes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `code` varchar(50) NOT NULL,
+  `discount` int(11) DEFAULT '0',
+  `type` varchar(50) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `is_used` tinyint(1) DEFAULT '0',
+  `used_at` datetime DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`),
+  KEY `user_id` (`user_id`),
+  KEY `expires_at` (`expires_at`),
+  CONSTRAINT `promo_codes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Структура таблицы `remember_tokens`
+--
+
+DROP TABLE IF EXISTS `remember_tokens`;
+CREATE TABLE `remember_tokens` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_token` (`token`),
+  CONSTRAINT `fk_remember_tokens_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Структура таблицы `reviews`
+--
+
+DROP TABLE IF EXISTS `reviews`;
+CREATE TABLE `reviews` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `rating` int(11) NOT NULL,
+  `text` text NOT NULL,
+  `status` enum('pending','approved','rejected') DEFAULT 'pending',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `reviews`
+-- Всего записей: 8
+--
+
+INSERT INTO `reviews` (`id`, `name`, `email`, `rating`, `text`, `status`, `created_at`, `updated_at`) VALUES 
+('1', 'Иван Петров', 'ivan@mail.ru', '5', 'Отличный сервис! Быстро и качественно починили мой автомобиль. Персонал вежливый, цены адекватные. Рекомендую всем!', 'approved', '2026-01-15 10:30:00', '2026-11-11 19:36:39'),
+('2', 'Мария Сидорова', 'maria@yandex.ru', '4', 'Хороший магазин автозапчастей. Большой выбор, консультанты помогли подобрать нужную деталь. Не хватило только скидочной системы для постоянных клиентов.', 'approved', '2026-01-20 14:45:00', '2026-11-11 19:36:39'),
+('3', 'Алексей Козлов', 'alex@mail.ru', '5', 'Лучший автосервис в городе! Делали полное ТО, всё выполнили в срок, дали полезные советы по эксплуатации. Буду обращаться только сюда.', 'approved', '2026-02-01 09:15:00', '2026-05-07 19:44:42'),
+('4', 'Дмитрий Соколов', 'dmitry@mail.ru', '5', 'Отличный магазин! Заказывал масло Castrol 5W-30 - привезли на следующий день. Цены ниже, чем в других магазинах. Рекомендую!', 'approved', '2026-03-20 10:30:00', '2026-05-07 19:42:40'),
+('5', 'Елена Морозова', 'elena@yandex.ru', '4', 'Хороший сервис, вежливые консультанты. Единственный минус - долгая доставка в отдаленные районы (3 дня). В остальном все отлично.', 'approved', '2026-04-01 14:20:00', '2026-05-07 19:42:46'),
+('6', 'Андрей Волков', 'andrey@bk.ru', '5', 'Покупал тормозные колодки Brembo. Цена приятно удивила. Установил сам - подошли идеально. Спасибо магазину за качественные запчасти!', 'approved', '2026-04-10 09:15:00', '2026-05-07 19:42:52'),
+('7', 'Татьяна Новикова', 'tatiana@gmail.com', '5', 'Заказывала коврики в салон 3D. Качество отличное, не скользят, легко моются. Доставили быстро. Обязательно вернусь к вам снова!', 'approved', '2026-04-25 16:45:00', '2026-05-07 19:42:58'),
+('8', 'Наталья', 'email2@gmail.com', '4', 'Круто!', 'approved', '2026-05-07 19:43:05', '2026-05-07 19:43:31');
+
+--
+-- Структура таблицы `service_requests`
+--
+
+DROP TABLE IF EXISTS `service_requests`;
+CREATE TABLE `service_requests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `car` varchar(255) NOT NULL,
+  `service_id` int(11) DEFAULT NULL,
+  `service_name` varchar(255) DEFAULT NULL,
+  `service_price` decimal(10,2) DEFAULT NULL,
+  `request_date` date NOT NULL,
+  `request_time` time NOT NULL,
+  `message` text,
+  `status` enum('new','processed','cancelled') DEFAULT 'new',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_service_id` (`service_id`),
+  KEY `idx_status` (`status`),
+  KEY `idx_created` (`created_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `service_requests`
+-- Всего записей: 2
+--
+
+INSERT INTO `service_requests` (`id`, `name`, `phone`, `car`, `service_id`, `service_name`, `service_price`, `request_date`, `request_time`, `message`, `status`, `created_at`) VALUES 
+('1', 'Иван Петров', '+7 (901) 234-56-78', 'Toyota Camry 2018', '1', 'Замена масла', '1500.00', '2026-03-17', '15:00:00', 'Замена масла и фильтра', 'cancelled', '2026-03-16 14:59:05'),
+('2', 'Алексей Козлов', '+7 (903) 456-78-90', 'Hyundai Solaris 2021', '22', 'Нанесение керамики', '8000.00', '2026-03-22', '11:00:00', '', 'processed', '2026-03-16 15:00:33');
+
+--
+-- Структура таблицы `services`
+--
+
+DROP TABLE IF EXISTS `services`;
+CREATE TABLE `services` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `description` text,
+  `duration` int(11) DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'active',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `services`
+-- Всего записей: 25
+--
+
+INSERT INTO `services` (`id`, `name`, `category`, `price`, `description`, `duration`, `status`, `created_at`) VALUES 
+('1', 'Замена масла', 'Техническое обслуживание', '1500.00', 'Замена моторного масла и масляного фильтра', '30', 'active', '2026-01-06 20:15:45'),
+('2', 'Диагностика двигателя', 'Диагностика', '3000.00', 'Комплексная диагностика двигателя', '60', 'active', '2026-01-06 20:15:45'),
+('3', 'Замена тормозных колодок', 'Тормозная система', '2500.00', 'Замена передних или задних тормозных колодок', '60', 'active', '2026-03-09 20:26:18'),
+('4', 'Замена тормозных дисков', 'Тормозная система', '3500.00', 'Замена передних или задних тормозных дисков', '90', 'active', '2026-03-09 20:26:18'),
+('5', 'Замена тормозной жидкости', 'Тормозная система', '1500.00', 'Полная замена тормозной жидкости с прокачкой системы', '60', 'active', '2026-03-09 20:26:18'),
+('6', 'Ремонт двигателя', 'Ремонт двигателя', '15000.00', 'Капитальный ремонт двигателя', '480', 'inactive', '2026-03-09 20:26:18'),
+('7', 'Замена свечей зажигания', 'Двигатель', '1200.00', 'Замена комплекта свечей зажигания', '45', 'active', '2026-03-09 20:26:18'),
+('8', 'Замена ремня ГРМ', 'Двигатель', '5500.00', 'Замена ремня ГРМ с роликами', '180', 'active', '2026-03-09 20:26:18'),
+('9', 'Замена цепи ГРМ', 'Двигатель', '8500.00', 'Замена цепи ГРМ с успокоителями', '240', 'active', '2026-03-09 20:26:18'),
+('10', 'Ремонт ходовой части', 'Ремонт ходовой', '3000.00', 'Диагностика и ремонт подвески', '90', 'active', '2026-03-09 20:26:18'),
+('11', 'Замена амортизаторов', 'Ремонт ходовой', '4000.00', 'Замена передних или задних амортизаторов', '120', 'active', '2026-03-09 20:26:18'),
+('12', 'Замена сайлентблоков', 'Ремонт ходовой', '3500.00', 'Замена сайлентблоков рычагов', '150', 'active', '2026-03-09 20:26:18'),
+('13', 'Сход-развал', 'Диагностика', '2000.00', 'Регулировка углов установки колес', '60', 'active', '2026-03-09 20:26:18'),
+('14', 'Балансировка колес', 'Шиномонтаж', '800.00', 'Балансировка одного колеса', '30', 'active', '2026-03-09 20:26:18'),
+('15', 'Шиномонтаж сезонный', 'Шиномонтаж', '3500.00', 'Сезонная замена шин для легкового автомобиля', '120', 'active', '2026-03-09 20:26:18'),
+('16', 'Ремонт электроники', 'Электрика', '2500.00', 'Диагностика и ремонт электрооборудования', '90', 'active', '2026-03-09 20:26:18'),
+('17', 'Замена аккумулятора', 'Электрика', '500.00', 'Замена аккумуляторной батареи', '20', 'active', '2026-03-09 20:26:18'),
+('18', 'Кузовной ремонт', 'Кузовные работы', '10000.00', 'Рихтовка и подготовка к покраске', '300', 'inactive', '2026-03-09 20:26:18'),
+('19', 'Покраска автомобиля', 'Кузовные работы', '25000.00', 'Полная покраска автомобиля', '1440', 'inactive', '2026-03-09 20:26:18'),
+('20', 'Химчистка салона', 'Детейлинг', '5000.00', 'Комплексная химчистка салона', '240', 'active', '2026-03-09 20:26:18'),
+('21', 'Полировка кузова', 'Детейлинг', '4000.00', 'Абразивная полировка кузова', '180', 'active', '2026-03-09 20:26:18'),
+('22', 'Нанесение керамики', 'Детейлинг', '8000.00', 'Нанесение керамического покрытия', '300', 'active', '2026-03-09 20:26:18'),
+('23', 'Диагностика кондиционера', 'Диагностика', '1500.00', 'Проверка системы кондиционирования', '45', 'active', '2026-03-09 20:26:18'),
+('24', 'Заправка кондиционера', 'Кондиционер', '2500.00', 'Заправка автокондиционера фреоном', '60', 'active', '2026-03-09 20:26:18'),
+('25', 'Чистка системы охлаждения', 'Двигатель', '2000.00', 'Промывка системы охлаждения', '90', 'active', '2026-03-09 20:26:18');
+
+--
+-- Структура таблицы `settings`
+--
+
+DROP TABLE IF EXISTS `settings`;
+CREATE TABLE `settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `setting_key` varchar(100) NOT NULL,
+  `setting_value` text,
+  `setting_group` varchar(50) DEFAULT 'general',
+  `setting_type` varchar(20) DEFAULT 'text',
+  `label` varchar(200) DEFAULT NULL,
+  `description` text,
+  `options` text,
+  `is_public` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `setting_key` (`setting_key`),
+  KEY `idx_group` (`setting_group`),
+  KEY `idx_key` (`setting_key`)
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `settings`
+-- Всего записей: 65
+--
+
+INSERT INTO `settings` (`id`, `setting_key`, `setting_value`, `setting_group`, `setting_type`, `label`, `description`, `options`, `is_public`, `created_at`, `updated_at`) VALUES 
+('1', 'site_name', 'Лал-Авто', 'general', 'text', 'Название сайта', NULL, NULL, '0', '2026-01-11 15:15:06', '2026-04-15 22:01:00'),
+('2', 'admin_email', 'admin@lal-auto.ru', 'general', 'email', 'Email администратора', NULL, NULL, '0', '2026-01-11 15:15:06', '2026-04-15 22:01:00'),
+('3', 'support_phone', '+7 (999) 123-45-67', 'general', 'tel', 'Телефон поддержки', NULL, NULL, '0', '2026-01-11 15:15:06', '2026-04-15 22:01:00'),
+('4', 'working_hours', 'Пн-Пт: 9:00-18:00, Сб: 10:00-16:00', 'general', 'text', 'Время работы', NULL, NULL, '0', '2026-01-11 15:15:06', '2026-04-15 22:01:00'),
+('5', 'min_order_amount', '1000', 'store', 'number', 'Минимальная сумма заказа', NULL, NULL, '0', '2026-01-11 15:15:06', '2026-04-15 22:01:00'),
+('6', 'vat_rate', '20', 'store', 'select', 'Ставка НДС', NULL, NULL, '0', '2026-01-11 15:15:06', '2026-04-15 22:01:00'),
+('7', 'maintenance_mode', '0', 'maintenance', 'checkbox', 'Режим обслуживания', NULL, NULL, '0', '2026-01-11 15:15:06', '2026-01-11 17:22:40'),
+('8', 'api_enabled', '1', 'api', 'checkbox', 'Включить API', NULL, NULL, '0', '2026-01-11 15:15:06', '2026-04-15 22:01:01'),
+('9', 'system_version', '2.2.0', 'system', 'text', 'Версия системы', NULL, NULL, '0', '2026-01-11 15:15:06', '2026-01-11 17:22:40'),
+('10', 'group', 'seo', 'general', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:15:53', '2026-04-15 22:01:02'),
+('11', 'site_description', 'Автозапчасти и автосервис - качественное обслуживание вашего автомобиля', 'general', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:15:53', '2026-04-15 22:01:00'),
+('12', 'default_language', 'Русский', 'general', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:15:53', '2026-04-15 22:01:00'),
+('13', 'currency', 'RUB', 'general', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:15:53', '2026-04-15 22:01:00'),
+('14', 'email_new_orders', '1', 'notifications', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('15', 'email_payments', '1', 'notifications', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('16', 'email_low_stock', '1', 'notifications', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('17', 'sms_promo', '1', 'notifications', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('18', 'smtp_server', 'smtp.gmail.com', 'notifications', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('19', 'smtp_port', '587', 'notifications', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('20', 'bank_cards_enabled', '1', 'payment', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('21', 'yoomoney_enabled', '1', 'payment', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('22', 'cash_on_delivery', '1', 'payment', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('23', 'processing_fee', '2.5', 'payment', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('24', 'min_fee', '10', 'payment', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('25', 'courier_enabled', '1', 'shipping', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('26', 'courier_cost', '300', 'shipping', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('27', 'pickup_enabled', '1', 'shipping', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('28', 'russian_post_cost', '500', 'shipping', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('29', 'cdek_enabled', '1', 'shipping', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('30', 'cdek_cost', '450', 'shipping', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('31', 'free_shipping_min', '5000', 'shipping', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('32', 'delivery_days', '3', 'shipping', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('33', 'min_password_length', '8', 'security', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('34', 'password_expiry_days', '90', 'security', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('35', 'require_special_char', '1', 'security', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('36', 'require_numbers', '1', 'security', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('37', 'prevent_reuse', '1', 'security', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('38', 'max_login_attempts', '5', 'security', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('39', 'lockout_minutes', '30', 'security', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:01'),
+('40', 'usd_rate', '90.5', 'store', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('41', 'eur_rate', '99.8', 'store', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('42', 'low_stock_alert', '1', 'store', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('43', 'return_policy', 'Возврат товара возможен в течение 14 дней с момента покупки при сохранении товарного вида и упаковки.', 'store', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:03', '2026-04-15 22:01:00'),
+('44', 'request_limit', '100', 'api', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:05', '2026-04-15 22:01:01'),
+('45', 'webhook_url', '', 'api', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:05', '2026-04-15 22:01:01'),
+('46', 'meta_title', 'Лал-Авто - Автозапчасти и автосервис', 'seo', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:05', '2026-04-15 22:01:02'),
+('47', 'meta_description', 'Качественные автозапчасти и профессиональный автосервис. Широкий ассортимент, доступные цены, гарантия качества.', 'seo', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:05', '2026-04-15 22:01:02'),
+('48', 'meta_keywords', 'автозапчасти, автосервис, автомобильные запчасти, ремонт авто', 'seo', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:05', '2026-04-15 22:01:02'),
+('49', 'og_title', 'Лал-Авто', 'seo', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:05', '2026-04-15 22:01:02'),
+('50', 'og_image', '', 'seo', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:05', '2026-04-15 22:01:02'),
+('51', 'seo_friendly_urls', '1', 'seo', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:05', '2026-04-15 22:01:02'),
+('52', 'generate_sitemap', '1', 'seo', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:05', '2026-04-15 22:01:02'),
+('53', 'robots_txt', 'User-agent: *\r\nDisallow: /admin/\r\nDisallow: /cart/\r\nAllow: /public/\r\nSitemap: https://lal-auto.ru/sitemap.xml', 'seo', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:05', '2026-04-15 22:01:02'),
+('54', 'maintenance_message', 'Сайт временно недоступен. Ведутся технические работы. Приносим извинения за неудобства.', 'maintenance', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:05', '2026-04-15 22:01:01'),
+('55', 'allow_backorder', '0', 'store', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:10', '2026-01-11 17:18:20'),
+('56', 'email_reviews', '0', 'notifications', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:10', '2026-01-11 17:18:20'),
+('57', 'email_newsletter', '0', 'notifications', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:10', '2026-01-11 17:18:20'),
+('58', 'sms_order_status', '0', 'notifications', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:10', '2026-01-11 17:18:20'),
+('59', 'sms_delivery', '0', 'notifications', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:10', '2026-01-11 17:18:20'),
+('60', 'require_upper_lower', '0', 'security', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:10', '2026-01-11 17:18:20'),
+('61', 'enable_2fa_admin', '0', 'security', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:10', '2026-01-11 17:18:20'),
+('62', 'enable_2fa_users', '0', 'security', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:10', '2026-01-11 17:18:20'),
+('63', 'sberbank_enabled', '0', 'payment', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:10', '2026-01-11 17:18:20'),
+('64', 'russian_post_enabled', '0', 'shipping', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:10', '2026-01-11 17:18:20'),
+('65', 'graphql_enabled', '0', 'api', 'text', NULL, NULL, NULL, '0', '2026-01-11 15:16:10', '2026-01-11 17:18:20');
+
+--
+-- Структура таблицы `shops`
+--
+
+DROP TABLE IF EXISTS `shops`;
+CREATE TABLE `shops` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `type` varchar(20) DEFAULT 'branch',
+  `region` varchar(100) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `address` text NOT NULL,
+  `area` decimal(10,2) DEFAULT '0.00',
+  `employees` int(11) DEFAULT '0',
+  `status` varchar(20) DEFAULT 'active',
+  `featured` tinyint(1) DEFAULT '0',
+  `description` text,
+  `services` text,
+  `parking` varchar(50) DEFAULT NULL,
+  `schedule` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_region` (`region`),
+  KEY `idx_status` (`status`),
+  KEY `idx_type` (`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `shops`
+-- Всего записей: 5
+--
+
+INSERT INTO `shops` (`id`, `name`, `type`, `region`, `phone`, `email`, `address`, `area`, `employees`, `status`, `featured`, `description`, `services`, `parking`, `schedule`, `created_at`) VALUES 
+('1', 'Центральный', 'main', 'Калининград', '+7 (4012) 65-65-65', 'center@lal-auto.ru', 'ул. Автомобильная, 12', '250.00', '17', 'active', '1', 'Флагманский магазин', 'Запчасти,Сервис,Шины,Тюнинг', 'Есть парковка', 'Пн-Пт: 9:00-20:00;Сб-Вс: 10:00-18:00', '2026-03-12 10:00:00'),
+('2', 'Московский', 'branch', 'Калининград', '+7 (4012) 76-76-76', 'moskovsky@lal-auto.ru', 'Московский пр-т, 45', '180.00', '12', 'active', '1', 'Крупный магазин', 'Запчасти,Сервис,Шины', 'Есть парковка', 'Пн-Пт: 9:00-20:00;Сб-Вс: 10:00-18:00', '2026-03-12 10:00:00'),
+('3', 'Горького', 'branch', 'Калининград', '+7 (4012) 87-87-87', 'gorkogo@lal-auto.ru', 'ул. Горького, 15', '120.00', '8', 'active', '0', 'Стандартный магазин', 'Запчасти,Шины', 'Ограниченная парковка', 'Пн-Пт: 9:00-20:00;Сб-Вс: 10:00-18:00', '2026-03-12 10:00:00'),
+('4', 'Приморский', 'branch', 'Калининград', '+7 (4012) 98-98-98', 'primorsky@lal-auto.ru', 'ул. Приморская, 8', '150.00', '9', 'active', '0', 'Стандартный магазин', 'Запчасти,Химия', 'Есть парковка', 'Пн-Пт: 9:00-20:00;Сб-Вс: 10:00-18:00', '2026-03-12 10:00:00'),
+('5', 'Советский', 'branch', 'Калининград', '+7 (4012) 54-32-10', 'sovetsky@lal-auto.ru', 'Советский пр-т, 120', '200.00', '14', 'active', '1', 'Крупный магазин', 'Запчасти,Сервис,Шины,Тюнинг', 'Есть парковка', 'Пн-Пт: 8:00-19:00;Сб-Вс: 9:00-17:00', '2026-03-12 10:00:00');
+
+--
+-- Структура таблицы `supplier_requests`
+--
+
+DROP TABLE IF EXISTS `supplier_requests`;
+CREATE TABLE `supplier_requests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_name` varchar(255) NOT NULL,
+  `contact_person` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `product_category` varchar(100) NOT NULL,
+  `message` text,
+  `price_file` varchar(255) DEFAULT NULL,
+  `status` enum('new','in_review','approved','rejected') DEFAULT 'new',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_status` (`status`),
+  KEY `idx_created` (`created_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `supplier_requests`
+-- Всего записей: 2
+--
+
+INSERT INTO `supplier_requests` (`id`, `company_name`, `contact_person`, `phone`, `email`, `product_category`, `message`, `price_file`, `status`, `created_at`) VALUES 
+('1', 'ООО \"АвтоДеталь', 'Петров Иван Сергеевич', '+7 (495) 123-45-67', 'info@avtodetal.ru', 'Автозапчасти', 'Производим автозапчасти для отечественных автомобилей. Готовы к долгосрочному сотрудничеству.', '', 'new', '2026-03-16 15:12:31'),
+('2', 'ИП \"АвтоСтиль', 'Козлов Андрей Петрович', '+7 (495) 345-67-89', 'info@autostyle.ru', 'Шины и диски', '', '', 'approved', '2026-03-16 15:23:21');
+
+--
+-- Структура таблицы `support_requests`
+--
+
+DROP TABLE IF EXISTS `support_requests`;
+CREATE TABLE `support_requests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `problem_type` varchar(50) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `url` varchar(500) DEFAULT NULL,
+  `description` text NOT NULL,
+  `screenshot` varchar(255) DEFAULT NULL,
+  `status` enum('new','in_progress','resolved','closed') DEFAULT 'new',
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_status` (`status`),
+  KEY `idx_created` (`created_at`),
+  KEY `idx_problem_type` (`problem_type`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `support_requests`
+-- Всего записей: 2
+--
+
+INSERT INTO `support_requests` (`id`, `problem_type`, `email`, `url`, `description`, `screenshot`, `status`, `ip_address`, `user_agent`, `created_at`) VALUES 
+('1', 'technical', 'ivan.petrov@mail.ru', 'https://lal-auto.ru/includes/assortment.php', 'При попытке добавить товар в корзину появляется ошибка 500. Пробовал в разных браузерах - ошибка повторяется.', '1773772410_69b99e7a3a394.png', 'in_progress', '128.0.0.9', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0', '2026-03-17 21:33:30'),
+('2', 'other', 'olga.novikova@yandex.ru', '', 'В форме обратной связи нет поля для выбора темы \"Техническая поддержка\". Пришлось писать сюда.', '', 'new', '128.0.0.9', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36 Edg/146.0.0.0', '2026-03-17 21:36:25');
+
+--
+-- Структура таблицы `system_versions`
+--
+
+DROP TABLE IF EXISTS `system_versions`;
+CREATE TABLE `system_versions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `version` varchar(20) NOT NULL,
+  `installed_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `notes` text,
+  PRIMARY KEY (`id`),
+  KEY `idx_version` (`version`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `system_versions`
+-- Всего записей: 1
+--
+
+INSERT INTO `system_versions` (`id`, `version`, `installed_at`, `notes`) VALUES 
+('2', '2.2.0', '2026-01-11 15:47:28', NULL);
+
+--
+-- Структура таблицы `update_logs`
+--
+
+DROP TABLE IF EXISTS `update_logs`;
+CREATE TABLE `update_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `old_version` varchar(20) NOT NULL,
+  `new_version` varchar(20) NOT NULL,
+  `status` varchar(20) DEFAULT 'pending',
+  `details` text,
+  `error_message` text,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_versions` (`old_version`,`new_version`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `update_logs`
+-- Всего записей: 1
+--
+
+INSERT INTO `update_logs` (`id`, `old_version`, `new_version`, `status`, `details`, `error_message`, `updated_at`) VALUES 
+('2', '2.1.0', '2.2.0', 'success', 'Системное обновление', NULL, '2026-01-11 15:47:28');
+
+--
+-- Структура таблицы `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id_users` int(11) NOT NULL AUTO_INCREMENT,
+  `surname_users` varchar(255) DEFAULT NULL,
+  `name_users` varchar(255) DEFAULT NULL,
+  `patronymic_users` varchar(255) DEFAULT NULL,
+  `login_users` varchar(255) DEFAULT NULL,
+  `password_users` varchar(255) NOT NULL,
+  `email_users` varchar(255) DEFAULT NULL,
+  `discountСardNumber_users` varchar(6) DEFAULT NULL,
+  `region_users` varchar(255) DEFAULT NULL,
+  `city_users` varchar(255) DEFAULT NULL,
+  `address_users` varchar(255) DEFAULT NULL,
+  `phone_users` bigint(12) DEFAULT NULL,
+  `avatar_users` varchar(255) DEFAULT NULL,
+  `TIN_users` bigint(10) DEFAULT NULL,
+  `person_users` varchar(255) DEFAULT NULL,
+  `organization_users` varchar(255) DEFAULT NULL,
+  `organizationType_users` varchar(255) DEFAULT NULL,
+  `user_type` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `free_spin_used` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 - не использовал бесплатную прокрутку, 1 - уже использовал',
+  PRIMARY KEY (`id_users`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `users`
+-- Всего записей: 5
+--
+
+INSERT INTO `users` (`id_users`, `surname_users`, `name_users`, `patronymic_users`, `login_users`, `password_users`, `email_users`, `discountСardNumber_users`, `region_users`, `city_users`, `address_users`, `phone_users`, `avatar_users`, `TIN_users`, `person_users`, `organization_users`, `organizationType_users`, `user_type`, `created_at`, `free_spin_used`) VALUES 
+('1', NULL, NULL, NULL, 'admin', '$2y$10$9VcNSE2fNGJuvpzdD6hnteJrGsmlPuu64Hew2lhs73mLe9GmJ0V0G', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2026-05-17 19:58:48', '1'),
+('2', 'Иванов', 'Иван', 'Иванович', 'user1', '$2y$10$D5o9WLMJp3sQso71lRJ17eAuKrr0Lf1hJca42d5urlASDc1mYTBmm', 'user1@gmail.com', '223344', 'Калининградская область', 'Калининград', 'Малый переулок, 3', '89113456789', 'uploads/avatars/avatar_2_1758131749.jpg', NULL, NULL, NULL, NULL, 'physical', '2026-05-17 19:58:48', '0'),
+('3', NULL, NULL, NULL, 'user2', '$2y$10$n2fp4g8P4W15qq1oajsgRu0iX/DUs2DvmREpW/Q3yDjuvr89kkMc6', 'user2@gmail.com', NULL, 'Калининградская область', 'Калининград', 'Уральская улица, 20', '89114567891', NULL, '2222455179', 'Наталья Евгеньевна Графарова', 'Дизель-мастер', 'ООО', 'legal', '2026-05-17 19:58:48', '0'),
+('4', NULL, NULL, NULL, 'user3', '$2y$10$TIJhyHQ9y8ND1rSq7GPBbuuSExSjmYcUA42Yn5Q2xRBROarz.vu/S', 'user3@gmail.com', '556677', 'Калининградская область', 'Балтийск', 'Киркенесская улица, 20', '89115678912', NULL, '5552431142', 'Виктор Викторович Викторов', 'КлассикАвто', 'ЗАО', 'legal', '2026-05-17 19:58:48', '0'),
+('5', 'Рожков', 'Олег', 'Константинович', 'user4', '$2y$10$Myb9zrwTcNTJMco/mcBxN.A9mC2Yj8PnelPxPJFMpWUDXgeWqLiGW', 'user4@gmail.com', NULL, 'Калининградская область', 'Черняховск', 'улица Советская, 5', '89116789123', NULL, NULL, NULL, NULL, NULL, 'physical', '2026-05-17 19:58:48', '0');
+
+--
+-- Структура таблицы `wheel_spins`
+--
+
+DROP TABLE IF EXISTS `wheel_spins`;
+CREATE TABLE `wheel_spins` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `prize_text` varchar(50) NOT NULL,
+  `prize_type` varchar(50) NOT NULL,
+  `discount_value` int(11) DEFAULT '0',
+  `promo_code` varchar(50) DEFAULT NULL,
+  `purchases_required` int(11) DEFAULT '10',
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `promo_code` (`promo_code`),
+  CONSTRAINT `wheel_spins_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Структура таблицы `wishlist`
+--
+
+DROP TABLE IF EXISTS `wishlist`;
+CREATE TABLE `wishlist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `product_image` varchar(255) DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `wishlist`
+-- Всего записей: 6
+--
+
+INSERT INTO `wishlist` (`id`, `user_id`, `product_name`, `product_image`, `price`, `created_at`) VALUES 
+('3', '3', 'Свечи зажигания NGK BKR6E', 'uploads/products/696392655986c.png', '850.00', '2026-01-15 16:29:33'),
+('4', '4', 'Тормозные колодки Brembo P85115', 'uploads/products/696392655986c.png', '3890.00', '2026-01-15 16:29:33'),
+('5', '5', 'Фильтр масляный Mann W914/2', 'uploads/products/696392655986c.png', '1250.00', '2026-01-15 16:29:33'),
+('13', '2', 'Фара передняя BMW 3 series F30', 'uploads/products/696392655986c.png', '18700.00', '2026-02-14 18:52:56'),
+('14', '2', 'Тормозные колодки Audi A6 C7', 'uploads/products/696392655986c.png', '3890.00', '2026-02-14 18:53:36'),
+('15', '4', 'Свечи зажигания Audi Q5 2.0 TDI', 'uploads/products/696392655986c.png', '850.00', '2026-02-27 10:39:02');
+
+SET FOREIGN_KEY_CHECKS=1;
+-- End of backup
