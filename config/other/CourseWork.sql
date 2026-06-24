@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июн 21 2026 г., 14:35
+-- Время создания: Июн 23 2026 г., 14:37
 -- Версия сервера: 5.7.39
 -- Версия PHP: 8.0.22
 
@@ -114,7 +114,8 @@ CREATE TABLE `backup_logs` (
 
 INSERT INTO `backup_logs` (`id`, `filename`, `file_size`, `status`, `source`, `action`, `error_message`, `downloads`, `last_download`, `created_at`) VALUES
 (9, 'backup_2026-01-11_15-45-53.sql', 28680, 'success', 'manual', 'backup', NULL, 0, NULL, '2026-01-11 12:45:53'),
-(10, 'uploaded_backup_backup_2026-01-11_15-45-53_2026-01-11_15-46-08.sql', 28680, 'uploaded', 'user_upload', 'backup', NULL, 0, NULL, '2026-01-11 12:46:08');
+(10, 'uploaded_backup_backup_2026-01-11_15-45-53_2026-01-11_15-46-08.sql', 28680, 'uploaded', 'user_upload', 'backup', NULL, 0, NULL, '2026-01-11 12:46:08'),
+(11, 'backup_2026-06-23_14-36-27.sql', 177256, 'success', 'manual', 'backup', NULL, 0, NULL, '2026-06-23 11:36:27');
 
 -- --------------------------------------------------------
 
@@ -1727,7 +1728,7 @@ ALTER TABLE `api_keys`
 -- AUTO_INCREMENT для таблицы `backup_logs`
 --
 ALTER TABLE `backup_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `cart`

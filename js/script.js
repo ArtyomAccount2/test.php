@@ -186,6 +186,44 @@ function initPartsCards()
     });
 }
 
+function forceUpdateScrollButtons() 
+{
+    document.querySelectorAll('.scrollable-container-wrapper').forEach(wrapper => {
+        let scrollable = wrapper.querySelector('.scrollable');
+        let scrollLeftBtn = wrapper.querySelector('.scroll-left');
+        let scrollRightBtn = wrapper.querySelector('.scroll-right');
+        
+        if (!scrollable || !scrollLeftBtn || !scrollRightBtn) 
+        {
+            return;
+        }
+
+        let visibleItems = Array.from(scrollable.querySelectorAll('.scrollable-item')).filter(
+            item => item.style.display !== 'none'
+        );
+        
+        if (visibleItems.length === 0) 
+        {
+            scrollLeftBtn.style.display = 'none';
+            scrollRightBtn.style.display = 'none';
+            return;
+        }
+
+        scrollLeftBtn.style.display = 'flex';
+        scrollRightBtn.style.display = 'flex';
+        scrollLeftBtn.style.visibility = 'visible';
+        scrollRightBtn.style.visibility = 'visible';
+
+        let allVisible = scrollable.scrollWidth <= scrollable.clientWidth + 10;
+
+        if (allVisible) 
+        {
+            scrollLeftBtn.style.display = 'none';
+            scrollRightBtn.style.display = 'none';
+        }
+    });
+}
+
 function initScrollButtons() 
 {
     setupScrollButtons();
@@ -198,6 +236,19 @@ function initScrollButtons()
     window.addEventListener('resize', debounce(() => {
         checkScrollButtonsVisibility();
     }, 200));
+
+    document.querySelectorAll('.scrollable').forEach(scrollable => {
+        let observer = new MutationObserver(function() {
+            setTimeout(forceUpdateScrollButtons, 50);
+        });
+
+        observer.observe(scrollable, { 
+            childList: true, 
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['style']
+        });
+    });
 }
 
 function goToBrandAssortment(brandName) 
@@ -296,7 +347,7 @@ function setupScrollButtons()
     });
 }
 
-function filterItems(container, searchValue, noResultsId) 
+function filterItems(container, searchValue, noResultsId, searchType = 'all') 
 {
     if (!container) 
     {
@@ -305,11 +356,51 @@ function filterItems(container, searchValue, noResultsId)
 
     let items = container.querySelectorAll('.scrollable-item');
     let visibleCount = 0;
+    let searchLower = searchValue.toLowerCase().trim();
+    let isCyrillic = /[а-яА-ЯЁё]/.test(searchLower);
+    let isLatin = /[a-zA-Z]/.test(searchLower);
     
     items.forEach(item => {
-        let title = item.querySelector('.card-title') ? item.querySelector('.card-title').textContent.toLowerCase() : '';
-        let category = item.querySelector('.text-muted') ? item.querySelector('.text-muted').textContent.toLowerCase() : '';
-        let isVisible = searchValue === '' || title.includes(searchValue.toLowerCase()) || category.includes(searchValue.toLowerCase());
+        let titleElement = item.querySelector('.card-title');
+        let categoryElement = item.querySelector('.text-muted') || item.querySelector('.part-category');
+        let title = titleElement ? titleElement.textContent.toLowerCase() : '';
+        let category = categoryElement ? categoryElement.textContent.toLowerCase() : '';
+        
+        let isVisible = false;
+        
+        if (searchValue === '') 
+        {
+            isVisible = true;
+        } 
+        else 
+        {
+            if (searchType === 'brands') 
+            {
+                if (isCyrillic) 
+                {
+                    isVisible = false;
+                } 
+                else 
+                {
+                    isVisible = title.includes(searchLower) || category.includes(searchLower);
+                }
+            } 
+            else if (searchType === 'parts') 
+            {
+                if (isLatin && !isCyrillic) 
+                {
+                    isVisible = false;
+                } 
+                else 
+                {
+                    isVisible = title.includes(searchLower) || category.includes(searchLower);
+                }
+            } 
+            else 
+            {
+                isVisible = title.includes(searchLower) || category.includes(searchLower);
+            }
+        }
         
         item.style.display = isVisible ? 'block' : 'none';
 
@@ -324,6 +415,42 @@ function filterItems(container, searchValue, noResultsId)
     if (noResultsMessage) 
     {
         noResultsMessage.style.display = visibleCount === 0 ? 'flex' : 'none';
+    }
+
+    let containerWrapper = container.closest('.scrollable-container-wrapper');
+
+    if (containerWrapper) 
+    {
+        let scrollLeftBtn = containerWrapper.querySelector('.scroll-left');
+        let scrollRightBtn = containerWrapper.querySelector('.scroll-right');
+        
+        if (visibleCount > 0) 
+        {
+            if (scrollLeftBtn) 
+            {
+                scrollLeftBtn.style.display = 'flex';
+                scrollLeftBtn.style.visibility = 'visible';
+                scrollLeftBtn.style.opacity = '1';
+            }
+            if (scrollRightBtn) 
+            {
+                scrollRightBtn.style.display = 'flex';
+                scrollRightBtn.style.visibility = 'visible';
+                scrollRightBtn.style.opacity = '1';
+            }
+            setTimeout(() => checkScrollButtonsVisibility(), 50);
+        } 
+        else 
+        {
+            if (scrollLeftBtn) 
+            {
+                scrollLeftBtn.style.display = 'none';
+            }
+            if (scrollRightBtn) 
+            {
+                scrollRightBtn.style.display = 'none';
+            }
+        }
     }
 }
 
@@ -389,7 +516,6 @@ function handleHeaderSearch()
 function performRegularSearch(searchValue) 
 {
     let isRussian = /[а-яА-ЯЁё]/.test(searchValue);
-
     let navbarHeight = document.querySelector('.navbar') ? document.querySelector('.navbar').offsetHeight : 0;
     let offset = navbarHeight + 20;
 
@@ -413,7 +539,7 @@ function performRegularSearch(searchValue)
             if (partsSearch) 
             {
                 partsSearch.value = searchValue;
-                filterItems(document.querySelector('#popularParts .scrollable'), searchValue, 'no-results-parts');
+                filterItems(document.querySelector('#popularParts .scrollable'), searchValue, 'no-results-parts', 'parts');
             }
             
             let brandSearch = document.getElementById('brandSearch');
@@ -421,7 +547,7 @@ function performRegularSearch(searchValue)
             if (brandSearch) 
             {
                 brandSearch.value = '';
-                filterItems(document.querySelector('#carBrandsList .scrollable'), '', 'no-results-brands');
+                filterItems(document.querySelector('#carBrandsList .scrollable'), '', 'no-results-brands', 'brands');
             }
         }, 500);
     } 
@@ -445,7 +571,7 @@ function performRegularSearch(searchValue)
             if (brandSearch) 
             {
                 brandSearch.value = searchValue;
-                filterItems(document.querySelector('#carBrandsList .scrollable'), searchValue, 'no-results-brands');
+                filterItems(document.querySelector('#carBrandsList .scrollable'), searchValue, 'no-results-brands', 'brands');
             }
             
             let partsSearch = document.getElementById('partsSearch');
@@ -453,7 +579,7 @@ function performRegularSearch(searchValue)
             if (partsSearch) 
             {
                 partsSearch.value = '';
-                filterItems(document.querySelector('#popularParts .scrollable'), '', 'no-results-parts');
+                filterItems(document.querySelector('#popularParts .scrollable'), '', 'no-results-parts', 'parts');
             }
         }, 500);
     }
@@ -514,33 +640,44 @@ function checkScrollButtonsVisibility()
         let scrollable = container.querySelector('.scrollable');
         let scrollLeftBtn = container.parentElement.querySelector('.scroll-left');
         let scrollRightBtn = container.parentElement.querySelector('.scroll-right');
-        
-        if (scrollable && scrollLeftBtn && scrollRightBtn) 
+
+        if (!scrollLeftBtn || !scrollRightBtn) 
         {
-            let isAtStart = scrollable.scrollLeft <= 10;
-            let isAtEnd = scrollable.scrollLeft >= (scrollable.scrollWidth - scrollable.clientWidth - 10);
-
-            scrollLeftBtn.style.opacity = isAtStart ? '0.5' : '1';
-            scrollLeftBtn.style.pointerEvents = isAtStart ? 'none' : 'all';
-            scrollLeftBtn.style.cursor = isAtStart ? 'not-allowed' : 'pointer';
-
-            scrollRightBtn.style.opacity = isAtEnd ? '0.5' : '1';
-            scrollRightBtn.style.pointerEvents = isAtEnd ? 'none' : 'all';
-            scrollRightBtn.style.cursor = isAtEnd ? 'not-allowed' : 'pointer';
-
-            let allVisible = scrollable.scrollWidth <= scrollable.clientWidth;
-
-            if (allVisible) 
-            {
-                scrollLeftBtn.style.visibility = 'hidden';
-                scrollRightBtn.style.visibility = 'hidden';
-            } 
-            else 
-            {
-                scrollLeftBtn.style.visibility = 'visible';
-                scrollRightBtn.style.visibility = 'visible';
-            }
+            return;
         }
+
+        if (!scrollable || scrollable.children.length === 0) 
+        {
+            scrollLeftBtn.style.display = 'none';
+            scrollRightBtn.style.display = 'none';
+            return;
+        }
+
+        scrollLeftBtn.style.display = 'flex';
+        scrollRightBtn.style.display = 'flex';
+
+        let allVisible = scrollable.scrollWidth <= scrollable.clientWidth + 10;
+        
+        if (allVisible) 
+        {
+            scrollLeftBtn.style.display = 'none';
+            scrollRightBtn.style.display = 'none';
+            return;
+        }
+
+        let isAtStart = scrollable.scrollLeft <= 10;
+        let isAtEnd = scrollable.scrollLeft >= (scrollable.scrollWidth - scrollable.clientWidth - 10);
+
+        scrollLeftBtn.style.opacity = isAtStart ? '0.5' : '1';
+        scrollLeftBtn.style.pointerEvents = isAtStart ? 'none' : 'all';
+        scrollLeftBtn.style.cursor = isAtStart ? 'not-allowed' : 'pointer';
+
+        scrollRightBtn.style.opacity = isAtEnd ? '0.5' : '1';
+        scrollRightBtn.style.pointerEvents = isAtEnd ? 'none' : 'all';
+        scrollRightBtn.style.cursor = isAtEnd ? 'not-allowed' : 'pointer';
+
+        scrollLeftBtn.style.visibility = 'visible';
+        scrollRightBtn.style.visibility = 'visible';
     });
 }
 
@@ -966,6 +1103,44 @@ function debounce(func, wait)
     };
 }
 
+function forceUpdateScrollButtons() 
+{
+    document.querySelectorAll('.scrollable-container-wrapper').forEach(wrapper => {
+        let scrollable = wrapper.querySelector('.scrollable');
+        let scrollLeftBtn = wrapper.querySelector('.scroll-left');
+        let scrollRightBtn = wrapper.querySelector('.scroll-right');
+        
+        if (!scrollable || !scrollLeftBtn || !scrollRightBtn) 
+        {
+            return;
+        }
+        
+        let visibleItems = Array.from(scrollable.querySelectorAll('.scrollable-item')).filter(
+            item => item.style.display !== 'none'
+        );
+        
+        if (visibleItems.length === 0) 
+        {
+            scrollLeftBtn.style.display = 'none';
+            scrollRightBtn.style.display = 'none';
+            return;
+        }
+        
+        scrollLeftBtn.style.display = 'flex';
+        scrollRightBtn.style.display = 'flex';
+        scrollLeftBtn.style.visibility = 'visible';
+        scrollRightBtn.style.visibility = 'visible';
+        
+        let allVisible = scrollable.scrollWidth <= scrollable.clientWidth + 10;
+
+        if (allVisible) 
+        {
+            scrollLeftBtn.style.display = 'none';
+            scrollRightBtn.style.display = 'none';
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() 
 {
     initBrandCards();
@@ -1085,7 +1260,33 @@ document.addEventListener('DOMContentLoaded', function()
     {
         brandSearch.addEventListener('input', function() 
         {
-            filterItems(document.querySelector('#carBrandsList .scrollable'), this.value, 'no-results-brands');
+            filterItems(document.querySelector('#carBrandsList .scrollable'), this.value, 'no-results-brands', 'brands');
+
+            let isCyrillic = /[а-яА-ЯЁё]/.test(this.value);
+            let noResultsMsg = document.getElementById('no-results-brands');
+            
+            if (isCyrillic && this.value.length > 0) 
+            {
+                if (noResultsMsg) 
+                {
+                    noResultsMsg.innerHTML = `
+                        <i class="bi bi-info-circle" style="font-size: 2rem; color: #ffc107;"></i>
+                        <p class="mt-2 text-center">Поиск по маркам работает только на <strong>латинице</strong></p>
+                        <small class="text-muted text-center">Введите название марки на английском языке</small>
+                    `;
+                    noResultsMsg.style.display = 'flex';
+                }
+            } 
+            else if (noResultsMsg) 
+            {
+                noResultsMsg.innerHTML = `
+                    <i class="bi bi-exclamation-circle" style="font-size: 2rem;"></i>
+                    <p class="mt-2 text-center">Марка не найдена</p>
+                    <small class="text-muted text-center">Попробуйте изменить запрос или посмотреть все марки</small>
+                `;
+            }
+            
+            setTimeout(forceUpdateScrollButtons, 100);
         });
     }
 
@@ -1095,7 +1296,34 @@ document.addEventListener('DOMContentLoaded', function()
     {
         partsSearch.addEventListener('input', function() 
         {
-            filterItems(document.querySelector('#popularParts .scrollable'), this.value, 'no-results-parts');
+            filterItems(document.querySelector('#popularParts .scrollable'), this.value, 'no-results-parts', 'parts');
+
+            let isLatin = /[a-zA-Z]/.test(this.value);
+            let isCyrillic = /[а-яА-ЯЁё]/.test(this.value);
+            let noResultsMsg = document.getElementById('no-results-parts');
+            
+            if (isLatin && !isCyrillic && this.value.length > 0) 
+            {
+                if (noResultsMsg) 
+                {
+                    noResultsMsg.innerHTML = `
+                        <i class="bi bi-info-circle" style="font-size: 2rem; color: #ffc107;"></i>
+                        <p class="mt-2 text-center">Поиск по запчастям работает только на <strong>кириллице</strong></p>
+                        <small class="text-muted text-center">Введите название запчасти на русском языке</small>
+                    `;
+                    noResultsMsg.style.display = 'flex';
+                }
+            } 
+            else if (noResultsMsg) 
+            {
+                noResultsMsg.innerHTML = `
+                    <i class="bi bi-exclamation-circle" style="font-size: 2rem;"></i>
+                    <p class="mt-2 text-center">Запчасть не найдена</p>
+                    <small class="text-muted text-center">Попробуйте изменить запрос или посмотреть весь каталог</small>
+                `;
+            }
+            
+            setTimeout(forceUpdateScrollButtons, 100);
         });
     }
 
@@ -1133,6 +1361,52 @@ document.addEventListener('DOMContentLoaded', function()
                 setTimeout(() => {
                     isScrollingToAnchor = false;
                 }, 1000);
+            }
+        });
+    });
+
+    document.querySelectorAll('.search-clear').forEach(clearBtn => {
+        clearBtn.addEventListener('click', function() 
+        {
+            let input = this.parentElement.querySelector('.search-input');
+
+            if (input) 
+            {
+                input.value = '';
+
+                if (input.id === 'brandSearch') 
+                {
+                    filterItems(document.querySelector('#carBrandsList .scrollable'), '', 'no-results-brands', 'brands');
+
+                    let noResultsMsg = document.getElementById('no-results-brands');
+
+                    if (noResultsMsg) 
+                    {
+                        noResultsMsg.innerHTML = `
+                            <i class="bi bi-exclamation-circle" style="font-size: 2rem;"></i>
+                            <p class="mt-2 text-center">Марка не найдена</p>
+                            <small class="text-muted text-center">Попробуйте изменить запрос или посмотреть все марки</small>
+                        `;
+                    }
+                } 
+                else if (input.id === 'partsSearch') 
+                {
+                    filterItems(document.querySelector('#popularParts .scrollable'), '', 'no-results-parts', 'parts');
+
+                    let noResultsMsg = document.getElementById('no-results-parts');
+
+                    if (noResultsMsg) 
+                    {
+                        noResultsMsg.innerHTML = `
+                            <i class="bi bi-exclamation-circle" style="font-size: 2rem;"></i>
+                            <p class="mt-2 text-center">Запчасть не найдена</p>
+                            <small class="text-muted text-center">Попробуйте изменить запрос или посмотреть весь каталог</small>
+                        `;
+                    }
+                }
+
+                this.style.display = 'none';
+                setTimeout(forceUpdateScrollButtons, 100);
             }
         });
     });

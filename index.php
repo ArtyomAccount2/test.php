@@ -924,19 +924,6 @@ unset($_SESSION['form_data']);
     </div>
 </div>
 
-<script src="js/bootstrap.bundle.min.js"></script>
-<script src="js/script.js"></script>
-<script src="files/app.js"></script>
-</body>
-</html>
-<script>
-window.userData = {
-    isAuthenticated: <?php echo json_encode($user_is_authenticated); ?>,
-    freeSpinAvailable: <?php echo json_encode($user_free_spin_available); ?>,
-    freeSpinUsed: <?php echo json_encode($user_free_spin_used); ?>,
-    userId: <?php echo json_encode($_SESSION['user_id'] ?? null); ?>
-};
-</script>
 <?php
 function getCategoryDisplayName($category, $short = false) 
 {
@@ -958,3 +945,46 @@ function getCategoryDisplayName($category, $short = false)
     return isset($categoryMap[$category]['full']) ? $categoryMap[$category]['full'] : $category;
 }
 ?>
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/script.js"></script>
+<script src="files/app.js"></script>
+<script>
+function showButtonsForce() 
+{
+    setTimeout(function() 
+    {
+        document.querySelectorAll('.scroll-button').forEach(function(btn) 
+        {
+            btn.style.display = 'flex';
+            btn.style.visibility = 'visible';
+            btn.style.opacity = '1';
+        });
+        
+        checkScrollButtonsVisibility();
+    }, 100);
+}
+
+window.addEventListener('load', function() 
+{
+    showButtonsForce();
+    setTimeout(showButtonsForce, 1000);
+});
+
+window.addEventListener('pageshow', function(event) 
+{
+    if (event.persisted) 
+    {
+        location.reload();
+    }
+});
+
+window.userData = {
+    isAuthenticated: <?php echo json_encode($user_is_authenticated); ?>,
+    freeSpinAvailable: <?php echo json_encode($user_free_spin_available); ?>,
+    freeSpinUsed: <?php echo json_encode($user_free_spin_used); ?>,
+    userId: <?php echo json_encode($_SESSION['user_id'] ?? null); ?>
+};
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 -- AutoShop Database Backup
--- Date: 2026-06-19 20:35:11
+-- Date: 2026-06-23 14:36:27
 -- PHP Version: 8.0.22
 -- MySQL Version: 50739
 
@@ -1051,7 +1051,15 @@ CREATE TABLE `remember_tokens` (
   KEY `idx_user_id` (`user_id`),
   KEY `idx_token` (`token`),
   CONSTRAINT `fk_remember_tokens_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_users`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `remember_tokens`
+-- Всего записей: 1
+--
+
+INSERT INTO `remember_tokens` (`id`, `user_id`, `token`, `expires_at`, `created_at`) VALUES 
+('1', '2', '61cd7c778135ac6fe54529f400834ee99be27b59a4dfd3b57517610fe99e0cf5', '2026-07-21 13:44:34', '2026-06-21 13:44:34');
 
 --
 -- Структура таблицы `reviews`
